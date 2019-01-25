@@ -32,8 +32,8 @@ sleep 5
 # installation
 sudo pacman -S --noconfirm neovim
 # aliasses
-sudo ln -s /usr/bin/nvim /usr/bin/vi
-sudo ln -s /usr/bin/nvim /usr/bin/vim
+sudo ln -sf /usr/bin/nvim /usr/bin/vi
+sudo ln -sf /usr/bin/nvim /usr/bin/vim
 
 ## i3: the main graphical user interface
 # i3-gaps: allow gaps between windows
@@ -44,6 +44,14 @@ sudo pacman -S --noconfirm i3blocks
 sudo pacman -S --noconfirm i3lock
 # xdotool: allows for more complicated window manipulation commands
 sudo pacman -S --noconfirm xdotool
+# unicode characters
+sudo pacman -S --noconfirm rxvt-unicode
+# wallpapers
+sudo pacman -S --noconfirm feh
+# xterm
+sudo pacman -S --noconfirm xterm
+# sockets
+sudo pacman -S --noconfirm socat
 
 ## xorg: the graphical server
 # the graphical server
@@ -58,6 +66,14 @@ sudo pacman -S --noconfirm xorg-xprop
 sudo pacman -S --noconfirm xcompmgr
 # for changing brightnes etc:
 sudo pacman -S --noconfirm xorg-xbacklight
+
+## build tools
+# makefiles
+sudo pacman -S --noconfirm make
+
+## fonts
+# monospace
+sudo pacman -S --noconfirm ttf-inconsolata
 
 
 ## ranger: terminal file browser
@@ -165,3 +181,21 @@ yay -S --noconfirm urlscan
 
 ## drive and file system access
 yay -S --noconfirm simple-mtpfs
+
+
+echo -e "\n\n\n\n"
+echo "Installing Suckless Terminal..."
+echo -e "\n\n\n\n"
+sleep 5
+
+git clone http://github.com/lukesmithxyz/st.git
+cd st
+make
+sudo make install
+cd ..
+rm -rf st
+
+
+
+
+
