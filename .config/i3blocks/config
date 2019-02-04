@@ -1,0 +1,65 @@
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+#
+
+# global properties
+#command=/usr/lib/i3blocks/$BLOCK_NAME
+command=~/.config/i3blocks/$BLOCK_NAME
+separator_block_width=15
+markup=none
+
+# volume indicator
+[volume]
+label=🔊
+instance=Master
+interval=1
+signal=10
+
+# ram usage
+[memory]
+label=💻
+separator=false
+interval=30
+
+# disk usage
+[disk]
+label=💾
+interval=30
+
+# weather
+[weather]
+interval=once
+
+# date
+[date]
+label=📅
+interval=60
+
+# time
+[time]
+label=🕒
+interval=60
+
+# date and time
+[spacer]
+interval=once
+

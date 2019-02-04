@@ -56,7 +56,7 @@ bar {
 	font pango:mono 10
 	colors {
 			background $darkblack
-			statusline $darkwhite
+			statusline $yellow
 			separator $cyan
 			focused_workspace  $blue $darkblue $darkblack
         		active_workspace   $blue $blue $darkwhite

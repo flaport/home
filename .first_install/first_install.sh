@@ -76,6 +76,10 @@ sudo pacman -S --noconfirm xorg-xdpyinfo
 # makefiles
 sudo pacman -S --noconfirm make
 
+## toolbar
+# battery information
+sudo pacman -S --noconfirm acpi
+
 ## fonts
 # monospace
 sudo pacman -S --noconfirm ttf-inconsolata
@@ -208,7 +212,6 @@ yay -S --noconfirm urlscan
 yay -S --noconfirm simple-mtpfs
 
 ## Fonts
-yay -S --noconfirm ttf-emojione
 yay -S --noconfirm ttf-symbola
 
 echo -e "\n\n\n\n"
