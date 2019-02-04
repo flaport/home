@@ -169,6 +169,11 @@ sudo pacman -S --noconfirm zathura-djvu
 # nvidia: nvidia driver
 sudo pacman -S --noconfirm nvidia
 
+## Sound
+# alsamixer
+sudo pacman -S alsa-utils alsa-plugins
+
+
 ## browsers
 # qutebrowser
 sudo pacman -S --noconfirm qutebrowser
