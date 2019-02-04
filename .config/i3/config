@@ -1,6 +1,9 @@
 # modifier key
 set $mod Mod4
 
+# wallpaper
+exec feh --bg-scale ~/.config/wallpaper.png
+
 # display settings
 exec xrandr --output DVI-D-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI-0 --off --output DP-3 --off --output DP-2 --off --output DP-1 --off --output DP-0 --off
 
@@ -13,10 +16,11 @@ for_window [class="^.*"] border pixel 3
 set $term --no-startup-id $TERMINAL
 
 # notifications
-# exec --no-startup-id dunst
+exec --no-startup-id dunst
 
 # composite manager (window transparency etc)
 exec --no-startup-id xcompmgr
+exec --no-startup-id xrdb ~/.Xresources
 
 # make the mouse invisible after a brief period
 exec --no-startup-id unclutter
@@ -128,10 +132,10 @@ bindsym $mod+Shift+z		gaps outer current minus 5
 
 # resize
 bindsym $mod+f			fullscreen toggle
-bindsym $mod+Shift+y		exec --no-startup-id i3resize left
-bindsym $mod+Shift+u		exec --no-startup-id i3resize down
-bindsym $mod+Shift+i		exec --no-startup-id i3resize up
-bindsym $mod+Shift+o		exec --no-startup-id i3resize right
+bindsym $mod+Shift+y		exec --no-startup-id ~/.scripts/i3resize left
+bindsym $mod+Shift+u		exec --no-startup-id ~/.scripts/i3resize down
+bindsym $mod+Shift+i		exec --no-startup-id ~/.scripts/i3resize up
+bindsym $mod+Shift+o		exec --no-startup-id ~/.scripts/i3resize right
 
 # drop down terminal/calculator
 bindsym $mod+u			exec --no-startup-id ddspawn tmuxdd
@@ -147,9 +151,6 @@ bindsym $mod+o			sticky toggle
 # menu
 bindsym $mod+d			exec --no-startup-id dmenu_run
 
-# distraction-free mode
-bindsym $mod+Shift+f		mode "$freeze" ;; exec --no-startup-id notify-send "<b>Distraction-free mode activated.</b> Press Super+Shift+f to return."
-
 # gimp
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
 
@@ -158,8 +159,6 @@ bindsym $mod+x			exec --no-startup-id lockscreen
 
 # music/sound control
 bindsym $mod+v			exec $term -e ncmpcpp -s visualizer
-#bindsym $mod+m			exec --no-startup-id $term -e ncmpcpp
-bindsym $mod+Shift+m            exec spotify
 bindsym $mod+Shift+v		exec --no-startup-id projectM-pulseaudio
 
 # show status bar
@@ -236,29 +235,16 @@ for_window [title="Default - Wine desktop"] floating enable
 # Function Buttons
 bindsym $mod+F1		exec --no-startup-id groff -kejpt -mom ~/.readme.mom -Tpdf | zathura -
 bindsym $mod+F2		restart
-bindsym $mod+F3		exec --no-startup-id displayselect
 
 # screenshots
 bindsym Print 			exec --no-startup-id scrot
 bindsym Shift+Print 		exec --no-startup-id scrot -u
 
 # media control
-bindsym $mod+m			exec --no-startup-id lmc mute
-bindsym $mod+p			exec --no-startup-id lmc toggle
-bindsym $mod+Shift+p		exec --no-startup-id lmc pause
-bindsym $mod+plus		exec --no-startup-id lmc up 5
-bindsym $mod+Shift+plus		exec --no-startup-id lmc up 15
-bindsym $mod+minus 		exec --no-startup-id lmc down 5
-bindsym $mod+Shift+minus	exec --no-startup-id lmc down 15
-bindsym $mod+less 		exec --no-startup-id lmc prev
-bindsym $mod+Shift+less		exec --no-startup-id lmc replay
-bindsym $mod+greater		exec --no-startup-id lmc next
-bindsym $mod+Shift+greater	exec --no-startup-id lmc next
-bindsym $mod+bracketleft 	exec --no-startup-id lmc back 10
-bindsym $mod+Shift+bracketleft 	exec --no-startup-id lmc back 120
-bindsym $mod+bracketright 	exec --no-startup-id lmc forward 10
-bindsym $mod+Shift+bracketright exec --no-startup-id lmc forward 120
-
-# wallpaper
-exec feh --bg-scale ~/.config/wallpaper.png
+bindsym $mod+m			exec --no-startup-id amixer -q sset Master 100%-
+bindsym $mod+Shift+m		exec --no-startup-id amixer -q sset Master 70%+
+bindsym $mod+plus		exec --no-startup-id amixer -q sset Master 5%+
+bindsym $mod+Shift+plus		exec --no-startup-id amixer -q sset Master 15%+
+bindsym $mod+minus 		exec --no-startup-id amixer -q sset Master 5%-
+bindsym $mod+Shift+minus	exec --no-startup-id amixer -q sset Master 15%-
 
