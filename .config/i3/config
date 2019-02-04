@@ -132,10 +132,10 @@ bindsym $mod+Shift+z		gaps outer current minus 5
 
 # resize
 bindsym $mod+f			fullscreen toggle
-bindsym $mod+Shift+y		exec --no-startup-id ~/.scripts/i3resize left
-bindsym $mod+Shift+u		exec --no-startup-id ~/.scripts/i3resize down
-bindsym $mod+Shift+i		exec --no-startup-id ~/.scripts/i3resize up
-bindsym $mod+Shift+o		exec --no-startup-id ~/.scripts/i3resize right
+bindsym $mod+Shift+y		exec --no-startup-id ~/.config/i3/resize left
+bindsym $mod+Shift+u		exec --no-startup-id ~/.config/i3/resize down
+bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize up
+bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize right
 
 # drop down terminal/calculator
 bindsym $mod+u			exec --no-startup-id ddspawn tmuxdd
