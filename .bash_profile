@@ -6,9 +6,7 @@
 
 export EDITOR="vim"
 export TERMINAL="st"
-# Link handler is set as the $BROWSER for use with urlscan.
-# Set your real browser in $TRUEBROWSER.
-export BROWSER="linkhandler"
+export BROWSER="qutebrowser"
 export TRUEBROWSER="qutebrowser"
 export READER="zathura"
 
