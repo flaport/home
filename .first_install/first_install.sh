@@ -95,6 +95,10 @@ sudo pacman -S --noconfirm ttf-ubuntu-font-family
 ## security
 # gnupg
 sudo pacman -S --noconfirm gnupg
+# openvpn
+sudo pacman -S --noconfirm openvpn
+# ssh
+sudo pacman -S --noconfirm openssh
 
 ## ranger: terminal file browser
 sudo pacman -S --noconfirm ranger

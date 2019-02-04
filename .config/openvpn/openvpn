@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+if tmux ls | grep openvpn | grep windows; then
+    echo "openvpn already running.. killing session...";
+    tmux kill-session -t openvpn;
+fi
+
+echo "starting openvpn..."
+tmux new-session -s openvpn \; new-window sudo /usr/bin/openvpn ~/.config/openvpn/igent.ovpn
+    
