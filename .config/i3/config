@@ -107,8 +107,8 @@ bindsym $mod+Shift+Right 	move right
 # bindsym $mod+grave		exec --no-startup-id dmenuunicode
 
 # kill a window
-bindsym $mod+q			[con_id="__focused__" instance="^(?!dropdowncalc|tmuxdd).*$"] kill
-bindsym $mod+Shift+q		[con_id="__focused__" instance="^(?!dropdowncalc|tmuxdd).*$"] kill
+bindsym $mod+q			kill
+bindsym $mod+Shift+q    kill
 
 # browser
 bindsym $mod+w			exec --no-startup-id $BROWSER
@@ -137,9 +137,19 @@ bindsym $mod+Shift+u		exec --no-startup-id ~/.config/i3/resize down
 bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize up
 bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize right
 
-# drop down terminal/calculator
-bindsym $mod+u			exec --no-startup-id ddspawn tmuxdd
-bindsym $mod+a			exec --no-startup-id ddspawn dropdowncalc -f mono:pixelsize=24
+## drop down windows
+for_window [instance="dropdown_*"] floating enable;
+for_window [instance="dropdown_*"] sticky enable;
+for_window [instance="dropdown_*"] move position 1920px 22px;
+for_window [instance="dropdown_*"] scratchpad show;
+for_window [instance="dropdown_*"] resize set height 300px;
+for_window [instance="dropdown_*"] resize set width 500;
+for_window [instance="dropdown_*"] move scratchpad;
+
+# drop down terminal
+bindsym $mod+u exec ~/.config/i3/terminal;
+# drop down calculator (python shell)
+bindsym $mod+a exec ~/.config/i3/python;
 
 # process information
 bindsym $mod+i 			exec $term -e htop

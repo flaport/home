@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Toggle floating dropdown_calculator terminal in i3, or start if non-existing.
+
+if xwininfo -tree -root | grep dropdown_calculator;
+then
+	echo "Window detected."
+    i3 [instance="dropdown_calculator"] scratchpad show;
+else
+	echo "Window not detected... spawning."
+    ($TERMINAL -n dropdown_calculator -f mono:pixelsize=18 -e python -i -B -q $1) & disown;
+    sleep 0.15;
+    i3 [instance="dropdown_calculator"] scratchpad show;
+fi
