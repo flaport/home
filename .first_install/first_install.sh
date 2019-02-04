@@ -1,18 +1,21 @@
+# go to home directory
+cd ~
+
+## Update Arch
 echo -e "\n\n\n\n"
 echo "Updating Arch Linux..."
 echo -e "\n\n\n\n"
 sleep 5
 
-## Update Arch
 sudo pacman -Syu --noconfirm
 
 
+## git
 echo -e "\n\n\n\n"
 echo "Installing git..."
 echo -e "\n\n\n\n"
 sleep 5
 
-## git
 # installation
 sudo pacman -S --noconfirm git
 # git default email adress
@@ -23,6 +26,7 @@ git config --global user.name flaport
 git config --global credential.helper "cache --timeout=43200"
 
 
+## Arch repositories
 echo -e "\n\n\n\n"
 echo "Installing packages from the Arch Repositories..."
 echo -e "\n\n\n\n"
@@ -32,7 +36,6 @@ sleep 5
 # installation
 sudo pacman -S --noconfirm neovim
 # aliasses
-sudo ln -sf /usr/bin/nvim /usr/bin/vi
 sudo ln -sf /usr/bin/nvim /usr/bin/vim
 
 ## i3: the main graphical user interface
@@ -66,6 +69,8 @@ sudo pacman -S --noconfirm xorg-xprop
 sudo pacman -S --noconfirm xcompmgr
 # for changing brightnes etc:
 sudo pacman -S --noconfirm xorg-xbacklight
+# get info on current active windows
+sudo pacman -S --noconfirm xorg-xdpyinfo
 
 ## build tools
 # makefiles
@@ -74,7 +79,14 @@ sudo pacman -S --noconfirm make
 ## fonts
 # monospace
 sudo pacman -S --noconfirm ttf-inconsolata
+# serif/sans-serif
+sudo pacman -S --noconfirm ttf-linux-libertine
+# browser font
+sudo pacman -S --noconfirm ttf-ubuntu-font-family
 
+## security
+# gnupg
+sudo pacman -S --noconfirm gnupg
 
 ## ranger: terminal file browser
 sudo pacman -S --noconfirm ranger
@@ -130,6 +142,8 @@ sudo pacman -S --noconfirm highlight
 # mediainfo: show audio and video information in terminal
 sudo pacman -S --noconfirm mediainfo
 
+## process information
+sudo pacman -S --noconfirm htop
 
 ## archives
 # atool gives information about archives
@@ -154,6 +168,12 @@ sudo pacman -S --noconfirm zathura-djvu
 ## graphics card:
 # nvidia: nvidia driver
 sudo pacman -S --noconfirm nvidia
+
+## browsers
+# qutebrowser
+sudo pacman -S --noconfirm qutebrowser
+sudo pacman -S --noconfirm chromium
+sudo pacman -S --noconfirm firefox
 
 echo -e "\n\n\n\n"
 echo "Installing YAY..."
@@ -182,12 +202,16 @@ yay -S --noconfirm urlscan
 ## drive and file system access
 yay -S --noconfirm simple-mtpfs
 
+## Fonts
+yay -S --noconfirm ttf-emojione
+yay -S --noconfirm ttf-symbola
 
 echo -e "\n\n\n\n"
-echo "Installing Suckless Terminal..."
+echo "Installing Packages from GitHub"
 echo -e "\n\n\n\n"
 sleep 5
 
+# suckless terminal of Luke Smith
 git clone http://github.com/lukesmithxyz/st.git
 cd st
 make
@@ -195,7 +219,15 @@ sudo make install
 cd ..
 rm -rf st
 
+# redating git commands
+git clone http://github.com/potatolabs/git-redate .git-redate
 
+echo -e "\n\n\n\n"
+echo "Installing Miniconda"
+echo -e "\n\n\n\n"
+sleep 5
 
-
-
+cd ~
+curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output miniconda.sh
+sh miniconda.sh -b -p $HOME/.anaconda
+rm miniconda.sh
