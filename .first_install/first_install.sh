@@ -76,6 +76,10 @@ sudo pacman -S --noconfirm xorg-xdpyinfo
 # makefiles
 sudo pacman -S --noconfirm make
 
+## archiving tools
+# rsync
+sudo pacman -S --noconfirm rsync
+
 ## toolbar
 # battery information
 sudo pacman -S --noconfirm acpi
@@ -133,6 +137,8 @@ sudo pacman -S --noconfirm networkmanager
 sudo systemctl enable NetworkManager
 
 ## terminal
+# search tool (grep alternative)
+sudo pacman -S --noconfirm ack
 # fuzzy finder tool
 sudo pacman -S --noconfirm fzf
 # multiple terminals in one
@@ -231,11 +237,36 @@ rm -rf st
 git clone http://github.com/potatolabs/git-redate .git-redate
 
 echo -e "\n\n\n\n"
-echo "Installing Miniconda"
+echo "Python packages"
 echo -e "\n\n\n\n"
 sleep 5
 
+# install pip for system python
+sudo pacman -S --noconfirm python-pip
+sudo pacman -S --noconfirm python2-pip
+
+# install neovim integration for system python
+sudo python2 -m pip install neovim
+sudo python3 -m pip install neovim
+
+# install anaconda python
 cd ~
 curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output miniconda.sh
 sh miniconda.sh -b -p $HOME/.anaconda
 rm miniconda.sh
+
+# install nodejs in our anaconda installation
+conda install -y nodejs
+
+# neovim anaconda python integration
+python -m pip install neovim
+npm install -g neovim
+
+# conda packages
+conda install -y numpy
+conda install -y pandas
+conda install -y scikit-learn
+conda install -y matplotlib
+
+# pip packages
+pip install grip

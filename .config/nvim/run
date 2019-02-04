@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+runfile() {
+    if xwininfo -tree -root | grep dropdown_vimrun;
+    then
+        echo "Window detected."
+        i3 [instance="dropdown_vimrun"] scratchpad show;
+    else
+        echo "Window not detected... spawning."
+        ($TERMINAL -n dropdown_vimrun -f mono:pixelsize=18 -e $@) & disown;
+        sleep 0.15;
+        i3 [instance="dropdown_vimrun"] scratchpad show;
+    fi
+}
+
+if [[ "$1" == *.py ]]; then
+    runfile python $1
+elif [[ "$1" == *.md ]]; then
+    runfile grip -b $1
+else
+    echo "not able to run $1"
+fi
