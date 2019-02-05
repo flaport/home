@@ -25,10 +25,20 @@ git config --global user.name flaport
 # cache git password for 12 hours
 git config --global credential.helper "cache --timeout=43200"
 
+echo -e "\n\n\n\n"
+echo "Installing YAY..."
+echo -e "\n\n\n\n"
+sleep 5
+cd ~
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si --noconfirm
+cd ~
+rm -rf yay
 
 ## Arch repositories
 echo -e "\n\n\n\n"
-echo "Installing packages from the Arch Repositories..."
+echo "Installing packages..."
 echo -e "\n\n\n\n"
 sleep 5
 
@@ -87,10 +97,20 @@ sudo pacman -S --noconfirm acpi
 ## fonts
 # monospace
 sudo pacman -S --noconfirm ttf-inconsolata
-# serif/sans-serif
+# serif
 sudo pacman -S --noconfirm ttf-linux-libertine
-# browser font
-sudo pacman -S --noconfirm ttf-ubuntu-font-family
+# sans-serif + chromium/firefox dependency
+sudo pacman -S --noconfirm ttf-droid
+# symbols
+yay -S --noconfirm ttf-symbola
+# disable bitmaps:
+sudo ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
+# enable sub-pixel RGB rendering
+sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
+# enable LCD-filtering
+sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
+# enable freetype subpixel hinting:
+echo 'export FREETYPE_PROPERTIES="truetype:interpreter-version=40"' | sudo tee --append /etc/profile.d/freetype2.sh
 
 ## security
 # gnupg
@@ -194,40 +214,15 @@ sudo pacman -S --noconfirm qutebrowser
 sudo pacman -S --noconfirm chromium
 sudo pacman -S --noconfirm firefox
 
-echo -e "\n\n\n\n"
-echo "Installing YAY..."
-echo -e "\n\n\n\n"
-sleep 5
-cd ~
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si --noconfirm
-cd ~
-rm -rf yay
-
-echo -e "\n\n\n\n"
-echo "Installing packages from the AUR..."
-echo -e "\n\n\n\n"
-sleep 5
 
 ## Tools
 # hide an inactive mouse
 yay -S --noconfirm unclutter-xfixes-git
 
 ## Terminal
-# make urls selectable
-yay -S --noconfirm urlscan
-
 ## drive and file system access
 yay -S --noconfirm simple-mtpfs
 
-## Fonts
-yay -S --noconfirm ttf-symbola
-
-echo -e "\n\n\n\n"
-echo "Installing Packages from GitHub"
-echo -e "\n\n\n\n"
-sleep 5
 
 # suckless terminal of Luke Smith
 git clone http://github.com/lukesmithxyz/st.git
