@@ -214,6 +214,20 @@ sudo pacman -S --noconfirm qutebrowser
 sudo pacman -S --noconfirm chromium
 sudo pacman -S --noconfirm firefox
 
+## other programs
+# code (open source build of vscode)
+sudo pacman -S --noconfirm code
+code --install-extension vscodevim.vim
+code --install-extension ban.spellright
+code --install-extension wholroyd.jinja
+code --install-extension ms-python.python
+code --install-extension codezombiech.gitignore
+code --install-extension james-yu.latex-workshop
+code --install-extension formulahendry.code-runner
+code --install-extension PKief.material-icon-theme
+code --install-extension shardulm94.trailing-spaces
+# yay -S --noconfirm klayout
+
 
 ## Tools
 # hide an inactive mouse
