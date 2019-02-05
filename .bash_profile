@@ -7,7 +7,6 @@
 export EDITOR="vim"
 export TERMINAL="st"
 export BROWSER="qutebrowser"
-export TRUEBROWSER="qutebrowser"
 export READER="zathura"
 
 # Start graphical server if i3 not already running.
