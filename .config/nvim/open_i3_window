@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+WINDOWNAME=$1
+
+if xwininfo -tree -root | grep $WINDOWNAME;
+then
+    echo "Window detected."
+    i3 [instance="$WINDOWNAME"] scratchpad show;
+else
+    echo "Window not detected... spawning."
+    ($TERMINAL -n $WINDOWNAME -e tmux attach-session -t $WINDOWNAME) & disown;
+    sleep 0.15;
+    i3 [instance="$WINDOWNAME"] scratchpad show;
+fi

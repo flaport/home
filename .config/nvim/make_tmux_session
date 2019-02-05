@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+SESSIONNAME=$1
+
+if tmux ls | grep $SESSIONNAME; then
+    echo "tmux already running.";
+else
+    echo "starting tmux...";
+    tmux new-session -s $SESSIONNAME -d;
+fi
+
+sleep 0.05;
+
