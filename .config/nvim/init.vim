@@ -116,6 +116,10 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 
+" easy cycling through code completion
+inoremap <C-j> <C-n>
+inoremap <C-k> <C-p>
+
 " indent when moving to the next line while writing code
 " set autoindent
 set noautoindent
