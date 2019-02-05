@@ -158,6 +158,8 @@ bindsym $mod+i 			exec $term -e htop
 # sticky toggle
 bindsym $mod+o			sticky toggle
 
+# matplotlib plot
+for_window [instance="matplotlib*"] floating enable;
 
 # menu
 bindsym $mod+d			exec --no-startup-id dmenu_run
