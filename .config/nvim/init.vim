@@ -63,7 +63,7 @@ endfunction
 au FileType tex nmap <Leader>f :call SyncTexForward()<CR>
 " synctex backward: Ctrl-Click
 " NOTE: for backward synctex to work, one has to run neovim-remote on port 9999:
-" nvr -servername 127.0.0.1:9999 filename.tex
+" nvr --servername 127.0.0.1:9999 filename.tex
 " And add the following two lines to zathurarc:
 " set synctex true
 " set synctex-editor-command "nvr --servername 127.0.0.1:9999 +%{line} %{input}"

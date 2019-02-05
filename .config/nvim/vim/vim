@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+# prepend the folder containing this python file to your path:
+# export PATH="$HOME/.config/nvim/vim:$PATH"
+
+
+from sys import argv
+from subprocess import call
+
+neovim = ["/usr/bin/nvim"]
+neovim_remote = ["/usr/bin/nvr", "--servername", "127.0.0.1:{port}"]
+
+try:
+    # if a port is specified, use neovim-remote
+    port = int(argv[1])
+    neovim_remote[-1] = neovim_remote[-1].format(port=port)
+    commands = neovim_remote + argv[2:]
+except ValueError:
+    # if a latex file is specified, use neovim-remote @ port 9999
+    if any(str(x).endswith('.tex') for x in argv):
+        port = 9999
+        neovim_remote[-1] = neovim_remote[-1].format(port=port)
+        commands = neovim_remote + argv[1:]
+    # else, just use neovim:
+    else:
+        commands = neovim + argv[1:]
+
+call(commands)
+

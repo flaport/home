@@ -31,9 +31,11 @@ export ICAROOT="/home/flori/.ica"
 export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1)"
 export PYTHONPATH="${PYTHONPATH//\~/$HOME}"
 
-
 ## Environment
 #-------------
+
+# custom vim command
+export PATH="$HOME/.config/nvim/vim:$PATH"
 
 # lumerical fdtd
 export PATH="/opt/lumerical/fdtd/bin:$PATH"
