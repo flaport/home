@@ -205,8 +205,20 @@ sudo pacman -S --noconfirm nvidia
 
 ## Sound
 # alsamixer
-sudo pacman -S alsa-utils alsa-plugins
+sudo pacman -S --noconfirm alsa-utils
+sudo pacman -S --noconfirm alsa-plugins
 
+## Latex
+# tex-live
+sudo pacman -S --noconfirm texlive-most
+sudo pacman -S --noconfirm texlive-lang
+# bibliographies
+sudo pacman -S --noconfirm biber
+# viewer with synctex support
+sudo pacman -S --noconfirm xdotool
+# sudo pacman -S --noconfirm evince
+# download evince synctex compatibility
+# curl http://dud.inf.tu-dresden.de/~ben/evince_synctex.tar.gz
 
 ## browsers
 # qutebrowser
@@ -268,18 +280,25 @@ curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --out
 sh miniconda.sh -b -p $HOME/.anaconda
 rm miniconda.sh
 
+# remove ld binary that causes trouble for cython:
+mv ~/.anaconda/compiler_compat/ld ~/.anaconda/compiler_compat/ld_disabled
+
 # install nodejs in our anaconda installation
 conda install -y nodejs
 
 # neovim anaconda python integration
-python -m pip install neovim
+pip install neovim
+pip install neovim-remote
 npm install -g neovim
 
 # conda packages
 conda install -y numpy
 conda install -y pandas
+conda install -u cython
 conda install -y scikit-learn
 conda install -y matplotlib
+conda install -y jupyterlab
 
 # pip packages
 pip install grip
+pip install ipdb

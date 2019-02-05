@@ -18,8 +18,8 @@ nnoremap <F2> :w<CR>:e ~/.config/nvim/init.vim<CR>
 inoremap <F2> <Esc>:w<CR>:e ~/.config/nvim/init.vim<CR>
 
 " execute / compile file
-nnoremap <F5> :w<CR>:!~/.config/nvim/run %<CR>
-inoremap <F5> <Esc>:w<CR>:!~/.config/nvim/run %<CR>
+nnoremap <F5> :w<CR>:silent !~/.config/nvim/run %<CR>
+inoremap <F5> <Esc>:w<CR>:silent !~/.config/nvim/run %<CR>
 
 " built in spell checker:
 " use zg to add a word to the dictionary
@@ -53,12 +53,31 @@ inoremap <C-c> <Esc>:qa!<CR>
 nnoremap <C-q> :wqa<CR>
 inoremap <C-q> <Esc>:wqa<CR>
 
+" LATEX
+" =====
+" synctex forward <Leader>f
+function! SyncTexForward()
+    let execstr = "silent !zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
+    exec execstr
+endfunction
+au FileType tex nmap <Leader>f :call SyncTexForward()<CR>
+" synctex backward: Ctrl-Click
+" NOTE: for backward synctex to work, one has to run neovim-remote on port 9999:
+" nvr -servername 127.0.0.1:9999 filename.tex
+" And add the following two lines to zathurarc:
+" set synctex true
+" set synctex-editor-command "nvr --servername 127.0.0.1:9999 +%{line} %{input}"
+
 
 " SETTINGS
 " ========
 
 " magic
 set magic
+
+" splits appear below/right
+set splitbelow
+set splitright
 
 " enable utf-8
 set encoding=utf-8
