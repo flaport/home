@@ -1,2 +1,2 @@
-echo set editing-mode vi
-echo set keymap vi-command
+set editing-mode vi
+set keymap vi-command
