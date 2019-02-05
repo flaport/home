@@ -4,15 +4,21 @@
 # export PATH="$HOME/.config/nvim/vim:$PATH"
 
 
-from sys import argv
+from sys import argv, exit
 from subprocess import call
 
 neovim = ["/usr/bin/nvim"]
 neovim_remote = ["/usr/bin/nvr", "--servername", "127.0.0.1:{port}"]
 
+if len(argv) == 1:
+    call(neovim)
+    exit()
+
 try:
     # if a port is specified, use neovim-remote
     port = int(argv[1])
+    if port < 1000: # quick way to create a nvr instance at a port > 10000
+        port += 10000
     neovim_remote[-1] = neovim_remote[-1].format(port=port)
     commands = neovim_remote + argv[2:]
 except ValueError:

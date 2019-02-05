@@ -273,6 +273,7 @@ sudo pacman -S --noconfirm python2-pip
 # install neovim integration for system python
 sudo python2 -m pip install neovim
 sudo python3 -m pip install neovim
+sudo python3 -m pip install neovim-remote
 
 # install anaconda python
 cd ~
@@ -288,7 +289,6 @@ conda install -y nodejs
 
 # neovim anaconda python integration
 pip install neovim
-pip install neovim-remote
 npm install -g neovim
 
 # conda packages
