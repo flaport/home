@@ -4,13 +4,15 @@
 
 COMMAND="grip"
 FILENAME=$1
+PORT=7777
 
 
 ~/.config/nvim/make_tmux_session $COMMAND
 
 tmux send-keys -t $COMMAND C-c Enter
 echo "previewing markdown... "
-tmux send-keys -t $COMMAND cd Space $PWD Enter $COMMAND Space -b Space $FILENAME Enter;
+tmux send-keys -t $COMMAND cd Space $PWD Enter $COMMAND Space $FILENAME Space $PORT Enter;
+chromium --app="http://localhost:$PORT" & disown
 
 #~/.config/nvim/open_i3_window $COMMAND
 
