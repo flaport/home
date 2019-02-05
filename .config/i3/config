@@ -5,7 +5,8 @@ set $mod Mod4
 exec feh --bg-scale ~/.config/wallpaper.png
 
 # display settings
-exec xrandr --output DVI-D-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI-0 --off --output DP-3 --off --output DP-2 --off --output DP-1 --off --output DP-0 --off
+# export your desired screenlayout with `arandr`
+exec ~/.config/screenlayout/default.sh
 
 # window definitions
 gaps inner 15
