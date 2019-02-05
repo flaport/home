@@ -44,6 +44,17 @@ samedir() {
     fi
 }
 
+mpl(){
+if [[ "$1" =~ "list" ]]; then
+    CWD=$PWD;
+    cd ~/.config/matplotlib/stylelib ;
+    ls *.mplstyle | sed -e 's/\..*$//';
+    cd $CWD;
+else
+    cp ~/.config/matplotlib/stylelib/"$1".mplstyle ~/.config/matplotlib/matplotlibrc ;
+fi
+}
+
 # lumerical fdtd
 export PATH="/opt/lumerical/fdtd/bin:$PATH"
 fdtd() {
