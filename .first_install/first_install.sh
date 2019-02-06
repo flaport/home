@@ -121,7 +121,10 @@ sudo pacman -S --noconfirm openvpn
 sudo pacman -S --noconfirm openssh
 
 ## ranger: terminal file browser
+# the application itself
 sudo pacman -S --noconfirm ranger
+# image previews in terminal
+sudo pacman -S --noconfirm w3m
 
 ## arandr: for screen adjustment
 sudo pacman -S --noconfirm arandr
