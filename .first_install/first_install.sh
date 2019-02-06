@@ -158,6 +158,10 @@ sudo pacman -S --noconfirm maim
 sudo pacman -S --noconfirm ffmpeg
 # youtube-dl: download youtube videos
 sudo pacman -S --noconfirm youtube-dl
+# youtube-viewer
+sudo pacman -S --noconfirm youtube-viewer
+# spotify
+sudo pacman -S --noconfirm spotify
 
 ## network tools
 sudo pacman -S --noconfirm networkmanager
@@ -228,6 +232,16 @@ sudo pacman -S --noconfirm xdotool
 sudo pacman -S --noconfirm qutebrowser
 sudo pacman -S --noconfirm chromium
 sudo pacman -S --noconfirm firefox
+
+## Artistic
+sudo pacman -S --noconfirm gimp
+sudo pacman -S --noconfirm inkscape
+
+## Office
+sudo pacman -S --noconfirm libreoffice
+sudo pacman -S --noconfirm remmina
+sudo pacman -S --noconfirm sqlitebrowser
+
 
 ## other programs
 # code (open source build of vscode)
@@ -300,7 +314,12 @@ conda install -y pandas
 conda install -u cython
 conda install -y scikit-learn
 conda install -y matplotlib
-conda install -y jupyterlab
+conda install -y jupyter
+
+# these need to be installed with conda-forge to make sure 
+# nodejs is not downgraded
+conda install -y jupyterlab -c conda-forge
+conda install -y jupyterhub -c conda-forge
 
 # pip packages
 pip install grip
