@@ -41,12 +41,15 @@ export PATH="$HOME/.config/nvim/vim:$PATH"
 export PATH="/opt/lumerical/fdtd/bin:$PATH"
 
 # git-redate
-export PATH="/home/flori/.git-redate:$PATH"
+export PATH="$HOME/.git-redate:$PATH"
 
 # Anaconda python
 export PATH="$HOME/.anaconda/bin:$PATH"
 export CC="gcc"
 export CXX="g++"
+
+# custom git commands (powered by vim and tmux)
+export PATH="$HOME/.config/nvim/git:$PATH"
 
 ## Aliases
 #---------
