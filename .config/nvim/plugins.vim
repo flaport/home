@@ -20,11 +20,12 @@ endif
 
 " LOAD PLUGINS
 " ============
-" Run :PlugInstall to install extra packages
+" Run :PlugInstall to install extra packages after adding them to the list below
 " Run :UpdateRemotePlugins to update dependencies
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
+Plug 'tpope/vim-fugitive' " git support
+Plug 'tpope/vim-repeat' " better repeating of last command
 Plug 'tpope/vim-surround' " Surround word with character
-Plug 'Townk/vim-autoclose' " Automatically close parenthesis, etc
 Plug 'junegunn/fzf.vim' " fuzzy file search (needs fzf installed)
 Plug 'Shougo/context_filetype.vim' " Completion from other opened files
 Plug 'Shougo/deoplete.nvim' " Async autocompletion

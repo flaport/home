@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# run a file in a tmux session named after the command to run it
+
+
+COMMAND="ipython"
+FILENAME=$1
+
+CONTENT=$(xclip -selection clipboard -o)
+CONTENT=${CONTENT//$'\n'/" Enter "}
+CONTENT=${CONTENT// /" Space "}
+CONTENT=${CONTENT//" Space Enter Space "/" Enter "}
+
+echo $CONTENT
+
+
+
+~/.config/nvim/make_tmux_session $COMMAND
+
+echo "running python selection..."
+tmux send-keys -t $COMMAND if Space 1: Enter $CONTENT Enter Enter
+
+~/.config/nvim/open_i3_window $COMMAND
+

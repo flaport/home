@@ -19,7 +19,9 @@ inoremap <F2> <Esc>:w<CR>:e ~/.config/nvim/init.vim<CR>
 
 " execute / compile file
 nnoremap <F5> :w<CR>:silent !~/.config/nvim/run %<CR>
-inoremap <F5> <Esc>:w<CR>:silent !~/.config/nvim/run %<CR>
+inoremap <F5> <Esc><F5>
+vnoremap <F5> "+y:w<CR>:!~/.config/nvim/run_selection %<CR>
+"<Esc>:w<CR>:!~/.config/nvim/run %<CR>
 
 " built in spell checker:
 " use zg to add a word to the dictionary

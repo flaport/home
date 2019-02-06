@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [[ "$1" == *.py ]]; then
+    ~/.config/nvim/run_python_selection $1;
+else
+    echo "not able to run selection for $1";
+fi
