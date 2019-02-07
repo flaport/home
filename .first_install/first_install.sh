@@ -269,10 +269,11 @@ yay -S --noconfirm simple-mtpfs
 
 # suckless terminal of Luke Smith
 git clone http://github.com/lukesmithxyz/st.git
+cd ~
 cd st
 make
 sudo make install
-cd ..
+cd ~
 rm -rf st
 
 # redating git commands
@@ -320,7 +321,27 @@ conda install -y jupyter
 # nodejs is not downgraded
 conda install -y jupyterlab -c conda-forge
 conda install -y jupyterhub -c conda-forge
+conda install -y ipywidgets
+conda install -y ipykernel
+
+# jupyterlab extensions
+jupyter labextension install jupyterlab_vim
+jupyter labextension install @jupyterlab/plotly-extension
+jupyter labextension install @jupyterlab/toc
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+jupyter labextension install https://github.com/lckr/jupyterlab_variableinspector
+jupyter labextension install @jupyterlab/latex
+pip install jupyterlab_latex
+jupyter serverextension enable --py jupyterlab_latex
+jupyter labextension install @jupyterlab/git
+pip install jupyterlab_git
+jupyter serverextension enable --py jupyterlab_git
+jupyter labextension install @ryantam626/jupyterlab_code_formatter
+pip install jupyterlab_code_formatter
+jupyter serverextension enable --py jupyterlab_code_formatter
 
 # pip packages
 pip install grip
 pip install ipdb
+pip install black
+pip install octave_kernel
