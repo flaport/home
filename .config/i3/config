@@ -4,6 +4,9 @@ set $mod Mod4
 # wallpaper
 exec feh --bg-scale ~/.config/wallpaper.png
 
+# set font
+font pango:Droid Sans 11
+
 # display settings
 # export your desired screenlayout with `arandr`
 exec ~/.config/screenlayout/default.sh
@@ -14,7 +17,7 @@ gaps outer 15
 for_window [class="^.*"] border pixel 3
 
 ## terminal
-set $term --no-startup-id $TERMINAL
+set $term --no-startup-id $TERMINAL -f mono:pixelsize=18
 
 # notifications
 exec --no-startup-id dunst
@@ -55,17 +58,17 @@ client.focused_inactive	$transparent	$blue		$white		$darkblue		$darkblack
 client.urgent		$darkred	$darkred	$black		$darkred		$darkred
 client.background $black
 
+
 # status bar
 bar {
-	font pango:mono 10
 	colors {
-			background $darkblack
-			statusline $yellow
-			separator $cyan
-			focused_workspace  $blue $darkblue $darkblack
-        		active_workspace   $blue $blue $darkwhite
-      			inactive_workspace $darkblack $darkblack $white
-        		urgent_workspace   $darkblack $darkblack $white
+			background $yellow
+			statusline $green
+			separator $magenta
+			focused_workspace  $green $green $yellow
+        		active_workspace   $green $green $yellow
+      			inactive_workspace $yellow $yellow $green
+        		urgent_workspace   $red $red $yellow
 		}
 	status_command i3blocks
 	position top
@@ -165,7 +168,7 @@ bindsym $mod+o			sticky toggle
 for_window [instance="matplotlib*"] floating enable;
 
 # menu
-bindsym $mod+d			exec --no-startup-id dmenu_run
+bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$yellow' -nf '$green' -sb '$green' -sf '$yellow' -fn 'Droid Sans-12'
 
 # gimp
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
