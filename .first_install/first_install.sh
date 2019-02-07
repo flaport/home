@@ -168,6 +168,7 @@ sudo pacman -S --noconfirm spotify
 ## network tools
 sudo pacman -S --noconfirm networkmanager
 sudo systemctl enable NetworkManager
+sudo pacman -S --noconfirm network-manger-applet
 
 ## terminal
 # search tool (grep alternative)
@@ -184,6 +185,8 @@ sudo pacman -S --noconfirm poppler
 sudo pacman -S --noconfirm highlight
 # mediainfo: show audio and video information in terminal
 sudo pacman -S --noconfirm mediainfo
+# audo server
+sudo pacman -S --noconfirm pulseaudio
 
 ## process information
 sudo pacman -S --noconfirm htop

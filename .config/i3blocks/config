@@ -27,6 +27,10 @@ command=~/.config/i3blocks/$BLOCK_NAME
 separator_block_width=15
 markup=none
 
+# spacer
+# [spacer]
+# interval=once
+
 # volume indicator
 [volume]
 label=🔊
@@ -59,7 +63,7 @@ interval=60
 label=🕒
 interval=60
 
-# date and time
+# spacer
 [spacer]
 interval=once
 
