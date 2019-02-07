@@ -302,6 +302,9 @@ rm miniconda.sh
 # remove ld binary that causes trouble for cython:
 mv ~/.anaconda/compiler_compat/ld ~/.anaconda/compiler_compat/ld_disabled
 
+# add anaconda to path
+export $PATH="$HOME/.anaconda/bin:$PATH"
+
 # install nodejs in our anaconda installation
 conda install -y nodejs
 
@@ -329,7 +332,7 @@ jupyter labextension install jupyterlab_vim
 jupyter labextension install @jupyterlab/plotly-extension
 jupyter labextension install @jupyterlab/toc
 jupyter labextension install @jupyter-widgets/jupyterlab-manager
-jupyter labextension install https://github.com/lckr/jupyterlab_variableinspector
+jupyter labextension install https://github.com/lckr/jupyterlab-variableinspector
 jupyter labextension install @jupyterlab/latex
 pip install jupyterlab_latex
 jupyter serverextension enable --py jupyterlab_latex
