@@ -65,6 +65,8 @@ sudo pacman -S --noconfirm feh
 sudo pacman -S --noconfirm xterm
 # sockets
 sudo pacman -S --noconfirm socat
+# dmenu
+sudo pacman -S --noconfirm dmenu
 
 ## xorg: the graphical server
 # the graphical server
@@ -208,7 +210,8 @@ sudo pacman -S --noconfirm zathura-djvu
 
 ## graphics card:
 # nvidia: nvidia driver
-sudo pacman -S --noconfirm nvidia
+# this is disabled by default, as it gives troubles on devices without nvidia gpu
+# sudo pacman -S --noconfirm nvidia
 
 ## Sound
 # alsamixer
@@ -223,9 +226,6 @@ sudo pacman -S --noconfirm texlive-lang
 sudo pacman -S --noconfirm biber
 # viewer with synctex support
 sudo pacman -S --noconfirm xdotool
-# sudo pacman -S --noconfirm evince
-# download evince synctex compatibility
-# curl http://dud.inf.tu-dresden.de/~ben/evince_synctex.tar.gz
 
 ## browsers
 # qutebrowser
