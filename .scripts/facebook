@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+chromium --app=http://facebook.com &>/dev/null &disown

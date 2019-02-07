@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+chromium --app=http://youtube.com &>/dev/null &disown

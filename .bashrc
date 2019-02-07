@@ -24,32 +24,28 @@ alias ccat="highlight --out-format=ansi"
 # fuzzy file finder (fzf command)
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# Citrix ICA
-export ICAROOT="/home/flori/.ica"
-
 # Python Path (get the pythonpath from ~/.pythonpath)
 export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1)"
 export PYTHONPATH="${PYTHONPATH//\~/$HOME}"
 
-## Environment
-#-------------
-
-# custom vim command
-export PATH="$HOME/.config/nvim/vim:$PATH"
+## Path
+#------
 
 # lumerical fdtd
 export PATH="/opt/lumerical/fdtd/bin:$PATH"
 
-# git-redate
-export PATH="$HOME/.git-redate:$PATH"
-
 # Anaconda python
 export PATH="$HOME/.anaconda/bin:$PATH"
-export CC="gcc"
-export CXX="g++"
+
+# custom scripts
+export PATH="$HOME/.scripts:$PATH"
+
+# custom vim command
+export PATH="$HOME/.config/nvim/vim:$PATH"
 
 # custom git commands (powered by vim and tmux)
 export PATH="$HOME/.config/nvim/git:$PATH"
+
 
 ## Aliases
 #---------
@@ -58,31 +54,8 @@ export PATH="$HOME/.config/nvim/git:$PATH"
 alias r='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
 
-# logout alias
+# logout
 alias logout='i3-msg exit'
-
-# chromium: open as app
-ca() { chromium --app=http://"$@" &>/dev/null &disown ;}
-
-# chromium apps
-alias line="chromium --app=chrome-extension://ophjlpahpchlmihnnnihgmmeilfjmjjc/index.html &>/dev/null &disown"
-alias whatsapp="chromium --app=http://web.whatsapp.com &>/dev/null &disown"
-alias messenger="chromium --app=http://messenger.com &>/dev/null &disown"
-alias youtube="ca youtube.com"
-alias photos="ca photos.google.com"
-alias docs="ca docs.google.com"
-alias sheets="ca sheets.google.com"
-alias slides="ca slides.google.com"
-alias drive="ca drive.google.com"
-alias lab="ca localhost:8000"
-alias facebook="ca facebook.com"
-alias gmail="ca gmail.com"
-alias gmail0="ca mail.google.com/mail/u/0/"
-alias gmail1="ca mail.google.com/mail/u/1/"
-alias gmail2="ca mail.google.com/mail/u/2/"
-alias maps="ca maps.google.com"
-alias overleaf="ca overleaf.com"
-alias calendar="ca calendar.google.com"
 
 # internet
 alias ytd="youtube-dl --add-metadata -ic" # Download video link
@@ -97,34 +70,4 @@ alias starwars="telnet towel.blinkenlights.nl"
 
 # open and disown with default program:
 o() { xdg-open "$1" &>/dev/null &disown ;}
-
-# openvpn (opens in a tmux session)
-openvpn() {
-    ~/.config/openvpn/openvpn
-}
-
-# lumerical fdtd
-fdtd() {
-    /opt/lumerical/fdtd/bin/fdtd-solutions $1 &>/dev/null &disown ;
-}
-
-# klayout
-klayout() { /usr/bin/klayout -e "$@" &>/dev/null &disown ;}
-
-# change matplotlib style globally
-# NOTE: for this to work, you need to have matplotlib
-# stylesheets in ~/.config/matplotlib/stylelib/
-mpl(){
-if [[ "$1" =~ "list" ]]; then
-    CWD=$PWD;
-    cd ~/.config/matplotlib/stylelib ;
-    ls *.mplstyle | sed -e 's/\..*$//';
-    cd $CWD;
-else
-    cp ~/.config/matplotlib/stylelib/"$1".mplstyle ~/.config/matplotlib/matplotlibrc ;
-fi
-}
-
-# clean git history
-git-clean-history(){ echo git filter-branch --force --index-filter \'git rm -rf --cached --ignore-unmatch $1\' --prune-empty --tag-name-filter cat -- --all ;}
 

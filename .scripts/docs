@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+chromium --app=http://docs.google.com &>/dev/null &disown

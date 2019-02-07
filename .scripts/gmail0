@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+chromium --app=http://mail.google.com/mail/u/0/ &>/dev/null &disown

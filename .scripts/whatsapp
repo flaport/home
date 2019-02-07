@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+chromium --app=http://web.whatsapp.com &>/dev/null &disown

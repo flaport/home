@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+chromium --app=http://photos.google.com &>/dev/null &disown

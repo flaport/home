@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+chromium --app=http://localhost:8000 &>/dev/null &disown

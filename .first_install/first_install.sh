@@ -279,9 +279,6 @@ sudo make install
 cd ~
 rm -rf st
 
-# redating git commands
-git clone http://github.com/potatolabs/git-redate .git-redate
-
 echo -e "\n\n\n\n"
 echo "Python packages"
 echo -e "\n\n\n\n"
