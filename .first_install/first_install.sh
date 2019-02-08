@@ -53,8 +53,10 @@ sudo ln -sf /usr/bin/nvim /usr/bin/vim
 sudo pacman -S --noconfirm i3-gaps
 # i3-blocks: status bar for i3
 sudo pacman -S --noconfirm i3blocks
-# i3-block: screen lock for i3
+# i3-lock: screen lock for i3
 sudo pacman -S --noconfirm i3lock
+# autolock: lock computer automatically
+sudo pacman -S --noconfirm xautolock
 # xdotool: allows for more complicated window manipulation commands
 sudo pacman -S --noconfirm xdotool
 # unicode characters
@@ -130,6 +132,9 @@ sudo pacman -S --noconfirm w3m
 
 ## arandr: for screen adjustment
 sudo pacman -S --noconfirm arandr
+
+## better bash
+sudo pacman -S --noconfirm fish
 
 ## drive and file system access
 # dosfstools: support for dos (windows) - like filesystems
@@ -269,6 +274,9 @@ yay -S --noconfirm unclutter-xfixes-git
 ## drive and file system access
 yay -S --noconfirm simple-mtpfs
 
+# utility to create bootable usbs
+yay install --noconfirm woeusb
+
 
 # suckless terminal of Luke Smith
 git clone http://github.com/lukesmithxyz/st.git
@@ -348,3 +356,4 @@ pip install grip
 pip install ipdb
 pip install black
 pip install octave_kernel
+pip install ueberzug
