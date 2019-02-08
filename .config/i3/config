@@ -174,7 +174,7 @@ bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
 
 # lock screen
-bindsym $mod+x			exec --no-startup-id lockscreen
+bindsym $mod+x			exec --no-startup-id i3lock -f -t -c 222222
 
 # music/sound control
 exec pulseaudio
