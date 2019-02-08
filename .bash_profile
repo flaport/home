@@ -2,8 +2,7 @@
 # ~/.bash_profile
 #
 
-[[ -f ~/.bashrc ]] && . ~/.bashrc
-
+# Environment variables
 export CC="gcc"
 export CXX="g++"
 export EDITOR="vim"
@@ -17,3 +16,5 @@ if [ "$(tty)" = "/dev/tty1" ]; then
 	pgrep -x i3 || exec startx
 fi
 
+# Source .bashrc
+[[ -f ~/.bashrc ]] && . ~/.bashrc

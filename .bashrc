@@ -71,3 +71,6 @@ alias starwars="telnet towel.blinkenlights.nl"
 # open and disown with default program:
 o() { xdg-open "$1" &>/dev/null &disown ;}
 
+## Execute fish
+#--------------
+exec fish
