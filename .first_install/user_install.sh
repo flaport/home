@@ -9,6 +9,8 @@ mv ~/.anaconda/compiler_compat/ld ~/.anaconda/compiler_compat/ld_disabled
 
 # add anaconda to path
 export $PATH="$HOME/.anaconda/bin:$PATH"
+conda init bash
+conda init fish
 
 # install nodejs in our anaconda installation
 conda install -y nodejs
