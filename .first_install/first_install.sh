@@ -176,7 +176,8 @@ sudo pacman -S --noconfirm spotify
 ## network tools
 sudo pacman -S --noconfirm networkmanager
 sudo systemctl enable NetworkManager
-sudo pacman -S --noconfirm network-manger-applet
+sudo pacman -S --noconfirm network-manager-applet
+sudo pacman -S --noconfirm network-manager-openvpn
 
 ## terminal
 # search tool (grep alternative)
