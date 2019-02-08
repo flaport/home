@@ -39,8 +39,8 @@ set_from_resource $darkred	color1  #000000
 set_from_resource $red		color9  #000000
 set_from_resource $darkgreen	color2  #000000
 set_from_resource $green	color10 #000000
-set_from_resource $darkyellow	color3  #000000
 set_from_resource $yellow	color11 #000000
+set_from_resource $lightyellow	color3  #000000
 set_from_resource $darkblue	color4  #000000
 set_from_resource $blue		color12 #000000
 set_from_resource $darkmagenta	color5  #000000
@@ -62,13 +62,13 @@ client.background $black
 # status bar
 bar {
 	colors {
-			background $yellow
+			background $lightyellow
 			statusline $green
 			separator $magenta
-			focused_workspace  $green $green $yellow
-        		active_workspace   $green $green $yellow
-      			inactive_workspace $yellow $yellow $green
-        		urgent_workspace   $red $red $yellow
+			focused_workspace  $green $green $lightyellow
+        		active_workspace   $green $green $lightyellow
+      			inactive_workspace $lightyellow $lightyellow $green
+        		urgent_workspace   $red $red $lightyellow
 		}
 	status_command i3blocks
 	position top
@@ -168,7 +168,7 @@ bindsym $mod+o			sticky toggle
 for_window [instance="matplotlib*"] floating enable;
 
 # menu
-bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$yellow' -nf '$green' -sb '$green' -sf '$yellow' -fn 'Droid Sans-12'
+bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$lightyellow' -nf '$green' -sb '$green' -sf '$lightyellow' -fn 'Droid Sans-12'
 
 # gimp
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
