@@ -86,6 +86,9 @@ sudo pacman -S --noconfirm xorg-xbacklight
 # get info on current active windows
 sudo pacman -S --noconfirm xorg-xdpyinfo
 
+## mount tools
+sudo pacman -S --noconfirm cifs-utils
+
 ## build tools
 # makefiles
 sudo pacman -S --noconfirm make
