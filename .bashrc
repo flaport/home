@@ -35,7 +35,8 @@ export PYTHONPATH="${PYTHONPATH//\~/$HOME}"
 export PATH="/opt/lumerical/fdtd/bin:$PATH"
 
 # Anaconda python
-# export PATH="$HOME/.anaconda/bin:$PATH"  # commented out by conda initialize
+export PATH="$HOME/.anaconda/bin:$PATH"
+source "$HOME/.anaconda/etc/profile.d/conda.sh" # to enable conda activate
 
 # custom scripts
 export PATH="$HOME/.scripts:$PATH"
@@ -70,21 +71,6 @@ alias starwars="telnet towel.blinkenlights.nl"
 
 # open and disown with default program:
 o() { xdg-open "$1" &>/dev/null &disown ;}
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/flaport/.anaconda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/flaport/.anaconda/etc/profile.d/conda.sh" ]; then
-        . "/home/flaport/.anaconda/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/flaport/.anaconda/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 ## Execute fish
 #--------------

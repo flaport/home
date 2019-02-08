@@ -9,8 +9,6 @@ mv ~/.anaconda/compiler_compat/ld ~/.anaconda/compiler_compat/ld_disabled
 
 # add anaconda to path
 export $PATH="$HOME/.anaconda/bin:$PATH"
-conda init bash
-conda init fish
 
 # install nodejs in our anaconda installation
 conda install -y nodejs
@@ -22,7 +20,8 @@ npm install -g neovim
 # conda packages
 conda install -y numpy
 conda install -y pandas
-conda install -u cython
+conda install -y cython
+conda install -y pillow
 conda install -y scikit-learn
 conda install -y matplotlib
 conda install -y jupyter
@@ -50,9 +49,12 @@ jupyter labextension install @ryantam626/jupyterlab_code_formatter
 pip install jupyterlab_code_formatter
 jupyter serverextension enable --py jupyterlab_code_formatter
 
+# jupyter kernels
+conda install r-irkernel -c r
+conda install octave_kernel -c conda-forge
+
 # pip packages
 pip install grip
 pip install ipdb
 pip install black
-pip install octave_kernel
 pip install ueberzug
