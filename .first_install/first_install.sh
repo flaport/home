@@ -307,3 +307,6 @@ sudo python3 -m pip install neovim-remote
 
 ## install programs for the user:
 source ~/.first_install/user_install.sh
+
+## install jupyterhub service
+source ~/.jupyter/jupyterhub_generate_service.sh
