@@ -1,6 +1,9 @@
 # go to home directory
 cd ~
 
+# updating time and date
+sudo timedatectl set-local-rtc 1
+
 ## Update Arch
 echo -e "\n\n\n\n"
 echo "Updating Arch Linux..."
