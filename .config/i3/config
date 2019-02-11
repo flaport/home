@@ -2,14 +2,14 @@
 set $mod Mod4
 
 # wallpaper
-exec feh --bg-scale ~/.config/wallpaper.png
+exec --no-startup-id feh --bg-scale ~/.config/wallpaper.png
 
 # set font
 font pango:Droid Sans 11
 
 # display settings
 # export your desired screenlayout with `arandr`
-exec ~/.config/screenlayout/default.sh
+exec --no-startup-id ~/.config/screenlayout/default.sh
 
 # window definitions
 gaps inner 15
@@ -110,9 +110,6 @@ bindsym $mod+Right 		focus right
 bindsym $mod+Shift+l		move right 30
 bindsym $mod+Shift+Right 	move right
 
-# menu
-# bindsym $mod+grave		exec --no-startup-id dmenuunicode
-
 # kill a window
 bindsym $mod+q			kill
 bindsym $mod+Shift+q    kill
@@ -124,7 +121,7 @@ bindsym $mod+w			exec --no-startup-id $BROWSER
 bindsym $mod+Shift+w		move workspace to output left
 
 # ranger
-bindsym $mod+r 			exec $term -e ranger
+bindsym $mod+r 			exec --no-startup-id $term -e ranger
 
 # split below/right
 bindsym $mod+t			split toggle
@@ -154,12 +151,12 @@ for_window [instance="dropdown_*"] resize set width 500;
 for_window [instance="dropdown_*"] move scratchpad;
 
 # drop down terminal
-bindsym $mod+u exec ~/.config/i3/terminal;
+bindsym $mod+u exec --no-startup-id ~/.config/i3/terminal;
 # drop down calculator (python shell)
-bindsym $mod+a exec ~/.config/i3/python;
+bindsym $mod+a exec --no-startup-id ~/.config/i3/python;
 
 # process information
-bindsym $mod+i 			exec $term -e htop
+bindsym $mod+i 			exec --no-startup-id $term -e htop
 
 # sticky toggle
 bindsym $mod+o			sticky toggle
@@ -175,11 +172,6 @@ bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
 
 # lock screen
 bindsym $mod+x			exec --no-startup-id i3lock -f -t -c 222222
-
-# music/sound control
-exec pulseaudio
-bindsym $mod+v			exec $term -e ncmpcpp -s visualizer
-bindsym $mod+Shift+v		exec --no-startup-id projectM-pulseaudio
 
 # show status bar
 bindsym $mod+b			bar mode toggle
@@ -233,17 +225,16 @@ bindsym $mod+Prior		workspace prev
 bindsym $mod+Shift+Prior	move container to workspace prev
 bindsym $mod+Next		workspace next
 bindsym $mod+Shift+Next		move container to workspace next
-bindsym $mod+Tab		workspace back_and_forth
+bindsym $mod+Tab		workspace next
 bindsym $mod+XF86Back		workspace prev
 bindsym $mod+Shift+XF86Back	move container to workspace prev
 bindsym $mod+XF86Forward	workspace next
 bindsym $mod+Shift+XF86Forward	move container to workspace next
 bindsym $mod+semicolon		workspace next
-bindsym $mod+apostrophe		split horizontal ;; exec $term
-bindsym $mod+slash		split vertical ;; exec $term
+bindsym $mod+apostrophe		split horizontal ;; exec --no-startup-id $term
+bindsym $mod+slash		split vertical ;; exec --no-startup-id $term
 bindsym $mod+Shift+slash	kill
 bindsym $mod+backslash		workspace back_and_forth
-
 
 # application dependent workspaces
 for_window [class="Spotify"] move to workspace $ws8
@@ -253,7 +244,6 @@ for_window [window_role="GtkFileChooserDialog"] resize shrink height 10 px
 for_window [title="Default - Wine desktop"] floating enable
 
 # Function Buttons
-bindsym $mod+F1		exec --no-startup-id groff -kejpt -mom ~/.readme.mom -Tpdf | zathura -
 bindsym $mod+F2		restart
 
 # screenshots
@@ -261,10 +251,15 @@ bindsym Print 			exec --no-startup-id scrot
 bindsym Shift+Print 		exec --no-startup-id scrot -u
 
 # media control
-bindsym $mod+m			exec --no-startup-id amixer -q sset Master 100%-
-bindsym $mod+Shift+m		exec --no-startup-id amixer -q sset Master 70%+
-bindsym $mod+plus		exec --no-startup-id amixer -q sset Master 5%+
-bindsym $mod+Shift+plus		exec --no-startup-id amixer -q sset Master 15%+
-bindsym $mod+minus 		exec --no-startup-id amixer -q sset Master 5%-
-bindsym $mod+Shift+minus	exec --no-startup-id amixer -q sset Master 15%-
+# first make sure all audio channels are unmuted:
+exec --no-startup-id amixer -q -c 1 sset Master unmute
+exec --no-startup-id amixer -q -c 1 sset Speaker unmute
+exec --no-startup-id amixer -q -c 1 sset Headphone unmute
+# then these controls will always work:
+bindsym $mod+m			exec --no-startup-id amixer -q -c 1 sset Master toggle && amixer -q -c 1 sset Speaker unmute && amixer -q -c 1 sset Headphone unmute
+bindsym $mod+Shift+m		exec --no-startup-id amixer -q -c 1 sset Master 70%+
+bindsym $mod+plus		exec --no-startup-id amixer -q sset -c 1 Master 5%+
+bindsym $mod+Shift+plus		exec --no-startup-id amixer -q -c 1 sset Master 15%+
+bindsym $mod+minus 		exec --no-startup-id amixer -q -c 1 sset Master 5%-
+bindsym $mod+Shift+minus	exec --no-startup-id amixer -q -c 1 sset Master 15%-
 

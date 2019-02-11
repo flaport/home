@@ -194,8 +194,6 @@ sudo pacman -S --noconfirm poppler
 sudo pacman -S --noconfirm highlight
 # mediainfo: show audio and video information in terminal
 sudo pacman -S --noconfirm mediainfo
-# audo server
-sudo pacman -S --noconfirm pulseaudio
 
 ## process information
 sudo pacman -S --noconfirm htop
@@ -229,6 +227,7 @@ sudo pacman -S --noconfirm zathura-djvu
 # alsamixer
 sudo pacman -S --noconfirm alsa-utils
 sudo pacman -S --noconfirm alsa-plugins
+sudo pacman -S --noconfirm pulseaudio
 
 ## Latex
 # tex-live
