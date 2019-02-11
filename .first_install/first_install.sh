@@ -302,6 +302,8 @@ sleep 5
 # install pip for system python
 sudo pacman -S --noconfirm python-pip
 sudo pacman -S --noconfirm python2-pip
+sudo pacman -S --noconfirm python-tqdm
+sudo pacman -S --noconfirm python2-tqdm
 
 # install neovim integration for system python
 sudo python2 -m pip install neovim

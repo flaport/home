@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+# imports
+import os
+import sys
+import time
+from tqdm import tqdm
+from subprocess import Popen, check_output, CalledProcessError
+
+# function to get filesize of folder/file
+def filesize(filename):
+    try:
+        out = check_output(['du', '-s', filename])
+        return float(out.decode().split('\t')[0])
+    except CalledProcessError:
+        return 0.0
+
+# filename handling
+file1, file2 = sys.argv[1:]
+file1 = os.path.abspath(file1) + ('/' if file1[-1] == '/' else '')
+file2 = os.path.abspath(file2) + ('/' if file2[-1] == '/' else '')
+
+# info
+print(file1, end='    -->    ')
+print(file2)
+
+# start copying 
+p = Popen(['rsync', '-a', file1, file2])
+
+# get total filesize of source:
+total_filesize=filesize(file1)
+
+# initialize progress bar
+previous_percentage = 0
+pbar = tqdm(total=100)
+
+# start loop
+while p.poll() is None:
+    copied_filesize = filesize(file2)
+    percentage = int(100 * copied_filesize / total_filesize)
+    pbar.update(percentage - previous_percentage)
+    previous_percentage = percentage
+    time.sleep(2)
+
+pbar.update(100 - previous_percentage)
+
