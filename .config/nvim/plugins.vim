@@ -59,16 +59,19 @@ let g:neomake_python_python_maker = neomake#makers#ft#python#python()
 let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
 
 " Fzf ------------------------------
-" file finder mapping
-nmap <Leader>e :Files<CR>
-" tags (symbols) in current file finder mapping
-nmap <Leader>g :BTag<CR>
-" tags (symbols) in all files finder mapping
-nmap <Leader>G :Tag<CR>
 " general code finder in current file mapping
 nmap <Leader>f :BLines<CR>
 " general code finder in all files mapping
 nmap <Leader>F :Lines<CR>
+
+" file finder mapping
+nmap <Leader>e :Files<CR>
+
+" tags (symbols) in current file finder mapping
+nmap <Leader>g :BTag<CR>
+" tags (symbols) in all files finder mapping
+nmap <Leader>G :Tag<CR>
+
 " commands finder mapping
 nmap <Leader>c :Commands<CR>
 
