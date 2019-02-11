@@ -205,6 +205,8 @@ sudo pacman -S --noconfirm atool
 sudo pacman -S --noconfirm unrar
 # unzip
 sudo pacman -S --noconfirm unzip
+# rpm extraction
+yay -S --noconfirm rpmextract
 
 ## keboard shortcuts
 # xcape: used for example to remap caps lock to esc
@@ -280,6 +282,8 @@ yay -S --noconfirm simple-mtpfs
 # utility to create bootable usbs
 yay install --noconfirm woeusb
 
+# octave (matlab alternative)
+sudo pacman -S --noconfirm octave
 
 # suckless terminal of Luke Smith
 git clone http://github.com/lukesmithxyz/st.git
