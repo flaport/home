@@ -57,12 +57,12 @@ set_from_resource $darkwhite	color7  #000000
 set_from_resource $white	color15 #000000
 set $transparent		#00000000
 
-#                       BORDER		BACKGROUND	TEXT		INDICATOR   		CHILD_BORDER
-client.focused		$red		$red		$magenta	$darkmagenta		$darkblue
-client.unfocused	$transparent	$blue		$white		$darkblue		$darkblack
-client.focused_inactive	$transparent	$blue		$white		$darkblue		$darkblack
-client.urgent		$darkred	$darkred	$black		$darkred		$darkred
-client.background $black
+#                       BORDER		    BACKGROUND	TEXT		INDICATOR   	CHILD_BORDER
+client.focused		    $transparent    $blue    	$white	    $darkmagenta	$darkblue
+client.unfocused	    $transparent    $green		$white		$darkblue		$darkblack
+client.focused_inactive	$transparent	$green		$white		$darkblue		$darkblack
+client.urgent		    $darkred	    $darkred	$black		$darkred		$darkred
+client.background       $black
 
 
 # status bar
@@ -262,9 +262,9 @@ bindsym Shift+Print 		exec --no-startup-id scrot -u
 
 # media control
 # first make sure all audio channels are unmuted:
-exec --no-startup-id amixer -q -c 1 sset Master unmute
-exec --no-startup-id amixer -q -c 1 sset Speaker unmute
-exec --no-startup-id amixer -q -c 1 sset Headphone unmute
+exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master unmute
+exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Speaker unmute
+exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Headphone unmute
 # then these controls will always work:
 bindsym $mod+m			exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master toggle && amixer -q -c 1 sset Speaker unmute && amixer -q -c 1 sset Headphone unmute
 bindsym $mod+Shift+m		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 70%+
