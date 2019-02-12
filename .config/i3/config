@@ -133,8 +133,8 @@ bindsym $mod+r 			exec --no-startup-id $term -e ranger
 bindsym $mod+t			split toggle
 
 # toggle stacking
-bindsym $mod+y          layout stacking
-bindsym $mod+Shift+y    layout toggle split
+bindsym $mod+e          layout stacking
+bindsym $mod+Shift+e    layout toggle split
 
 # i3 gaps sizing/reset
 bindsym $mod+Shift+t		gaps inner current set 15; gaps outer current set 15
@@ -266,10 +266,10 @@ exec --no-startup-id amixer -q -c 1 sset Master unmute
 exec --no-startup-id amixer -q -c 1 sset Speaker unmute
 exec --no-startup-id amixer -q -c 1 sset Headphone unmute
 # then these controls will always work:
-bindsym $mod+m			exec --no-startup-id amixer -q -c 1 sset Master toggle && amixer -q -c 1 sset Speaker unmute && amixer -q -c 1 sset Headphone unmute
-bindsym $mod+Shift+m		exec --no-startup-id amixer -q -c 1 sset Master 70%+
-bindsym $mod+plus		exec --no-startup-id amixer -q sset -c 1 Master 5%+
-bindsym $mod+Shift+plus		exec --no-startup-id amixer -q -c 1 sset Master 15%+
-bindsym $mod+minus 		exec --no-startup-id amixer -q -c 1 sset Master 5%-
-bindsym $mod+Shift+minus	exec --no-startup-id amixer -q -c 1 sset Master 15%-
+bindsym $mod+m			exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master toggle && amixer -q -c 1 sset Speaker unmute && amixer -q -c 1 sset Headphone unmute
+bindsym $mod+Shift+m		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 70%+
+bindsym $mod+plus		exec --no-startup-id amixer -q sset -c $(cat $HOME/.soundcard) Master 5%+
+bindsym $mod+Shift+plus		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 15%+
+bindsym $mod+minus 		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 5%-
+bindsym $mod+Shift+minus	exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 15%-
 
