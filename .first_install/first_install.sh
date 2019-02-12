@@ -264,6 +264,7 @@ sudo pacman -S --noconfirm inkscape
 ## Office
 sudo pacman -S --noconfirm libreoffice
 sudo pacman -S --noconfirm remmina
+sudo pacman -S --noconfirm freerdp
 sudo pacman -S --noconfirm sqlitebrowser
 
 
