@@ -175,6 +175,8 @@ sudo pacman -S --noconfirm youtube-dl
 sudo pacman -S --noconfirm youtube-viewer
 # spotify
 sudo pacman -S --noconfirm spotify
+# vls media player
+sudo pacman -S --noconfirm vlc
 
 ## network tools
 sudo pacman -S --noconfirm networkmanager
