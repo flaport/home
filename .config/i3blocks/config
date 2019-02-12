@@ -34,9 +34,12 @@ markup=none
 # volume indicator
 [volume]
 label=🔊
-instance=Master
 interval=1
-signal=10
+
+# volume indicator
+[battery]
+label=🔋
+interval=120
 
 # ram usage
 [memory]
