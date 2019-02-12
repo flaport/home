@@ -250,10 +250,10 @@ sudo pacman -S --noconfirm biber
 sudo pacman -S --noconfirm xdotool
 
 ## browsers
-# qutebrowser
 sudo pacman -S --noconfirm qutebrowser
 sudo pacman -S --noconfirm chromium
 sudo pacman -S --noconfirm firefox
+sudo pacman -S --noconfirm surf
 
 ## Artistic
 sudo pacman -S --noconfirm gimp

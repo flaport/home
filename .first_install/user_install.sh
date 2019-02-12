@@ -26,6 +26,7 @@ conda install -y pillow
 conda install -y scikit-learn
 conda install -y matplotlib
 conda install -y jupyter
+conda install -y pytorch -c pytorch
 
 # these need to be installed with conda-forge to make sure 
 # nodejs is not downgraded
@@ -37,8 +38,14 @@ conda install -y ipykernel
 # jupyter environments/kernels
 # python 2
 conda create -y -n py2 python=2.7 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets
+conda install -y -n py2 pytorch -c pytorch
 $HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name python2 --display-name "Python 2"
 mv $HOME/.local/share/jupyter/kernels/python2 $HOME/.anaconda/share/jupyter/kernels/python2
+# python 3.6
+conda create -y -n py36 python=3.7 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets tensorflow keras
+conda install -y -n py36 pytorch -c pytorch
+$HOME/.anaconda/envs/py36/bin/python -m ipykernel install --user --name python36 --display-name "Python 3.6"
+mv $HOME/.local/share/jupyter/kernels/python36 $HOME/.anaconda/share/jupyter/kernels/python36
 # r
 conda create -y -c r -n r r-irkernel
 cp -rf $HOME/.anaconda/envs/r/share/jupyter/kernels/ir $HOME/.anaconda/share/jupyter/kernels
@@ -52,6 +59,11 @@ $HOME/.anaconda/envs/julia/bin/julia -E 'using IJulia; installkernel("Julia")'
 mv $HOME/.local/share/jupyter/kernels/julia* $HOME/.anaconda/share/jupyter/kernels/
 # octave
 pip install octave_kernel
+# matlab
+# cd /usr/local/MATLAB/R2018b/extern/engines/python
+# python setup.py install
+# cd ~
+# pip install matlab_kernel
 
 # pip packages
 pip install grip
