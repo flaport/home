@@ -182,6 +182,12 @@ sudo systemctl enable NetworkManager
 sudo pacman -S --noconfirm network-manager-applet
 sudo pacman -S --noconfirm network-manager-openvpn
 
+## bluetooth
+sudo pacman -S --noconfirm bluez
+sudo pacman -S --noconfirm bluez-utils
+sudo pacman -S --noconfirm pulseaudio-bluetooth
+sudo systemctl enable bluetooth
+
 ## terminal
 # search tool (grep alternative)
 sudo pacman -S --noconfirm ack
