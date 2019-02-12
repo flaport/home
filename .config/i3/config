@@ -7,6 +7,12 @@ exec --no-startup-id feh --bg-scale ~/.config/wallpaper.png
 # set font
 font pango:Droid Sans 11
 
+# drag floating windows
+floating_modifier $mod
+
+# workspace layout
+workspace_layout default
+
 # display settings
 # export your desired screenlayout with `arandr`
 exec --no-startup-id ~/.config/screenlayout/default.sh
@@ -125,6 +131,10 @@ bindsym $mod+r 			exec --no-startup-id $term -e ranger
 
 # split below/right
 bindsym $mod+t			split toggle
+
+# toggle stacking
+bindsym $mod+y          layout stacking
+bindsym $mod+Shift+y    layout toggle split
 
 # i3 gaps sizing/reset
 bindsym $mod+Shift+t		gaps inner current set 15; gaps outer current set 15
