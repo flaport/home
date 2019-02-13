@@ -1,8 +1,9 @@
 #!/bin/bash
 
-string=$(amixer -c 1 get Master)
+sc=$(cat ~/.soundcard)
+string=$(amixer -c $sc get Master)
 if [[ $string == *"[on]"* ]]; then
-    echo $(amixer -c 1 get Master) | cut -d "[" -f2 | cut -d "]" -f1
+    echo $(amixer -c $sc get Master) | cut -d "[" -f2 | cut -d "]" -f1
 else
   echo "MUTE"
 fi

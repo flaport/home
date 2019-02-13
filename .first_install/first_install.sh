@@ -177,6 +177,8 @@ sudo pacman -S --noconfirm youtube-dl
 sudo pacman -S --noconfirm youtube-viewer
 # spotify
 sudo pacman -S --noconfirm spotify
+# vls media player
+sudo pacman -S --noconfirm vlc
 
 ## network tools
 sudo pacman -S --noconfirm networkmanager
@@ -252,10 +254,10 @@ sudo pacman -S --noconfirm biber
 sudo pacman -S --noconfirm xdotool
 
 ## browsers
-# qutebrowser
 sudo pacman -S --noconfirm qutebrowser
 sudo pacman -S --noconfirm chromium
 sudo pacman -S --noconfirm firefox
+sudo pacman -S --noconfirm surf
 
 ## Artistic
 sudo pacman -S --noconfirm gimp
@@ -264,6 +266,7 @@ sudo pacman -S --noconfirm inkscape
 ## Office
 sudo pacman -S --noconfirm libreoffice
 sudo pacman -S --noconfirm remmina
+sudo pacman -S --noconfirm freerdp
 sudo pacman -S --noconfirm sqlitebrowser
 
 

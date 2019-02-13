@@ -7,6 +7,12 @@ exec --no-startup-id feh --bg-scale ~/.config/wallpaper.png
 # set font
 font pango:Droid Sans 11
 
+# drag floating windows
+floating_modifier $mod
+
+# workspace layout
+workspace_layout default
+
 # display settings
 # export your desired screenlayout with `arandr`
 exec --no-startup-id ~/.config/screenlayout/default.sh
@@ -51,12 +57,12 @@ set_from_resource $darkwhite	color7  #000000
 set_from_resource $white	color15 #000000
 set $transparent		#00000000
 
-#                       BORDER		BACKGROUND	TEXT		INDICATOR   		CHILD_BORDER
-client.focused		$red		$red		$magenta	$darkmagenta		$darkblue
-client.unfocused	$transparent	$blue		$white		$darkblue		$darkblack
-client.focused_inactive	$transparent	$blue		$white		$darkblue		$darkblack
-client.urgent		$darkred	$darkred	$black		$darkred		$darkred
-client.background $black
+#                       BORDER		    BACKGROUND	TEXT		INDICATOR   	CHILD_BORDER
+client.focused		    $transparent    $blue    	$white	    $darkmagenta	$darkblue
+client.unfocused	    $transparent    $green		$white		$darkblue		$darkblack
+client.focused_inactive	$transparent	$green		$white		$darkblue		$darkblack
+client.urgent		    $darkred	    $darkred	$black		$darkred		$darkred
+client.background       $black
 
 
 # status bar
@@ -125,6 +131,10 @@ bindsym $mod+r 			exec --no-startup-id $term -e ranger
 
 # split below/right
 bindsym $mod+t			split toggle
+
+# toggle stacking
+bindsym $mod+e          layout stacking
+bindsym $mod+Shift+e    layout toggle split
 
 # i3 gaps sizing/reset
 bindsym $mod+Shift+t		gaps inner current set 15; gaps outer current set 15
@@ -252,14 +262,14 @@ bindsym Shift+Print 		exec --no-startup-id scrot -u
 
 # media control
 # first make sure all audio channels are unmuted:
-exec --no-startup-id amixer -q -c 1 sset Master unmute
-exec --no-startup-id amixer -q -c 1 sset Speaker unmute
-exec --no-startup-id amixer -q -c 1 sset Headphone unmute
+exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master unmute
+exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Speaker unmute
+exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Headphone unmute
 # then these controls will always work:
-bindsym $mod+m			exec --no-startup-id amixer -q -c 1 sset Master toggle && amixer -q -c 1 sset Speaker unmute && amixer -q -c 1 sset Headphone unmute
-bindsym $mod+Shift+m		exec --no-startup-id amixer -q -c 1 sset Master 70%+
-bindsym $mod+plus		exec --no-startup-id amixer -q sset -c 1 Master 5%+
-bindsym $mod+Shift+plus		exec --no-startup-id amixer -q -c 1 sset Master 15%+
-bindsym $mod+minus 		exec --no-startup-id amixer -q -c 1 sset Master 5%-
-bindsym $mod+Shift+minus	exec --no-startup-id amixer -q -c 1 sset Master 15%-
+bindsym $mod+m			exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master toggle && amixer -q -c 1 sset Speaker unmute && amixer -q -c 1 sset Headphone unmute
+bindsym $mod+Shift+m		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 70%+
+bindsym $mod+plus		exec --no-startup-id amixer -q sset -c $(cat $HOME/.soundcard) Master 5%+
+bindsym $mod+Shift+plus		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 15%+
+bindsym $mod+minus 		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 5%-
+bindsym $mod+Shift+minus	exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 15%-
 
