@@ -130,11 +130,13 @@ sudo pacman -S --noconfirm openvpn
 # ssh
 sudo pacman -S --noconfirm openssh
 
-## ranger: terminal file browser
-# the application itself
+## file browser
+# ranger: terminal file browser
 sudo pacman -S --noconfirm ranger
 # image previews in terminal
 sudo pacman -S --noconfirm w3m
+# nemo: sometimes a non-terminal file browser can be useful
+sudo pacman -S --noconfirm nemo
 
 ## arandr: for screen adjustment
 sudo pacman -S --noconfirm arandr
