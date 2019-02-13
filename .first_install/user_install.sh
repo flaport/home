@@ -30,7 +30,7 @@ conda install -y -n py2 pytorch -c pytorch
 $HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name python2 --display-name "Python 2"
 mv $HOME/.local/share/jupyter/kernels/python2 $HOME/.anaconda/share/jupyter/kernels/python2
 # python 3.6
-conda create -y -n py36 python=3.7 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets tensorflow keras
+conda create -y -n py36 python=3.6 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets tensorflow keras
 conda install -y -n py36 pytorch -c pytorch
 $HOME/.anaconda/envs/py36/bin/python -m ipykernel install --user --name python36 --display-name "Python 3.6"
 mv $HOME/.local/share/jupyter/kernels/python36 $HOME/.anaconda/share/jupyter/kernels/python36
@@ -49,7 +49,7 @@ mv $HOME/.local/share/jupyter/kernels/julia* $HOME/.anaconda/share/jupyter/kerne
 pip install octave_kernel
 # matlab
 # cd <matlabinstallation>/extern/engines/python
-# python setup.py install
+# sudo python setup.py install
 # cd ~
 # pip install matlab_kernel
 
