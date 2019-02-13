@@ -18,23 +18,10 @@ pip install neovim
 npm install -g neovim
 
 # conda packages
-conda install -y tqdm
-conda install -y numpy
-conda install -y pandas
-conda install -y cython
-conda install -y pillow
-conda install -y scikit-learn
-conda install -y matplotlib
-conda install -y jupyter
-conda install -y h5py
+conda install -y jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib h5py
 conda install -y pytorch -c pytorch
-
-# these need to be installed with conda-forge to make sure 
-# nodejs is not downgraded
-conda install -y jupyterlab -c conda-forge
-conda install -y jupyterhub -c conda-forge
-conda install -y ipywidgets
-conda install -y ipykernel
+# these need to be installed with conda-forge to make sure nodejs is not downgraded
+conda install -y -c conda-forge jupyterlab jupyterhub
 
 # jupyter environments/kernels
 # python 2
@@ -61,12 +48,14 @@ mv $HOME/.local/share/jupyter/kernels/julia* $HOME/.anaconda/share/jupyter/kerne
 # octave
 pip install octave_kernel
 # matlab
-# cd /usr/local/MATLAB/R2018b/extern/engines/python
+# cd <matlabinstallation>/extern/engines/python
 # python setup.py install
 # cd ~
 # pip install matlab_kernel
 
 # pip packages
+pip install altair
+pip install plotly
 pip install grip
 pip install ipdb
 pip install black
