@@ -85,7 +85,7 @@ set splitright
 set encoding=utf-8
 
 " go to folder containing current file
-" autocmd BufEnter * silent! lcd %:p:h
+autocmd BufEnter * silent! lcd %:p:h
 
 " smart case (in)sensitive search
 :set ignorecase
