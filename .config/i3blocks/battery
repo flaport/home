@@ -1,0 +1,8 @@
+#!/bin/bash
+
+string=$(acpi -b)
+if [[ $string == *"Discharging"* ]]; then
+    echo $(acpi -b) | cut -d "," -f2 | cut -d "," -f1
+else
+  echo "CHARGING"
+fi
