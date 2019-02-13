@@ -26,6 +26,7 @@ conda install -y pillow
 conda install -y scikit-learn
 conda install -y matplotlib
 conda install -y jupyter
+conda install -y h5py
 conda install -y pytorch -c pytorch
 
 # these need to be installed with conda-forge to make sure 
@@ -37,7 +38,7 @@ conda install -y ipykernel
 
 # jupyter environments/kernels
 # python 2
-conda create -y -n py2 python=2.7 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets
+conda create -y -n py2 python=2.7 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets h5py
 conda install -y -n py2 pytorch -c pytorch
 $HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name python2 --display-name "Python 2"
 mv $HOME/.local/share/jupyter/kernels/python2 $HOME/.anaconda/share/jupyter/kernels/python2
