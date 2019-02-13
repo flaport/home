@@ -3,7 +3,8 @@
 sc=$(cat ~/.soundcard)
 string=$(amixer -c $sc get Master)
 if [[ $string == *"[on]"* ]]; then
-    echo $(amixer -c $sc get Master) | cut -d "[" -f2 | cut -d "]" -f1
+    percentage=$(echo $(amixer -c $sc get Master) | cut -d "[" -f2 | cut -d "]" -f1)
+    echo 🔊" "$percentage
 else
-  echo "MUTE"
+  echo 🔇
 fi

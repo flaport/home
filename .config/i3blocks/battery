@@ -2,7 +2,8 @@
 
 string=$(acpi -b)
 if [[ $string == *"Discharging"* ]]; then
-    echo $(acpi -b) | cut -d "," -f2 | cut -d "," -f1
+    percentage=$(echo $string | cut -d "," -f2 | cut -d "," -f1)
+    echo 🔋$percentage
 else
-  echo "CHARGING"
+  echo "🔌"
 fi

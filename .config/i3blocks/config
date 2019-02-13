@@ -33,13 +33,11 @@ markup=none
 
 # volume indicator
 [volume]
-label=🔊
 interval=1
 
 # volume indicator
 [battery]
-label=🔋
-interval=120
+interval=5
 
 # ram usage
 [memory]
