@@ -4,32 +4,49 @@
 # export PATH="$HOME/.config/nvim/vim:$PATH"
 
 
+import os
 from sys import argv, exit
-from subprocess import call
+from subprocess import call, check_output, Popen, PIPE
 
+del argv[0]
+
+fzf = ["/usr/bin/fzf", "-1", "-0"]
 neovim = ["/usr/bin/nvim"]
 neovim_remote = ["/usr/bin/nvr", "--servername", "127.0.0.1:{port}"]
 
-if len(argv) == 1:
-    call(neovim)
-    exit()
-
-try:
-    # if a port is specified, use neovim-remote
-    port = int(argv[1])
-    if port < 1000: # quick way to create a nvr instance at a port > 10000
-        port += 10000
-    neovim_remote[-1] = neovim_remote[-1].format(port=port)
-    commands = neovim_remote + argv[2:]
-except ValueError:
-    # if a latex file is specified, use neovim-remote @ port 9999
-    if any(str(x).endswith('.tex') for x in argv):
-        port = 9999
+if len(argv) == 0:
+    command = neovim
+else:
+    try:
+        # if a port is specified, use neovim-remote
+        port = int(argv[0])
+        if port < 1000: # quick way to create a nvr instance at a port > 10000
+            port += 10000
         neovim_remote[-1] = neovim_remote[-1].format(port=port)
-        commands = neovim_remote + argv[1:]
-    # else, just use neovim:
-    else:
-        commands = neovim + argv[1:]
+        command = neovim_remote
+        del argv[0]
+    except ValueError:
+        # if a latex file is specified, use neovim-remote @ port 9999
+        if any(str(x).endswith('.tex') for x in argv):
+            port = 9999
+            neovim_remote[-1] = neovim_remote[-1].format(port=port)
+            command = neovim_remote
+        # else, just use neovim:
+        else:
+            command = neovim
 
-call(commands)
+if len(argv) == 0:
+    find = Popen(["find","."], stdout=PIPE).stdout
+    paths = [check_output(fzf, stdin=find).decode().strip()]
+    if paths[0] == '.':
+        paths = []
+elif not all(os.path.exists(path) for path in argv):
+    find = Popen(["find","."], stdout=PIPE).stdout
+    paths = [check_output(fzf + ["-q"," ".join(argv)], stdin=find).decode().strip()]
+else:
+    paths = argv
 
+
+print(paths)
+
+call(command+paths)
