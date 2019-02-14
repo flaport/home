@@ -3,7 +3,7 @@
 #
 
 # Source .bashrc
-[[ -f ~/.bashrc ]] && . ~/.bashrc
+[[ -f ~/.bashrc ]] && source ~/.bashrc
 
 # Environment variables
 export CC="gcc"

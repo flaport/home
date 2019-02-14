@@ -69,6 +69,17 @@ alias starwars="telnet towel.blinkenlights.nl"
 # open and disown with default program:
 o() { xdg-open "$1" &>/dev/null &disown ;}
 
-## Execute fish
-#--------------
-# exec fish
+# custom cd function: go to folder containing file if path of file is given
+cd() {
+    if [[ -z $(/usr/bin/python $HOME/.scripts/isdir $1 | grep 0) ]]; then
+        builtin cd $1
+    else
+        builtin cd $(dirname $1)
+    fi
+}
+
+# fuzzy cd
+fcd() {
+    cd $(find . | fzf -1 -0 -q $1\ $2\ $3\ $4\ $5)
+}
+
