@@ -6,7 +6,7 @@
 
 import os
 from sys import argv, exit
-from subprocess import call, check_output, Popen, PIPE
+from subprocess import call, check_output, Popen, PIPE, CalledProcessError
 
 del argv[0]
 
@@ -35,15 +35,18 @@ else:
         else:
             command = neovim
 
-if len(argv) == 0:
-    find = Popen(["find","."], stdout=PIPE).stdout
-    paths = [check_output(fzf, stdin=find).decode().strip()]
-    if paths[0] == '.':
-        paths = []
-elif not all(os.path.exists(path) for path in argv):
-    find = Popen(["find","."], stdout=PIPE).stdout
-    paths = [check_output(fzf + ["-q"," ".join(argv)], stdin=find).decode().strip()]
-else:
+try:
+    if len(argv) == 0:
+        find = Popen(["find","."], stdout=PIPE).stdout
+        paths = [check_output(fzf, stdin=find).decode().strip()]
+        if paths[0] == '.':
+            paths = []
+    elif not all(os.path.exists(path) for path in argv):
+        find = Popen(["find","."], stdout=PIPE).stdout
+        paths = [check_output(fzf + ["-q"," ".join(argv)], stdin=find).decode().strip()]
+    else:
+        paths = argv
+except CalledProcessError:
     paths = argv
 
 
