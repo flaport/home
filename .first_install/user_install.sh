@@ -63,6 +63,7 @@ pip install ueberzug
 
 # jupyterlab extensions
 jupyter labextension install jupyterlab_vim
+jupyter labextension install @jupyterlab/hub-extension
 jupyter labextension install @jupyterlab/plotly-extension
 jupyter labextension install @jupyterlab/toc
 jupyter labextension install @jupyter-widgets/jupyterlab-manager
