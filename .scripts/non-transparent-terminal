@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+(cat ~/.Xresources && echo *.alpha:255) | xrdb;
+$TERMINAL $@ & disown;
+xrdb ~/.Xresources;

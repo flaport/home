@@ -50,6 +50,4 @@ except CalledProcessError:
     paths = argv
 
 
-print(paths)
-
 call(command+paths)

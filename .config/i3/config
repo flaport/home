@@ -1,9 +1,6 @@
 # modifier key
 set $mod Mod4
 
-# wallpaper
-exec --no-startup-id feh --bg-scale ~/.config/wallpaper.png
-
 # set font
 font pango:Droid Sans 11
 
@@ -22,8 +19,9 @@ gaps inner 15
 gaps outer 15
 for_window [class="^.*"] border pixel 3
 
-## terminal
+## terminals
 set $term --no-startup-id $TERMINAL -f mono:pixelsize=18
+set $term2 --no-startup-id $HOME/.scripts/non-transparent-terminal -f mono:pixelsize=18
 
 # notifications
 exec --no-startup-id dunst
@@ -31,9 +29,12 @@ exec --no-startup-id dunst
 # network manager 
 exec --no-startup-id nm-applet
 
+# wallpaper
+exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
+
 # composite manager (window transparency etc)
-exec --no-startup-id xcompmgr
-exec --no-startup-id xrdb ~/.Xresources
+exec_always --no-startup-id xcompmgr
+exec_always --no-startup-id xrdb ~/.Xresources
 
 # make the mouse invisible after a brief period
 exec --no-startup-id unclutter
@@ -86,7 +87,8 @@ bar {
 ## KEY bindings
 
 # terminal
-bindsym $mod+Return 		exec $term
+bindsym $mod+Return 		    exec $term
+bindsym $mod+Shift+Return 		exec $term2
 
 # floating window
 bindsym $mod+Shift+space 	floating toggle
