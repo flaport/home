@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+/opt/lumerical/fdtd/bin/fdtd-solutions $@ & disown;
