@@ -23,6 +23,9 @@ inoremap <F5> <Esc><F5>
 vnoremap <F5> "+y:w<CR>:!~/.config/nvim/run_selection %<CR>
 "<Esc>:w<CR>:!~/.config/nvim/run %<CR>
 
+" include a screenshot into markdown as image
+vnoremap <F3> "*di![](<Esc>"*pa)<Esc>:!python3 ~/.config/nvim/screenshot<CR>
+
 " built in spell checker:
 " use zg to add a word to the dictionary
 " use zuw to remove word from dictionary
