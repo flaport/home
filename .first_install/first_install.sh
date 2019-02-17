@@ -262,6 +262,7 @@ sudo pacman -S --noconfirm surf
 ## Artistic
 sudo pacman -S --noconfirm gimp
 sudo pacman -S --noconfirm inkscape
+sudo pacman -S --noconfirm pinta
 
 ## Office
 sudo pacman -S --noconfirm libreoffice
