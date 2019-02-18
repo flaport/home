@@ -18,7 +18,7 @@ nnoremap <F2> :w<CR>:e ~/.config/nvim/init.vim<CR>
 inoremap <F2> <Esc>:w<CR>:e ~/.config/nvim/init.vim<CR>
 
 " execute / compile file
-nnoremap <F5> :w<CR>:silent !~/.config/nvim/run %<CR>
+nnoremap <F5> :w<CR>:!~/.config/nvim/run %<CR>
 inoremap <F5> <Esc><F5>
 vnoremap <F5> "+y:w<CR>:!~/.config/nvim/run_selection %<CR>
 "<Esc>:w<CR>:!~/.config/nvim/run %<CR>
@@ -57,12 +57,12 @@ inoremap <C-q> <Esc>:wqa<CR>
 
 " LATEX
 " =====
-" synctex forward <Leader>f
+" synctex forward <Leader>s
 function! SyncTexForward()
     let execstr = "silent !zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
     exec execstr
 endfunction
-au FileType tex nmap <Leader>f :call SyncTexForward()<CR>
+au FileType tex nmap <Leader>s :call SyncTexForward()<CR>
 " synctex backward: Ctrl-Click
 " NOTE: for backward synctex to work, one has to run neovim-remote on port 9999:
 " nvr --servername 127.0.0.1:9999 filename.tex
