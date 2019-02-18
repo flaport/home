@@ -1589,7 +1589,7 @@ config.bind('K', 'tab-next') # tab-prev
 # config.bind('b', 'set-cmd-text -s :quickmark-load')
 # config.bind('cd', 'download-clear')
 # config.bind('co', 'tab-only')
-# config.bind('d', 'tab-close')
+config.bind('d', 'nop')
 # config.bind('f', 'hint')
 # config.bind('g$', 'tab-focus -1')
 # config.bind('g0', 'tab-focus 1')
