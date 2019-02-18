@@ -269,6 +269,10 @@ sudo pacman -S --noconfirm remmina
 sudo pacman -S --noconfirm freerdp
 sudo pacman -S --noconfirm sqlitebrowser
 
+## firewall
+sudo pacman -S --noconfirm ufw
+sudo ufw allow 8000
+
 
 ## other programs
 # code (open source build of vscode)
@@ -314,6 +318,7 @@ echo -e "\n\n\n\n"
 sleep 5
 
 # install pip for system python
+sudo pacman -S --noconfirm tk
 sudo pacman -S --noconfirm python-pip
 sudo pacman -S --noconfirm python2-pip
 sudo pacman -S --noconfirm python-tqdm
