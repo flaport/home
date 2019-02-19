@@ -18,19 +18,19 @@ pip install neovim
 npm install -g neovim
 
 # conda packages
-conda install -y jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib h5py
+conda install -y jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib h5py flask pandoc
 conda install -y pytorch -c pytorch
 # these need to be installed with conda-forge to make sure nodejs is not downgraded
 conda install -y -c conda-forge jupyterlab jupyterhub
 
 # jupyter environments/kernels
 # python 2
-conda create -y -n py2 python=2.7 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets h5py
+conda create -y -n py2 python=2.7 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets h5py flask pandoc
 conda install -y -n py2 pytorch -c pytorch
 $HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name python2 --display-name "Python 2"
 mv $HOME/.local/share/jupyter/kernels/python2 $HOME/.anaconda/share/jupyter/kernels/python2
 # python 3.6
-conda create -y -n py36 python=3.6 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets tensorflow keras
+conda create -y -n py36 python=3.6 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets tensorflow keras pandoc flask
 conda install -y -n py36 pytorch -c pytorch
 $HOME/.anaconda/envs/py36/bin/python -m ipykernel install --user --name python36 --display-name "Python 3.6"
 mv $HOME/.local/share/jupyter/kernels/python36 $HOME/.anaconda/share/jupyter/kernels/python36
@@ -60,6 +60,9 @@ pip install grip
 pip install ipdb
 pip install black
 pip install ueberzug
+
+# google
+pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
 # jupyterlab extensions
 jupyter labextension install jupyterlab_vim

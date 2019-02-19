@@ -329,6 +329,12 @@ sudo python2 -m pip install neovim
 sudo python3 -m pip install neovim
 sudo python3 -m pip install neovim-remote
 
+# document portability
+sudo python3 -m pip install pandoc
+sudo python2 -m pip install pandoc
+sudo python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+sudo python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
 ## install programs for the user:
 source ~/.first_install/user_install.sh
 
