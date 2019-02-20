@@ -2,6 +2,10 @@
 function fish_greeting
 end
 
+# turn on vim mode
+fish_vi_key_bindings
+# fish_default_key_bindings
+
 ## environment variables
 set -gx CC "gcc"
 set -gx CXX "g++"
@@ -11,6 +15,9 @@ set -gx BROWSER "qutebrowser"
 set -gx READER "zathura"
 set -gx ICAROOT "$HOME/.ica"
 set -gx PATH "$HOME/.scripts:$PATH"
+
+## accept autosuggestion
+bind \ea accept-autosuggestion
 
 ## path
 # lumerical fdtd
