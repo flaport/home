@@ -84,7 +84,7 @@ function fish_prompt
     set_color normal
     for job in (jobs)
         set_color $retc
-        echo -n '    │ ' # change number of spaces here if vim keys are set/unset
+        echo -n ' │ ' # change number of spaces here if vim keys are set/unset
         set_color brown
         echo $job
     end
@@ -92,7 +92,7 @@ function fish_prompt
 # prompt
     set_color normal
     set_color $retc
-    echo -n '    ╰─>'
+    echo -n ' ╰─>'
     set_color -o blue
     echo -n '$ '
     set_color normal
