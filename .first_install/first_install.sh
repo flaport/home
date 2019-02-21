@@ -138,6 +138,10 @@ sudo pacman -S --noconfirm w3m
 # nemo: sometimes a non-terminal file browser can be useful
 sudo pacman -S --noconfirm nemo
 
+## terminal search
+yay -S --noconfirm googler
+yay -S --noconfirm ddgr
+
 ## arandr: for screen adjustment
 sudo pacman -S --noconfirm arandr
 
