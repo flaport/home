@@ -1,0 +1,16 @@
+## Users/groups
+useradd -m username # create user
+groupadd groupname # create group
+usermod -a -G group user # add user to group
+usermod -g group user # change primary group
+groups user # see groups user is part of
+
+
+## Permissions
+chmod u/g/o +/- r/w/x
+chmod 0777
+chown -R user:group folder
+setfacl -R -d -m g::rwx folder # set default permissions for folder
+setfacl -R -b folder # remove all acl settings from files
+
+
