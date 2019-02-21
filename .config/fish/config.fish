@@ -17,7 +17,7 @@ set -gx ICAROOT "$HOME/.ica"
 set -gx PATH "$HOME/.scripts:$PATH"
 
 ## accept autosuggestion
-bind \ea accept-autosuggestion
+bind ^j accept-autosuggestion
 
 ## path
 # lumerical fdtd
