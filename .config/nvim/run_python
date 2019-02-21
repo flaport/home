@@ -10,6 +10,7 @@ FILENAME=$1
 ~/.config/nvim/make_tmux_session $COMMAND
 
 tmux send-keys -t $COMMAND C-c Enter quit Enter
+sleep 0.2
 echo "running python..."
 tmux send-keys -t $COMMAND cd Space $PWD Enter clear Enter $COMMAND Space -i Space $FILENAME Enter;
 
