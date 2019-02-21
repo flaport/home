@@ -29,10 +29,10 @@ function fish_prompt
     echo -n '┬─'
 
 # battery status 🔌🔋
-    if test (echo (acpi -b) | cut -d "D" -f1) = "Battery 0: " # battery is discharging
+    if test (echo (acpi -b 2>/dev/null) | cut -d "D" -f1) = "Battery 0: " # battery is discharging
         set prompt_battery 🔌
-        if test (echo (acpi -b) | cut -d "D" -f1) = "Battery 0: " # battery is discharging
-            set prompt_battery (echo (acpi -b) | cut -d "," -f2 | cut -d " " -f2)
+        if test (echo (acpi -b 2>/dev/null) | cut -d "D" -f1) = "Battery 0: " # battery is discharging
+            set prompt_battery (echo (acpi -b 2>/dev/null) | cut -d "," -f2 | cut -d " " -f2)
         end
         and _nim_prompt_wrapper $retc "" $prompt_battery
     end
