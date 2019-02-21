@@ -64,7 +64,18 @@ function fish_prompt
 # path home: ~🏠
     set_color -o yellow
     #echo -n (prompt_pwd)
-    echo -n (string replace $HOME "🏠" (pwd))
+    set path (pwd)
+    set path (string replace /drives "💾" $path)
+    set path (string replace $HOME/Web "🌐" $path)
+    set path (string replace $HOME/Videos "🎬" $path)
+    set path (string replace $HOME/Pictures "📷" $path)
+    set path (string replace $HOME/Desktop "🗔  " $path)
+    set path (string replace $HOME/Latex "🖹 " $path)
+    set path (string replace $HOME/Downloads "⬇" $path)
+    set path (string replace $HOME/Documents "📁" $path)
+    set path (string replace $HOME/Python "🐍" $path)
+    set path (string replace $HOME "🏠" $path)
+    echo -n $path
 
 # end [username@host:~/path]
     set_color -o green
