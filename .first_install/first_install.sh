@@ -129,6 +129,7 @@ sudo pacman -S --noconfirm gnupg
 sudo pacman -S --noconfirm openvpn
 # ssh
 sudo pacman -S --noconfirm openssh
+sudo pacman -S --noconfirm autossh
 
 ## file browser
 # ranger: terminal file browser
