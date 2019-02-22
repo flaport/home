@@ -1,2 +1,7 @@
 #!/usr/bin/env bash
-chromium --app=http://localhost:8000 &>/dev/null &disown
+if type surf &> /dev/null; then
+    BROWSER="surf "
+else
+    BROWSER="chromium --app="
+fi
+$BROWSER"http://localhost:8000" &>/dev/null &disown

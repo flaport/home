@@ -1,2 +1,7 @@
 #!/usr/bin/env bash
-chromium --app=http://mail.google.com/mail/u/0/ &>/dev/null &disown
+if type surf &> /dev/null; then
+    BROWSER="surf "
+else
+    BROWSER="chromium --app="
+fi
+$BROWSER"http://mail.google.com/mail/u/0/" &>/dev/null &disown
