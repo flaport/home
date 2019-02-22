@@ -34,7 +34,7 @@ function fish_prompt
         if test (echo (acpi -b 2>/dev/null) | cut -d "D" -f1) = "Battery 0: " # battery is discharging
             set prompt_battery (echo (acpi -b 2>/dev/null) | cut -d "," -f2 | cut -d " " -f2)
         end
-        and _nim_prompt_wrapper $retc "" $prompt_battery
+        and _nim_prompt_wrapper $retc "" " "$prompt_battery" "
     end
 
 # start [username@host:~/path]
@@ -61,22 +61,23 @@ function fish_prompt
 #   set_color -o red
 #   echo -n :
 
-# path home: ~🏠
+# path customization
     set_color -o yellow
     #echo -n (prompt_pwd)
     set path (pwd)
-    set path (string replace /drives " 💾" $path)
-    set path (string replace $HOME/.config " ⚙" $path)
-    set path (string replace $HOME/Web " 🌐" $path)
-    set path (string replace $HOME/Videos " 🎬" $path)
-    set path (string replace $HOME/Pictures " 📷" $path)
-    set path (string replace $HOME/Desktop " 🗔 " $path)
-    set path (string replace $HOME/Latex " 🖹 " $path)
-    set path (string replace $HOME/Downloads " ⬇" $path)
-    set path (string replace $HOME/Documents " 📁" $path)
-    set path (string replace $HOME/Python " 🐍" $path)
-    set path (string replace $HOME " 🏠" $path)
-    echo -n $path" "
+    set path (string replace /drives "💾" $path)
+    set path (string replace $HOME/.config "⚙" $path)
+    set path (string replace $HOME/Notes "📙" $path)
+    set path (string replace $HOME/Web "🌐" $path)
+    set path (string replace $HOME/Videos "🎬" $path)
+    set path (string replace $HOME/Pictures "📷" $path)
+    set path (string replace $HOME/Desktop "🗔 " $path)
+    set path (string replace $HOME/Latex "🖹" $path)
+    set path (string replace $HOME/Downloads "⬇" $path)
+    set path (string replace $HOME/Documents "📁" $path)
+    set path (string replace $HOME/Python "🐍" $path)
+    set path (string replace $HOME "🏠" $path)
+    echo -n " "$path" "
 
 # end [username@host:~/path]
     set_color -o green
