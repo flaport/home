@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+cd $HOME/Notes
+$HOME/.config/nvim/run_markdown . &>/dev/null
