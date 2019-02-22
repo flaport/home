@@ -29,6 +29,9 @@ exec --no-startup-id dunst
 # network manager 
 exec --no-startup-id nm-applet
 
+# display notes
+exec --no-startup-id $HOME/.scripts/notes
+
 # wallpaper
 exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
 
