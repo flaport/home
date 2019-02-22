@@ -6,13 +6,20 @@ COMMAND="grip"
 FILENAME=$1
 PORT=7777
 
+if type surf &> /dev/null; then
+    BROWSER="surf "
+else
+    BROWSER="chromium --app="
+fi
 
 ~/.config/nvim/make_tmux_session $COMMAND
 
 tmux send-keys -t $COMMAND C-c Enter
 echo "previewing markdown... "
 tmux send-keys -t $COMMAND cd Space $PWD Enter $COMMAND Space $FILENAME Space $PORT Enter;
-chromium --app="http://localhost:$PORT" & disown
 
-#~/.config/nvim/open_i3_window $COMMAND
+
+sleep 0.2
+
+$BROWSER"http://localhost:$PORT"
 
