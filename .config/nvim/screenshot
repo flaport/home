@@ -62,6 +62,8 @@ def make_and_save_screenshot(filename=None):
     filename_out = Popen(["echo", filename], stdout=PIPE).stdout
     call(["xclip", "-i"], stdin=filename_out)
 
+    print(filename)
+
 if __name__ == '__main__':
     from sys import argv
 
