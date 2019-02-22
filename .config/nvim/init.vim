@@ -58,6 +58,11 @@ inoremap <C-c> <Esc>:qa!<CR>
 nnoremap <C-q> :wqa<CR>
 inoremap <C-q> <Esc>:wqa<CR>
 
+" MARKDOWN
+" ========
+" follow markdown link:
+nnoremap <Leader>d ie <Esc>vh"ax"Ayi(:w<CR>:@a<CR>
+
 " LATEX
 " =====
 " synctex forward <Leader>s
