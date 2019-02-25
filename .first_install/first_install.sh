@@ -136,8 +136,17 @@ sudo pacman -S --noconfirm autossh
 sudo pacman -S --noconfirm ranger
 # image previews in terminal
 sudo pacman -S --noconfirm w3m
+
+## GUI file browser
 # nemo: sometimes a non-terminal file browser can be useful
 sudo pacman -S --noconfirm nemo
+# dolphin: sometimes a non-terminal file browser can be useful
+# note: the environment variable QT_QPA_PLATFORMTHEME='qt5ct' should be set.
+sudo pacman -S --noconfirm dolphin
+sudo pacman -S --noconfirm qt5ct
+sudo pacman -S --noconfirm dolphin-plugins
+sudo pacman -S --noconfirm konsole
+sudo pacman -S --noconfirm kompare
 
 ## terminal search
 yay -S --noconfirm googler
