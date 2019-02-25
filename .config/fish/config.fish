@@ -14,7 +14,7 @@ set -gx TERMINAL "st"
 set -gx BROWSER "qutebrowser"
 set -gx READER "zathura"
 set -gx ICAROOT "$HOME/.ica"
-set -gx PATH "$HOME/.scripts:$PATH"
+set -gx PATH "$HOME/.scripts:$HOME/.webapps:$PATH"
 set -gx QT_QPA_PLATFORMTHEME 'qt5ct'
 
 ## accept autosuggestion
