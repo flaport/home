@@ -6,5 +6,6 @@ from os.path import expanduser as __expand
 from sys import path as __path
 with open(__expand('~/.pythonpath'), 'r') as __file:
     __pth = __file.readlines()
-__path += [__expand(__p.strip()) for __p in __pth]
+for __p in __pth:
+    __path.insert(0, __expand(__p.strip()))
 del __expand, __path, __file, __pth
