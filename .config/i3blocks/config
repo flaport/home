@@ -37,7 +37,7 @@ interval=1
 
 # volume indicator
 [battery]
-interval=5
+interval=1
 
 # ram usage
 [memory]
