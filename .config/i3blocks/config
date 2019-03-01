@@ -32,11 +32,11 @@ markup=none
 # interval=once
 
 # volume indicator
-[volume]
+[battery]
 interval=1
 
 # volume indicator
-[battery]
+[volume]
 interval=1
 
 # ram usage
