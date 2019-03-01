@@ -251,6 +251,7 @@ sudo pacman -S --noconfirm zathura-djvu
 # nvidia: nvidia driver
 # this is disabled by default, as it gives troubles on devices without nvidia gpu
 # sudo pacman -S --noconfirm nvidia
+# suda pacman -S --noconfirm cuda-toolkit
 
 ## Sound
 # alsamixer
