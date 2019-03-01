@@ -1,53 +1,52 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-# prepend the folder containing this python file to your path:
-# export PATH="$HOME/.config/nvim/vim:$PATH"
-
-
+## standard library imports
 import os
-from sys import argv, exit
-from subprocess import call, check_output, Popen, PIPE, CalledProcessError
+import sys
+from subprocess import check_output, call, Popen, PIPE
 
-del argv[0]
+##  custom functions
+def ext(s):
+    """ get extension from path """
+    return os.path.splitext(s)[-1]
 
-fzf = ["/usr/bin/fzf", "-1", "-0"]
-neovim = ["/usr/bin/nvim"]
-neovim_remote = ["/usr/bin/nvr", "--servername", "127.0.0.1:{port}"]
-
-if len(argv) == 0:
-    command = neovim
-else:
+def port(args):
+    """ get port string from arguments """
     try:
-        # if a port is specified, use neovim-remote
-        port = int(argv[0])
-        if port < 1000: # quick way to create a nvr instance at a port > 10000
-            port += 10000
-        neovim_remote[-1] = neovim_remote[-1].format(port=port)
-        command = neovim_remote
-        del argv[0]
-    except ValueError:
-        # if a latex file is specified, use neovim-remote @ port 9999
-        if any(str(x).endswith('.tex') for x in argv):
+        port = int(args[0])
+        del args[0]
+    except (IndexError, ValueError):
+        # special exception for tex files, which always should be opened
+        # inside nvr for synctex to work (see zathura configuration)
+        if any(ext(filename) == ".tex" for filename in args):
             port = 9999
-            neovim_remote[-1] = neovim_remote[-1].format(port=port)
-            command = neovim_remote
-        # else, just use neovim:
         else:
-            command = neovim
+            return None
+    if port < 1000:
+        port += 10000
+    return [f"127.0.0.1:{port}"]
 
-try:
-    if len(argv) == 0:
-        find = Popen(["find","."], stdout=PIPE).stdout
-        paths = [check_output(fzf, stdin=find).decode().strip()]
-        if paths[0] == '.':
-            paths = []
-    elif not all(os.path.exists(path) for path in argv):
-        find = Popen(["find","."], stdout=PIPE).stdout
-        paths = [check_output(fzf + ["-q"," ".join(argv)], stdin=find).decode().strip()]
+## constants
+NUM_ARGS = len(sys.argv) - 1
+ARGS = sys.argv[1:]
+PORT = port(ARGS)
+FIND = ["find", ".", "-type", "f"]
+FZF = ["fzf"]
+NVIM = ["/usr/bin/nvim"]
+NVR  = ["/usr/bin/nvr", "--servername"]
+
+## actual script
+if NUM_ARGS > 0:
+    if PORT:
+        command = NVR + PORT + ARGS
     else:
-        paths = argv
-except CalledProcessError:
-    paths = argv
+        command = NVIM + ARGS
+    call(command)
+else: # find filename with fzf
+    find_out = Popen(FIND, stdout=PIPE).stdout
+    filename = check_output(FZF, stdin=find_out)[:-1].decode()
+    if ext(filename) == ".tex":
+        call(NVR + ["127.0.0.1:9999", filename])
+    else:
+        call(NVIM + [filename])
 
-
-call(command+paths)
