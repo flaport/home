@@ -140,13 +140,13 @@ sudo pacman -S --noconfirm w3m
 ## GUI file browser
 # nemo: sometimes a non-terminal file browser can be useful
 sudo pacman -S --noconfirm nemo
-# dolphin: sometimes a non-terminal file browser can be useful
+# dolphin: alternative to nemo (I prefer nemo)
 # note: the environment variable QT_QPA_PLATFORMTHEME='qt5ct' should be set.
-sudo pacman -S --noconfirm dolphin
-sudo pacman -S --noconfirm qt5ct
-sudo pacman -S --noconfirm dolphin-plugins
-sudo pacman -S --noconfirm konsole
-sudo pacman -S --noconfirm kompare
+# sudo pacman -S --noconfirm dolphin
+# sudo pacman -S --noconfirm qt5ct
+# sudo pacman -S --noconfirm dolphin-plugins
+# sudo pacman -S --noconfirm konsole
+# sudo pacman -S --noconfirm kompare
 
 ## terminal search
 yay -S --noconfirm googler
@@ -288,7 +288,6 @@ sudo pacman -S --noconfirm sqlitebrowser
 ## firewall
 sudo pacman -S --noconfirm ufw
 sudo ufw allow 8000
-
 
 ## other programs
 # code (open source build of vscode)
