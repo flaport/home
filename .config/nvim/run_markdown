@@ -19,7 +19,7 @@ echo "previewing markdown... "
 tmux send-keys -t $COMMAND cd Space $PWD Enter $COMMAND Space $FILENAME Space $PORT Enter;
 
 
-sleep 0.2
+sleep 0.5
 
 $BROWSER"http://localhost:$PORT"
 
