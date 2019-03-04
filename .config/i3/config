@@ -71,14 +71,15 @@ client.background       $black
 
 # status bar
 bar {
+    i3bar_command i3bar -t
 	colors {
-			background $lightyellow
+			background #00000000 # $lightyellow
 			statusline $green
 			separator $magenta
-			focused_workspace  $green $green $lightyellow
-        		active_workspace   $green $green $lightyellow
-      			inactive_workspace $lightyellow $lightyellow $green
-        		urgent_workspace   $red $red $lightyellow
+			focused_workspace  $green $green #00000000 # $lightyellow
+        		active_workspace   $green $green #00000000 # $lightyellow
+      			inactive_workspace #00000000 #00000000 $green # $lightyellow $lightyellow $green
+        		urgent_workspace   $red $red #00000000 # $lightyellow
 		}
 	status_command i3blocks
 	position top
