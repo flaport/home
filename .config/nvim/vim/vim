@@ -3,7 +3,7 @@
 ## standard library imports
 import os
 import sys
-from subprocess import check_output, call, Popen, PIPE
+from subprocess import check_output, call, Popen, PIPE, CalledProcessError
 
 ##  custom functions
 def ext(s):
@@ -44,9 +44,11 @@ if NUM_ARGS > 0:
     call(command)
 else: # find filename with fzf
     find_out = Popen(FIND, stdout=PIPE).stdout
-    filename = check_output(FZF, stdin=find_out)[:-1].decode()
-    if ext(filename) == ".tex":
-        call(NVR + ["127.0.0.1:9999", filename])
-    else:
-        call(NVIM + [filename])
-
+    try:
+        filename = check_output(FZF, stdin=find_out)[:-1].decode()
+        if ext(filename) == ".tex":
+            call(NVR + ["127.0.0.1:9999", filename])
+        else:
+            call(NVIM + [filename])
+    except CalledProcessError:
+        call(NVIM)
