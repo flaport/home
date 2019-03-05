@@ -14,13 +14,13 @@ set -gx TERMINAL "st"
 set -gx BROWSER "qutebrowser"
 set -gx READER "zathura"
 set -gx ICAROOT "$HOME/.ica"
-set -gx PATH "$HOME/.scripts:$HOME/.webapps:$PATH"
-set -gx QT_QPA_PLATFORMTHEME 'qt5ct'
 
 ## accept autosuggestion
 bind \ea accept-autosuggestion
 
 ## path
+# web apps
+set -gx PATH "$HOME/.webapps:$PATH"
 # lumerical fdtd
 set -gx PATH "/opt/lumerical/fdtd/bin:$PATH"
 # custom scripts
@@ -31,6 +31,8 @@ set -gx PATH "$HOME/.config/openvpn:$PATH"
 set -gx PATH "$HOME/.config/nvim/vim:$PATH"
 # custom git commands (powered by vim and tmux)
 set -gx PATH "$HOME/.config/nvim/git:$PATH"
+# custom vifm commands
+set -gx PATH "$HOME/.config/vifm/scripts:$PATH"
 
 ## python
 # anaconda python

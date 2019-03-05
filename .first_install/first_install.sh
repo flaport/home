@@ -131,11 +131,13 @@ sudo pacman -S --noconfirm openvpn
 sudo pacman -S --noconfirm openssh
 sudo pacman -S --noconfirm autossh
 
-## file browser
+## file browsers
 # ranger: terminal file browser
-sudo pacman -S --noconfirm ranger
+# sudo pacman -S --noconfirm ranger
 # image previews in terminal
-sudo pacman -S --noconfirm w3m
+# sudo pacman -S --noconfirm w3m
+# vifm: terminal file browser
+sudo pacman -S vifm
 
 ## GUI file browser
 # nemo: sometimes a non-terminal file browser can be useful
@@ -343,6 +345,9 @@ sudo pacman -S --noconfirm python2-tqdm
 sudo python2 -m pip install neovim
 sudo python3 -m pip install neovim
 sudo python3 -m pip install neovim-remote
+
+# image previews in vifm/ranger
+sudo python3 -m pip install ueberzug
 
 # document portability
 sudo python3 -m pip install pandoc
