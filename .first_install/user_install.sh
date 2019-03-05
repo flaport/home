@@ -60,6 +60,7 @@ pip install grip
 pip install ipdb
 pip install black
 pip install ueberzug
+pip install bayesian-optimization
 
 # google
 pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
