@@ -14,7 +14,6 @@ set -gx TERMINAL "st"
 set -gx BROWSER "qutebrowser"
 set -gx READER "zathura"
 set -gx ICAROOT "$HOME/.ica"
-set -gx XDG_DATA_DIRS "/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share"
 
 ## accept autosuggestion
 bind \ea accept-autosuggestion
