@@ -276,11 +276,16 @@ sudo pacman -S --noconfirm chromium
 sudo pacman -S --noconfirm firefox
 sudo pacman -S --noconfirm surf
 
+## flatpak
+yay -S --noconfirm flatpak
+
 ## Artistic
 sudo pacman -S --noconfirm gimp
 sudo pacman -S --noconfirm krita
-sudo pacman -S --noconfirm inkscape
 sudo pacman -S --noconfirm pinta
+sudo pacman -S --noconfirm inkscape
+# sudo flatpak install flathub org.inkscape.Inkscape # this one looks better
+
 
 ## Office
 sudo pacman -S --noconfirm libreoffice
