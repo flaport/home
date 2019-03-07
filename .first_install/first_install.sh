@@ -277,6 +277,7 @@ sudo pacman -S --noconfirm firefox
 sudo pacman -S --noconfirm surf
 
 ## flatpak
+sudo pacman -S --noconfirm xdg-desktop-portal-gtk
 yay -S --noconfirm flatpak
 
 ## Artistic
