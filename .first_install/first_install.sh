@@ -364,6 +364,3 @@ sudo python3 -m pip install google-api-python-client google-auth-httplib2 google
 
 ## install programs for the user:
 source ~/.first_install/user_install.sh
-
-## install jupyterhub service
-source ~/.jupyter/jupyterhub_generate_service.sh
