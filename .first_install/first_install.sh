@@ -283,8 +283,9 @@ yay -S --noconfirm flatpak
 sudo pacman -S --noconfirm gimp
 sudo pacman -S --noconfirm krita
 sudo pacman -S --noconfirm pinta
-sudo pacman -S --noconfirm inkscape
-# sudo flatpak install flathub org.inkscape.Inkscape # this one looks better
+# sudo pacman -S --noconfirm inkscape
+sudo flatpak install flathub org.inkscape.Inkscape # this one looks better
+sudo ln -sf /var/lib/flatpak/app/org.inkscape.Inkscape/current/active/export/bin/org.inkscape.Inkscape /usr/bin/inkscape
 
 
 ## Office
