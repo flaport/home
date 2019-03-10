@@ -305,6 +305,11 @@ code --install-extension PKief.material-icon-theme
 code --install-extension shardulm94.trailing-spaces
 # yay -S --noconfirm klayout
 
+## Power & sleep
+# sleep on low power
+sudo pacman -S acpid
+sudo systemctl enable acpid
+chmod a+w /sys/power/state
 
 ## Tools
 # hide an inactive mouse
