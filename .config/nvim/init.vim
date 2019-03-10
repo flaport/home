@@ -18,7 +18,7 @@ nnoremap <F2> :w<CR>:e ~/.config/nvim/init.vim<CR>
 inoremap <F2> <Esc>:w<CR>:e ~/.config/nvim/init.vim<CR>
 
 " execute / compile file
-nnoremap <F5> :w<CR>:!~/.config/nvim/run %<CR>
+nnoremap <F5> :w<CR>:silent !~/.config/nvim/run %<CR>
 inoremap <F5> <Esc><F5>
 vnoremap <F5> "+y:w<CR>:!~/.config/nvim/run_selection %<CR>
 "<Esc>:w<CR>:!~/.config/nvim/run %<CR>
