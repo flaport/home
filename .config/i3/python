@@ -8,7 +8,7 @@ then
     i3 [instance="dropdown_calculator"] scratchpad show;
 else
 	echo "Window not detected... spawning."
-    ($TERMINAL -n dropdown_calculator -f mono:pixelsize=18 -e python -i -B -q $1) & disown;
+    ($TERMINAL -n dropdown_calculator -f mono:pixelsize=18 -e ipython -i  --no-banner $HOME/.pythonstartup) & disown;
     sleep 0.15;
     i3 [instance="dropdown_calculator"] scratchpad show;
 fi

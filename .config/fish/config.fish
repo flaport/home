@@ -41,6 +41,8 @@ set -gx PATH "$HOME/.anaconda/bin:$PATH"
 source "$HOME/.anaconda/etc/fish/conf.d/conda.fish" 
 # set python path from "~/.pythonpath" file
 set -gx PYTHONPATH (string replace "~" $HOME (tr '\n' ':' < ~/.pythonpath | head -c -1))
+# set python startup file
+set -gx PYTHONSTARTUP "$HOME/.pythonstartup"
 
 ## i3 [this should be placed last]
 # start i3 if it is not yet running
