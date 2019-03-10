@@ -26,5 +26,6 @@
     "vim.handleKeys": {
         "<C-a>": false,
         "<C-f>": false
-    }
+    },
+    "workbench.colorTheme": "Default Light+"
 }
