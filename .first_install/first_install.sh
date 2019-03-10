@@ -312,8 +312,8 @@ code --install-extension ms-python.python
 code --install-extension codezombiech.gitignore
 code --install-extension james-yu.latex-workshop
 code --install-extension formulahendry.code-runner
-code --install-extension PKief.material-icon-theme
 code --install-extension shardulm94.trailing-spaces
+code --install-extension robertohuertasm.vscode-icons
 # yay -S --noconfirm klayout
 
 ## Power & sleep

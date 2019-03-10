@@ -27,5 +27,7 @@
         "<C-a>": false,
         "<C-f>": false
     },
-    "workbench.colorTheme": "Default Light+"
+    "workbench.colorTheme": "Default Light+",
+    "git.enableSmartCommit": true,
+    "workbench.iconTheme": "vscode-icons"
 }
