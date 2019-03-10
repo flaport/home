@@ -54,13 +54,14 @@ pip install octave_kernel
 # pip install matlab_kernel
 
 # pip packages
-pip install altair
-pip install plotly
-pip install grip
-pip install ipdb
-pip install black
-pip install ueberzug
-pip install bayesian-optimization
+pip install altair # plottling library
+pip install plotly # plotting library
+pip install grip # markdown previews
+pip install ipdb # pdb in jupyter notebooks
+pip install black # code formatting
+pip install ueberzug # display images in terminal
+pip install bayesian-optimization # optimization of hyperparameters
+pip install pygmo # optimization of multi-variable functions
 
 # google
 pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib

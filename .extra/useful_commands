@@ -13,4 +13,22 @@ chown -R user:group folder
 setfacl -R -d -m g::rwx folder # set default permissions for folder
 setfacl -R -b folder # remove all acl settings from files
 
+## Pacman
+pacman -S # synchronize (install)
+pacman -Ss # search for a package
+pacman -Sy # synchronize package database
+pacman -Syy # force synchronization of package database
+pacman -Su # update packages
+pacman -Suu # force update packages
+pacman -Syu # synchronize & update
+pacman -R # remove program
+pacman -Rs # remove program and dependencies
+pacman -Rns # remove program and system config files and dependencies
+pacman -Q # list all installed packages
+pacman -Qe # list all installed packages that were explicitly installed by user
+pacman -Qq # list all installed packages (no extra details)
+pacman -Qn # list all installed packes installed from main repository
+pacman -Qm # list all installed packes installed from AUR repository
+pacman -Qdt # list all orphan packages
+pacman -Rns $(pacman -Qqdt) # remove all orphan packages
 

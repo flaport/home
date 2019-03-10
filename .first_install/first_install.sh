@@ -39,7 +39,24 @@ makepkg -si --noconfirm
 cd ~
 rm -rf yay
 
-## Arch repositories
+echo -e "\n\n\n\n"
+echo "Installing Flatpack..."
+echo -e "\n\n\n\n"
+sleep 5
+## flatpak
+sudo pacman -S --noconfirm xdg-desktop-portal-gtk
+yay -S --noconfirm flatpak
+
+
+echo -e "\n\n\n\n"
+echo "Changing shell to fish..."
+echo -e "\n\n\n\n"
+sleep 5
+## better bash
+sudo pacman -S --noconfirm fish
+chsh -s /usr/bin/fish
+
+
 echo -e "\n\n\n\n"
 echo "Installing packages..."
 echo -e "\n\n\n\n"
@@ -48,8 +65,16 @@ sleep 5
 ## vim
 # installation
 sudo pacman -S --noconfirm neovim
-# aliasses
 sudo ln -sf /usr/bin/nvim /usr/bin/vim
+
+## suckless terminal (Luke Smith fork)
+cd ~
+git clone http://github.com/lukesmithxyz/st.git
+cd st
+make
+sudo make install
+cd ~
+rm -rf st
 
 ## i3: the main graphical user interface
 # i3-gaps: allow gaps between windows
@@ -58,16 +83,8 @@ sudo pacman -S --noconfirm i3-gaps
 sudo pacman -S --noconfirm i3blocks
 # i3-lock: screen lock for i3
 sudo pacman -S --noconfirm i3lock
-# autolock: lock computer automatically
-sudo pacman -S --noconfirm xautolock
-# xdotool: allows for more complicated window manipulation commands
-sudo pacman -S --noconfirm xdotool
-# unicode characters
-sudo pacman -S --noconfirm rxvt-unicode
 # wallpapers
 sudo pacman -S --noconfirm feh
-# xterm
-sudo pacman -S --noconfirm xterm
 # sockets
 sudo pacman -S --noconfirm socat
 # dmenu
@@ -88,9 +105,8 @@ sudo pacman -S --noconfirm xcompmgr
 sudo pacman -S --noconfirm xorg-xbacklight
 # get info on current active windows
 sudo pacman -S --noconfirm xorg-xdpyinfo
-
-## mount tools
-sudo pacman -S --noconfirm cifs-utils
+# hide an inactive mouse
+yay -S --noconfirm unclutter-xfixes-git
 
 ## build tools
 # makefiles
@@ -99,6 +115,15 @@ sudo pacman -S --noconfirm make
 ## archiving tools
 # rsync
 sudo pacman -S --noconfirm rsync
+# atool gives information about archives
+sudo pacman -S --noconfirm atool
+# unrar
+sudo pacman -S --noconfirm unrar
+# unzip
+sudo pacman -S --noconfirm unzip
+# rpm extraction
+yay -S --noconfirm rpmextract
+
 
 ## toolbar
 # battery information
@@ -122,27 +147,25 @@ sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
 # enable freetype subpixel hinting:
 echo 'export FREETYPE_PROPERTIES="truetype:interpreter-version=40"' | sudo tee --append /etc/profile.d/freetype2.sh
 
-## security
-# gnupg
-sudo pacman -S --noconfirm gnupg
+## Connectivity
 # openvpn
 sudo pacman -S --noconfirm openvpn
-# ssh
+# ssh (client and server)
 sudo pacman -S --noconfirm openssh
 sudo pacman -S --noconfirm autossh
 
 ## file browsers
-# ranger: terminal file browser
+# vifm: terminal file browser
+sudo pacman -S vifm
+# alternative: ranger: terminal file browser
 # sudo pacman -S --noconfirm ranger
 # image previews in terminal
 # sudo pacman -S --noconfirm w3m
-# vifm: terminal file browser
-sudo pacman -S vifm
 
 ## GUI file browser
 # nemo: sometimes a non-terminal file browser can be useful
 sudo pacman -S --noconfirm nemo
-# dolphin: alternative to nemo (I prefer nemo)
+# alternative: dolphin: alternative to nemo (I prefer nemo)
 # note: the environment variable QT_QPA_PLATFORMTHEME='qt5ct' should be set.
 # sudo pacman -S --noconfirm dolphin
 # sudo pacman -S --noconfirm qt5ct
@@ -155,18 +178,20 @@ yay -S --noconfirm googler
 yay -S --noconfirm ddgr
 
 ## arandr: for screen adjustment
+sudo pacman -S --noconfirm xrandr
 sudo pacman -S --noconfirm arandr
 
-## better bash
-sudo pacman -S --noconfirm fish
-
 ## drive and file system access
+# mount cifs parititions
+sudo pacman -S --noconfirm cifs-utils
 # dosfstools: support for dos (windows) - like filesystems
 sudo pacman -S --noconfirm dosfstools
 # exfat-utils: access fat-drives
 sudo pacman -S --noconfirm exfat-utils
-# ntfs-3g: access NTFS partitions
+# ntfs-3g: access NTFS network drives
 sudo pacman -S --noconfirm ntfs-3g
+# acces media on external device (phone, ...)
+yay -S --noconfirm simple-mtpfs
 
 ## desktop notifications
 # libnotify allows desktop notifications
@@ -177,30 +202,24 @@ sudo pacman -S --noconfirm dunst
 ## image viewer
 sudo pacman -S --noconfirm sxiv
 
-## wallpaper adjustment
-sudo pacman -S --noconfirm xwallpaper
-
 ## image and video tools
 # imagemagick: for images
 sudo pacman -S --noconfirm imagemagick
-# maim: screenshots
-sudo pacman -S --noconfirm maim
 # ffmpeg: for videos
 sudo pacman -S --noconfirm ffmpeg
 # youtube-dl: download youtube videos
 sudo pacman -S --noconfirm youtube-dl
 # youtube-viewer
 sudo pacman -S --noconfirm youtube-viewer
-# spotify
-sudo pacman -S --noconfirm spotify
 # vls media player
 sudo pacman -S --noconfirm vlc
+# spotify
+yay -S --noconfirm spotify
 
 ## network tools
 sudo pacman -S --noconfirm networkmanager
 sudo systemctl enable NetworkManager
 sudo pacman -S --noconfirm network-manager-applet
-sudo pacman -S --noconfirm network-manager-openvpn
 
 ## bluetooth
 sudo pacman -S --noconfirm bluez
@@ -209,7 +228,7 @@ sudo pacman -S --noconfirm pulseaudio-bluetooth
 sudo systemctl enable bluetooth
 
 ## terminal
-# search tool (grep alternative)
+# search tool (grep alternative, necessary for some vim extensions)
 sudo pacman -S --noconfirm ack
 # fuzzy finder tool
 sudo pacman -S --noconfirm fzf
@@ -226,16 +245,6 @@ sudo pacman -S --noconfirm mediainfo
 
 ## process information
 sudo pacman -S --noconfirm htop
-
-## archives
-# atool gives information about archives
-sudo pacman -S --noconfirm atool
-# unrar
-sudo pacman -S --noconfirm unrar
-# unzip
-sudo pacman -S --noconfirm unzip
-# rpm extraction
-yay -S --noconfirm rpmextract
 
 ## keboard shortcuts
 # xcape: used for example to remap caps lock to esc
@@ -271,27 +280,29 @@ sudo pacman -S --noconfirm biber
 sudo pacman -S --noconfirm xdotool
 
 ## browsers
-sudo pacman -S --noconfirm qutebrowser
-sudo pacman -S --noconfirm chromium
-sudo pacman -S --noconfirm firefox
 sudo pacman -S --noconfirm surf
+sudo pacman -S --noconfirm firefox
+sudo pacman -S --noconfirm chromium
+sudo pacman -S --noconfirm qutebrowser
 
 ## Artistic
 sudo pacman -S --noconfirm gimp
-sudo pacman -S --noconfirm inkscape
+sudo pacman -S --noconfirm krita
 sudo pacman -S --noconfirm pinta
+# sudo pacman -S --noconfirm inkscape
+sudo flatpak install flathub org.inkscape.Inkscape # this one looks better
+sudo ln -sf /var/lib/flatpak/app/org.inkscape.Inkscape/current/active/export/bin/org.inkscape.Inkscape /usr/bin/inkscape
 
-## Office
-sudo pacman -S --noconfirm libreoffice
+## Remote desktop
 sudo pacman -S --noconfirm remmina
 sudo pacman -S --noconfirm freerdp
+
+## Office
+sudo pacman -S --noconfirm sc-im # terminal excel
+sudo pacman -S --noconfirm libreoffice
 sudo pacman -S --noconfirm sqlitebrowser
 
-## firewall
-sudo pacman -S --noconfirm ufw
-sudo ufw allow 8000
-
-## other programs
+## Programming
 # code (open source build of vscode)
 sudo pacman -S --noconfirm code
 code --install-extension vscodevim.vim
@@ -319,20 +330,12 @@ yay -S --noconfirm unclutter-xfixes-git
 ## drive and file system access
 yay -S --noconfirm simple-mtpfs
 
-# utility to create bootable usbs
-yay install --noconfirm woeusb
+## GDS Layouts
+# klayout (disabled by default, as this is built from source and takes a long time!)
+# yay -S --noconfirm klayout
 
-# octave (matlab alternative)
+## Scientific computing octave (matlab alternative)
 sudo pacman -S --noconfirm octave
-
-# suckless terminal of Luke Smith
-git clone http://github.com/lukesmithxyz/st.git
-cd ~
-cd st
-make
-sudo make install
-cd ~
-rm -rf st
 
 echo -e "\n\n\n\n"
 echo "Python packages"
@@ -362,6 +365,3 @@ sudo python3 -m pip install google-api-python-client google-auth-httplib2 google
 
 ## install programs for the user:
 source ~/.first_install/user_install.sh
-
-## install jupyterhub service
-source ~/.jupyter/jupyterhub_generate_service.sh

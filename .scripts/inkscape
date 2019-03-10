@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# from /var/lib/flatpak/app/org.inkscape.Inkscape/current/active/export/bin/org.inkscape.Inkscape
+export XDG_DATA_DIRS="/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share"
+exec /usr/bin/flatpak run --branch=stable --arch=x86_64 org.inkscape.Inkscape "$@"
