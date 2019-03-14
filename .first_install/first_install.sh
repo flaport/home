@@ -124,6 +124,18 @@ sudo pacman -S --noconfirm unzip
 # rpm extraction
 yay -S --noconfirm rpmextract
 
+## printers
+# printer system (cups @ localhost:631)
+sudo pacman -S --noconfirm cups
+sudo echo -n "Allow all" >> /etc/cups/cupsd.conf
+sudo systemctl enable org.cups.cupsd
+# print to pdf
+sudo pacman -S --noconfirm cups-pdf
+# for network printing
+sudo pacman -S --noconfirm avahi
+sudo pacman -S --noconfirm nss-mdns
+sudo systemctl enable avahi-daemon
+sudo pacman -S --noconfirm samba
 
 ## toolbar
 # battery information
@@ -314,6 +326,8 @@ code --install-extension james-yu.latex-workshop
 code --install-extension formulahendry.code-runner
 code --install-extension shardulm94.trailing-spaces
 code --install-extension robertohuertasm.vscode-icons
+code --install-extension richie5um2.vscode-sort-json
+
 # yay -S --noconfirm klayout
 
 ## Power & sleep
