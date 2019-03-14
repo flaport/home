@@ -22,6 +22,15 @@
     "vim.neovimPath": "/usr/bin/nvim",
     "vim.normalModeKeyBindingsNonRecursive": [
         {
+            "before": [
+                "leader",
+                "s"
+            ],
+            "commands": [
+                "latex-workshop.synctex",
+            ]
+        },
+        {
             "after": [
                 "d",
                 "d"
