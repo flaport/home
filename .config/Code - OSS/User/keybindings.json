@@ -1,0 +1,8 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+    {
+        "key": "ctrl+j",
+        "command": "latex-workshop.synctex",
+        "when": "editorTextFocus && !latex-workshop:altkeymap"
+    },
+]
