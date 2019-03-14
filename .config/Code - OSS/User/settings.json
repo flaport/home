@@ -1,33 +1,39 @@
 {
-    "window.zoomLevel": -1,
-    "vim.easymotion": true,
-    "vim.sneak": true,
-    "vim.incsearch": true,
-    "vim.useSystemClipboard": true,
-    "vim.useCtrlKeys": true,
-    "vim.hlsearch": true,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "latex-workshop.view.pdf.viewer": "tab",
+    "trailing-spaces.trimOnSave": true,
+    "vim.enableNeovim": true,
+    "vim.handleKeys": {
+        "<C-f>": false,
+        "<C-h>": false
+    },
     "vim.insertModeKeyBindings": [
         {
-        "before": ["j", "j"],
-        "after": ["<Esc>"]
+            "after": [
+                "<Esc>"
+            ],
+            "before": [
+                "j",
+                "j"
+            ]
         }
     ],
+    "vim.neovimPath": "/usr/bin/nvim",
     "vim.normalModeKeyBindingsNonRecursive": [
         {
-        "before": ["<leader>", "d"],
-        "after": ["d", "d"]
-        },
-        {
-        "before": ["<C-n>"],
-        "commands": [":nohl"]
+            "after": [
+                "d",
+                "d"
+            ],
+            "before": [
+                "<leader>",
+                "d"
+            ]
         }
     ],
-    "vim.leader": "<space>",
-    "vim.handleKeys": {
-        "<C-a>": false,
-        "<C-f>": false
-    },
+    "window.restoreWindows": "none",
+    "window.zoomLevel": -1,
     "workbench.colorTheme": "Default Light+",
-    "git.enableSmartCommit": true,
     "workbench.iconTheme": "vscode-icons"
 }
