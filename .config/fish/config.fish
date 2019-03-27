@@ -22,7 +22,7 @@ bind \ea accept-autosuggestion
 # web apps
 set -gx PATH "$HOME/.webapps:$PATH"
 # lumerical fdtd
-set -gx PATH "/opt/lumerical/fdtd/bin:$PATH"
+set -gx PATH "/opt/lumerical/fdtd/bin:/opt/lumerical/mode/bin:/opt/lumerical/interconnect/bin:$PATH"
 # custom scripts
 set -gx PATH "$HOME/.scripts:$PATH"
 # custom openvpn command
