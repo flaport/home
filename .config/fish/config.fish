@@ -40,8 +40,10 @@ set -gx PATH "$HOME/.anaconda/bin:$PATH"
 # to enable conda activate
 source "$HOME/.anaconda/etc/fish/conf.d/conda.fish" 
 # set python path from "~/.pythonpath" file
+touch $HOME/.pythonpath # create pythonpath file if it does not exist
 set -gx PYTHONPATH (string replace "~" $HOME (tr '\n' ':' < ~/.pythonpath | head -c -1))
 # set python startup file
+# touch $HOME/.pythonstartup # do not touch .pythonstartup as it is part of source control
 set -gx PYTHONSTARTUP "$HOME/.pythonstartup"
 
 ## i3 [this should be placed last]

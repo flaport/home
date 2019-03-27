@@ -29,5 +29,7 @@
     },
     "workbench.colorTheme": "Default Light+",
     "git.enableSmartCommit": true,
-    "workbench.iconTheme": "vscode-icons"
+    "workbench.iconTheme": "vscode-icons",
+    "trailing-spaces.trimOnSave": true,
+    "explorer.confirmDragAndDrop": false,
 }
