@@ -18,7 +18,7 @@ pip install neovim
 npm install -g neovim
 
 # conda packages
-conda install -y jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib h5py flask pandoc pylint
+conda install -y jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib h5py flask pandoc pylint mypy
 conda install -y pytorch -c pytorch
 # these need to be installed with conda-forge to make sure nodejs is not downgraded
 conda install -y -c conda-forge jupyterlab jupyterhub
@@ -30,7 +30,7 @@ conda install -y -n py2 pytorch -c pytorch
 $HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name python2 --display-name "Python 2"
 mv $HOME/.local/share/jupyter/kernels/python2 $HOME/.anaconda/share/jupyter/kernels/python2
 # python 3.6
-conda create -y -n py36 python=3.6 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets tensorflow keras pandoc flask pylint
+conda create -y -n py36 python=3.6 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets tensorflow keras pandoc flask pylint mypy
 conda install -y -n py36 pytorch -c pytorch
 $HOME/.anaconda/envs/py36/bin/python -m ipykernel install --user --name python36 --display-name "Python 3.6"
 mv $HOME/.local/share/jupyter/kernels/python36 $HOME/.anaconda/share/jupyter/kernels/python36
