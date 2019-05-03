@@ -4,24 +4,16 @@ curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --out
 sh miniconda.sh -b -p $HOME/.anaconda
 rm miniconda.sh
 
-# remove ld binary that causes trouble for cython:
-mv ~/.anaconda/compiler_compat/ld ~/.anaconda/compiler_compat/ld_disabled
-
 # add anaconda to path
 export $PATH="$HOME/.anaconda/bin:$PATH"
-
-# install nodejs in our anaconda installation
-conda install -y nodejs
 
 # neovim anaconda python integration
 pip install neovim
 npm install -g neovim
 
 # conda packages
-conda install -y jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib h5py flask pandoc pylint mypy line_profiler pytz simplejson
+conda install -y jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib h5py flask pandoc pylint mypy line_profiler pytz simplejson jupyterlab
 conda install -y pytorch -c pytorch
-# these need to be installed with conda-forge to make sure nodejs is not downgraded
-conda install -y -c conda-forge jupyterlab jupyterhub
 
 # jupyter environments/kernels
 # python 2
@@ -53,8 +45,17 @@ pip install octave_kernel
 # cd ~
 # pip install matlab_kernel
 
+# altair
+conda install -y altair vega -c conda-forge
+conda install -y -n py2 altair vega -c conda-forge
+conda install -y -n py36 altair vega -c conda-forge
+
+# remove ld binary that causes trouble for cython:
+mv ~/.anaconda/compiler_compat/ld ~/.anaconda/compiler_compat/ld_disabled
+mv ~/.anaconda/envs/py2/compiler_compat/ld ~/.anaconda/envs/py2/compiler_compat/ld_disabled
+mv ~/.anaconda/envs/py36/compiler_compat/ld ~/.anaconda/envs/py36/compiler_compat/ld_disabled
+
 # pip packages
-pip install altair # plottling library
 pip install plotly # plotting library
 pip install grip # markdown previews
 pip install ipdb # pdb in jupyter notebooks
@@ -65,6 +66,10 @@ pip install pygmo # optimization of multi-variable functions
 
 # google
 pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+# install nodejs in our anaconda installation
+conda install -y nodejs=8
+conda install jupyterhub -c conda-forge
 
 # jupyterlab extensions
 jupyter labextension install jupyterlab_vim
