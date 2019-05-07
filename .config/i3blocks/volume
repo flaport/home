@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sc=$(cat ~/.soundcard)
+sc=$($HOME/.scripts/soundcard)
 string=$(amixer -c $sc get Master)
 if [[ $string == *"[on]"* ]]; then
     percentage=$(echo $(amixer -c $sc get Master) | cut -d "[" -f2 | cut -d "]" -f1)
