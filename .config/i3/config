@@ -157,6 +157,12 @@ bindsym $mod+Shift+u		exec --no-startup-id ~/.config/i3/resize down
 bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize up
 bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize right
 
+## weather report screen
+for_window [instance="weather*"] floating enable;
+for_window [instance="weather*"] resize set height 550px;
+for_window [instance="weather*"] resize set width 800px;
+for_window [instance="weather*"] move position 1120px 30px;
+
 ## drop down windows
 for_window [instance="dropdown_*"] floating enable;
 for_window [instance="dropdown_*"] sticky enable;

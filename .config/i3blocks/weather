@@ -1,9 +1,14 @@
-#!/bin/sh
+#!/usr/bin/env bash
 ### This is only if your location isn't automatically detected, otherwise you can leave it blank.
 location=""
 
+show() {
+    $HOME/.scripts/non-transparent-terminal -n weather -f mono:pixelsize=12 -e ~/.config/i3blocks/popweather;
+    sleep 1;
+}
+
 case $BLOCK_BUTTON in
-    1) $TERMINAL -e ~/.config/i3blocks/popweather ;;
+    1) show ;;
     3) pgrep -x dunst >/dev/null && notify-send "<b>🌈 Weather module:</b>
 - Click for wttr.in forecast.
 ☔: Chance of rain/snow
