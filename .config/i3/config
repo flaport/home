@@ -158,16 +158,22 @@ bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize up
 bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize right
 
 ## weather report screen
-for_window [instance="audio*"] floating enable;
-for_window [instance="audio*"] resize set height 550px;
-for_window [instance="audio*"] resize set width 800px;
-for_window [instance="audio*"] move position 1120px 30px;
+for_window [instance="volume*"] floating enable;
+for_window [instance="volume*"] resize set height 550px;
+for_window [instance="volume*"] resize set width 800px;
+for_window [instance="volume*"] move position 1120px 30px;
 
 ## weather report screen
 for_window [instance="weather*"] floating enable;
 for_window [instance="weather*"] resize set height 550px;
 for_window [instance="weather*"] resize set width 800px;
 for_window [instance="weather*"] move position 1120px 30px;
+
+## storage report screen
+for_window [instance="storage*"] floating enable;
+for_window [instance="storage*"] resize set height 125px;
+for_window [instance="storage*"] resize set width 500px;
+for_window [instance="storage*"] move position 1420px 30px;
 
 ## drop down windows
 for_window [instance="dropdown_*"] floating enable;
