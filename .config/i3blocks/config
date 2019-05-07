@@ -32,6 +32,10 @@ markup=none
 # interval=once
 
 # volume indicator
+[openvpn]
+interval=1
+
+# volume indicator
 [battery]
 interval=1
 

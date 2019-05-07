@@ -164,6 +164,12 @@ for_window [instance="volume*"] resize set width 800px;
 for_window [instance="volume*"] move position 1120px 30px;
 
 ## weather report screen
+for_window [instance="openvpn*"] floating enable;
+for_window [instance="openvpn*"] resize set height 250px;
+for_window [instance="openvpn*"] resize set width 800px;
+for_window [instance="openvpn*"] move position 1120px 30px;
+
+## weather report screen
 for_window [instance="weather*"] floating enable;
 for_window [instance="weather*"] resize set height 550px;
 for_window [instance="weather*"] resize set width 800px;
