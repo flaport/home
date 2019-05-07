@@ -8,6 +8,7 @@ echo -e "\n\n\n\n"
 echo "Changing shell to fish..."
 echo -e "\n\n\n\n"
 sleep 1
+
 ## better bash
 sudo pacman -S --noconfirm fish
 chsh -s /usr/bin/fish
@@ -54,6 +55,10 @@ sudo ln -sf /usr/bin/nvim /usr/bin/vim
 ## Code OSS (vscode comunity edition)
 sudo pacman -S --noconfirm code
 
+## build tools
+# makefiles
+sudo pacman -S --noconfirm make
+
 ## suckless terminal (Luke Smith fork)
 cd ~
 git clone http://github.com/lukesmithxyz/st.git
@@ -94,10 +99,6 @@ sudo pacman -S --noconfirm xorg-xbacklight
 sudo pacman -S --noconfirm xorg-xdpyinfo
 # hide an inactive mouse
 yay -S --noconfirm unclutter-xfixes-git
-
-## build tools
-# makefiles
-sudo pacman -S --noconfirm make
 
 ## archiving tools
 # rsync
