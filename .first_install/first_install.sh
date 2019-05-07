@@ -4,22 +4,31 @@ cd ~
 # updating time and date
 sudo timedatectl set-local-rtc 1
 
+echo -e "\n\n\n\n"
+echo "Changing shell to fish..."
+echo -e "\n\n\n\n"
+sleep 1
+## better bash
+sudo pacman -S --noconfirm fish
+chsh -s /usr/bin/fish
+
 ## Update Arch
 echo -e "\n\n\n\n"
 echo "Updating Arch Linux..."
 echo -e "\n\n\n\n"
-sleep 5
+sleep 1
 
 sudo pacman -Syu --noconfirm
 
 ## git
 echo -e "\n\n\n\n"
-echo "Installing git..."
+echo "Installing source control..."
 echo -e "\n\n\n\n"
 sleep 5
 
 # installation
 sudo pacman -S --noconfirm git
+sudo pacman -S --noconfirm mercurial
 
 echo -e "\n\n\n\n"
 echo "Installing YAY..."
@@ -32,17 +41,8 @@ makepkg -si --noconfirm
 cd ~
 rm -rf yay
 
-
 echo -e "\n\n\n\n"
-echo "Changing shell to fish..."
-echo -e "\n\n\n\n"
-sleep 5
-## better bash
-sudo pacman -S --noconfirm fish
-chsh -s /usr/bin/fish
-
-echo -e "\n\n\n\n"
-echo "Installing packages..."
+echo "Installing other packages..."
 echo -e "\n\n\n\n"
 sleep 5
 
@@ -50,6 +50,9 @@ sleep 5
 # installation
 sudo pacman -S --noconfirm neovim
 sudo ln -sf /usr/bin/nvim /usr/bin/vim
+
+## Code OSS (vscode comunity edition)
+sudo pacman -S --noconfirm code
 
 ## suckless terminal (Luke Smith fork)
 cd ~
@@ -153,7 +156,7 @@ sudo pacman -S --noconfirm autossh
 
 ## file browsers
 # vifm: terminal file browser
-sudo pacman -S vifm
+sudo pacman -S --noconfirm vifm
 # alternative: ranger: terminal file browser
 # sudo pacman -S --noconfirm ranger
 # image previews in terminal
@@ -285,8 +288,8 @@ sudo pacman -S --noconfirm qutebrowser
 
 ## Artistic
 sudo pacman -S --noconfirm gimp
-sudo pacman -S --noconfirm krita
-sudo pacman -S --noconfirm pinta
+# sudo pacman -S --noconfirm krita
+# sudo pacman -S --noconfirm pinta
 yay -S --noconfirm inkscape
 
 ## Remote desktop
@@ -314,17 +317,13 @@ code --install-extension richie5um2.vscode-sort-json
 
 ## Power & sleep
 # sleep on low power
-sudo pacman -S acpid
+sudo pacman -S --noconfirm acpid
 sudo systemctl enable acpid
 chmod a+w /sys/power/state
 
 ## Tools
 # hide an inactive mouse
 yay -S --noconfirm unclutter-xfixes-git
-
-## Terminal
-## drive and file system access
-yay -S --noconfirm simple-mtpfs
 
 ## GDS Layouts
 # Klayout (takes very long, hence disabled by default)
