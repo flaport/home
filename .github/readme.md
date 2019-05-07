@@ -22,6 +22,19 @@ All my personal configuration files for most installed programs.
 All kind of useful files and file templates that are not supposed to be stored
 in the home directory (like systemd services, fstab files, ...)
 
+### [.first_install](../.first_install)
+
+Contains a readme file [`readme.md`](.first_install/readme.md) containing all
+the manual installation steps needed to be taken to make a proper Arch Linux
+installation.
+
+It also contains an installation bash script
+[`first_install.sh`](../.first_install/first_install.sh) which installs the
+essential programs for the new installation automatically.
+
+It also contains an installation bash script for user installation files
+[`user_install.sh`](../.first_install/user_install.sh).
+
 ### [.github](../.github)
 
 A folder where I can store this readme file. This way I don't have to store the
@@ -48,20 +61,6 @@ SSH configuration and explanation
 
 Webapps (like gmail, youtube, maps, ...) are opened with chromium as an app
 (without search bar).
-
-### [.first_install](../.first_install)
-
-Contains a readme file [`readme.md`](.first_install/readme.md) containing all
-the manual installation steps needed to be taken to make a proper Arch Linux
-installation.
-
-It also contains an installation bash script
-[`first_install.sh`](../.first_install/first_install.sh) which installs the
-essential programs for the new installation automatically.
-
-It also contains an installation bash script for user installation files
-[`user_install.sh`](../.first_install/user_install.sh).
-
 
 ## Files
 
