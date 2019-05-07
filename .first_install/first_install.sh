@@ -12,7 +12,6 @@ sleep 5
 
 sudo pacman -Syu --noconfirm
 
-
 ## git
 echo -e "\n\n\n\n"
 echo "Installing git..."
@@ -21,12 +20,6 @@ sleep 5
 
 # installation
 sudo pacman -S --noconfirm git
-# git default email adress
-git config --global user.email "floris.laporte@gmail.com"
-# git default email adress
-git config --global user.name flaport
-# cache git password for 12 hours
-git config --global credential.helper "cache --timeout=43200"
 
 echo -e "\n\n\n\n"
 echo "Installing YAY..."
@@ -39,14 +32,6 @@ makepkg -si --noconfirm
 cd ~
 rm -rf yay
 
-echo -e "\n\n\n\n"
-echo "Installing Flatpack..."
-echo -e "\n\n\n\n"
-sleep 5
-## flatpak
-sudo pacman -S --noconfirm xdg-desktop-portal-gtk
-yay -S --noconfirm flatpak
-
 
 echo -e "\n\n\n\n"
 echo "Changing shell to fish..."
@@ -55,7 +40,6 @@ sleep 5
 ## better bash
 sudo pacman -S --noconfirm fish
 chsh -s /usr/bin/fish
-
 
 echo -e "\n\n\n\n"
 echo "Installing packages..."
@@ -121,7 +105,7 @@ sudo pacman -S --noconfirm atool
 sudo pacman -S --noconfirm unrar
 # unzip
 sudo pacman -S --noconfirm unzip
-# rpm extraction
+# rpm extraction shell script
 yay -S --noconfirm rpmextract
 
 ## printers
@@ -164,6 +148,7 @@ echo 'export FREETYPE_PROPERTIES="truetype:interpreter-version=40"' | sudo tee -
 sudo pacman -S --noconfirm openvpn
 # ssh (client and server)
 sudo pacman -S --noconfirm openssh
+# autossh (for ssh daemons)
 sudo pacman -S --noconfirm autossh
 
 ## file browsers
@@ -185,8 +170,10 @@ sudo pacman -S --noconfirm nemo
 # sudo pacman -S --noconfirm konsole
 # sudo pacman -S --noconfirm kompare
 
-## terminal search
+## terminal internet search
+# google
 yay -S --noconfirm googler
+# duckduckgo
 yay -S --noconfirm ddgr
 
 ## arandr: for screen adjustment
@@ -211,10 +198,9 @@ sudo pacman -S --noconfirm libnotify
 # dunst creates desktop notifications (suckless)
 sudo pacman -S --noconfirm dunst
 
+## image and video tools
 ## image viewer
 sudo pacman -S --noconfirm sxiv
-
-## image and video tools
 # imagemagick: for images
 sudo pacman -S --noconfirm imagemagick
 # ffmpeg: for videos
@@ -223,7 +209,7 @@ sudo pacman -S --noconfirm ffmpeg
 sudo pacman -S --noconfirm youtube-dl
 # youtube-viewer
 sudo pacman -S --noconfirm youtube-viewer
-# vls media player
+# vlc media player
 sudo pacman -S --noconfirm vlc
 # spotify
 yay -S --noconfirm spotify
@@ -301,9 +287,7 @@ sudo pacman -S --noconfirm qutebrowser
 sudo pacman -S --noconfirm gimp
 sudo pacman -S --noconfirm krita
 sudo pacman -S --noconfirm pinta
-# sudo pacman -S --noconfirm inkscape
-sudo flatpak install flathub org.inkscape.Inkscape # this one looks better
-sudo ln -sf /var/lib/flatpak/app/org.inkscape.Inkscape/current/active/export/bin/org.inkscape.Inkscape /usr/bin/inkscape
+yay -S --noconfirm inkscape
 
 ## Remote desktop
 sudo pacman -S --noconfirm remmina
@@ -328,8 +312,6 @@ code --install-extension shardulm94.trailing-spaces
 code --install-extension robertohuertasm.vscode-icons
 code --install-extension richie5um2.vscode-sort-json
 
-# yay -S --noconfirm klayout
-
 ## Power & sleep
 # sleep on low power
 sudo pacman -S acpid
@@ -345,7 +327,7 @@ yay -S --noconfirm unclutter-xfixes-git
 yay -S --noconfirm simple-mtpfs
 
 ## GDS Layouts
-# klayout (disabled by default, as this is built from source and takes a long time!)
+# Klayout (takes very long, hence disabled by default)
 # yay -S --noconfirm klayout
 
 ## Scientific computing octave (matlab alternative)
@@ -356,7 +338,7 @@ echo "Python packages"
 echo -e "\n\n\n\n"
 sleep 5
 
-# install pip for system python
+# system python packages
 sudo pacman -S --noconfirm tk
 sudo pacman -S --noconfirm python-pip
 sudo pacman -S --noconfirm python2-pip
@@ -377,5 +359,5 @@ sudo python2 -m pip install pandoc
 sudo python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 sudo python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
-## install programs for the user:
-source ~/.first_install/user_install.sh
+## install programs for the user (disabled by default as this is up to the user):
+# source ~/.first_install/user_install.sh
