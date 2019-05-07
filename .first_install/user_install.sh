@@ -69,7 +69,7 @@ pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
 # install nodejs in our anaconda installation
 conda install -y nodejs=8
-conda install jupyterhub -c conda-forge
+conda install jupyterhub -y -c conda-forge
 
 # jupyterlab extensions
 jupyter labextension install jupyterlab_vim

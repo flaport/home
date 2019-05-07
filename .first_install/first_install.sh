@@ -298,8 +298,11 @@ sudo pacman -S --noconfirm remmina
 sudo pacman -S --noconfirm freerdp
 
 ## Office
-sudo pacman -S --noconfirm sc-im # terminal excel
+# terminal spreadsheets
+yay -S --noconfirm sc-im
+# open-source office
 sudo pacman -S --noconfirm libreoffice
+# sqlite database browser
 sudo pacman -S --noconfirm sqlitebrowser
 
 ## Programming
@@ -321,10 +324,6 @@ code --install-extension richie5um2.vscode-sort-json
 sudo pacman -S --noconfirm acpid
 sudo systemctl enable acpid
 chmod a+w /sys/power/state
-
-## Tools
-# hide an inactive mouse
-yay -S --noconfirm unclutter-xfixes-git
 
 ## GDS Layouts
 # Klayout (takes very long, hence disabled by default)
@@ -360,4 +359,4 @@ sudo python2 -m pip install google-api-python-client google-auth-httplib2 google
 sudo python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
 ## install programs for the user (disabled by default as this is up to the user):
-# source ~/.first_install/user_install.sh
+source ~/.first_install/user_install.sh
