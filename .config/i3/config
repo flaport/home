@@ -158,6 +158,12 @@ bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize up
 bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize right
 
 ## weather report screen
+for_window [instance="audio*"] floating enable;
+for_window [instance="audio*"] resize set height 550px;
+for_window [instance="audio*"] resize set width 800px;
+for_window [instance="audio*"] move position 1120px 30px;
+
+## weather report screen
 for_window [instance="weather*"] floating enable;
 for_window [instance="weather*"] resize set height 550px;
 for_window [instance="weather*"] resize set width 800px;
@@ -274,14 +280,14 @@ bindsym Shift+Print 		exec --no-startup-id scrot -u
 
 # media control
 # first make sure all audio channels are unmuted:
-exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master unmute
-exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Speaker unmute
-exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Headphone unmute
+exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master unmute
+exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Speaker unmute
+exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Headphone unmute
 # then these controls will always work:
-bindsym $mod+m			exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master toggle && amixer -q -c 1 sset Speaker unmute && amixer -q -c 1 sset Headphone unmute
-bindsym $mod+Shift+m		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 70%+
-bindsym $mod+plus		exec --no-startup-id amixer -q sset -c $(cat $HOME/.soundcard) Master 5%+
-bindsym $mod+Shift+plus		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 15%+
-bindsym $mod+minus 		exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 5%-
-bindsym $mod+Shift+minus	exec --no-startup-id amixer -q -c $(cat $HOME/.soundcard) sset Master 15%-
+bindsym $mod+m			exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master toggle && amixer -q -c 1 sset Speaker unmute && amixer -q -c 1 sset Headphone unmute
+bindsym $mod+Shift+m		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 70%+
+bindsym $mod+plus		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 5%+
+bindsym $mod+Shift+plus		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 15%+
+bindsym $mod+minus 		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 5%-
+bindsym $mod+Shift+minus	exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 15%-
 
