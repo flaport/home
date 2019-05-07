@@ -6,6 +6,11 @@ will ignore all new files added added to the home folder. Only while explicitly
 adding (with the `-f` flag) and commiting a file to the repository, it will be
 tracked.
 
+## Installation instructions
+
+Please follow the steps outlined in the [first install readme](../.first_install/readme.md). **Please follow these steps carefully to make sure all programs are
+correctly installed.**
+
 ## Folders
 
 ### [.config](../.config)
@@ -48,8 +53,7 @@ Webapps (like gmail, youtube, maps, ...) are opened with chromium as an app
 
 Contains a readme file [`readme.md`](.first_install/readme.md) containing all
 the manual installation steps needed to be taken to make a proper Arch Linux
-installation. **Please follow these steps carefully to make sure all programs are
-correctly installed.**
+installation.
 
 It also contains an installation bash script
 [`first_install.sh`](../.first_install/first_install.sh) which installs the
