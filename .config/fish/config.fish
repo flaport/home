@@ -2,9 +2,9 @@
 function fish_greeting
 end
 
-# turn on vim mode
+# turn on vim mode (enable default mode first to circumvent unmapped "btab" error)
+fish_default_key_bindings
 fish_vi_key_bindings
-# fish_default_key_bindings
 
 ## environment variables
 set -gx CC "gcc"
