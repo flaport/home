@@ -31,8 +31,12 @@ markup=none
 # [spacer]
 # interval=once
 
-# volume indicator
+# openvpn indicator
 [openvpn]
+interval=1
+
+# jupyterhub indicator
+[jupyterhub]
 interval=1
 
 # volume indicator

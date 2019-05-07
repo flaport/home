@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ $(systemctl is-active openvpn) == "active" ]]; then
+    echo 🐍
+else
+  echo ""
+fi
+
+show() {
+    $HOME/.scripts/non-transparent-terminal -n openvpnstatus -f mono:pixelsize=18 -e $HOME/.config/i3blocks/jupyterhubstatus;
+}
+
+case $BLOCK_BUTTON in
+    1) show ;;
+esac
