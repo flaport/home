@@ -282,8 +282,8 @@ sudo pacman -S --noconfirm biber
 sudo pacman -S --noconfirm xdotool
 
 ## browsers
-sudo pacman -S --noconfirm surf
-sudo pacman -S --noconfirm firefox
+# sudo pacman -S --noconfirm surf
+# sudo pacman -S --noconfirm firefox
 sudo pacman -S --noconfirm chromium
 sudo pacman -S --noconfirm qutebrowser
 
