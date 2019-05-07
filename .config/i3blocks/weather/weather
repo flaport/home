@@ -3,7 +3,7 @@
 location=""
 
 show() {
-    $HOME/.scripts/non-transparent-terminal -n weather -f mono:pixelsize=12 -e ~/.config/i3blocks/popweather;
+    $HOME/.scripts/non-transparent-terminal -n weather -f mono:pixelsize=12 -e ~/.config/i3blocks/weather/popweather;
     sleep 1;
 }
 

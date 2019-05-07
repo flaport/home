@@ -28,47 +28,47 @@ separator_block_width=15
 markup=none
 
 # spacer
-# [spacer]
+# [spacer/spacer]
 # interval=once
 
 # openvpn indicator
-[openvpn]
+[openvpn/openvpn]
 interval=1
 
 # jupyterhub indicator
-[jupyterhub]
+[jupyterhub/jupyterhub]
 interval=1
 
 # volume indicator
-[battery]
+[battery/battery]
 interval=1
 
 # volume indicator
-[volume]
+[volume/volume]
 interval=1
 
 # ram usage
-[memory]
+[memory/memory]
 label=💻
-separator=false
+separator=true
 interval=30
 
 # disk usage
-[disk]
+[disk/disk]
 label=💾
 interval=30
 
 # weather
-[weather]
+[weather/weather]
 interval=once
 
 # date
-[date]
+[date/date]
 label=📅
 interval=60
 
 # time
-[time]
+[time/time]
 label=🕒
 interval=60
 

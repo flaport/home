@@ -157,17 +157,23 @@ bindsym $mod+Shift+u		exec --no-startup-id ~/.config/i3/resize down
 bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize up
 bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize right
 
-## weather report screen
+## volume report screen
 for_window [instance="volume*"] floating enable;
 for_window [instance="volume*"] resize set height 550px;
 for_window [instance="volume*"] resize set width 800px;
 for_window [instance="volume*"] move position 1120px 30px;
 
-## weather report screen
+## openvpn report screen
 for_window [instance="openvpn*"] floating enable;
 for_window [instance="openvpn*"] resize set height 250px;
 for_window [instance="openvpn*"] resize set width 800px;
 for_window [instance="openvpn*"] move position 1120px 30px;
+
+## jupyterhub report screen
+for_window [instance="jupyterhub*"] floating enable;
+for_window [instance="jupyterhub*"] resize set height 250px;
+for_window [instance="jupyterhub*"] resize set width 800px;
+for_window [instance="jupyterhub*"] move position 1120px 30px;
 
 ## weather report screen
 for_window [instance="weather*"] floating enable;

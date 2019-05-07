@@ -41,7 +41,7 @@ END {
 '
 
 show_storage() {
-    $HOME/.scripts/non-transparent-terminal -n storage -f mono:pixelsize=18 -e $HOME/.config/i3blocks/storage;
+    $HOME/.scripts/non-transparent-terminal -n storage -f mono:pixelsize=18 -e $HOME/.config/i3blocks/disk/storage;
 }
 
 case $BLOCK_BUTTON in
