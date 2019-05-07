@@ -8,3 +8,11 @@ if [[ $string == *"[on]"* ]]; then
 else
   echo 🔇
 fi
+
+show() {
+    $HOME/.scripts/non-transparent-terminal -n volume -f mono:pixelsize=12 -e alsamixer;
+}
+
+case $BLOCK_BUTTON in
+    1) show ;;
+esac
