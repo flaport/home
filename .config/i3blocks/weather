@@ -9,11 +9,7 @@ show() {
 
 case $BLOCK_BUTTON in
     1) show ;;
-    3) pgrep -x dunst >/dev/null && notify-send "<b>🌈 Weather module:</b>
-- Click for wttr.in forecast.
-☔: Chance of rain/snow
-❄: Daily low
-🌞: Daily high" ;;
+    3) pgrep -x dunst >/dev/null && notify-send "🌈 Weather module"
 esac
 
 [ "$location" != "" ] && location="$location+"
