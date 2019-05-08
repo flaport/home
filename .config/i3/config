@@ -302,7 +302,7 @@ exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master unmute
 exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Speaker unmute
 exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Headphone unmute
 # then these controls will always work:
-bindsym $mod+m			exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master toggle && amixer -q -c 1 sset Speaker unmute && amixer -q -c 1 sset Headphone unmute
+bindsym $mod+m			exec --no-startup-id amixer -D pulse set Master 1+ toggle
 bindsym $mod+Shift+m		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 70%+
 bindsym $mod+plus		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 5%+
 bindsym $mod+Shift+plus		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 15%+
