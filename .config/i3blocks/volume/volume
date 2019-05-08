@@ -10,9 +10,10 @@ else
 fi
 
 show() {
-    $HOME/.scripts/non-transparent-terminal -n volume -f mono:pixelsize=12 -e alsamixer;
+    $HOME/.scripts/non-transparent-terminal -n tvolume -f mono:pixelsize=12 -e alsamixer;
 }
 
 case $BLOCK_BUTTON in
     1) show ;;
+    3) pkill -f tvolume
 esac

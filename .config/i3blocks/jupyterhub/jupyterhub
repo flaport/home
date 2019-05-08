@@ -3,10 +3,11 @@
 if [[ $(systemctl is-active jupyterhub) == "active" ]]; then
     echo 🐍
     show() {
-        $HOME/.scripts/non-transparent-terminal -n jupyterhub -f mono:pixelsize=18 -e $HOME/.config/i3blocks/jupyterhub/jupyterhubstatus;
+        $HOME/.scripts/non-transparent-terminal -n tjupyterhub -f mono:pixelsize=18 -e $HOME/.config/i3blocks/jupyterhub/jupyterhubstatus;
     }
     case $BLOCK_BUTTON in
         1) show ;;
+        3) pkill -f tjupyterhub
     esac
 else
   echo ""

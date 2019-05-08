@@ -3,10 +3,11 @@
 if [[ $(systemctl is-active openvpn) == "active" ]]; then
     echo 🔒
     show() {
-        $HOME/.scripts/non-transparent-terminal -n openvpnstatus -f mono:pixelsize=18 -e $HOME/.config/i3blocks/openvpn/openvpnstatus;
+        $HOME/.scripts/non-transparent-terminal -n topenvpn -f mono:pixelsize=18 -e $HOME/.config/i3blocks/openvpn/openvpnstatus;
     }
     case $BLOCK_BUTTON in
         1) show ;;
+        3) pkill -f topenvpn
     esac
 else
   echo ""

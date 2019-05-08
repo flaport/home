@@ -3,13 +3,14 @@
 location=""
 
 show() {
-    $HOME/.scripts/non-transparent-terminal -n weather -f mono:pixelsize=12 -e ~/.config/i3blocks/weather/popweather;
+    $HOME/.scripts/non-transparent-terminal -n tweather -f mono:pixelsize=12 -e ~/.config/i3blocks/weather/popweather;
     sleep 1;
 }
 
 case $BLOCK_BUTTON in
     1) show ;;
-    3) pgrep -x dunst >/dev/null && notify-send "🌈 Weather module"
+    3) pkill -f tweather
+    #3) pgrep -x dunst >/dev/null && notify-send "🌈 Weather module"
 esac
 
 [ "$location" != "" ] && location="$location+"
