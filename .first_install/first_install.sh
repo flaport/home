@@ -207,14 +207,16 @@ sudo pacman -S --noconfirm dunst
 sudo pacman -S --noconfirm sxiv
 # imagemagick: for images
 sudo pacman -S --noconfirm imagemagick
-# ffmpeg: for videos
-sudo pacman -S --noconfirm ffmpeg
 # youtube-dl: download youtube videos
 sudo pacman -S --noconfirm youtube-dl
 # youtube-viewer
 sudo pacman -S --noconfirm youtube-viewer
 # vlc media player
 sudo pacman -S --noconfirm vlc
+# mpv media player
+sudo pacman -S --noconfirm mpv
+# ffmpeg command line tool
+sudo pacman -S --noconfirm ffmpeg
 # spotify
 yay -S --noconfirm spotify
 
