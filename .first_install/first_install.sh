@@ -360,3 +360,11 @@ sudo python3 -m pip install google-api-python-client google-auth-httplib2 google
 
 ## install programs for the user (disabled by default as this is up to the user):
 source ~/.first_install/user_install.sh
+
+## add new python to path
+source ~/.bashrc
+
+## Install services
+sudo $HOME/.first_install/services $HOME
+sudo systemctl daemon-reload
+sudo systemctl enable jupyterhub.service

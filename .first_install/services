@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+
+# this script expects the location of your home directory as single argument.
+
+import os
+import sys
+
+if len(sys.argv) != 2:
+    raise ValueError("invalid number of arguments")
+
+home = sys.argv[1]
+
+# jupyterhub service
+# -------------------------------------------------------- #
+
+with open(os.path.join(home, ".jupyter/jupyterhub.service"), "r") as file:
+    jupyterhub = file.read()
+
+with open("/etc/systemd/system/jupyterhub.service", "w") as file:
+    file.write(jupyterhub.format(home=home))
+
+# openvpn service
+# -------------------------------------------------------- #
+
+with open(os.path.join(home, ".config/openvpn/openvpn.service"), "r") as file:
+    openvpn = file.read()
+
+with open("/etc/systemd/system/openvpn.service", "w") as file:
+    file.write(openvpn.format(home=home))
+
