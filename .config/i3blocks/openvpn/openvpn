@@ -3,13 +3,29 @@
 if [[ $(systemctl is-active openvpn) == "active" ]]; then
     echo 🔒
     show() {
-        $HOME/.scripts/non-transparent-terminal -n topenvpn -f mono:pixelsize=18 -e $HOME/.config/i3blocks/openvpn/openvpnstatus;
+        #$HOME/.scripts/non-transparent-terminal -n topenvpn -f mono:pixelsize=18 -e $HOME/.config/i3blocks/openvpn/openvpnstatus;
+        notify-send "OpenVPN" "active\n(right click to stop)\n\n$($HOME/.config/i3blocks/openvpn/openvpnstatus)"
+    }
+    stopp() {
+        $HOME/.scripts/non-transparent-terminal -n topenvpn -f mono:pixelsize=18 -e sudo systemctl stop openvpn;
     }
     case $BLOCK_BUTTON in
         1) show ;;
-        3) pkill -f topenvpn
+        3) stopp ;;
+        #3) pkill -f topenvpn
     esac
 else
-  echo ""
+    echo "🔓"
+    show() {
+        #$HOME/.scripts/non-transparent-terminal -n topenvpn -f mono:pixelsize=18 -e $HOME/.config/i3blocks/openvpn/openvpnstatus;
+        notify-send "OpenVPN" "inactive\n(right click to start)\n\n$($HOME/.config/i3blocks/openvpn/openvpnstatus)"
+    }
+    startt() {
+        $HOME/.scripts/non-transparent-terminal -n topenvpn -f mono:pixelsize=18 -e sudo systemctl start openvpn;
+    }
+    case $BLOCK_BUTTON in
+        1) show ;;
+        3) startt
+    esac
 fi
 
