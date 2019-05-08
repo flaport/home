@@ -1,10 +1,17 @@
 #!/bin/bash
 
 string=$(acpi -b)
-if [[ $string == *"Discharging"* ]]; then
-    percentage=$(echo $string | cut -d "," -f2 | cut -d "," -f1)
-    echo 🔋$percentage
-else
-  #echo "🔌"
-  exit 1
+if [[ $string == *"Battery"* ]]; then
+    if [[ $string == *"Discharging"* ]]; then
+        percentage=$(echo $string | cut -d "," -f2 | cut -d "," -f1)
+        echo 🔋$percentage
+    else
+      echo "🔌"
+    fi
+    show() {
+        notify-send "$(acpi -b)"
+    }
+    case $BLOCK_BUTTON in
+        1) show 
+    esac
 fi
