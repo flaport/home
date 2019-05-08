@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 df -h / 
 df -h ~ 
-read
+# read
