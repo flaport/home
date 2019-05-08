@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+$TERMINAL -n search -e googler $(echo -n "" | dmenu -p "search")
