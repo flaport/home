@@ -142,62 +142,9 @@ bindsym $mod+t			split toggle
 bindsym $mod+e          layout stacking
 bindsym $mod+Shift+e    layout toggle split
 
-# i3 gaps sizing/reset
-bindsym $mod+Shift+t		gaps inner current set 15; gaps outer current set 15
-bindsym $mod+s			gaps inner current plus 5
-bindsym $mod+Shift+s		gaps inner current minus 5
-bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
-bindsym $mod+z			gaps outer current plus 5
-bindsym $mod+Shift+z		gaps outer current minus 5
-
-# resize
-bindsym $mod+f			fullscreen toggle
-bindsym $mod+Shift+y		exec --no-startup-id ~/.config/i3/resize left
-bindsym $mod+Shift+u		exec --no-startup-id ~/.config/i3/resize down
-bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize up
-bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize right
-
-## volume report screen
-for_window [instance="tvolume"] floating enable;
-for_window [instance="tvolume"] resize set height 550px;
-for_window [instance="tvolume"] resize set width 800px;
-for_window [instance="tvolume"] move position 1120px 30px;
-
-## openvpn report screen
-for_window [instance="topenvpn*"] floating enable;
-for_window [instance="topenvpn*"] resize set height 250px;
-for_window [instance="topenvpn*"] resize set width 800px;
-for_window [instance="topenvpn*"] move position 1120px 30px;
-
-## jupyterhub report screen
-for_window [instance="tjupyterhub*"] floating enable;
-for_window [instance="tjupyterhub*"] resize set height 250px;
-for_window [instance="tjupyterhub*"] resize set width 800px;
-for_window [instance="tjupyterhub*"] move position 1120px 30px;
-
-## weather report screen
-for_window [instance="tweather*"] floating enable;
-for_window [instance="tweather*"] resize set height 550px;
-for_window [instance="tweather*"] resize set width 800px;
-for_window [instance="tweather*"] move position 1120px 30px;
-
-## storage report screen
-for_window [instance="tstorage*"] floating enable;
-for_window [instance="tstorage*"] resize set height 125px;
-for_window [instance="tstorage*"] resize set width 500px;
-for_window [instance="tstorage*"] move position 1420px 30px;
-
-## drop down windows
-for_window [instance="dropdown_*"] floating enable;
-for_window [instance="dropdown_*"] sticky enable;
-for_window [instance="dropdown_*"] move position 1920px 22px;
-for_window [instance="dropdown_*"] scratchpad show;
-for_window [instance="dropdown_*"] resize set height 300px;
-for_window [instance="dropdown_*"] resize set width 500;
-for_window [instance="dropdown_*"] move scratchpad;
-
 # drop down terminal
 bindsym $mod+u exec --no-startup-id ~/.config/i3/terminal;
+
 # drop down calculator (python shell)
 bindsym $mod+a exec --no-startup-id ~/.config/i3/python;
 
@@ -212,6 +159,7 @@ for_window [instance="matplotlib*"] floating enable;
 
 # menu
 bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$lightyellow' -nf '$green' -sb '$green' -sf '$lightyellow' -fn 'Droid Sans-12'
+# bindsym $mod+d exec --no-startup-id $term -n fzfopen -f mono:pixelsize=20 -e $HOME/.scripts/fzfopen
 
 # gimp
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
@@ -309,3 +257,70 @@ bindsym $mod+Shift+plus		exec --no-startup-id amixer -q -c $($HOME/.scripts/soun
 bindsym $mod+minus 		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 5%-
 bindsym $mod+Shift+minus	exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 15%-
 
+## Special Screen (terminal) names
+
+# i3 gaps sizing/reset
+bindsym $mod+Shift+t		gaps inner current set 15; gaps outer current set 15
+bindsym $mod+s			gaps inner current plus 5
+bindsym $mod+Shift+s		gaps inner current minus 5
+bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
+bindsym $mod+z			gaps outer current plus 5
+bindsym $mod+Shift+z		gaps outer current minus 5
+
+# resize
+bindsym $mod+f			fullscreen toggle
+bindsym $mod+Shift+y		exec --no-startup-id ~/.config/i3/resize left
+bindsym $mod+Shift+u		exec --no-startup-id ~/.config/i3/resize down
+bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize up
+bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize right
+
+# volume report screen
+for_window [instance="tvolume"] floating enable;
+for_window [instance="tvolume"] resize set height 550px;
+for_window [instance="tvolume"] resize set width 800px;
+for_window [instance="tvolume"] move position 1120px 30px;
+
+# openvpn report screen
+for_window [instance="topenvpn*"] floating enable;
+for_window [instance="topenvpn*"] resize set height 250px;
+for_window [instance="topenvpn*"] resize set width 800px;
+for_window [instance="topenvpn*"] move position 1120px 30px;
+
+# jupyterhub report screen
+for_window [instance="tjupyterhub*"] floating enable;
+for_window [instance="tjupyterhub*"] resize set height 250px;
+for_window [instance="tjupyterhub*"] resize set width 800px;
+for_window [instance="tjupyterhub*"] move position 1120px 30px;
+
+# weather report screen
+for_window [instance="tweather*"] floating enable;
+for_window [instance="tweather*"] resize set height 550px;
+for_window [instance="tweather*"] resize set width 800px;
+for_window [instance="tweather*"] move position 1120px 30px;
+
+# storage report screen
+for_window [instance="tstorage*"] floating enable;
+for_window [instance="tstorage*"] resize set height 125px;
+for_window [instance="tstorage*"] resize set width 500px;
+for_window [instance="tstorage*"] move position 1420px 30px;
+
+# drop down windows
+for_window [instance="search"] floating enable;
+for_window [instance="search"] resize set height 800px;
+for_window [instance="search"] resize set width 1900px;
+for_window [instance="search"] move position 1920px 22px;
+
+# drop down fzfopen terminal
+for_window [instance="fzfopen"] floating enable;
+for_window [instance="fzfopen"] resize set height 300px;
+for_window [instance="fzfopen"] resize set width 500px;
+for_window [instance="fzfopen"] move position 1920px 22px;
+
+# drop down windows
+for_window [instance="dropdown_*"] floating enable;
+for_window [instance="dropdown_*"] sticky enable;
+for_window [instance="dropdown_*"] move position 1920px 22px;
+for_window [instance="dropdown_*"] scratchpad show;
+for_window [instance="dropdown_*"] resize set height 300px;
+for_window [instance="dropdown_*"] resize set width 500px;
+for_window [instance="dropdown_*"] move scratchpad;
