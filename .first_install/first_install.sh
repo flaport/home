@@ -60,13 +60,7 @@ sudo pacman -S --noconfirm code
 sudo pacman -S --noconfirm make
 
 ## suckless terminal (Luke Smith fork)
-cd ~
-git clone http://github.com/lukesmithxyz/st.git
-cd st
-make
-sudo make install
-cd ~
-rm -rf st
+yay -S --noconfirm st-luke-git
 
 ## i3: the main graphical user interface
 # i3-gaps: allow gaps between windows
