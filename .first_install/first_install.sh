@@ -355,7 +355,7 @@ sudo python2 -m pip install google-api-python-client google-auth-httplib2 google
 sudo python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
 ## install programs for the user (disabled by default as this is up to the user):
-source ~/.first_install/user_install.sh
+# source ~/.first_install/user_install.sh
 
 ## add new python to path
 source ~/.bashrc
