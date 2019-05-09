@@ -27,52 +27,54 @@ command=~/.config/i3blocks/$BLOCK_NAME
 separator_block_width=15
 markup=none
 
-# spacer
-# [spacer/spacer]
-# interval=once
-
-# openvpn indicator
-[openvpn/openvpn]
-interval=1
-
-# jupyterhub indicator
-[jupyterhub/jupyterhub]
-interval=1
-
-# volume indicator
+# battery indicator
 [battery/battery]
-interval=1
+separator=true
+interval=180
 
 # volume indicator
 [volume/volume]
-interval=1
+separator=true
+interval=180
+signal=10
 
 # ram usage
 [memory/memory]
-label=💻
 separator=true
 interval=30
+#label=💻
 
 # disk usage
 [disk/disk]
+separator=true
 label=💾
 interval=30
 
 # weather
 [weather/weather]
+separator=true
 interval=once
 
 # date
 [date/date]
+separator=true
 label=📅
 interval=60
 
 # time
 [time/time]
+separator=true
 label=🕒
 interval=60
 
-# spacer
-[spacer]
-interval=once
+# jupyterhub indicator
+[jupyterhub/jupyterhub]
+separator=false
+interval=180
+signal=12
 
+# openvpn indicator
+[openvpn/openvpn]
+separator=false
+interval=180
+signal=11

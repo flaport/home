@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+sudo systemctl start jupyterhub
+echo "starting jupyterhub..."
+sleep 2
+pkill -RTMIN+12 i3blocks
