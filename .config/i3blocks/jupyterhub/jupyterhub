@@ -7,7 +7,7 @@ if [[ $(systemctl is-active jupyterhub) == "active" ]]; then
         notify-send "Jupyterhub" "active\n(right click to stop)\n\n$($HOME/.config/i3blocks/jupyterhub/jupyterhubstatus)"
     }
     stopp() {
-        $HOME/.scripts/non-transparent-terminal -n tjupyterhub -f mono:pixelsize=18 -e sudo systemctl stop jupyterhub;
+        $HOME/.scripts/non-transparent-terminal -n tjupyterhub -f mono:pixelsize=18 -e $HOME/.config/i3blocks/jupyterhub/stop;
     }
     case $BLOCK_BUTTON in
         1) show ;;
@@ -21,7 +21,7 @@ else
         notify-send "Jupyterhub" "inactive\n(right click to start)\n\n$($HOME/.config/i3blocks/jupyterhub/jupyterhubstatus)"
     }
     startt() {
-        $HOME/.scripts/non-transparent-terminal -n tjupyterhub -f mono:pixelsize=18 -e sudo systemctl start jupyterhub;
+        $HOME/.scripts/non-transparent-terminal -n tjupyterhub -f mono:pixelsize=18 -e $HOME/.config/i3blocks/jupyterhub/start;
     }
     case $BLOCK_BUTTON in
         1) show ;;
