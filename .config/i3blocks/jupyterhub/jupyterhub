@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $(systemctl is-active jupyterhub) == "active" ]]; then
-    echo 🪐 
+    echo 🪐
     show() {
         #$HOME/.scripts/non-transparent-terminal -n tjupyterhub -f mono:pixelsize=18 -e $HOME/.config/i3blocks/jupyterhub/jupyterhubstatus;
         notify-send "Jupyterhub" "active\n(right click to stop)\n\n$($HOME/.config/i3blocks/jupyterhub/jupyterhubstatus)"

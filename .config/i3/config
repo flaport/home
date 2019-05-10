@@ -284,6 +284,12 @@ for_window [instance="tjupyterhub*"] resize set height 250px;
 for_window [instance="tjupyterhub*"] resize set width 800px;
 for_window [instance="tjupyterhub*"] move position 1120px 30px;
 
+# sshtunnel report screen
+for_window [instance="tsshtunnel*"] floating enable;
+for_window [instance="tsshtunnel*"] resize set height 250px;
+for_window [instance="tsshtunnel*"] resize set width 800px;
+for_window [instance="tsshtunnel*"] move position 1120px 30px;
+
 # weather report screen
 for_window [instance="tweather*"] floating enable;
 for_window [instance="tweather*"] resize set height 550px;

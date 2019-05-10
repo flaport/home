@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+sudo systemctl start sshtunnel
+echo "starting sshtunnel..."
+sleep 2
+pkill -RTMIN+13 i3blocks

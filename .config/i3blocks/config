@@ -73,6 +73,12 @@ separator=false
 interval=180
 signal=12
 
+# sshtunnel indicator
+[sshtunnel/sshtunnel]
+separator=false
+interval=180
+signal=13
+
 # openvpn indicator
 [openvpn/openvpn]
 separator=false
