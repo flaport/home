@@ -14,9 +14,8 @@ set -gx TERMINAL "st"
 set -gx BROWSER "qutebrowser"
 set -gx READER "zathura"
 set -gx ICAROOT "$HOME/.ica"
-
-## accept autosuggestion
-bind \ea accept-autosuggestion
+# set -gx QT_QPA_PLATFORMTHEME="qt5ct"
+set -gx GTK2_RC_FILES "/usr/share/themes/Arc-solid/gtk-2.0/gtkrc"
 
 ## path
 # web apps
@@ -51,3 +50,7 @@ set -gx PYTHONSTARTUP "$HOME/.pythonstartup"
 if test (tty) = "/dev/tty1"
     pgrep -x i3; or exec startx
 end
+
+## accept autosuggestion
+bind \ea accept-autosuggestion
+

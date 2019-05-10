@@ -151,6 +151,10 @@ sudo pacman -S --noconfirm openssh
 # autossh (for ssh daemons)
 sudo pacman -S --noconfirm autossh
 
+## Theme
+# Arc
+sudo pacman -S --noconfirm arc-solid-gtk-theme
+
 ## file browsers
 # vifm: terminal file browser
 sudo pacman -S --noconfirm vifm
@@ -220,6 +224,8 @@ yay -S --noconfirm spotify
 sudo pacman -S --noconfirm networkmanager
 sudo systemctl enable NetworkManager
 sudo pacman -S --noconfirm network-manager-applet
+sudo pacman -S --noconfirm whois
+yay -S --noconfirm google-cloud-sdk
 
 ## bluetooth
 sudo pacman -S --noconfirm bluez
