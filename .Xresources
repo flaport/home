@@ -1,31 +1,42 @@
-*foreground: #00cc00
-*foreground_bold: #a8a19f
-!! *cursor: #a8a19f
-*background: #1b1918
-
-!! black
+!! backgroud
 *color0: #1b1918
-*color8: #766e6b
-!! red
-*color1: #f22c40
-*color9: #f22c40
-!! green
-*color2: #2aa198
-*color10: #2aa198
-!! yellow
-*color11: #ff7f0e
-*color3: #fdf6e3
-!! blue
-*color4: #407ee7
-*color12: #407ee7
-!! magenta
-*color5: #6c71c4
-*color13: #6c71c4
-!! cyan
-*color6: #00ad9c
-*color14: #00ad9c
-!! white
-*color7: #a8a19f
-*color15: #f1efee
 
+!! urgent
+*color1: #f22c40
+
+!! main
+*color2: #2aa198
+*color3: #fdf6e3
+*color4: #fdf6e3
+
+!! accent
+*color5: #407ee7
+
+!! main-muted
+*color6: #00ad9c
+
+!! foreground
+*color7: #fdf6e3
+
+!! neutral
+*color8: #766e6b
+
+!! urgent
+*color9: #ff0000
+*color10: #0000ff
+*color11: #2aa198
+
+!! main
+*color12: #2aa198
+
+!! accent
+*color13: #6c71c4
+
+!! main-muted
+*color14: #00ad9c
+
+!! foreground
+*color15: #fdf6e3
+
+*.alpha: 0.7
 *.alpha: 0.7

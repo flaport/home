@@ -43,43 +43,43 @@ exec_always --no-startup-id xrdb ~/.Xresources
 exec --no-startup-id unclutter
 
 # Set Xresources colors:
-set_from_resource $darkblack	color0  #000000
-set_from_resource $black	color8  #000000
-set_from_resource $darkred	color1  #000000
-set_from_resource $red		color9  #000000
-set_from_resource $darkgreen	color2  #000000
-set_from_resource $green	color10 #000000
-set_from_resource $yellow	color11 #000000
-set_from_resource $lightyellow	color3  #000000
-set_from_resource $darkblue	color4  #000000
-set_from_resource $blue		color12 #000000
-set_from_resource $darkmagenta	color5  #000000
-set_from_resource $magenta	color13 #000000
-set_from_resource $darkcyan	color6  #000000
-set_from_resource $cyan		color14 #000000
-set_from_resource $darkwhite	color7  #000000
-set_from_resource $white	color15 #000000
-set $transparent		#00000000
+set $transparent		        #00000000
+set_from_resource $background	color0
+set_from_resource $urgent	    color1
+set_from_resource $main       	color2
+set_from_resource $main2      	color3
+set_from_resource $main3 	    color4
+set_from_resource $accent    	color5
+set_from_resource $main-muted   color6
+set_from_resource $foreground2	color7
+set_from_resource $neutral	    color8
+set_from_resource $urgent2	    color9
+set_from_resource $urgent3	    color10
+set_from_resource $urgent4	    color11
+set_from_resource $main4	    color12
+set_from_resource $accent2	    color13
+set_from_resource $main-muted2  color14
+set_from_resource $foreground   color15
 
 #                       BORDER		    BACKGROUND	TEXT		INDICATOR   	CHILD_BORDER
-client.focused		    $transparent    $blue    	$white	    $darkmagenta	$darkblue
-client.unfocused	    $transparent    $green		$white		$darkblue		$darkblack
-client.focused_inactive	$transparent	$green		$white		$darkblue		$darkblack
-client.urgent		    $darkred	    $darkred	$black		$darkred		$darkred
-client.background       $black
+client.focused		    $transparent    $main-muted	$foreground $neutral    	$accent
+client.unfocused	    $transparent    $main		$foreground $main-muted		$transparent
+client.focused_inactive	$transparent	$main		$foreground	$main-muted		$transparent
+client.urgent		    $urgent	        $urgent	    $background	$urgent		    $urgent
+client.background       $background
 
 
 # status bar
 bar {
     i3bar_command i3bar -t
 	colors {
-			background #00000000 # $lightyellow
-			statusline $green
-			separator $magenta
-			focused_workspace  $green $green #00000000 # $lightyellow
-        		active_workspace   $green $green #00000000 # $lightyellow
-      			inactive_workspace #00000000 #00000000 $green # $lightyellow $lightyellow $green
-        		urgent_workspace   $red $red #00000000 # $lightyellow
+			background $transparent
+			statusline $main
+			separator $neutral
+			focused_workspace  $main $main $transparent
+        		active_workspace   $main $main $transparent
+      			inactive_workspace $transparent $transparent $main
+        		urgent_workspace   $urgent $urgent $transparent
 		}
 	status_command i3blocks
 	position top
@@ -158,7 +158,7 @@ bindsym $mod+o			sticky toggle
 for_window [instance="matplotlib*"] floating enable;
 
 # menu
-bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$lightyellow' -nf '$green' -sb '$green' -sf '$lightyellow' -fn 'Droid Sans-12'
+bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
 # bindsym $mod+d exec --no-startup-id $term -n fzfopen -f mono:pixelsize=20 -e $HOME/.scripts/fzfopen
 
 # gimp

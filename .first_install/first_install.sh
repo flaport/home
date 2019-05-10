@@ -75,6 +75,8 @@ sudo pacman -S --noconfirm feh
 sudo pacman -S --noconfirm socat
 # dmenu
 sudo pacman -S --noconfirm dmenu
+# pywal (automatic theming on background colors)
+sudo pacman -S --noconfirm python-pywal
 
 ## xorg: the graphical server
 # the graphical server
