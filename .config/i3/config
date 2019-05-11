@@ -29,6 +29,9 @@ exec --no-startup-id dunst
 # network manager 
 exec --no-startup-id nm-applet
 
+# automatically lock screen after 10 minutes
+exec --no-startup-id xautolock -time 10 -locker 'i3lock -c 000000' &
+
 # display notes
 # exec --no-startup-id $HOME/.scripts/notes
 

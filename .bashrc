@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ## Note
 #------
 # I switched to fish, so this file is not run
