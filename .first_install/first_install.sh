@@ -68,7 +68,7 @@ sudo pacman -S --noconfirm i3-gaps
 # i3-blocks: status bar for i3
 sudo pacman -S --noconfirm i3blocks
 # i3-lock: screen lock for i3
-sudo pacman -S --noconfirm i3lock
+yay -S --noconfirm i3lock-fancy-git
 # xautolock to automatically lock the screen
 sudo pacman -S --noconfirm xautolock
 # wallpapers
