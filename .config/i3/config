@@ -175,6 +175,7 @@ bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
 
 # lock screen
 bindsym $mod+x			exec --no-startup-id ~/.scripts/lock_screen
+bindsym $mod+Shift+x	exec --no-startup-id ~/.scripts/lock_screen && systemctl suspend
 
 # show status bar
 bindsym $mod+b			bar mode toggle
