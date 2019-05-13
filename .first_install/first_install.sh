@@ -110,7 +110,7 @@ sudo pacman -S --noconfirm unzip
 # rpm extraction shell script
 yay -S --noconfirm rpmextract
 # pv: progress bars on stdout
-sudo pacman -S pv
+sudo pacman -S --noconfirm pv
 
 ## printers
 # printer system (cups @ localhost:631)
