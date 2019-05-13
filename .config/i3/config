@@ -33,8 +33,7 @@ exec --no-startup-id dunst
 exec --no-startup-id nm-applet
 
 # automatically lock screen after 10 minutes
-# exec --no-startup-id xautolock -time 10 -locker 'i3lock -c 000000' &
-exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy -g -p -t "" -n'
+exec --no-startup-id xautolock -time 10 -locker ~/.scripts/lock_screen
 
 # display notes
 # exec --no-startup-id $HOME/.scripts/notes
@@ -174,7 +173,7 @@ bindsym $mod+F1         exec --no-startup-id ~/.config/i3/select_keyboard_shortc
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
 
 # lock screen
-bindsym $mod+x			exec --no-startup-id i3lock -f -t -c 222222
+bindsym $mod+x			exec --no-startup-id ~/.scripts/lock_screen
 
 # show status bar
 bindsym $mod+b			bar mode toggle
