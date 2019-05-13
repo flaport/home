@@ -199,6 +199,8 @@ sudo pacman -S --noconfirm exfat-utils
 sudo pacman -S --noconfirm ntfs-3g
 # acces media on external device (phone, ...)
 yay -S --noconfirm simple-mtpfs
+# install scripts for bootstrapping new arch installation
+sudo pacman -S --noconfirm arch-install-scripts
 
 ## desktop notifications
 # libnotify allows desktop notifications
