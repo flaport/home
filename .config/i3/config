@@ -166,6 +166,8 @@ for_window [instance="matplotlib*"] floating enable;
 bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
 # screen layout chooser
 bindsym $mod+p          exec --no-startup-id ~/.config/screenlayout/select_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+# select keyboard shortcut
+bindsym $mod+F1         exec --no-startup-id ~/.config/i3/select_keyboard_shortcut -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
 # bindsym $mod+d exec --no-startup-id $term -n fzfopen -f mono:pixelsize=20 -e $HOME/.scripts/fzfopen
 
 # gimp

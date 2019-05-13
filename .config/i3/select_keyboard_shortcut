@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+
+import os
+import sys
+from subprocess import call, check_output, CalledProcessError, Popen, PIPE
+
+with open(os.path.expanduser("~/.config/i3/config"), "r") as file:
+    content = [line for line in file.read().split("\n") if line.startswith("bindsym")]
+
+normal = []
+shift = []
+other = []
+commands = {}
+for line in content:
+    line = line.replace("bindsym","").replace("--no-startup-id","").replace("\t"," ").replace("$mod","◻️").replace("Shift","⬆️").strip()
+    while "  " in line:
+        line = line.replace("  ", " ")
+    line = line.split(" ")
+    shortcut = line[0]
+    command = line[1:]
+    if not "◻️" in shortcut:
+        other.append(shortcut)
+    elif not "⬆️" in shortcut:
+        normal.append(shortcut)
+    else:
+        shift.append(shortcut)
+    commands[shortcut] = command
+
+shortcuts = sorted(other) + sorted(normal) + sorted(shift)
+content = [shortcut + ": " + " ".join(commands[shortcut]) for shortcut in shortcuts]
+
+# disable shortcuts needing an i3-variable (for now)
+content = [c for c in content if "$" not in c]
+
+
+dmenu_commands = Popen(["echo", "-n", "\n".join(content)], stdout=PIPE).stdout
+try:
+    command = check_output(["dmenu"] + sys.argv[1:], stdin = dmenu_commands).decode().split(":")[1].strip().split(" ")
+    # call the final layout command
+    call(["i3-msg"] + command)
+    print(command)
+except CalledProcessError:
+    pass
+
