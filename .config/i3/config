@@ -1,5 +1,31 @@
+## lock screen - this is actually our login screen, so has to happen first.
+# I am aware that this is not totally safe. But a little safe is enough ;)
+# to have a proper login process, remove the autologin getty patch folder 
+# /etc/systemd/system/getty@tty1.service.d
+exec --no-startup-id ~/.scripts/lock_screen
+
+## variables
 # modifier key
 set $mod Mod4
+# transparent terminal
+set $term --no-startup-id st -f mono:pixelsize=18
+# non-transparent terminal
+set $term2 --no-startup-id $HOME/.scripts/non-transparent-terminal -f mono:pixelsize=18
+# browser
+set $BROWSER --no-startup-id qutebrowser
+# workspaces
+set $ws0 "0"
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
 
 # set font
 font pango:Droid Sans 11
@@ -21,10 +47,6 @@ exec --no-startup-id ~/.config/screenlayout/default & disown;
 gaps inner 15
 gaps outer 15
 for_window [class="^.*"] border pixel 3
-
-## terminals
-set $term --no-startup-id $TERMINAL -f mono:pixelsize=18
-set $term2 --no-startup-id $HOME/.scripts/non-transparent-terminal -f mono:pixelsize=18
 
 # notifications
 exec --no-startup-id dunst
@@ -182,19 +204,6 @@ bindsym $mod+b			bar mode toggle
 
 # floating window in bottom left corner
 bindsym $mod+Shift+b		floating toggle; sticky toggle; exec --no-startup-id bottomleft
-
-# workspaces
-set $ws0 "0"
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
 
 # switch to workspace
 bindsym $mod+0		workspace $ws0

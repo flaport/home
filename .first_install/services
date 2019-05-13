@@ -1,30 +1,45 @@
 #!/usr/bin/env python3
 
-# this script expects the location of your home directory as single argument.
+# this script expects the location of your HOME directory as single argument.
 
 import os
-import sys
+from textwrap import dedent
 
-if len(sys.argv) != 2:
-    raise ValueError("invalid number of arguments")
-
-home = sys.argv[1]
+USERNAME = os.getlogin()
+HOME = "/home/{}".format(USERNAME)
 
 # jupyterhub service
 # -------------------------------------------------------- #
 
-with open(os.path.join(home, ".jupyter/jupyterhub.service"), "r") as file:
+with open(os.path.join(HOME, ".jupyter/jupyterhub.service"), "r") as file:
     jupyterhub = file.read()
 
 with open("/etc/systemd/system/jupyterhub.service", "w") as file:
-    file.write(jupyterhub.format(home=home))
+    file.write(jupyterhub.format(home=HOME))
+
 
 # openvpn service
 # -------------------------------------------------------- #
 
-with open(os.path.join(home, ".config/openvpn/openvpn.service"), "r") as file:
+with open(os.path.join(HOME, ".config/openvpn/openvpn.service"), "r") as file:
     openvpn = file.read()
 
 with open("/etc/systemd/system/openvpn.service", "w") as file:
-    file.write(openvpn.format(home=home))
+    file.write(openvpn.format(home=HOME))
+
+
+# autologon getty service
+# -------------------------------------------------------- #
+
+filename = "/etc/systemd/system/getty@tty1.service.d/override.conf"
+if not os.path.isdir(os.path.dirname(filename)):
+    os.mkdir(os.path.dirname(filename))
+
+with open(filename, "w") as file:
+    file.write(dedent("""
+        [Service]
+        ExecStart=
+        ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin flaport --noclear %I $TERM
+        Type=simple
+        """).format(username=USERNAME))
 

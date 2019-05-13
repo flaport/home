@@ -373,6 +373,6 @@ sudo python3 -m pip install google-api-python-client google-auth-httplib2 google
 source ~/.bashrc
 
 ## Install services
-sudo $HOME/.first_install/services $HOME
+sudo $HOME/.first_install/services
 sudo systemctl daemon-reload
 sudo systemctl enable jupyterhub.service
