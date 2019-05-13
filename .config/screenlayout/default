@@ -1,0 +1,67 @@
+#!/usr/bin/python3
+
+## Imports
+import os
+import stat
+from itertools import permutations
+from subprocess import call, check_output
+
+## Sample command:
+# xrandr --output eDP-1 --off --output HDMI-1 --off --output DP-1 --off --output HDMI-2 --off --output DP-1-1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1-2 --off --output DP-1-3 --mode 1920x1080 --pos 1920x0 --rotate normal
+
+## Functions
+def tuple_to_res(lst):
+    assert len(lst) == 2
+    assert isinstance(lst, list)
+    return "x".join(map(str, lst))
+
+## Build subcommands
+
+xrandr_output = check_output(["xrandr", "-q"]).decode().splitlines()
+
+on_commands = {}
+off_commands = {}
+primary = True
+for i, line in enumerate(xrandr_output):
+    if "disconnected" in line:
+        output = line.split(" ")[0]
+        off_commands[output] = None
+    elif "connected" in line:
+        resolution = list(map(int, xrandr_output[i+1].strip().split(" ")[0].strip().split("x")))
+        output = line.split(" ")[0]
+        # command = ["--output", output, "--mode", mode, "--pos", pos, "--rotate", "normal"]
+        on_commands[output] = resolution
+
+## Build full commands for all screen permutations
+all_keys = set(on_commands.keys())
+options = []
+for i in range(1, len(all_keys) + 1):
+    options += list(permutations(all_keys, i))
+
+for option in options:
+    command = ["xrandr"]
+    for output in off_commands.keys():
+        command += ["--output", output, "--off"]
+    start_x = 0
+    primary = True
+    for output, resolution in on_commands.items():
+        if output in option:
+            mode = tuple_to_res(resolution)
+            pos = tuple_to_res([start_x, 0])
+            command += ["--output", output, "--mode", mode, "--pos", pos, "--rotate", "normal"]
+            if primary:
+                command += ["--primary"]
+                primary = False
+            start_x += resolution[0]
+        else:
+            command += ["--output", output, "--off"]
+
+    filename = os.path.join(os.path.expanduser("~/.config/screenlayout/"), " ".join("[{}]".format(o) for o in option))
+    with open(filename, "w") as file:
+        file.write("#!/usr/bin/env bash\n")
+        file.write(" ".join(command))
+    os.chmod(filename, stat.S_IRWXU)
+
+## Execute main command
+print(" ".join(command))
+call(command)

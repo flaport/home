@@ -10,9 +10,12 @@ floating_modifier $mod
 # workspace layout
 workspace_layout default
 
+# wallpaper
+exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
+
 # display settings
 # export your desired screenlayout with `arandr`
-exec --no-startup-id ~/.config/screenlayout/default.sh
+exec --no-startup-id ~/.config/screenlayout/default & disown;
 
 # window definitions
 gaps inner 15
@@ -35,9 +38,6 @@ exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy -g -p -t "" -n'
 
 # display notes
 # exec --no-startup-id $HOME/.scripts/notes
-
-# wallpaper
-exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
 
 # composite manager (window transparency etc)
 exec_always --no-startup-id xcompmgr
