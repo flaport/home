@@ -161,8 +161,11 @@ bindsym $mod+o			sticky toggle
 # matplotlib plot
 for_window [instance="matplotlib*"] floating enable;
 
-# menu
+## menus
+# application launcher
 bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+# screen layout chooser
+bindsym $mod+p          exec --no-startup-id ~/.config/screenlayout/select_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
 # bindsym $mod+d exec --no-startup-id $term -n fzfopen -f mono:pixelsize=20 -e $HOME/.scripts/fzfopen
 
 # gimp

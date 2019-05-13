@@ -32,6 +32,11 @@ for i, line in enumerate(xrandr_output):
         # command = ["--output", output, "--mode", mode, "--pos", pos, "--rotate", "normal"]
         on_commands[output] = resolution
 
+## Remove old screen options
+for option in os.listdir(os.path.expanduser("~/.config/screenlayout/")):
+    if option.startswith("["):
+        os.remove(os.path.join(os.path.expanduser("~/.config/screenlayout"), option))
+
 ## Build full commands for all screen permutations
 all_keys = set(on_commands.keys())
 options = []
@@ -60,7 +65,7 @@ for option in options:
     with open(filename, "w") as file:
         file.write("#!/usr/bin/env bash\n")
         file.write(" ".join(command))
-    os.chmod(filename, stat.S_IRWXU)
+    os.chmod(filename, stat.S_IRWXU | stat.S_IRWXG) # make executable for user and group
 
 ## Execute main command
 print(" ".join(command))
