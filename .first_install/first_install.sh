@@ -110,7 +110,7 @@ sudo pacman -S --noconfirm unzip
 # rpm extraction shell script
 yay -S --noconfirm rpmextract
 # pv: progress bars on stdout
-sudo pacman -S pv
+sudo pacman -S --noconfirm pv
 
 ## printers
 # printer system (cups @ localhost:631)
@@ -199,6 +199,8 @@ sudo pacman -S --noconfirm exfat-utils
 sudo pacman -S --noconfirm ntfs-3g
 # acces media on external device (phone, ...)
 yay -S --noconfirm simple-mtpfs
+# install scripts for bootstrapping new arch installation
+sudo pacman -S --noconfirm arch-install-scripts
 
 ## desktop notifications
 # libnotify allows desktop notifications
