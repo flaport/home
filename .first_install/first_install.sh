@@ -165,7 +165,6 @@ sudo pacman -S --noconfirm vifm
 # alternative: ranger: terminal file browser
 # sudo pacman -S --noconfirm ranger
 # image previews in terminal
-# sudo pacman -S --noconfirm w3m
 
 ## GUI file browser
 # nemo: sometimes a non-terminal file browser can be useful
@@ -292,6 +291,7 @@ sudo pacman -S --noconfirm biber
 sudo pacman -S --noconfirm xdotool
 
 ## browsers
+sudo pacman -S --noconfirm w3m
 # sudo pacman -S --noconfirm surf
 # sudo pacman -S --noconfirm firefox
 sudo pacman -S --noconfirm chromium
@@ -367,6 +367,9 @@ sudo python3 -m pip install pandoc
 sudo python2 -m pip install pandoc
 sudo python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 sudo python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+# email (make sure to setup gpg and pass before starting the mutt-wizard)
+sudo pacman -S --noconfirm msmtp
 
 ## install programs for the user (disabled by default as this is up to the user):
 # source ~/.first_install/user_install.sh
