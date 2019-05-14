@@ -4,11 +4,10 @@ if [ -f /etc/systemd/system/sshtunnel.service ]; then
     if [[ $(systemctl is-active sshtunnel) == "active" ]]; then
         echo 🔗
         show() {
-            #$HOME/.scripts/non-transparent-terminal -n tsshtunnel -f mono:pixelsize=18 -e $HOME/.config/i3blocks/sshtunnel/sshtunnelstatus;
             notify-send "sshtunnel" "active\n(right click to stop)\n\n$($HOME/.config/i3blocks/sshtunnel/sshtunnelstatus)"
         }
         stopp() {
-            $HOME/.scripts/non-transparent-terminal -n tsshtunnel -f mono:pixelsize=18 -e $HOME/.config/i3blocks/sshtunnel/stop;
+            $HOME/.config/i3/non-transparent-terminal -n tsshtunnel -f mono:pixelsize=18 -e $HOME/.config/i3blocks/sshtunnel/stop;
         }
         case $BLOCK_BUTTON in
             1) show ;;
@@ -18,11 +17,10 @@ if [ -f /etc/systemd/system/sshtunnel.service ]; then
     else
         echo "❌"
         show() {
-            #$HOME/.scripts/non-transparent-terminal -n tsshtunnel -f mono:pixelsize=18 -e $HOME/.config/i3blocks/sshtunnel/sshtunnelstatus;
             notify-send "sshtunnel" "inactive\n(right click to start)\n\n$($HOME/.config/i3blocks/sshtunnel/sshtunnelstatus)"
         }
         startt() {
-            $HOME/.scripts/non-transparent-terminal -n tsshtunnel -f mono:pixelsize=18 -e $HOME/.config/i3blocks/sshtunnel/start;
+            $HOME/.config/i3/non-transparent-terminal -n tsshtunnel -f mono:pixelsize=18 -e $HOME/.config/i3blocks/sshtunnel/start;
         }
         case $BLOCK_BUTTON in
             1) show ;;

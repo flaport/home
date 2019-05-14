@@ -2,7 +2,7 @@
 # I am aware that this is not totally safe. But a little safe is enough ;)
 # to have a proper login process, remove the autologin getty patch folder 
 # /etc/systemd/system/getty@tty1.service.d
-exec --no-startup-id ~/.scripts/lock_screen
+exec --no-startup-id ~/.config/i3/lock_screen
 
 ## variables
 # modifier key
@@ -10,7 +10,7 @@ set $mod Mod4
 # transparent terminal
 set $term --no-startup-id st -f mono:pixelsize=18
 # non-transparent terminal
-set $term2 --no-startup-id $HOME/.scripts/non-transparent-terminal -f mono:pixelsize=18
+set $term2 --no-startup-id ~/.config/i3/non-transparent-terminal -f mono:pixelsize=18
 # browser
 set $BROWSER --no-startup-id qutebrowser
 # workspaces
@@ -55,10 +55,7 @@ exec --no-startup-id dunst
 exec --no-startup-id nm-applet
 
 # automatically lock screen after 10 minutes
-exec --no-startup-id xautolock -time 10 -locker ~/.scripts/lock_screen
-
-# display notes
-# exec --no-startup-id $HOME/.scripts/notes
+exec --no-startup-id xautolock -time 10 -locker ~/.config/i3/lock_screen
 
 # composite manager (window transparency etc)
 exec_always --no-startup-id xcompmgr
@@ -190,14 +187,13 @@ bindsym $mod+p          exec --no-startup-id ~/.config/screenlayout/select_scree
 bindsym $mod+Shift+p    exec --no-startup-id ~/.config/screenlayout/default
 # select keyboard shortcut
 bindsym $mod+F1         exec --no-startup-id ~/.config/i3/select_keyboard_shortcut -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
-# bindsym $mod+d exec --no-startup-id $term -n fzfopen -f mono:pixelsize=20 -e $HOME/.scripts/fzfopen
 
 # gimp
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
 
 # lock screen
-bindsym $mod+x			exec --no-startup-id ~/.scripts/lock_screen
-bindsym $mod+Shift+x	exec --no-startup-id ~/.scripts/lock_screen && systemctl suspend
+bindsym $mod+x			exec --no-startup-id ~/.config/i3/lock_screen
+bindsym $mod+Shift+x	exec --no-startup-id ~/.config/i3/lock_screen && systemctl suspend
 
 # show status bar
 bindsym $mod+b			bar mode toggle
@@ -265,8 +261,8 @@ bindsym Shift+Print 		exec --no-startup-id scrot -u
 
 # media control
 bindsym $mod+m			exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
-bindsym $mod+plus		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 5%+ && pkill -RTMIN+10 i3blocks
-bindsym $mod+minus 		exec --no-startup-id amixer -q -c $($HOME/.scripts/soundcard) sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym $mod+plus		exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%+ && pkill -RTMIN+10 i3blocks
+bindsym $mod+minus 		exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%- && pkill -RTMIN+10 i3blocks
 
 ## Special Screen (terminal) names
 
