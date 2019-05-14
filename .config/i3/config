@@ -165,10 +165,10 @@ bindsym $mod+e          layout stacking
 bindsym $mod+Shift+e    layout toggle split
 
 # drop down terminal
-bindsym $mod+u exec --no-startup-id ~/.config/i3/terminal;
+bindsym $mod+u exec --no-startup-id ~/.config/i3/floating_terminal;
 
 # drop down calculator (python shell)
-bindsym $mod+a exec --no-startup-id ~/.config/i3/python;
+bindsym $mod+a exec --no-startup-id ~/.config/i3/floating_python;
 
 # process information
 bindsym $mod+i 			exec --no-startup-id $term -e htop
@@ -183,10 +183,10 @@ for_window [instance="matplotlib*"] floating enable;
 # application launcher
 bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
 # screen layout chooser
-bindsym $mod+p          exec --no-startup-id ~/.config/screenlayout/select_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+bindsym $mod+p          exec --no-startup-id ~/.config/i3/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
 bindsym $mod+Shift+p    exec --no-startup-id ~/.config/screenlayout/default
 # select keyboard shortcut
-bindsym $mod+F1         exec --no-startup-id ~/.config/i3/select_keyboard_shortcut -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+bindsym $mod+F1         exec --no-startup-id ~/.config/i3/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
 
 # gimp
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
@@ -276,10 +276,10 @@ bindsym $mod+Shift+z		gaps outer current minus 5
 
 # resize
 bindsym $mod+f			fullscreen toggle
-bindsym $mod+Shift+y		exec --no-startup-id ~/.config/i3/resize left
-bindsym $mod+Shift+u		exec --no-startup-id ~/.config/i3/resize down
-bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize up
-bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize right
+bindsym $mod+Shift+y		exec --no-startup-id ~/.config/i3/resize_window left
+bindsym $mod+Shift+u		exec --no-startup-id ~/.config/i3/resize_window down
+bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize_window up
+bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize_window right
 
 # volume report screen
 for_window [instance="tvolume"] floating enable;
