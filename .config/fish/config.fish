@@ -49,7 +49,7 @@ set -gx PYTHONSTARTUP "$HOME/.pythonstartup"
 # start i3 if it is not yet running
 if test (tty) = "/dev/tty1"
     while not test (pgrep -x i3)
-        sleep 1
+        sleep 3
         exec startx -- vt1 > /dev/null 2>&1
     end
 end
