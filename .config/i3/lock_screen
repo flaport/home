@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-convert -quality 0.5 -resize 1920x1080 -negate ~/.config/wallpaper.png /tmp/lockscreen.png;
-i3lock --image ~/.cache/lockscreen.png --tiling --ignore-empty-password --show-failed-attempts
+i3lock --image ~/.config/lockscreen.png --tiling --ignore-empty-password --show-failed-attempts
 

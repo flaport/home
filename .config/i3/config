@@ -38,6 +38,9 @@ workspace_layout default
 
 # wallpaper
 exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
+# set wallpaper from path/url specified in clipboard
+bindsym $mod+c      exec $term -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
+bindsym $mod+Shift+c      exec $term -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o) -negate
 
 # display settings
 # export your desired screenlayout with `arandr`
