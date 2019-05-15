@@ -1,339 +1,229 @@
-# go to home directory
-cd ~
+#!/usr/bin/env bash 
 
-# updating time and date
-sudo timedatectl set-local-rtc 1
+# ----------------------------------------------
+# NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. |
+# ----------------------------------------------
 
-echo -e "\n\n\n\n"
-echo "Changing shell to fish..."
-echo -e "\n\n\n\n"
-sleep 1
+## Pre-installation checks
+if [ $USER == root ]; then
+    echo
+    echo "first_install.sh should not be run as root / with sudo."
+    echo "this script should be run normally by a user [with sudo privileges]."
+    exit 1
+fi
 
-# create a group mount_access (for giving access to mounted [network] drives to multiple users)
-sudo groupadd mount_access
-sudo usermod -a -G mount_access $USER
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+    echo
+    echo "first_install.sh should NOT be sourced."
+    exit 1
+else
 
-## better bash
-sudo pacman -S --noconfirm fish
-chsh -s /usr/bin/fish
+# ----------------------------------
+# START SCRIPT (checks performed). |
+# ----------------------------------
 
-## Update Arch
-echo -e "\n\n\n\n"
-echo "Updating Arch Linux..."
-echo -e "\n\n\n\n"
-sleep 1
+# Ask for password, this will be used for all the sudo calls.:
+# and to change the shell later on.
+read -s -p "[sudo] password for $USER: " password
+echo
 
-sudo pacman -Syu --noconfirm
+## Update arch
+printf "Updating Arch Linux..."
+echo $password | sudo -S pacman -Syu --noconfirm &> /dev/null
 
-## git
-echo -e "\n\n\n\n"
-echo "Installing source control..."
-echo -e "\n\n\n\n"
-sleep 5
+## Package/Program Installation function
+install() { 
+    # this function takes exactly one argument: the package to install
+    # it automatically chooses pacman or yay, depending if pacman fails or not.
+    # it ignores packages that are already installed.
+    if [ $2 ]; then
+        echo "too many arguments";
+    elif [ ! $1 ]; then
+        echo "too few arguments";
+    else
+        printf "installing $1... "
+        echo $password | sudo -S pacman -Q $1 &> /dev/null;
+        if [ $? -ne 0 ]; then
+            # if package does not exist, try to install it with pacman
+            echo $password | sudo -S pacman -S --noconfirm --noprogress $1 &> /dev/null
+            if [ $? -ne 0 ]; then
+                # if installing with pacman fails, try to install it with yay
+                yay -S -q --noconfirm $1 &> /dev/null
+                if [ $? -ne 0 ]; then
+                    # if installing with yay fails, try to install it with git
+                    git clone $1 /tmp/gitpkg
+                    cd /tmp/gitpkg
+                    makepkg -si --noconfirm --noprogress &> /dev/null
+                    if [ $? -ne 0 ]; then
+                        # if installing with git fails, we give up
+                        echo failed
+                    else
+                        echo installed
+                    fi
+                    # clean up
+                    cd ~
+                    rm -rf /tmp/gitpkg
+                fi
+            else
+                echo installed
+            fi
+        else
+            echo already installed.
+        fi
+    fi
+}
 
-# installation
-sudo pacman -S --noconfirm git
-sudo pacman -S --noconfirm mercurial
+## Security
+install gnupg # gpg --full-gen-key (generate gpg key)
+install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
 
-echo -e "\n\n\n\n"
-echo "Installing YAY..."
-echo -e "\n\n\n\n"
-sleep 5
-cd ~
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si --noconfirm
-cd ~
-rm -rf yay
-
-echo -e "\n\n\n\n"
-echo "Installing other packages..."
-echo -e "\n\n\n\n"
-sleep 5
-
-## vim
-# installation
-sudo pacman -S --noconfirm neovim
-sudo ln -sf /usr/bin/nvim /usr/bin/vim
-
-## Code OSS (vscode comunity edition)
-sudo pacman -S --noconfirm code
+## Source control
+install git
+install mercurial
 
 ## build tools
-# makefiles
-sudo pacman -S --noconfirm make
+install make
 
+## AUR package manager
+install https://aur.archlinux.org/yay.git
+
+## Terminal
 ## suckless terminal (Luke Smith fork)
-yay -S --noconfirm st-luke-git
-
-## i3: the main graphical user interface
-# i3-gaps: allow gaps between windows
-sudo pacman -S --noconfirm i3-gaps
-# i3-blocks: status bar for i3
-sudo pacman -S --noconfirm i3blocks
-# i3-lock: screen lock for i3
-yay -S --noconfirm i3lock-fancy-git
-# xautolock to automatically lock the screen
-sudo pacman -S --noconfirm xautolock
-# wallpapers
-sudo pacman -S --noconfirm feh
-# sockets
-sudo pacman -S --noconfirm socat
-# dmenu
-sudo pacman -S --noconfirm dmenu
-# pywal (automatic theming on background colors)
-sudo pacman -S --noconfirm python-pywal
-
-## xorg: the graphical server
-# the graphical server
-sudo pacman -S --noconfirm xorg-server
-# querying window information
-sudo pacman -S --noconfirm xorg-xwininfo
-# initializing
-sudo pacman -S --noconfirm xorg-xinit
-# tool for detecting window properties
-sudo pacman -S --noconfirm xorg-xprop
-# for transparent windows etc.
-sudo pacman -S --noconfirm xcompmgr
-# for changing brightnes etc:
-sudo pacman -S --noconfirm xorg-xbacklight
-# get info on current active windows
-sudo pacman -S --noconfirm xorg-xdpyinfo
-# hide an inactive mouse
-yay -S --noconfirm unclutter-xfixes-git
-
-## archiving tools
-# rsync
-sudo pacman -S --noconfirm rsync
+install st-luke-git
+# vim / neovim
+install neovim
+echo $password | sudo -S ln -sf /usr/bin/nvim /usr/bin/vim
+# rsync: safe and secure copy & backup
+install rsync
 # atool gives information about archives
-sudo pacman -S --noconfirm atool
+install atool
 # unrar
-sudo pacman -S --noconfirm unrar
+install unrar
 # unzip
-sudo pacman -S --noconfirm unzip
+install unzip
 # rpm extraction shell script
-yay -S --noconfirm rpmextract
+install rpmextract
 # pv: progress bars on stdout
-sudo pacman -S --noconfirm pv
-
-## printers
-# printer system (cups @ localhost:631)
-sudo pacman -S --noconfirm cups
-sudo echo -n "Allow all" >> /etc/cups/cupsd.conf
-sudo systemctl enable org.cups.cupsd
-# print to pdf
-sudo pacman -S --noconfirm cups-pdf
-# for network printing
-sudo pacman -S --noconfirm avahi
-sudo pacman -S --noconfirm nss-mdns
-sudo systemctl enable avahi-daemon
-sudo pacman -S --noconfirm samba
-
-## toolbar
+install pv
 # battery information
-sudo pacman -S --noconfirm acpi
+install acpi
+# vifm: terminal file browser
+install vifm
+# terminal internet search: google
+install googler
+# terminal internet search: duckduckgo
+install ddgr
+# search tool (grep alternative, necessary for some vim extensions)
+install ack
+# fuzzy finder tool
+install fzf
+# multiple terminals in one
+install tmux
+# copying and pasting from the terminal
+install xclip
+# pdf previews
+install poppler
+# highlight: to highlight code
+install highlight
+# mediainfo: show audio and video information in terminal
+install mediainfo
+# process information
+install htop
+# terminal spreadsheets
+install sc-im
+
+## Graphical server: xorg
+# the graphical server
+install xorg-server
+# querying window information
+install xorg-xwininfo
+# initializing
+install xorg-xinit
+# tool for detecting window properties
+install xorg-xprop
+# for transparent windows etc.
+install xcompmgr
+# for changing brightnes etc:
+install xorg-xbacklight
+# get info on current active windows
+install xorg-xdpyinfo
+# hide an inactive mouse
+install unclutter-xfixes-git
+
+## Desktop Environment / Window Manager
+# i3-gaps: allow gaps between windows
+install i3-gaps
+# i3-blocks: status bar for i3
+install i3blocks
+# i3-lock: screen lock for i3
+install i3lock-fancy-git
+# xautolock to automatically lock the screen
+install xautolock
+# wallpapers
+install feh
+# sockets
+install socat
+# dmenu
+install dmenu
+# theme:  Arc
+install arc-solid-gtk-theme
+
+## Printers
+# printer system (cups @ localhost:631)
+install cups
+# for network printing
+install avahi
+install nss-mdns
+echo $password | sudo -S systemctl enable avahi-daemon
+install samba
+# print to pdf
+install cups-pdf
+# enable cups service
+echo $password | sudo -S systemctl enable org.cups.cupsd
 
 ## fonts
 # monospace
-sudo pacman -S --noconfirm ttf-inconsolata
+install ttf-inconsolata
 # serif
-sudo pacman -S --noconfirm ttf-linux-libertine
+install ttf-linux-libertine
 # sans-serif + chromium/firefox dependency
-sudo pacman -S --noconfirm ttf-droid
+install ttf-droid
 # symbols
-yay -S --noconfirm ttf-symbola
+install ttf-symbola
 # disable bitmaps:
-sudo ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
+echo $password | sudo -S ln -sf /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
 # enable sub-pixel RGB rendering
-sudo ln -s /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
+echo $password | sudo -S ln -sf /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
 # enable LCD-filtering
-sudo ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
-# enable freetype subpixel hinting:
-echo 'export FREETYPE_PROPERTIES="truetype:interpreter-version=40"' | sudo tee --append /etc/profile.d/freetype2.sh
+echo $password | sudo -S ln -sf /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
 
-## Connectivity
-# openvpn
-sudo pacman -S --noconfirm openvpn
-# ssh (client and server)
-sudo pacman -S --noconfirm openssh
-# autossh (for ssh daemons)
-sudo pacman -S --noconfirm autossh
-
-## Theme
-# Arc
-sudo pacman -S --noconfirm arc-solid-gtk-theme
-
-## file browsers
-# vifm: terminal file browser
-sudo pacman -S --noconfirm vifm
-# alternative: ranger: terminal file browser
-# sudo pacman -S --noconfirm ranger
-# image previews in terminal
-
-## GUI file browser
+## GUIs
 # nemo: sometimes a non-terminal file browser can be useful
-sudo pacman -S --noconfirm nemo
-# alternative: dolphin: alternative to nemo (I prefer nemo)
-# note: the environment variable QT_QPA_PLATFORMTHEME='qt5ct' should be set.
-# sudo pacman -S --noconfirm dolphin
-# sudo pacman -S --noconfirm qt5ct
-# sudo pacman -S --noconfirm dolphin-plugins
-# sudo pacman -S --noconfirm konsole
-# sudo pacman -S --noconfirm kompare
-
-## terminal internet search
-# google
-yay -S --noconfirm googler
-# duckduckgo
-yay -S --noconfirm ddgr
-
-## arandr: for screen adjustment
-sudo pacman -S --noconfirm xrandr
-sudo pacman -S --noconfirm arandr
-
-## drive and file system access
-# mount cifs parititions
-sudo pacman -S --noconfirm cifs-utils
-# dosfstools: support for dos (windows) - like filesystems
-sudo pacman -S --noconfirm dosfstools
-# exfat-utils: access fat-drives
-sudo pacman -S --noconfirm exfat-utils
-# ntfs-3g: access NTFS network drives
-sudo pacman -S --noconfirm ntfs-3g
-# acces media on external device (phone, ...)
-yay -S --noconfirm simple-mtpfs
-# install scripts for bootstrapping new arch installation
-sudo pacman -S --noconfirm arch-install-scripts
-
-## desktop notifications
-# libnotify allows desktop notifications
-sudo pacman -S --noconfirm libnotify
-# dunst creates desktop notifications (suckless)
-sudo pacman -S --noconfirm dunst
-
-## image and video tools
-## image viewer
-sudo pacman -S --noconfirm sxiv
-# imagemagick: for images
-sudo pacman -S --noconfirm imagemagick
-# youtube-dl: download youtube videos
-sudo pacman -S --noconfirm youtube-dl
-# youtube-viewer
-sudo pacman -S --noconfirm youtube-viewer
-# vlc media player
-sudo pacman -S --noconfirm vlc
-# mpv media player
-sudo pacman -S --noconfirm mpv
-# ffmpeg command line tool
-sudo pacman -S --noconfirm ffmpeg
-# spotify
-yay -S --noconfirm spotify
-
-## network tools
-sudo pacman -S --noconfirm networkmanager
-sudo systemctl enable NetworkManager
-sudo pacman -S --noconfirm network-manager-applet
-sudo pacman -S --noconfirm whois
-yay -S --noconfirm google-cloud-sdk
-
-## bluetooth
-sudo pacman -S --noconfirm bluez
-sudo pacman -S --noconfirm bluez-utils
-sudo pacman -S --noconfirm pulseaudio-bluetooth
-sudo systemctl enable bluetooth
-
-## terminal
-# search tool (grep alternative, necessary for some vim extensions)
-sudo pacman -S --noconfirm ack
-# fuzzy finder tool
-sudo pacman -S --noconfirm fzf
-# multiple terminals in one
-sudo pacman -S --noconfirm tmux
-# copying and pasting from the terminal
-sudo pacman -S --noconfirm xclip
-# pdf previews
-sudo pacman -S --noconfirm poppler
-# highlight: to highlight code
-sudo pacman -S --noconfirm highlight
-# mediainfo: show audio and video information in terminal
-sudo pacman -S --noconfirm mediainfo
-
-## process information
-sudo pacman -S --noconfirm htop
-
-## keboard shortcuts
-# xcape: used for example to remap caps lock to esc
-sudo pacman -S --noconfirm xcape
-
-## readers
+install nemo
+# screen settings: arandr (& xrandr)
+install arandr
 # general document reader with vim bindings
-sudo pacman -S --noconfirm zathura
+install zathura
 # pdf reader extension
-sudo pacman -S --noconfirm zathura-pdf-mupdf
+install zathura-pdf-mupdf
 # djvu reader extension
-sudo pacman -S --noconfirm zathura-djvu
-
-## graphics card:
-# nvidia: nvidia driver
-# this is disabled by default, as it gives troubles on devices without nvidia gpu
-# sudo pacman -S --noconfirm nvidia
-# suda pacman -S --noconfirm cuda-toolkit
-
-## Sound
-# alsamixer
-sudo pacman -S --noconfirm alsa-utils
-sudo pacman -S --noconfirm alsa-plugins
-sudo pacman -S --noconfirm pulseaudio
-
-## Latex
-# tex-live
-sudo pacman -S --noconfirm texlive-most
-sudo pacman -S --noconfirm texlive-lang
-# bibliographies
-sudo pacman -S --noconfirm biber
-# viewer with synctex support
-sudo pacman -S --noconfirm xdotool
-
-## browsers
-# sudo pacman -S --noconfirm surf
-# sudo pacman -S --noconfirm firefox
-sudo pacman -S --noconfirm chromium
-sudo pacman -S --noconfirm qutebrowser
-
-## email
-# send email
-sudo pacman -S --noconfirm msmtp
-# sync email
-sudo pacman -S --noconfirm isync
-# mutt email client
-sudo pacman -S --noconfirm neomutt
-sudo ln -sf /usr/bin/neomutt /usr/bin/mutt
-# html email view (also browser!)
-sudo pacman -S --noconfirm w3m
-# mutt wizard
-sudo pacman -S --noconfirm mutt-wizard
+install zathura-djvu
 
 ## Artistic
-sudo pacman -S --noconfirm gimp
-# sudo pacman -S --noconfirm krita
-# sudo pacman -S --noconfirm pinta
-yay -S --noconfirm inkscape
-
-## Remote desktop
-sudo pacman -S --noconfirm remmina
-sudo pacman -S --noconfirm freerdp
+install gimp
+# install krita
+# install pinta
+install inkscape
 
 ## Office
-# terminal spreadsheets
-yay -S --noconfirm sc-im
 # open-source office
-sudo pacman -S --noconfirm libreoffice
+install libreoffice
 # sqlite database browser
-sudo pacman -S --noconfirm sqlitebrowser
+install sqlitebrowser
 
 ## Programming
-# code (open source build of vscode)
-sudo pacman -S --noconfirm code
+# code OSS (open source build of vscode)
+install code
 code --install-extension vscodevim.vim
 code --install-extension ban.spellright
 code --install-extension wholroyd.jinja
@@ -344,54 +234,154 @@ code --install-extension formulahendry.code-runner
 code --install-extension shardulm94.trailing-spaces
 code --install-extension robertohuertasm.vscode-icons
 code --install-extension richie5um2.vscode-sort-json
+code --install-extension pkief.material-icon-theme
+# Scientific computing octave (matlab alternative)
+install octave
+# system python packages
+install tk
+install python-pip
+install python2-pip
+install python-tqdm
+install python2-tqdm
+# install neovim integration for system python
+echo $password | sudo -S python2 -m pip install neovim
+echo $password | sudo -S python3 -m pip install neovim
+echo $password | sudo -S python3 -m pip install neovim-remote
+# image previews in vifm/ranger
+echo $password | sudo -S python3 -m pip install ueberzug
+# document portability
+echo $password | sudo -S python3 -m pip install pandoc
+echo $password | sudo -S python2 -m pip install pandoc
+echo $password | sudo -S python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+echo $password | sudo -S python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+## Drive and file system access
+# mount cifs parititions
+install cifs-utils
+# dosfstools: support for dos (windows) - like filesystems
+install dosfstools
+# exfat-utils: access fat-drives
+install exfat-utils
+# ntfs-3g: access NTFS network drives
+install ntfs-3g
+# acces media on external device (phone, ...)
+install simple-mtpfs
+# install scripts for bootstrapping new arch installation
+install arch-install-scripts
+
+## Desktop notifications
+# libnotify allows desktop notifications
+install libnotify
+# dunst creates desktop notifications
+install dunst
+
+## image and video tools
+# image viewer
+install sxiv
+# imagemagick: for images
+install imagemagick
+# youtube-dl: download youtube videos
+install youtube-dl
+# youtube-viewer
+install youtube-viewer
+# vlc media player
+install vlc
+# mpv media player
+install mpv
+# ffmpeg command line tool
+install ffmpeg
+# spotify
+install spotify
+
+## Connectivity & network tools
+# network manager
+install networkmanager
+echo $password | sudo -S systemctl enable NetworkManager
+# applet in the corner of the screen
+install network-manager-applet
+# openvpn
+install openvpn
+# ssh (client and server)
+install openssh
+# autossh (for ssh daemons)
+install autossh
+# whois information
+install whois
+# access to google servers
+install google-cloud-sdk
+# bluetooth
+install bluez
+install bluez-utils
+install pulseaudio-bluetooth
+echo $password | sudo -S systemctl enable bluetooth
+# remote desktop
+install remmina
+install freerdp
+
+## Sound
+# alsamixer
+install alsa-utils
+install alsa-plugins
+install pulseaudio
+
+## Latex
+# tex-live
+# install texlive-most
+# bibliographies
+install biber
+# viewer with synctex support
+install xdotool
+
+## Browsers
+# install surf
+# install firefox
+install chromium
+install qutebrowser
+
+## Email
+# send email
+install msmtp
+# sync email
+install isync
+# mutt email client
+install neomutt
+echo $password | sudo -S ln -sf /usr/bin/neomutt /usr/bin/mutt
+# html email view (also browser!)
+install w3m
+# mutt wizard
+install mutt-wizard
 
 ## Power & sleep
 # sleep on low power
-sudo pacman -S --noconfirm acpid
-sudo systemctl enable acpid
-chmod a+w /sys/power/state
+install acpid
+echo $password | sudo -S systemctl enable acpid
+echo $password | sudo -S chmod a+w /sys/power/state
+
+## graphics card:
+# this is disabled by default, as it gives troubles on devices without nvidia gpu
+# nvidia driver
+# install nvidia
+# install cuda-toolkit
 
 ## GDS Layouts
 # Klayout (takes very long, hence disabled by default)
-# yay -S --noconfirm klayout
-
-## Scientific computing octave (matlab alternative)
-sudo pacman -S --noconfirm octave
-
-echo -e "\n\n\n\n"
-echo "Python packages"
-echo -e "\n\n\n\n"
-sleep 5
-
-# system python packages
-sudo pacman -S --noconfirm tk
-sudo pacman -S --noconfirm python-pip
-sudo pacman -S --noconfirm python2-pip
-sudo pacman -S --noconfirm python-tqdm
-sudo pacman -S --noconfirm python2-tqdm
-
-# install neovim integration for system python
-sudo python2 -m pip install neovim
-sudo python3 -m pip install neovim
-sudo python3 -m pip install neovim-remote
-
-# image previews in vifm/ranger
-sudo python3 -m pip install ueberzug
-
-# document portability
-sudo python3 -m pip install pandoc
-sudo python2 -m pip install pandoc
-sudo python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
-sudo python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
-
+# install klayout
 
 ## install programs for the user (disabled by default as this is up to the user):
 # source ~/.first_install/user_install.sh
 
-## add new python to path
-source ~/.bashrc
+## Services
+echo $password | sudo -S $HOME/.first_install/services
+echo $password | sudo -S systemctl daemon-reload
+echo $password | sudo -S systemctl enable jupyterhub.service
 
-## Install services
-sudo $HOME/.first_install/services
-sudo systemctl daemon-reload
-sudo systemctl enable jupyterhub.service
+## System settings
+# set correct date/time
+echo $password | sudo -S timedatectl set-local-rtc 1
+
+# better shell
+install fish
+echo $password | chsh -s /usr/bin/fish
+
+#-------------------------------------
+fi # stop if to check for source (an exit 1 would have closed the terminal).
