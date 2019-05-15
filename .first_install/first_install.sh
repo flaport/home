@@ -295,11 +295,23 @@ sudo pacman -S --noconfirm biber
 sudo pacman -S --noconfirm xdotool
 
 ## browsers
-sudo pacman -S --noconfirm w3m
 # sudo pacman -S --noconfirm surf
 # sudo pacman -S --noconfirm firefox
 sudo pacman -S --noconfirm chromium
 sudo pacman -S --noconfirm qutebrowser
+
+## email
+# send email
+sudo pacman -S --noconfirm msmtp
+# sync email
+sudo pacman -S --noconfirm isync
+# mutt email client
+sudo pacman -S --noconfirm neomutt
+sudo ln -sf /usr/bin/neomutt /usr/bin/mutt
+# html email view (also browser!)
+sudo pacman -S --noconfirm w3m
+# mutt wizard
+sudo pacman -S --noconfirm mutt-wizard
 
 ## Artistic
 sudo pacman -S --noconfirm gimp
@@ -372,11 +384,6 @@ sudo python2 -m pip install pandoc
 sudo python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 sudo python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
-## email
-# send email
-sudo pacman -S --noconfirm msmtp
-# sync email
-sudo pacman -S --noconfirm isync
 
 ## install programs for the user (disabled by default as this is up to the user):
 # source ~/.first_install/user_install.sh
