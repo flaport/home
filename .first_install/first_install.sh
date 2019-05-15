@@ -9,6 +9,10 @@ echo "Changing shell to fish..."
 echo -e "\n\n\n\n"
 sleep 1
 
+# create a group mount_access (for giving access to mounted [network] drives to multiple users)
+sudo groupadd mount_access
+sudo usermod -a -G mount_access $USER
+
 ## better bash
 sudo pacman -S --noconfirm fish
 chsh -s /usr/bin/fish
