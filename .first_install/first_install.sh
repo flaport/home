@@ -368,8 +368,11 @@ sudo python2 -m pip install pandoc
 sudo python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 sudo python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
-# email (make sure to setup gpg and pass before starting the mutt-wizard)
+## email
+# send email
 sudo pacman -S --noconfirm msmtp
+# sync email
+sudo pacman -S --noconfirm isync
 
 ## install programs for the user (disabled by default as this is up to the user):
 # source ~/.first_install/user_install.sh
