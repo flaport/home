@@ -422,5 +422,12 @@ echo $password | sudo -S timedatectl set-local-rtc 1
 install fish
 echo $password | chsh -s /usr/bin/fish
 
+# --------------#
+# Mount options #
+# --------------#
+
+# make sure everyone can mount in /mnt
+echo $password | sudo -S chmod a+rwx /mnt
+
 #-------------------------------------
 fi # stop if to check for source (an exit 1 would have closed the terminal).

@@ -1,0 +1,64 @@
+#!/usr/bin/python3
+
+import os
+import sys
+from subprocess import call, Popen, PIPE, check_output
+
+lsblk_out = check_output(["lsblk", "-f"]).decode().splitlines()
+header = lsblk_out[0]
+lsblk_out = lsblk_out[1:]
+
+i_name = header.index("NAME")
+i_fstype = header.index("FSTYPE")
+i_label = header.index("LABEL")
+i_uuid = header.index("UUID")
+i_fsavail = header.index("FSAVAIL")
+i_fsuse = header.index("FSUSE")
+i_mp = header.index("MOUNTPOINT")
+
+mountpoints = {}
+for line in lsblk_out:
+    if line[0] not in ("├", "└"):
+        mountpoints[line] = None
+        continue
+    dic = {}
+    dic["name"] = line[2:i_fstype].strip()
+    dic["fstype"] = line[i_fstype:i_label].strip()
+    dic["label"] = line[i_label:i_uuid].strip()
+    dic["uuid"] = line[i_uuid:i_fsavail].strip()
+    dic["fsavail"] = line[i_fsavail:i_fsuse].strip()
+    dic["fsuse"] = line[i_fsuse:i_mp].strip()
+    dic["mp"] = line[i_mp:].strip()
+
+    mountpoints[line] = dic
+
+lsblk_out = Popen(["echo", "\n".join(lsblk_out)], stdout=PIPE).stdout
+lsblk_choice = check_output(["dmenu", "-l", "100", "-p", "mount drive"] + sys.argv[1:], stdin=lsblk_out).decode()[:-1]
+
+lsblk_choice = mountpoints[lsblk_choice]
+
+if not lsblk_choice:
+    exit()
+
+mount_name_options = []
+if lsblk_choice["label"]:
+    mount_name_options.append(f"/mnt/{lsblk_choice['label']}")
+mount_name_options.append(f"/mnt/{lsblk_choice['name']}")
+mount_name_options.append(f"/mnt/{lsblk_choice['uuid'].split('-')[0]}")
+mount_name_options = Popen(["echo", "\n".join(mount_name_options)], stdout=PIPE).stdout
+mount_name_choice = check_output(["dmenu", "-l", "100", "-p", f"mount /dev/{lsblk_choice['name']} in"] + sys.argv[1:], stdin=mount_name_options).decode().strip()
+mount_name_choice = os.path.abspath(os.path.expanduser(mount_name_choice))
+
+try:
+    os.makedirs(mount_name_choice)
+except FileExistsError:
+    if os.listdir(mount_name_choice):
+        call(["notify-send", "mount error", "mount folder not empty"])
+        exit()
+
+status = call(["st", "-n", "dmenu_mount", "-e", "sudo", "mount", f"/dev/{lsblk_choice['name']}", mount_name_choice])
+
+if status == 0:
+    call(["notify-send", "drive mounted: ", f"/dev/{lsblk_choice['name']} --> {mount_name_choice}"])
+else:
+    call(["notify-send", "drive failed to mount.", f"exit status {status}"])

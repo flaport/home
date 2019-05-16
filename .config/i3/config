@@ -187,12 +187,14 @@ for_window [instance="matplotlib*"] floating enable;
 
 ## menus
 # application launcher
-bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
 # screen layout chooser
-bindsym $mod+p          exec --no-startup-id ~/.config/i3/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+bindsym $mod+p          exec --no-startup-id ~/.config/i3/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
 bindsym $mod+Shift+p    exec --no-startup-id ~/.config/screenlayout/default
 # select keyboard shortcut
-bindsym $mod+F1         exec --no-startup-id ~/.config/i3/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+bindsym $mod+F1         exec --no-startup-id ~/.config/i3/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
+# mount drive menu
+bindsym $mod+y          exec --no-startup-id ~/.config/i3/dmenu_mount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
 
 # gimp
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
@@ -291,54 +293,50 @@ bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize_window right
 for_window [instance="tvolume"] floating enable;
 for_window [instance="tvolume"] resize set height 550px;
 for_window [instance="tvolume"] resize set width 800px;
-for_window [instance="tvolume"] move position 1120px 30px;
 
 # openvpn report screen
 for_window [instance="topenvpn*"] floating enable;
 for_window [instance="topenvpn*"] resize set height 250px;
 for_window [instance="topenvpn*"] resize set width 800px;
-for_window [instance="topenvpn*"] move position 1120px 30px;
 
 # jupyterhub report screen
 for_window [instance="tjupyterhub*"] floating enable;
 for_window [instance="tjupyterhub*"] resize set height 250px;
 for_window [instance="tjupyterhub*"] resize set width 800px;
-for_window [instance="tjupyterhub*"] move position 1120px 30px;
 
 # sshtunnel report screen
 for_window [instance="tsshtunnel*"] floating enable;
 for_window [instance="tsshtunnel*"] resize set height 250px;
 for_window [instance="tsshtunnel*"] resize set width 800px;
-for_window [instance="tsshtunnel*"] move position 1120px 30px;
+
+# openvpn report screen
+for_window [instance="dmenu_mount*"] floating enable;
+for_window [instance="dmenu_mount*"] resize set height 250px;
+for_window [instance="dmenu_mount*"] resize set width 800px;
 
 # weather report screen
 for_window [instance="tweather*"] floating enable;
 for_window [instance="tweather*"] resize set height 550px;
 for_window [instance="tweather*"] resize set width 800px;
-for_window [instance="tweather*"] move position 1120px 30px;
 
 # storage report screen
 for_window [instance="tstorage*"] floating enable;
 for_window [instance="tstorage*"] resize set height 125px;
 for_window [instance="tstorage*"] resize set width 500px;
-for_window [instance="tstorage*"] move position 1420px 30px;
 
 # drop down windows
 for_window [instance="search"] floating enable;
 for_window [instance="search"] resize set height 800px;
 for_window [instance="search"] resize set width 1900px;
-for_window [instance="search"] move position 1920px 22px;
 
 # drop down fzfopen terminal
 for_window [instance="fzfopen"] floating enable;
 for_window [instance="fzfopen"] resize set height 300px;
 for_window [instance="fzfopen"] resize set width 500px;
-for_window [instance="fzfopen"] move position 1920px 22px;
 
 # drop down windows
 for_window [instance="dropdown_*"] floating enable;
 for_window [instance="dropdown_*"] sticky enable;
-for_window [instance="dropdown_*"] move position 1920px 22px;
 for_window [instance="dropdown_*"] scratchpad show;
 for_window [instance="dropdown_*"] resize set height 300px;
 for_window [instance="dropdown_*"] resize set width 500px;
