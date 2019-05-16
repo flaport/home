@@ -4,9 +4,12 @@ import os
 import sys
 from subprocess import call, Popen, PIPE, check_output
 
-lsblk_out = check_output(["lsblk", "-f"]).decode().splitlines()
-header = lsblk_out[0]
+lsblk_out = check_output(["lsblk"]).decode().splitlines()
 lsblk_out = lsblk_out[1:]
+
+lsblkf_out = check_output(["lsblk", "-f"]).decode().splitlines()
+header = lsblkf_out[0]
+lsblkf_out = lsblkf_out[1:]
 
 i_name = header.index("NAME")
 i_fstype = header.index("FSTYPE")
@@ -17,23 +20,25 @@ i_fsuse = header.index("FSUSE")
 i_mp = header.index("MOUNTPOINT")
 
 mountpoints = {}
-for line in lsblk_out:
-    if line[0] not in ("├", "└"):
-        mountpoints[line] = None
+for i, (lsblk_line, lsblkf_line) in enumerate(zip(lsblk_out, lsblkf_out)):
+    if lsblkf_line[0] not in ("├", "└"):
+        mountpoints[lsblk_line] = None
         continue
     dic = {}
-    dic["name"] = line[2:i_fstype].strip()
-    dic["fstype"] = line[i_fstype:i_label].strip()
-    dic["label"] = line[i_label:i_uuid].strip()
-    dic["uuid"] = line[i_uuid:i_fsavail].strip()
-    dic["fsavail"] = line[i_fsavail:i_fsuse].strip()
-    dic["fsuse"] = line[i_fsuse:i_mp].strip()
-    dic["mp"] = line[i_mp:].strip()
+    dic["name"] = lsblkf_line[2:i_fstype].strip()
+    dic["fstype"] = lsblkf_line[i_fstype:i_label].strip()
+    dic["label"] = lsblkf_line[i_label:i_uuid].strip()
+    dic["uuid"] = lsblkf_line[i_uuid:i_fsavail].strip()
+    dic["fsavail"] = lsblkf_line[i_fsavail:i_fsuse].strip()
+    dic["fsuse"] = lsblkf_line[i_fsuse:i_mp].strip()
+    dic["mp"] = lsblkf_line[i_mp:].strip()
 
-    mountpoints[line] = dic
+    lsblk_out[i] = lsblk_line = lsblk_line + " (" + dic["uuid"] + ")"
 
-lsblk_out = Popen(["echo", "\n".join(lsblk_out)], stdout=PIPE).stdout
-lsblk_choice = check_output(["dmenu", "-l", "100", "-p", "mount drive"] + sys.argv[1:], stdin=lsblk_out).decode()[:-1]
+    mountpoints[lsblk_line] = dic
+
+lsblkf_out = Popen(["echo", "\n".join(lsblk_out)], stdout=PIPE).stdout
+lsblk_choice = check_output(["dmenu", "-l", "100", "-p", "mount drive"] + sys.argv[1:], stdin=lsblkf_out).decode()[:-1]
 
 lsblk_choice = mountpoints[lsblk_choice]
 
