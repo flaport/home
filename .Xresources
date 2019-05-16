@@ -1,3 +1,10 @@
+/* Color definitions
+
+Note that the corresponding color names (indicated by the accompanying comments)
+are more guidelines than strict rules.
+
+*/
+
 !! backgroud
 *color0: #1b1918
 
@@ -6,7 +13,11 @@
 
 !! main
 *color2: #2aa198
+
+!! main 2
 *color3: #fdf6e3
+
+!! main 3
 *color4: #fdf6e3
 
 !! accent
@@ -21,22 +32,26 @@
 !! neutral
 *color8: #766e6b
 
-!! urgent
+!! urgent 2
 *color9: #ff0000
+
+!! urgent 3
 *color10: #0000ff
+
+!! urgent 4
 *color11: #2aa198
 
-!! main
+!! main 4
 *color12: #2aa198
 
-!! accent
+!! accent 2
 *color13: #6c71c4
 
-!! main-muted
+!! main-muted 2
 *color14: #00ad9c
 
 !! foreground
 *color15: #fdf6e3
 
-*.alpha: 0.7
+!! window transparency
 *.alpha: 0.7
