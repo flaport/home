@@ -5,14 +5,18 @@
 exec --no-startup-id ~/.config/i3/lock_screen
 
 ## variables
+
 # modifier key
 set $mod Mod4
+
 # transparent terminal
-set $term --no-startup-id st -f mono:pixelsize=18
+set $terminal --no-startup-id $TERMINAL -f mono:pixelsize=18
 # non-transparent terminal
-set $term2 --no-startup-id ~/.config/i3/non-transparent-terminal -f mono:pixelsize=18
+set $ntterminal --no-startup-id ~/.config/i3/non-transparent-terminal -f mono:pixelsize=18
+
 # browser
-set $BROWSER --no-startup-id qutebrowser
+set $browser --no-startup-id $BROWSER
+
 # workspaces
 set $ws0 "0"
 set $ws1 "1"
@@ -26,7 +30,6 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
-
 # set font
 font pango:Droid Sans 11
 
@@ -39,8 +42,8 @@ workspace_layout default
 # wallpaper
 exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
 # set wallpaper from path/url specified in clipboard
-bindsym $mod+c      exec $term -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
-bindsym $mod+Shift+c      exec $term -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o) -negate
+bindsym $mod+c      exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
+bindsym $mod+Shift+c      exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o) -negate
 
 # display settings
 # export your desired screenlayout with `arandr`
@@ -116,8 +119,8 @@ bar {
 ## KEY bindings
 
 # terminal
-bindsym $mod+Return 		    exec $term
-bindsym $mod+Shift+Return 		exec $term2
+bindsym $mod+Return 		    exec $terminal
+bindsym $mod+Shift+Return 		exec $ntterminal
 
 # floating window
 bindsym $mod+Shift+space 	floating toggle
@@ -152,13 +155,13 @@ bindsym $mod+q			kill
 bindsym $mod+Shift+q    kill
 
 # browser
-bindsym $mod+w			exec --no-startup-id $BROWSER
+bindsym $mod+w			exec --no-startup-id $browser
 
 # move workspace to other monitor
 bindsym $mod+Shift+w		move workspace to output left
 
 # ranger
-bindsym $mod+r 			exec --no-startup-id $term -e ranger
+bindsym $mod+r 			exec --no-startup-id $terminal -e ranger
 
 # split below/right
 bindsym $mod+t			split toggle
@@ -174,7 +177,7 @@ bindsym $mod+u exec --no-startup-id ~/.config/i3/floating_terminal;
 bindsym $mod+a exec --no-startup-id ~/.config/i3/floating_python;
 
 # process information
-bindsym $mod+i 			exec --no-startup-id $term -e htop
+bindsym $mod+i 			exec --no-startup-id $terminal -e htop
 
 # sticky toggle
 bindsym $mod+o			sticky toggle
@@ -243,8 +246,8 @@ bindsym $mod+Shift+XF86Back	move container to workspace prev
 bindsym $mod+XF86Forward	workspace next
 bindsym $mod+Shift+XF86Forward	move container to workspace next
 bindsym $mod+semicolon		workspace next
-bindsym $mod+apostrophe		split horizontal ;; exec --no-startup-id $term
-bindsym $mod+slash		split vertical ;; exec --no-startup-id $term
+bindsym $mod+apostrophe		split horizontal ;; exec --no-startup-id $terminal
+bindsym $mod+slash		split vertical ;; exec --no-startup-id $terminal
 bindsym $mod+Shift+slash	kill
 bindsym $mod+backslash		workspace back_and_forth
 
