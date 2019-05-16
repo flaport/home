@@ -33,6 +33,7 @@ export PATH="$HOME/.anaconda/bin:$PATH"
 
 ## Start graphical server if i3 not already running.
 if [ "$(tty)" = "/dev/tty1" ]; then
+    sleep 3
 	pgrep -x i3 || exec startx &> /dev/null
 fi
 

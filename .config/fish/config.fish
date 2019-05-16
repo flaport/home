@@ -31,12 +31,14 @@ set -gx PATH "$HOME/.anaconda/bin:$PATH"
 
 ## python
 # to enable conda activate
-source "$HOME/.anaconda/etc/fish/conf.d/conda.fish" 
+if test -e "$HOME/.anaconda/etc/fish/conf.d/conda.fish"
+    source "$HOME/.anaconda/etc/fish/conf.d/conda.fish"
+end
 # set python path from "~/.pythonpath" file
 touch $HOME/.pythonpath # create pythonpath file if it does not exist
 set -gx PYTHONPATH (string replace "~" $HOME (tr '\n' ':' < ~/.pythonpath | head -c -1))
 # set python startup file
-# touch $HOME/.pythonstartup # do not touch .pythonstartup as it is part of source control
+touch $HOME/.pythonstartup # create pythonstartup file if it does not exist 
 set -gx PYTHONSTARTUP "$HOME/.pythonstartup"
 
 ## accept autosuggestion

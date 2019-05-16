@@ -5,16 +5,20 @@
 exec --no-startup-id ~/.config/i3/lock_screen
 
 ## variables
+
 # modifier key
 set $mod Mod4
+
 # transparent terminal
-set $term --no-startup-id st -f mono:pixelsize=18
+set $terminal --no-startup-id $TERMINAL -f mono:pixelsize=18
 # non-transparent terminal
-set $term2 --no-startup-id ~/.config/i3/non-transparent-terminal -f mono:pixelsize=18
+set $ntterminal --no-startup-id ~/.config/i3/non-transparent-terminal -f mono:pixelsize=18
+
 # browser
-set $BROWSER --no-startup-id qutebrowser
+set $browser --no-startup-id $BROWSER
+
 # workspaces
-set $ws0 "0"
+set $ "0"
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -25,7 +29,6 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
-
 
 # set font
 font pango:Droid Sans 11
@@ -39,8 +42,8 @@ workspace_layout default
 # wallpaper
 exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
 # set wallpaper from path/url specified in clipboard
-bindsym $mod+c      exec $term -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
-bindsym $mod+Shift+c      exec $term -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o) -negate
+bindsym $mod+c      exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
+# bindsym $mod+Shift+c      exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o) -negate
 
 # display settings
 # export your desired screenlayout with `arandr`
@@ -116,8 +119,8 @@ bar {
 ## KEY bindings
 
 # terminal
-bindsym $mod+Return 		    exec $term
-bindsym $mod+Shift+Return 		exec $term2
+bindsym $mod+Return 		    exec $terminal
+bindsym $mod+Shift+Return 		exec $ntterminal
 
 # floating window
 bindsym $mod+Shift+space 	floating toggle
@@ -152,13 +155,13 @@ bindsym $mod+q			kill
 bindsym $mod+Shift+q    kill
 
 # browser
-bindsym $mod+w			exec --no-startup-id $BROWSER
+bindsym $mod+w			exec --no-startup-id $browser
 
 # move workspace to other monitor
 bindsym $mod+Shift+w		move workspace to output left
 
 # ranger
-bindsym $mod+r 			exec --no-startup-id $term -e ranger
+bindsym $mod+r 			exec --no-startup-id $terminal -e ranger
 
 # split below/right
 bindsym $mod+t			split toggle
@@ -174,7 +177,7 @@ bindsym $mod+u exec --no-startup-id ~/.config/i3/floating_terminal;
 bindsym $mod+a exec --no-startup-id ~/.config/i3/floating_python;
 
 # process information
-bindsym $mod+i 			exec --no-startup-id $term -e htop
+bindsym $mod+i 			exec --no-startup-id $terminal -e htop
 
 # sticky toggle
 bindsym $mod+o			sticky toggle
@@ -184,12 +187,16 @@ for_window [instance="matplotlib*"] floating enable;
 
 ## menus
 # application launcher
-bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
 # screen layout chooser
-bindsym $mod+p          exec --no-startup-id ~/.config/i3/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+bindsym $mod+p          exec --no-startup-id ~/.config/i3/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
 bindsym $mod+Shift+p    exec --no-startup-id ~/.config/screenlayout/default
 # select keyboard shortcut
-bindsym $mod+F1         exec --no-startup-id ~/.config/i3/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'Droid Sans-12'
+bindsym $mod+F1         exec --no-startup-id ~/.config/i3/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
+# mount drive menu
+bindsym $mod+m          exec --no-startup-id ~/.config/i3/dmenu_mount mount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
+# unmount drive menu
+bindsym $mod+Shift+m    exec --no-startup-id ~/.config/i3/dmenu_mount unmount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
 
 # gimp
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
@@ -205,7 +212,7 @@ bindsym $mod+b			bar mode toggle
 bindsym $mod+Shift+b		floating toggle; sticky toggle; exec --no-startup-id bottomleft
 
 # switch to workspace
-bindsym $mod+0		workspace $ws0
+bindsym $mod+0		workspace $
 bindsym $mod+1		workspace $ws1
 bindsym $mod+2		workspace $ws2
 bindsym $mod+3		workspace $ws3
@@ -217,7 +224,7 @@ bindsym $mod+8		workspace $ws8
 bindsym $mod+9		workspace $ws9
 
 # move focused container to workspace
-bindsym $mod+Shift+0	move container to workspace $ws0
+bindsym $mod+Shift+0	move container to workspace $
 bindsym $mod+Shift+1	move container to workspace $ws1
 bindsym $mod+Shift+2	move container to workspace $ws2
 bindsym $mod+Shift+3	move container to workspace $ws3
@@ -231,8 +238,8 @@ bindsym $mod+Shift+9	move container to workspace $ws9
 # switch to workspace alternatives
 bindsym $mod+Home		workspace $ws1
 bindsym $mod+Shift+Home		move container to workspace $ws1
-bindsym $mod+End		workspace $ws10
-bindsym $mod+Shift+End		move container to workspace $ws10
+bindsym $mod+End		workspace $ws9
+bindsym $mod+Shift+End		move container to workspace $ws9
 bindsym $mod+Prior		workspace prev
 bindsym $mod+Shift+Prior	move container to workspace prev
 bindsym $mod+Next		workspace next
@@ -243,8 +250,8 @@ bindsym $mod+Shift+XF86Back	move container to workspace prev
 bindsym $mod+XF86Forward	workspace next
 bindsym $mod+Shift+XF86Forward	move container to workspace next
 bindsym $mod+semicolon		workspace next
-bindsym $mod+apostrophe		split horizontal ;; exec --no-startup-id $term
-bindsym $mod+slash		split vertical ;; exec --no-startup-id $term
+bindsym $mod+apostrophe		split horizontal ;; exec --no-startup-id $terminal
+bindsym $mod+slash		split vertical ;; exec --no-startup-id $terminal
 bindsym $mod+Shift+slash	kill
 bindsym $mod+backslash		workspace back_and_forth
 
@@ -263,9 +270,10 @@ bindsym Print 			exec --no-startup-id scrot
 bindsym Shift+Print 		exec --no-startup-id scrot -u
 
 # media control
-bindsym $mod+m			exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
-bindsym $mod+plus		exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%+ && pkill -RTMIN+10 i3blocks
-bindsym $mod+minus 		exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym $mod+plus		    exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%+ && pkill -RTMIN+10 i3blocks
+bindsym $mod+minus 		    exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym $mod+Shift+minus	exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
+bindsym $mod+Shift+plus	    exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
 
 ## Special Screen (terminal) names
 
@@ -288,54 +296,50 @@ bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize_window right
 for_window [instance="tvolume"] floating enable;
 for_window [instance="tvolume"] resize set height 550px;
 for_window [instance="tvolume"] resize set width 800px;
-for_window [instance="tvolume"] move position 1120px 30px;
 
 # openvpn report screen
 for_window [instance="topenvpn*"] floating enable;
 for_window [instance="topenvpn*"] resize set height 250px;
 for_window [instance="topenvpn*"] resize set width 800px;
-for_window [instance="topenvpn*"] move position 1120px 30px;
 
 # jupyterhub report screen
 for_window [instance="tjupyterhub*"] floating enable;
 for_window [instance="tjupyterhub*"] resize set height 250px;
 for_window [instance="tjupyterhub*"] resize set width 800px;
-for_window [instance="tjupyterhub*"] move position 1120px 30px;
 
 # sshtunnel report screen
 for_window [instance="tsshtunnel*"] floating enable;
 for_window [instance="tsshtunnel*"] resize set height 250px;
 for_window [instance="tsshtunnel*"] resize set width 800px;
-for_window [instance="tsshtunnel*"] move position 1120px 30px;
+
+# openvpn report screen
+for_window [instance="dmenu_mount*"] floating enable;
+for_window [instance="dmenu_mount*"] resize set height 250px;
+for_window [instance="dmenu_mount*"] resize set width 800px;
 
 # weather report screen
 for_window [instance="tweather*"] floating enable;
 for_window [instance="tweather*"] resize set height 550px;
 for_window [instance="tweather*"] resize set width 800px;
-for_window [instance="tweather*"] move position 1120px 30px;
 
 # storage report screen
 for_window [instance="tstorage*"] floating enable;
 for_window [instance="tstorage*"] resize set height 125px;
 for_window [instance="tstorage*"] resize set width 500px;
-for_window [instance="tstorage*"] move position 1420px 30px;
 
 # drop down windows
 for_window [instance="search"] floating enable;
 for_window [instance="search"] resize set height 800px;
 for_window [instance="search"] resize set width 1900px;
-for_window [instance="search"] move position 1920px 22px;
 
 # drop down fzfopen terminal
 for_window [instance="fzfopen"] floating enable;
 for_window [instance="fzfopen"] resize set height 300px;
 for_window [instance="fzfopen"] resize set width 500px;
-for_window [instance="fzfopen"] move position 1920px 22px;
 
 # drop down windows
 for_window [instance="dropdown_*"] floating enable;
 for_window [instance="dropdown_*"] sticky enable;
-for_window [instance="dropdown_*"] move position 1920px 22px;
 for_window [instance="dropdown_*"] scratchpad show;
 for_window [instance="dropdown_*"] resize set height 300px;
 for_window [instance="dropdown_*"] resize set width 500px;
