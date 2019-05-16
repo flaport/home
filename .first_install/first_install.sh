@@ -386,16 +386,17 @@ install python2-matplotlib
 # Scientific computing octave (matlab alternative)
 install octave
 # install neovim integration for system python
-echo $password | sudo -S python2 -m pip install neovim
-echo $password | sudo -S python3 -m pip install neovim
-echo $password | sudo -S python3 -m pip install neovim-remote
+echo $password | sudo -S pip3 install neovim
+echo $password | sudo -S pip2 install neovim
+echo $password | sudo -S pip3 install neovim-remote
+echo $password | sudo -S pip2 install neovim-remote
 # image previews in vifm/ranger
-echo $password | sudo -S python3 -m pip install ueberzug
+echo $password | sudo -S pip3 install ueberzug
 # document portability
-echo $password | sudo -S python3 -m pip install pandoc
-echo $password | sudo -S python2 -m pip install pandoc
-echo $password | sudo -S python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
-echo $password | sudo -S python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+echo $password | sudo -S pip3 install pandoc
+echo $password | sudo -S pip2 install pandoc
+echo $password | sudo -S pip3 install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+echo $password | sudo -S pip2 install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
 
 # -------- #
