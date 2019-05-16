@@ -37,7 +37,23 @@ for option in os.listdir(os.path.expanduser("~/.config/screenlayout/")):
     if option.startswith("["):
         os.remove(os.path.join(os.path.expanduser("~/.config/screenlayout"), option))
 
-## Build full commands for all screen permutations
+
+## Build all scren layout options
+
+# first option: same output on all screens:
+command = ["xrandr"]
+for output in off_commands.keys():
+    command += ["--output", output, "--off"]
+for output, resolution in on_commands.items():
+    mode = tuple_to_res(resolution)
+    command += ["--output", output, "--mode", mode, "--pos", "0x0", "--rotate", "normal"]
+filename = os.path.join(os.path.expanduser("~/.config/screenlayout/"), "same")
+with open(filename, "w") as file:
+    file.write("#!/usr/bin/env bash\n")
+    file.write(" ".join(command))
+os.chmod(filename, stat.S_IRWXU | stat.S_IRWXG) # make executable for user and group
+
+# build screen layouts for all screen permutations:
 all_keys = set(on_commands.keys())
 options = []
 for i in range(1, len(all_keys) + 1):
@@ -65,8 +81,9 @@ for option in options:
     with open(filename, "w") as file:
         file.write("#!/usr/bin/env bash\n")
         file.write(" ".join(command))
+
     os.chmod(filename, stat.S_IRWXU | stat.S_IRWXG) # make executable for user and group
 
-## Execute main command
+## Execute last command: (different output on all screens)
 print(" ".join(command))
 call(command)

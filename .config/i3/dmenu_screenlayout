@@ -6,7 +6,7 @@ from subprocess import call, check_output, CalledProcessError, Popen, PIPE
 
 # get possible layouts
 layouts = os.listdir(os.path.expanduser("~/.config/screenlayout"))
-layouts = ["default"] + sorted([layout for layout in layouts if layout[0] == "["])
+layouts = ["default", "same"] + sorted([layout for layout in layouts if layout[0] == "["])
 
 # pipe the layouts as input commands [to dmenu]
 commands = Popen(["printf", "\n".join(layouts)], stdout=PIPE).stdout
