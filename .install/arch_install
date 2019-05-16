@@ -389,7 +389,6 @@ install octave
 echo $password | sudo -S pip3 install neovim
 echo $password | sudo -S pip2 install neovim
 echo $password | sudo -S pip3 install neovim-remote
-echo $password | sudo -S pip2 install neovim-remote
 # image previews in vifm/ranger
 echo $password | sudo -S pip3 install ueberzug
 # document portability

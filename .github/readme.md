@@ -8,7 +8,7 @@ tracked.
 
 ## Installation instructions
 
-Please follow the steps outlined in the [first install readme](../.first_install/readme.md). **Please follow these steps carefully to make sure all programs are
+Please follow the steps outlined in the [first install readme](../.install/readme.md). **Please follow these steps carefully to make sure all programs are
 correctly installed.**
 
 ## Folders
@@ -22,18 +22,19 @@ All my personal configuration files for most installed programs.
 All kind of useful files and file templates that are not supposed to be stored
 in the home directory (like systemd services, fstab files, ...)
 
-### [.first_install](../.first_install)
+### [.install](../.install)
 
-Contains a readme file [`readme.md`](.first_install/readme.md) containing all
+Contains a readme file [`readme.md`](.install/readme.md) containing all
 the manual installation steps needed to be taken to make a proper Arch Linux
 installation.
 
 It also contains an installation bash script
-[`first_install.sh`](../.first_install/first_install.sh) which installs the
+[`arch_install`](../.install/arch_install) which installs the
 essential programs for the new installation automatically.
 
-It also contains an installation bash script for user installation files
-[`user_install.sh`](../.first_install/user_install.sh).
+It also contains an installation bash script for python installation and
+configuration (using anaconda python)
+[`python_install`](../.install/python_install).
 
 ### [.github](../.github)
 
