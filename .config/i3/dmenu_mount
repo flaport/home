@@ -28,6 +28,7 @@ class Device:
         self.mountpoint = kwargs["mountpoint"] or ""
 
     def mount(self, mountpoint):
+        mountpoint = os.path.abspath(os.path.expanduser(mountpoint))
         if self.mountpoint:
             raise MountError(f"Device {self.name} is already mounted at {self.mountpoint}")
         if os.path.isdir(mountpoint):
@@ -35,12 +36,18 @@ class Device:
                 raise MountError(f"Mount location {mountpoint} is not an empty folder")
         else:
             os.makedirs(mountpoint)
-        status = call(["st", "-n", "dmenu_mount", "-e", "sudo", "mount", f"/dev/{self.name}", mountpoint])
+
+        options = "defaults,nofail,x-systemd.device-timeout=1s"
+        if self.fstype in ("vfat", "ntfs"):
+            options += f",uid={os.getuid()},gid={os.getgid()},dmask=033,umask=033"
+        elif self.fstype == "cifs":
+            options += f",credentials={os.path.expanduser('~/.smbcredentials')},uid={os.getuid()},gid={os.getgid()},dir_mode=0744,file_mode=0744"
+        status = call(["st", "-n", "dmenu_mount", "-e", "sudo", "mount", f"{self.name}", mountpoint, "--options", options])
         if status != 0:
             raise MountError(f"Mounting device {self.name} resulted in an exit status {status}")
         else:
             self.mountpoint = mountpoint
-            raise Success(f"drive mounted\n/dev/{self.name} --> {self.mountpoint}")
+            raise Success(f"drive mounted\n{self.name} --> {self.mountpoint}")
 
     def unmount(self):
         if not self.mountpoint:
@@ -55,15 +62,18 @@ class Device:
         else:
             os.rmdir(self.mountpoint)
             self.mountpoint = ""
-            raise Success(f"drive unmounted\n/dev/{self.name}")
+            raise Success(f"drive unmounted\n{self.name}")
 
     def mountpoint_options(self):
         options = []
         if self.label:
             options.append(f"/mnt/{self.label}")
-        options.append(f"/mnt/{self.name}")
-        options.append(f"/mnt/{self.uuid.split('-')[0]}")
-        options.append(f"/mnt/{self.uuid}")
+        options.append(f"/mnt/{self.name.split('/')[-1]}")
+        if self.uuid:
+            if "-" in self.uuid:
+                options.append(f"/mnt/{self.uuid.split('-')[0]}")
+            else:
+                options.append(f"/mnt/{self.uuid}")
         options.append(f"/mnt")
         return options
 
@@ -77,7 +87,7 @@ class Device:
     def __str__(self):
         s = ""
         s += self._normalize_string(self.label, 10)
-        s += self._normalize_string(self.name, 10)
+        s += self._normalize_string(self.name, 15)
         s += self._normalize_string(self.size, 12)
         s += self._normalize_string(self.fstype, 10)
         s += self._normalize_string(self.uuid, 15)
@@ -92,6 +102,7 @@ def lsblk():
     for dic1, dic2 in zip(lsblk1, lsblk2):
         dic1.update(dic2)
         device = Device(**dic1)
+        device.name = "/dev/" + device.name
         lsblk[str(device)] = device
     return lsblk
 
@@ -117,17 +128,25 @@ def get_mount_mode():
         raise MountCancelled("no mode selected: mount/unmount")
     return mount
 
+def get_device(choice):
+    try:
+        return devices[choice]
+    except KeyError:
+        # network device?
+        return Device(name=choice, label=None, size=None, fstype="cifs", uuid=None, mountpoint=None)
+
+
 try:
     devices = lsblk()
     mount = get_mount_mode()
     if mount:
         devices_choice = dmenu(devices.keys(), "mount device")
-        device = devices[devices_choice]
-        mountpoint = dmenu(device.mountpoint_options(), f"mount /dev/{device.name} in")
+        device = get_device(devices_choice)
+        mountpoint = dmenu(device.mountpoint_options(), f"mount {device.name} in")
         device.mount(mountpoint)
     else:
         devices_choice = dmenu(devices.keys(), "unmount device")
-        device = devices[devices_choice]
+        device = get_device(devices_choice)
         device.unmount()
 
 except Exception as e:
