@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+
 ## Note
 #------
-# I switched to fish, so this file is not run
+# I switched to fish, so this file will not run
+# still usefull to have though.
+
 
 ## General settings
 #------------------
@@ -21,8 +24,14 @@ alias ls='ls -hN --color=auto --group-directories-first'
 alias grep="grep --color=auto"
 
 # Python Path (get the pythonpath from ~/.pythonpath)
+touch $HOME/.pythonpath
 export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1)"
 export PYTHONPATH="${PYTHONPATH//\~/$HOME}"
+
+# Python startup file
+touch $HOME/.pythonstartup
+export PYTHONSTARTUP="$HOME/.pythonstartup"
+
 
 ## Path
 #------
@@ -32,7 +41,9 @@ export PATH="/opt/lumerical/fdtd/bin:$PATH"
 
 # Anaconda python
 export PATH="$HOME/.anaconda/bin:$PATH"
-source "$HOME/.anaconda/etc/profile.d/conda.sh" # to enable conda activate
+if [ -f "$HOME/.anaconda/etc/profile.d/conda.sh" ]; then
+    source "$HOME/.anaconda/etc/profile.d/conda.sh" # to enable `conda activate`
+fi
 
 # custom scripts
 export PATH="$HOME/.scripts:$PATH"
@@ -46,23 +57,10 @@ export PATH="$HOME/.config/nvim/vim:$PATH"
 # custom git commands (powered by vim and tmux)
 export PATH="$HOME/.config/nvim/git:$PATH"
 
+
 ## Custom commands
 #-----------------
 
 # open and disown with default program:
 o() { xdg-open "$1" &>/dev/null &disown ;}
-
-# custom cd function: go to folder containing file if path of file is given
-cd() {
-    if [[ -z $(/usr/bin/python $HOME/.scripts/isdir $1 | grep 0) ]]; then
-        builtin cd $1
-    else
-        builtin cd $(dirname $1)
-    fi
-}
-
-# fuzzy cd
-fcd() {
-    cd $(find . | fzf -1 -0 -q $1\ $2\ $3\ $4\ $5)
-}
 
