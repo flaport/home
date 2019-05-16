@@ -18,7 +18,7 @@ set $ntterminal --no-startup-id ~/.config/i3/non-transparent-terminal -f mono:pi
 set $browser --no-startup-id $BROWSER
 
 # workspaces
-set $ws0 "0"
+set $ "0"
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -43,7 +43,7 @@ workspace_layout default
 exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
 # set wallpaper from path/url specified in clipboard
 bindsym $mod+c      exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
-bindsym $mod+Shift+c      exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o) -negate
+# bindsym $mod+Shift+c      exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o) -negate
 
 # display settings
 # export your desired screenlayout with `arandr`
@@ -194,7 +194,9 @@ bindsym $mod+Shift+p    exec --no-startup-id ~/.config/screenlayout/default
 # select keyboard shortcut
 bindsym $mod+F1         exec --no-startup-id ~/.config/i3/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
 # mount drive menu
-bindsym $mod+y          exec --no-startup-id ~/.config/i3/dmenu_mount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
+bindsym $mod+m          exec --no-startup-id ~/.config/i3/dmenu_mount mount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
+# unmount drive menu
+bindsym $mod+Shift+m    exec --no-startup-id ~/.config/i3/dmenu_mount unmount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
 
 # gimp
 bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
@@ -210,7 +212,7 @@ bindsym $mod+b			bar mode toggle
 bindsym $mod+Shift+b		floating toggle; sticky toggle; exec --no-startup-id bottomleft
 
 # switch to workspace
-bindsym $mod+0		workspace $ws0
+bindsym $mod+0		workspace $
 bindsym $mod+1		workspace $ws1
 bindsym $mod+2		workspace $ws2
 bindsym $mod+3		workspace $ws3
@@ -222,7 +224,7 @@ bindsym $mod+8		workspace $ws8
 bindsym $mod+9		workspace $ws9
 
 # move focused container to workspace
-bindsym $mod+Shift+0	move container to workspace $ws0
+bindsym $mod+Shift+0	move container to workspace $
 bindsym $mod+Shift+1	move container to workspace $ws1
 bindsym $mod+Shift+2	move container to workspace $ws2
 bindsym $mod+Shift+3	move container to workspace $ws3
@@ -236,8 +238,8 @@ bindsym $mod+Shift+9	move container to workspace $ws9
 # switch to workspace alternatives
 bindsym $mod+Home		workspace $ws1
 bindsym $mod+Shift+Home		move container to workspace $ws1
-bindsym $mod+End		workspace $ws10
-bindsym $mod+Shift+End		move container to workspace $ws10
+bindsym $mod+End		workspace $ws9
+bindsym $mod+Shift+End		move container to workspace $ws9
 bindsym $mod+Prior		workspace prev
 bindsym $mod+Shift+Prior	move container to workspace prev
 bindsym $mod+Next		workspace next
@@ -268,9 +270,10 @@ bindsym Print 			exec --no-startup-id scrot
 bindsym Shift+Print 		exec --no-startup-id scrot -u
 
 # media control
-bindsym $mod+m			exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
-bindsym $mod+plus		exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%+ && pkill -RTMIN+10 i3blocks
-bindsym $mod+minus 		exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym $mod+plus		    exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%+ && pkill -RTMIN+10 i3blocks
+bindsym $mod+minus 		    exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym $mod+Shift+minus	exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
+bindsym $mod+Shift+plus	    exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
 
 ## Special Screen (terminal) names
 

@@ -2,68 +2,135 @@
 
 import os
 import sys
-from subprocess import call, Popen, PIPE, check_output
+import json
+from subprocess import check_output, call, Popen, PIPE, CalledProcessError
 
-lsblk_out = check_output(["lsblk"]).decode().splitlines()
-lsblk_out = lsblk_out[1:]
 
-lsblkf_out = check_output(["lsblk", "-f"]).decode().splitlines()
-header = lsblkf_out[0]
-lsblkf_out = lsblkf_out[1:]
+class MountError(RuntimeError):
+    title = "Error while mounting drive"
 
-i_name = header.index("NAME")
-i_fstype = header.index("FSTYPE")
-i_label = header.index("LABEL")
-i_uuid = header.index("UUID")
-i_fsavail = header.index("FSAVAIL")
-i_fsuse = header.index("FSUSE")
-i_mp = header.index("MOUNTPOINT")
+class UnmountError(RuntimeError):
+    title = "Error while unmounting drive"
 
-mountpoints = {}
-for i, (lsblk_line, lsblkf_line) in enumerate(zip(lsblk_out, lsblkf_out)):
-    if lsblkf_line[0] not in ("├", "└"):
-        mountpoints[lsblk_line] = None
-        continue
-    dic = {}
-    dic["name"] = lsblkf_line[2:i_fstype].strip()
-    dic["fstype"] = lsblkf_line[i_fstype:i_label].strip()
-    dic["label"] = lsblkf_line[i_label:i_uuid].strip()
-    dic["uuid"] = lsblkf_line[i_uuid:i_fsavail].strip()
-    dic["fsavail"] = lsblkf_line[i_fsavail:i_fsuse].strip()
-    dic["fsuse"] = lsblkf_line[i_fsuse:i_mp].strip()
-    dic["mp"] = lsblkf_line[i_mp:].strip()
+class MountCancelled(RuntimeError):
+    title = "Nothing (un)mounted."
 
-    lsblk_out[i] = lsblk_line = lsblk_line + " (" + dic["uuid"] + ")"
+class Success(RuntimeError):
+    title = "Success"
 
-    mountpoints[lsblk_line] = dic
+class Device:
+    def __init__(self, **kwargs):
+        self.name = kwargs["name"] or ""
+        self.label = kwargs["label"] or ""
+        self.size = kwargs["size"] or ""
+        self.fstype = kwargs["fstype"] or "none"
+        self.uuid = kwargs["uuid"] or ""
+        self.mountpoint = kwargs["mountpoint"] or ""
 
-lsblkf_out = Popen(["echo", "\n".join(lsblk_out)], stdout=PIPE).stdout
-lsblk_choice = check_output(["dmenu", "-l", "100", "-p", "mount drive"] + sys.argv[1:], stdin=lsblkf_out).decode()[:-1]
+    def mount(self, mountpoint):
+        if self.mountpoint:
+            raise MountError(f"Device {self.name} is already mounted at {self.mountpoint}")
+        if os.path.isdir(mountpoint):
+            if os.listdir(mountpoint):
+                raise MountError(f"Mount location {mountpoint} is not an empty folder")
+        else:
+            os.makedirs(mountpoint)
+        status = call(["st", "-n", "dmenu_mount", "-e", "sudo", "mount", f"/dev/{self.name}", mountpoint])
+        if status != 0:
+            raise MountError(f"Mounting device {self.name} resulted in an exit status {status}")
+        else:
+            self.mountpoint = mountpoint
+            raise Success(f"drive mounted\n/dev/{self.name} --> {self.mountpoint}")
 
-lsblk_choice = mountpoints[lsblk_choice]
+    def unmount(self):
+        if not self.mountpoint:
+            raise UnmountError(f"Device {self.name} is not mounted")
 
-if not lsblk_choice:
-    exit()
+        status = call(["st", "-n", "dmenu_mount", "-e", "sudo", "umount", self.mountpoint])
 
-mount_name_options = []
-if lsblk_choice["label"]:
-    mount_name_options.append(f"/mnt/{lsblk_choice['label']}")
-mount_name_options.append(f"/mnt/{lsblk_choice['name']}")
-mount_name_options.append(f"/mnt/{lsblk_choice['uuid'].split('-')[0]}")
-mount_name_options = Popen(["echo", "\n".join(mount_name_options)], stdout=PIPE).stdout
-mount_name_choice = check_output(["dmenu", "-l", "100", "-p", f"mount /dev/{lsblk_choice['name']} in"] + sys.argv[1:], stdin=mount_name_options).decode().strip()
-mount_name_choice = os.path.abspath(os.path.expanduser(mount_name_choice))
+        if status != 0:
+            raise UnmountError(f"Unmounting device {self.name}\n"
+                                "from mount point {self.mountpoint}\n"
+                                "resulted in an exit status {status}")
+        else:
+            os.rmdir(self.mountpoint)
+            self.mountpoint = ""
+            raise Success(f"drive unmounted\n/dev/{self.name}")
+
+    def mountpoint_options(self):
+        options = []
+        if self.label:
+            options.append(f"/mnt/{self.label}")
+        options.append(f"/mnt/{self.name}")
+        options.append(f"/mnt/{self.uuid.split('-')[0]}")
+        options.append(f"/mnt/{self.uuid}")
+        options.append(f"/mnt")
+        return options
+
+    @staticmethod
+    def _normalize_string(s, length):
+        if len(s) > length:
+            return s[:length-5] + "...  "
+        else:
+            return s + " "*(length - len(s))
+
+    def __str__(self):
+        s = ""
+        s += self._normalize_string(self.label, 10)
+        s += self._normalize_string(self.name, 10)
+        s += self._normalize_string(self.size, 12)
+        s += self._normalize_string(self.fstype, 10)
+        s += self._normalize_string(self.uuid, 15)
+        s += self.mountpoint
+        return s
+
+
+def lsblk():
+    lsblk1 = json.loads(check_output(["lsblk", "-J", "-l"]).decode())["blockdevices"]
+    lsblk2 = json.loads(check_output(["lsblk", "-J", "-l", "-f"]).decode())["blockdevices"]
+    lsblk = {}
+    for dic1, dic2 in zip(lsblk1, lsblk2):
+        dic1.update(dic2)
+        device = Device(**dic1)
+        lsblk[str(device)] = device
+    return lsblk
+
+def dmenu(list_in, prompt):
+    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+    try:
+        choice = check_output(["dmenu", "-l", "100", "-p", prompt] + sys.argv[2:], stdin=dmenu_in).decode()[:-1]
+    except CalledProcessError:
+        raise MountCancelled("no drive was selected")
+    return choice
+
+def get_mount_mode():
+    try:
+        mount = False
+        unmount = False
+        if sys.argv[1] == "mount":
+            mount = True
+        if sys.argv[1] == "umount" or sys.argv[1] == "unmount":
+            unmount = True
+        if mount == unmount:
+            raise MountCancelled("no mode selected: mount/unmount")
+    except IndexError:
+        raise MountCancelled("no mode selected: mount/unmount")
+    return mount
 
 try:
-    os.makedirs(mount_name_choice)
-except FileExistsError:
-    if os.listdir(mount_name_choice):
-        call(["notify-send", "mount error", "mount folder not empty"])
-        exit()
+    devices = lsblk()
+    mount = get_mount_mode()
+    if mount:
+        devices_choice = dmenu(devices.keys(), "mount device")
+        device = devices[devices_choice]
+        mountpoint = dmenu(device.mountpoint_options(), f"mount /dev/{device.name} in")
+        device.mount(mountpoint)
+    else:
+        devices_choice = dmenu(devices.keys(), "unmount device")
+        device = devices[devices_choice]
+        device.unmount()
 
-status = call(["st", "-n", "dmenu_mount", "-e", "sudo", "mount", f"/dev/{lsblk_choice['name']}", mount_name_choice])
-
-if status == 0:
-    call(["notify-send", "drive mounted: ", f"/dev/{lsblk_choice['name']} --> {mount_name_choice}"])
-else:
-    call(["notify-send", "drive failed to mount.", f"exit status {status}"])
+except Exception as e:
+    call(["notify-send", e.__class__.__name__ if not hasattr(e, "title") else e.title, str(e)])
+    if not isinstance(e, Success):
+        exit(1)
