@@ -1,8 +1,13 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
-# ----------------------------------------------
-# NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. |
-# ----------------------------------------------
+# ---------------------------------------------------- #
+# !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
+# ---------------------------------------------------- #
+
+
+# ------ #
+# CHECKS #
+# ------ #
 
 ## Pre-installation checks
 if [ $USER == root ]; then
@@ -18,21 +23,30 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     exit 1
 else
 
-# ----------------------------------
-# START SCRIPT (checks performed). |
-# ----------------------------------
+# ---------- #
+# USER INPUT #
+# ---------- #
 
 # Ask for password, this will be used for all the sudo calls.:
 # and to change the shell later on.
 read -s -p "[sudo] password for $USER: " password
 echo
 
+# ------ #
+# UPDATE #
+# ------ #
+
 ## Update arch
 printf "Updating Arch Linux..."
 echo $password | sudo -S pacman -Syu --noconfirm &> /dev/null
 
+
+# -------------------------- #
+# INSTALL/CONFIGURE PACKAGES #
+# -------------------------- #
+
 ## Package/Program Installation function
-install() { 
+install() {
     # this function takes exactly one argument: the package to install
     # it automatically chooses pacman or yay, depending if pacman fails or not.
     # it ignores packages that are already installed.
@@ -211,9 +225,9 @@ install zathura-djvu
 
 ## Artistic
 install gimp
-# install krita
-# install pinta
+install pinta
 install inkscape
+# install krita
 
 ## Office
 # open-source office
@@ -235,25 +249,6 @@ code --install-extension shardulm94.trailing-spaces
 code --install-extension robertohuertasm.vscode-icons
 code --install-extension richie5um2.vscode-sort-json
 code --install-extension pkief.material-icon-theme
-# Scientific computing octave (matlab alternative)
-install octave
-# system python packages
-install tk
-install python-pip
-install python2-pip
-install python-tqdm
-install python2-tqdm
-# install neovim integration for system python
-echo $password | sudo -S python2 -m pip install neovim
-echo $password | sudo -S python3 -m pip install neovim
-echo $password | sudo -S python3 -m pip install neovim-remote
-# image previews in vifm/ranger
-echo $password | sudo -S python3 -m pip install ueberzug
-# document portability
-echo $password | sudo -S python3 -m pip install pandoc
-echo $password | sudo -S python2 -m pip install pandoc
-echo $password | sudo -S python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
-echo $password | sudo -S python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
 ## Drive and file system access
 # mount cifs parititions
@@ -370,16 +365,60 @@ echo $password | sudo -S chmod a+w /sys/power/state
 ## install programs for the user (disabled by default as this is up to the user):
 # source ~/.first_install/user_install.sh
 
-## Services
-echo $password | sudo -S $HOME/.first_install/services
+# ------ #
+# PYTHON #
+# ------ #
+
+# create files where the system depends upon (check .bashrc and config.fish)
+touch $HOME/.pythonpath # defines the $PYTHONPATH environment variable
+touch $HOME/.pythonstartup # defines the $PYTHONSTARTUP environment variable
+
+# system python packages
+install tk
+install python-pip
+install python2-pip
+install python-tqdm
+install python2-tqdm
+install python-numpy
+install python2-numpy
+install python-matplotlib
+install python2-matplotlib
+# Scientific computing octave (matlab alternative)
+install octave
+# install neovim integration for system python
+echo $password | sudo -S python2 -m pip install neovim
+echo $password | sudo -S python3 -m pip install neovim
+echo $password | sudo -S python3 -m pip install neovim-remote
+# image previews in vifm/ranger
+echo $password | sudo -S python3 -m pip install ueberzug
+# document portability
+echo $password | sudo -S python3 -m pip install pandoc
+echo $password | sudo -S python2 -m pip install pandoc
+echo $password | sudo -S python2 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+echo $password | sudo -S python3 -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+
+# -------- #
+# Services #
+# -------- #
+echo $password | sudo -S $HOME/.first_install/services # TODO: merge the services file with this one.
 echo $password | sudo -S systemctl daemon-reload
 echo $password | sudo -S systemctl enable jupyterhub.service
 
-## System settings
+
+# --------------- #
+# System settings #
+# --------------- #
+
 # set correct date/time
 echo $password | sudo -S timedatectl set-local-rtc 1
 
-# better shell
+
+# ----------------- #
+# Alternative Shell #
+# ----------------- #
+
+# alternative shell
 install fish
 echo $password | chsh -s /usr/bin/fish
 
