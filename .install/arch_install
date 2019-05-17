@@ -102,7 +102,7 @@ install make
 install https://aur.archlinux.org/yay.git
 
 ## Terminal
-## suckless terminal (Luke Smith fork)
+# suckless terminal (Luke Smith fork)
 install st-luke-git
 # vim / neovim
 install neovim
@@ -414,12 +414,18 @@ echo $password | sudo -S systemctl enable jupyterhub.service
 echo $password | sudo -S timedatectl set-local-rtc 1
 
 
-# ----------------- #
-# Alternative Shell #
-# ----------------- #
+# ------------------ #
+# Alternative Shells #
+# ------------------ #
 
-# alternative shell
+# dash is a posix complient shell
+install dash
+# we will make sh point to dash in stead to bash
+echo $password | sudo -S ln -sf /usr/bin/dash /bin/sh
+
+# fish is the friendly interactive shell
 install fish
+# we will make fish our main shell
 echo $password | chsh -s /usr/bin/fish
 
 # --------------#
