@@ -270,8 +270,8 @@ bindsym Print 			exec --no-startup-id scrot
 bindsym Shift+Print 		exec --no-startup-id scrot -u
 
 # media control
-bindsym $mod+plus		    exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%+ && pkill -RTMIN+10 i3blocks
-bindsym $mod+minus 		    exec --no-startup-id amixer -q -c $(~/.config/i3/soundcard) sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym $mod+plus		    exec --no-startup-id amixer -D pulse set Master 5%+ && pkill -RTMIN+10 i3blocks
+bindsym $mod+minus 		    exec --no-startup-id amixer -D pulse set Master 5%- && pkill -RTMIN+10 i3blocks
 bindsym $mod+Shift+minus	exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
 bindsym $mod+Shift+plus	    exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
 
