@@ -8,7 +8,7 @@
 # binary in your path.)
 caller=$(ps -o stat= -p $PPID)
 if [ $caller = "S" ]; then
-    $TERMINAL -n vifm -e vifm
+    $TERMINAL -n vifm -e vifm $@
     exit 0
 fi
 
@@ -25,5 +25,5 @@ mkfifo "$FIFO_UEBERZUG"
 trap cleanup EXIT
 tail --follow "$FIFO_UEBERZUG" | ueberzug layer --silent --parser bash &
 
-/usr/bin/vifm
+/usr/bin/vifm $@
 cleanup
