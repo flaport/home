@@ -48,7 +48,7 @@ set nofollowlinks
 " With this option turned on you can run partially entered commands with
 " unambiguous beginning using :! (e.g. :!Te instead of :!Terminal or :!Te<tab>).
 
-" set fastrun
+set fastrun
 
 " Natural sort of (version) numbers within text.
 
@@ -66,7 +66,8 @@ set novimhelp
 " If you would like to run an executable file when you
 " press return on the file name set this.
 
-set norunexec
+" set norunexec
+set runexec
 
 " Selected color scheme
 
@@ -402,7 +403,7 @@ filextype */
 " You need the next 14 lines!
 
 " file types
-set classify=' :dir:/, :exe:, :reg:, :link:'
+set classify='📁:dir:/, :exe:, :reg:, :link:'
 " various file names
 set classify+=' ::../::, ::*.sh::, ::*.[hc]pp::, ::*.[hc]::, ::/^copying|license$/::, ::.git/,,*.git/::, ::*.epub,,*.fb2,,*.djvu::, ::*.pdf::, ::*.htm,,*.html,,**.[sx]html,,*.xml::'
 " archives
