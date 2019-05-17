@@ -1,4 +1,18 @@
 #!/usr/bin/env bash
+
+# NOTE: this script should be placed in your path such that it takes
+#       priority over the vifm binary `/usr/bin/vifm`.
+
+# if the script is called from outside the terminal, spawn a new terminal to
+# run this script. (assumes this vifm script takes priority over the vifm
+# binary in your path.)
+caller=$(ps -o stat= -p $PPID)
+if [ $caller = "S" ]; then
+    $TERMINAL -n vifm -e vifm
+    exit 0
+fi
+
+# ueberzug image preview settings:
 export FIFO_UEBERZUG="/tmp/vifm-ueberzug-${PPID}"
 
 function cleanup {
