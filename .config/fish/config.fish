@@ -22,8 +22,10 @@ set -gx GTK2_RC_FILES "/usr/share/themes/Arc-solid/gtk-2.0/gtkrc"
 set -gx PATH "$HOME/.webapps:$PATH"
 # custom scripts
 set -gx PATH "$HOME/.scripts:$PATH"
-# custom vifm commands
+# custom vifm script
 set -gx PATH "$HOME/.config/vifm/scripts:$PATH"
+# custom nvim script
+set -gx PATH "$HOME/.config/nvim/nvim:$PATH"
 # i3 commands
 set -gx PATH "$HOME/.config/i3:$PATH"
 # anaconda python

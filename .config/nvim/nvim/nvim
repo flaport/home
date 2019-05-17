@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# NOTE: this script should be placed in your path such that it takes
+#       priority over the nvim binary `/usr/bin/nvim`.
+
+# if the script is called from outside the terminal, spawn a new terminal to
+# run this script. (assumes this vifm script takes priority over the vifm
+# binary in your path.)
+
+caller=$(ps -o stat= -p $PPID)
+if [ $caller = "S" ]; then
+    $TERMINAL -n nvim -e nvim $@
+    exit 0
+fi
+
+/usr/bin/nvim $@
