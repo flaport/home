@@ -1,16 +1,28 @@
-## lock screen - this is actually our login screen, so has to happen first.
-# I am aware that this is not totally safe. But a little safe is enough ;)
-# to have a proper login process, remove the autologin getty patch folder 
+#           ________      ______ _      
+#          /  ____  \    |  ____| |     
+#         /  / ___|  \   | |    | |
+#        |   | |      |  | |__  | |    
+#        |   | |__    |  |  __| | |
+#         \  \____|  /   | |    | |____ 
+#          \________/    |_|    |______|
+
+## Lock screen
+#-------------------------------------------------------------------------------
+# This replaces the login screen (as this is disabled by a getty). 
+# To have a proper login screen, remove the autologin getty patch folder at
 # /etc/systemd/system/getty@tty1.service.d
 exec --no-startup-id ~/.config/i3/lock_screen
 
-## variables
+
+## Variables
+#-------------------------------------------------------------------------------
 
 # modifier key
 set $mod Mod4
 
 # transparent terminal
 set $terminal --no-startup-id $TERMINAL -f mono:pixelsize=18
+
 # non-transparent terminal
 set $ntterminal --no-startup-id ~/.config/i3/non-transparent-terminal -f mono:pixelsize=18
 
@@ -18,7 +30,7 @@ set $ntterminal --no-startup-id ~/.config/i3/non-transparent-terminal -f mono:pi
 set $browser --no-startup-id $BROWSER
 
 # workspaces
-set $ "0"
+set $ws0 "0"
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -28,232 +40,354 @@ set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
-set $ws10 "10"
-
-# set font
-font pango:Droid Sans 11
-
-# drag floating windows
-floating_modifier $mod
-
-# workspace layout
-workspace_layout default
-
-# wallpaper
-exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
-# set wallpaper from path/url specified in clipboard
-bindsym $mod+c      exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
-# bindsym $mod+Shift+c      exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o) -negate
-
-# display settings
-# export your desired screenlayout with `arandr`
-exec --no-startup-id ~/.config/screenlayout/default & disown;
-
-# window definitions
-gaps inner 15
-gaps outer 15
-for_window [class="^.*"] border pixel 3
-
-# notifications
-exec --no-startup-id dunst
-
-# network manager 
-exec --no-startup-id nm-applet
-
-# automatically lock screen after 10 minutes
-exec --no-startup-id xautolock -time 10 -locker ~/.config/i3/lock_screen
-
-# composite manager (window transparency etc)
-exec_always --no-startup-id xcompmgr
-exec_always --no-startup-id xrdb ~/.Xresources
-
-# make the mouse invisible after a brief period
-exec --no-startup-id unclutter
 
 # Set Xresources colors:
-set $transparent		        #00000000
-set_from_resource $background	color0
-set_from_resource $urgent	    color1
-set_from_resource $main       	color2
-set_from_resource $main2      	color3
-set_from_resource $main3 	    color4
-set_from_resource $accent    	color5
-set_from_resource $main-muted   color6
-set_from_resource $foreground2	color7
-set_from_resource $neutral	    color8
-set_from_resource $urgent2	    color9
-set_from_resource $urgent3	    color10
-set_from_resource $urgent4	    color11
-set_from_resource $main4	    color12
-set_from_resource $accent2	    color13
-set_from_resource $main-muted2  color14
-set_from_resource $foreground   color15
+set $transparent #00000000
+set_from_resource $background color0
+set_from_resource $urgent color1
+set_from_resource $main color2
+set_from_resource $main2 color3
+set_from_resource $main3 color4
+set_from_resource $accent color5
+set_from_resource $main-muted color6
+set_from_resource $foreground2 color7
+set_from_resource $neutral color8
+set_from_resource $urgent2 color9
+set_from_resource $urgent3 color10
+set_from_resource $urgent4 color11
+set_from_resource $main4 color12
+set_from_resource $accent2 color13
+set_from_resource $main-muted2 color14
+set_from_resource $foreground color15
 
-#                       BORDER		    BACKGROUND	TEXT		INDICATOR   	CHILD_BORDER
-client.focused		    $transparent    $main-muted	$foreground $neutral    	$accent
-client.unfocused	    $transparent    $main		$foreground $main-muted		$transparent
-client.focused_inactive	$transparent	$main		$foreground	$main-muted		$transparent
-client.urgent		    $urgent	        $urgent	    $background	$urgent		    $urgent
+
+## Default settings
+#-------------------------------------------------------------------------------
+
+# font
+font pango:Droid Sans 11
+# drag floating windows with modifier key
+floating_modifier $mod
+# default workspace layout
+workspace_layout default
+# gaps between containers
+gaps inner 15
+# gaps between containers and border of screen
+gaps outer 15
+# color settings:       border       background  text        indicator   child border
+client.focused          $transparent $main-muted $foreground $neutral    $accent
+client.unfocused        $transparent $main       $foreground $main-muted $transparent
+client.focused_inactive $transparent $main       $foreground $main-muted $transparent
+client.urgent           $urgent      $urgent     $background $urgent     $urgent
 client.background       $background
 
-
+## Initialization
+#-------------------------------------------------------------------------------
+# set wallpaper
+exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
+# composite manager (window transparency etc)
+exec_always --no-startup-id xcompmgr
+# update color database of xcompmgr
+exec_always --no-startup-id xrdb ~/.Xresources
+# export your desired screenlayout with `arandr`
+exec --no-startup-id ~/.config/screenlayout/default & disown
+# notifications
+exec --no-startup-id dunst
+# network manager applet (in most right corner of the screen)
+exec --no-startup-id nm-applet
+# automatically lock screen after 10 minutes
+exec --no-startup-id xautolock -time 10 -locker ~/.config/i3/lock_screen
+# make the mouse invisible after a brief period of not using it.
+exec --no-startup-id unclutter
 # status bar
 bar {
-    i3bar_command i3bar -t
-	colors {
-			background $transparent
-			statusline $main
-			separator $neutral
-			focused_workspace  $main $main $transparent
-        		active_workspace   $main $main $transparent
-      			inactive_workspace $transparent $transparent $main
-        		urgent_workspace   $urgent $urgent $transparent
-		}
-	status_command i3blocks
-	position top
-	mode dock
-	modifier None
+  i3bar_command i3bar -t
+  status_command i3blocks
+  position top
+  mode dock
+  modifier None
+  colors {
+    background $transparent
+    statusline $main
+    separator $neutral
+    focused_workspace $main $main $transparent
+    active_workspace $main $main $transparent
+    inactive_workspace $transparent $transparent $main
+    urgent_workspace $urgent $urgent $transparent
+  }
 }
+# show border on all active windows
+for_window [class="^.*"] border pixel 3
 
+## Key bindings
+#-------------------------------------------------------------------------------
 
-## KEY bindings
+# set wallpaper from path/url specified in clipboard
+bindsym $mod+c exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
 
-# terminal
-bindsym $mod+Return 		    exec $terminal
-bindsym $mod+Shift+Return 		exec $ntterminal
+# new terminal
+bindsym $mod+Return exec $terminal
 
-# floating window
-bindsym $mod+Shift+space 	floating toggle
-bindsym $mod+space		focus mode_toggle
+# new non-transparent terminal
+bindsym $mod+Shift+Return exec $ntterminal
 
-# workspace/window navigation
-bindsym $mod+Escape		workspace prev
-bindsym $mod+g			workspace prev
+# make window floating
+bindsym $mod+Shift+space floating toggle
 
-bindsym $mod+h			focus left
-bindsym $mod+Left		focus left
-bindsym $mod+Shift+h		move left 30
-bindsym $mod+Shift+Left		move left
+# select floating window
+bindsym $mod+space focus mode_toggle
 
-bindsym $mod+j			focus down
-bindsym $mod+Down		focus down
-bindsym $mod+Shift+j		move down 30
-bindsym $mod+Shift+Down		move down
+# select window on the left of current window
+bindsym $mod+h focus left
 
-bindsym $mod+k			focus up
-bindsym $mod+Up			focus up
-bindsym $mod+Shift+k		move up 30
-bindsym $mod+Shift+Up		move up
+# move selected window to the left (100 points if floating)
+bindsym $mod+Shift+h move left 100
 
-bindsym $mod+l			focus right
-bindsym $mod+Right 		focus right
-bindsym $mod+Shift+l		move right 30
-bindsym $mod+Shift+Right 	move right
+# select window below current window
+bindsym $mod+j focus down
 
-# kill a window
-bindsym $mod+q			kill
-bindsym $mod+Shift+q    kill
+# move selected window down (100 points if floating)
+bindsym $mod+Shift+j move down 100
 
-# browser
-bindsym $mod+w			exec --no-startup-id $browser
+# select window above to current window
+bindsym $mod+k focus up
+
+# move selected window up (100 points if floating)
+bindsym $mod+Shift+k move up 100
+
+# select window to the right of current window
+bindsym $mod+l focus right
+
+# move selected window to the right (100 points if floating)
+bindsym $mod+Shift+l move right 100
+
+# close current window
+bindsym $mod+q kill
+
+# close current window
+bindsym $mod+Shift+q kill
+
+# start default browser
+bindsym $mod+w exec --no-startup-id $browser
 
 # move workspace to other monitor
-bindsym $mod+Shift+w		move workspace to output left
+bindsym $mod+Shift+w move workspace to output left
 
-# ranger
-bindsym $mod+r 			exec --no-startup-id $terminal -e ranger
+# start default file manager
+bindsym $mod+r exec --no-startup-id $terminal -e vifm
 
-# split below/right
-bindsym $mod+t			split toggle
+# toggle split direction (below/right)
+bindsym $mod+t split toggle
 
-# toggle stacking
-bindsym $mod+e          layout stacking
-bindsym $mod+Shift+e    layout toggle split
+# toggle split direction and enable it to windows present in workspace
+bindsym $mod+Shift+t layout toggle split
+
+# enable stacking layout
+bindsym $mod+e layout stacking
 
 # drop down terminal
-bindsym $mod+u exec --no-startup-id ~/.config/i3/floating_terminal;
+bindsym $mod+u exec --no-startup-id ~/.config/i3/floating_terminal
 
 # drop down calculator (python shell)
-bindsym $mod+a exec --no-startup-id ~/.config/i3/floating_python;
+bindsym $mod+a exec --no-startup-id ~/.config/i3/floating_python
 
 # process information
-bindsym $mod+i 			exec --no-startup-id $terminal -e htop
+bindsym $mod+i exec --no-startup-id $terminal -e htop
 
-# sticky toggle
-bindsym $mod+o			sticky toggle
-
-# matplotlib plot
-for_window [instance="matplotlib*"] floating enable;
-
-## menus
 # application launcher
-bindsym $mod+d          exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
-# screen layout chooser
-bindsym $mod+p          exec --no-startup-id ~/.config/i3/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
-bindsym $mod+Shift+p    exec --no-startup-id ~/.config/screenlayout/default
-# select keyboard shortcut
-bindsym $mod+F1         exec --no-startup-id ~/.config/i3/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
-# mount drive menu
-bindsym $mod+m          exec --no-startup-id ~/.config/i3/dmenu_mount mount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
-# unmount drive menu
-bindsym $mod+Shift+m    exec --no-startup-id ~/.config/i3/dmenu_mount unmount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
+bindsym $mod+d exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
 
-# gimp
-bindsym $mod+Shift+g		exec --no-startup-id gimp; workspace $ws5
+# choose screen layout
+bindsym $mod+p exec --no-startup-id ~/.config/i3/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
+
+# default screen layout
+bindsym $mod+Shift+p exec --no-startup-id ~/.config/screenlayout/default
+
+# select keyboard shortcut
+bindsym $mod+F1 exec --no-startup-id ~/.config/i3/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
+
+# mount drive menu
+bindsym $mod+m exec --no-startup-id ~/.config/i3/dmenu_mount mount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
+
+# unmount drive menu
+bindsym $mod+Shift+m exec --no-startup-id ~/.config/i3/dmenu_mount unmount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
 
 # lock screen
-bindsym $mod+x			exec --no-startup-id ~/.config/i3/lock_screen
-bindsym $mod+Shift+x	exec --no-startup-id ~/.config/i3/lock_screen && systemctl suspend
+bindsym $mod+x exec --no-startup-id ~/.config/i3/lock_screen
+
+# lock screen and suspend
+bindsym $mod+Shift+x exec --no-startup-id ~/.config/i3/lock_screen && systemctl suspend
 
 # show status bar
-bindsym $mod+b			bar mode toggle
+bindsym $mod+b bar mode toggle
 
 # floating window in bottom left corner
-bindsym $mod+Shift+b		floating toggle; sticky toggle; exec --no-startup-id bottomleft
+bindsym $mod+Shift+b floating toggle; sticky toggle; exec --no-startup-id bottomleft
 
-# switch to workspace
-bindsym $mod+0		workspace $
-bindsym $mod+1		workspace $ws1
-bindsym $mod+2		workspace $ws2
-bindsym $mod+3		workspace $ws3
-bindsym $mod+4		workspace $ws4
-bindsym $mod+5		workspace $ws5
-bindsym $mod+6		workspace $ws6
-bindsym $mod+7		workspace $ws7
-bindsym $mod+8		workspace $ws8
-bindsym $mod+9		workspace $ws9
+# switch to workspace 0
+bindsym $mod+0 workspace $ws0
 
-# move focused container to workspace
-bindsym $mod+Shift+0	move container to workspace $
-bindsym $mod+Shift+1	move container to workspace $ws1
-bindsym $mod+Shift+2	move container to workspace $ws2
-bindsym $mod+Shift+3	move container to workspace $ws3
-bindsym $mod+Shift+4	move container to workspace $ws4
-bindsym $mod+Shift+5	move container to workspace $ws5
-bindsym $mod+Shift+6	move container to workspace $ws6
-bindsym $mod+Shift+7	move container to workspace $ws7
-bindsym $mod+Shift+8	move container to workspace $ws8
-bindsym $mod+Shift+9	move container to workspace $ws9
+# switch to workspace 1
+bindsym $mod+1 workspace $ws1
 
-# switch to workspace alternatives
-bindsym $mod+Home		workspace $ws1
-bindsym $mod+Shift+Home		move container to workspace $ws1
-bindsym $mod+End		workspace $ws9
-bindsym $mod+Shift+End		move container to workspace $ws9
-bindsym $mod+Prior		workspace prev
-bindsym $mod+Shift+Prior	move container to workspace prev
-bindsym $mod+Next		workspace next
-bindsym $mod+Shift+Next		move container to workspace next
-bindsym $mod+Tab		workspace next
-bindsym $mod+XF86Back		workspace prev
-bindsym $mod+Shift+XF86Back	move container to workspace prev
-bindsym $mod+XF86Forward	workspace next
-bindsym $mod+Shift+XF86Forward	move container to workspace next
-bindsym $mod+semicolon		workspace next
-bindsym $mod+apostrophe		split horizontal ;; exec --no-startup-id $terminal
-bindsym $mod+slash		split vertical ;; exec --no-startup-id $terminal
-bindsym $mod+Shift+slash	kill
-bindsym $mod+backslash		workspace back_and_forth
+# switch to workspace 2
+bindsym $mod+2 workspace $ws2
+
+# switch to workspace 3
+bindsym $mod+3 workspace $ws3
+
+# switch to workspace 4
+bindsym $mod+4 workspace $ws4
+
+# switch to workspace 5
+bindsym $mod+5 workspace $ws5
+
+# switch to workspace 6
+bindsym $mod+6 workspace $ws6
+
+# switch to workspace 7
+bindsym $mod+7 workspace $ws7
+
+# switch to workspace 8
+bindsym $mod+8 workspace $ws8
+
+# switch to workspace 9
+bindsym $mod+9 workspace $ws9
+
+# move focused window to workspace 0
+bindsym $mod+Shift+0 move container to workspace $ws0
+
+# move focused window to workspace 1
+bindsym $mod+Shift+1 move container to workspace $ws1
+
+# move focused window to workspace 2
+bindsym $mod+Shift+2 move container to workspace $ws2
+
+# move focused window to workspace 3
+bindsym $mod+Shift+3 move container to workspace $ws3
+
+# move focused window to workspace 4
+bindsym $mod+Shift+4 move container to workspace $ws4
+
+# move focused window to workspace 5
+bindsym $mod+Shift+5 move container to workspace $ws5
+
+# move focused window to workspace 6
+bindsym $mod+Shift+6 move container to workspace $ws6
+
+# move focused window to workspace 7
+bindsym $mod+Shift+7 move container to workspace $ws7
+
+# move focused window to workspace 8
+bindsym $mod+Shift+8 move container to workspace $ws8
+
+# move focused window to workspace 9
+bindsym $mod+Shift+9 move container to workspace $ws9
+
+# Next workspace
+bindsym $mod+g workspace next
+
+# previous workspace
+bindsym $mod+Shift+g workspace prev
+
+# Navigate between last two workspaces
+bindsym $mod+Tab workspace back_and_forth
+
+# Open new terminal to the right of current window
+bindsym $mod+apostrophe split horizontal; exec --no-startup-id $terminal
+
+# Open new terminal below current window
+bindsym $mod+slash split vertical; exec --no-startup-id $terminal
+
+# Function Buttons
+bindsym $mod+F2 restart
+
+# volume louder
+bindsym $mod+plus exec --no-startup-id amixer -D pulse set Master 5%+ && pkill -RTMIN+10 i3blocks
+
+# volume quieter
+bindsym $mod+minus exec --no-startup-id amixer -D pulse set Master 5%- && pkill -RTMIN+10 i3blocks
+
+# mute sound
+bindsym $mod+Shift+minus exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
+
+# mute sound
+bindsym $mod+Shift+plus exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
+
+# full screen window
+bindsym $mod+f fullscreen toggle
+
+# resize window: move border to the left
+bindsym $mod+Shift+y exec --no-startup-id ~/.config/i3/resize_window left
+
+# resize window: move border down
+bindsym $mod+Shift+u exec --no-startup-id ~/.config/i3/resize_window down
+
+# resize window: move border up
+bindsym $mod+Shift+i exec --no-startup-id ~/.config/i3/resize_window up
+
+# resize window: move border to the left
+bindsym $mod+Shift+o exec --no-startup-id ~/.config/i3/resize_window right
+
+
+## Special behavior for windows with certain names.
+#-------------------------------------------------------------------------------
+
+# volume report screen
+for_window [instance="tvolume"] floating enable
+for_window [instance="tvolume"] resize set height 550px
+for_window [instance="tvolume"] resize set width 800px
+
+# openvpn report screen
+for_window [instance="topenvpn*"] floating enable
+for_window [instance="topenvpn*"] resize set height 250px
+for_window [instance="topenvpn*"] resize set width 800px
+
+# jupyterhub report screen
+for_window [instance="tjupyterhub*"] floating enable
+for_window [instance="tjupyterhub*"] resize set height 250px
+for_window [instance="tjupyterhub*"] resize set width 800px
+
+# sshtunnel report screen
+for_window [instance="tsshtunnel*"] floating enable
+for_window [instance="tsshtunnel*"] resize set height 250px
+for_window [instance="tsshtunnel*"] resize set width 800px
+
+# openvpn report screen
+for_window [instance="dmenu_mount*"] floating enable
+for_window [instance="dmenu_mount*"] resize set height 250px
+for_window [instance="dmenu_mount*"] resize set width 800px
+
+# weather report screen
+for_window [instance="tweather*"] floating enable
+for_window [instance="tweather*"] resize set height 550px
+for_window [instance="tweather*"] resize set width 800px
+
+# storage report screen
+for_window [instance="tstorage*"] floating enable
+for_window [instance="tstorage*"] resize set height 125px
+for_window [instance="tstorage*"] resize set width 500px
+
+# drop down windows
+for_window [instance="search"] floating enable
+for_window [instance="search"] resize set height 800px
+for_window [instance="search"] resize set width 1900px
+
+# drop down fzfopen terminal
+for_window [instance="fzfopen"] floating enable
+for_window [instance="fzfopen"] resize set height 300px
+for_window [instance="fzfopen"] resize set width 500px
+
+# matplotlib plot
+for_window [instance="matplotlib*"] floating enable
+
+# drop down windows
+for_window [instance="dropdown_*"] floating enable
+for_window [instance="dropdown_*"] sticky enable
+for_window [instance="dropdown_*"] scratchpad show
+for_window [instance="dropdown_*"] resize set height 300px
+for_window [instance="dropdown_*"] resize set width 500px
+for_window [instance="dropdown_*"] move scratchpad
 
 # application dependent workspaces
 for_window [class="Spotify"] move to workspace $ws8
@@ -262,85 +396,3 @@ for_window [class="Gimp"] move workspace $ws5
 for_window [window_role="GtkFileChooserDialog"] resize shrink height 10 px
 for_window [title="Default - Wine desktop"] floating enable
 
-# Function Buttons
-bindsym $mod+F2		restart
-
-# screenshots
-bindsym Print 			exec --no-startup-id scrot
-bindsym Shift+Print 		exec --no-startup-id scrot -u
-
-# media control
-bindsym $mod+plus		    exec --no-startup-id amixer -D pulse set Master 5%+ && pkill -RTMIN+10 i3blocks
-bindsym $mod+minus 		    exec --no-startup-id amixer -D pulse set Master 5%- && pkill -RTMIN+10 i3blocks
-bindsym $mod+Shift+minus	exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
-bindsym $mod+Shift+plus	    exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
-
-## Special Screen (terminal) names
-
-# i3 gaps sizing/reset
-bindsym $mod+Shift+t		gaps inner current set 15; gaps outer current set 15
-bindsym $mod+s			gaps inner current plus 5
-bindsym $mod+Shift+s		gaps inner current minus 5
-bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
-bindsym $mod+z			gaps outer current plus 5
-bindsym $mod+Shift+z		gaps outer current minus 5
-
-# resize
-bindsym $mod+f			fullscreen toggle
-bindsym $mod+Shift+y		exec --no-startup-id ~/.config/i3/resize_window left
-bindsym $mod+Shift+u		exec --no-startup-id ~/.config/i3/resize_window down
-bindsym $mod+Shift+i		exec --no-startup-id ~/.config/i3/resize_window up
-bindsym $mod+Shift+o		exec --no-startup-id ~/.config/i3/resize_window right
-
-# volume report screen
-for_window [instance="tvolume"] floating enable;
-for_window [instance="tvolume"] resize set height 550px;
-for_window [instance="tvolume"] resize set width 800px;
-
-# openvpn report screen
-for_window [instance="topenvpn*"] floating enable;
-for_window [instance="topenvpn*"] resize set height 250px;
-for_window [instance="topenvpn*"] resize set width 800px;
-
-# jupyterhub report screen
-for_window [instance="tjupyterhub*"] floating enable;
-for_window [instance="tjupyterhub*"] resize set height 250px;
-for_window [instance="tjupyterhub*"] resize set width 800px;
-
-# sshtunnel report screen
-for_window [instance="tsshtunnel*"] floating enable;
-for_window [instance="tsshtunnel*"] resize set height 250px;
-for_window [instance="tsshtunnel*"] resize set width 800px;
-
-# openvpn report screen
-for_window [instance="dmenu_mount*"] floating enable;
-for_window [instance="dmenu_mount*"] resize set height 250px;
-for_window [instance="dmenu_mount*"] resize set width 800px;
-
-# weather report screen
-for_window [instance="tweather*"] floating enable;
-for_window [instance="tweather*"] resize set height 550px;
-for_window [instance="tweather*"] resize set width 800px;
-
-# storage report screen
-for_window [instance="tstorage*"] floating enable;
-for_window [instance="tstorage*"] resize set height 125px;
-for_window [instance="tstorage*"] resize set width 500px;
-
-# drop down windows
-for_window [instance="search"] floating enable;
-for_window [instance="search"] resize set height 800px;
-for_window [instance="search"] resize set width 1900px;
-
-# drop down fzfopen terminal
-for_window [instance="fzfopen"] floating enable;
-for_window [instance="fzfopen"] resize set height 300px;
-for_window [instance="fzfopen"] resize set width 500px;
-
-# drop down windows
-for_window [instance="dropdown_*"] floating enable;
-for_window [instance="dropdown_*"] sticky enable;
-for_window [instance="dropdown_*"] scratchpad show;
-for_window [instance="dropdown_*"] resize set height 300px;
-for_window [instance="dropdown_*"] resize set width 500px;
-for_window [instance="dropdown_*"] move scratchpad;

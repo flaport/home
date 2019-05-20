@@ -9,6 +9,7 @@ fish_vi_key_bindings
 ## environment variables
 set -gx CC "gcc"
 set -gx CXX "g++"
+set -gx FM "vifm"
 set -gx EDITOR "vim"
 set -gx TERMINAL "st"
 set -gx BROWSER "qutebrowser"

@@ -10,6 +10,7 @@
 ## Environment variables
 export CC="gcc"
 export CXX="g++"
+export FM="vifm"
 export EDITOR="vim"
 export TERMINAL="st"
 export BROWSER="qutebrowser"
