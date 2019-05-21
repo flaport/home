@@ -116,6 +116,7 @@ bar {
     urgent_workspace $urgent $urgent $transparent
   }
 }
+exec --no-startup-id i3-msg bar mode toggle
 # show border on all active windows
 for_window [class="^.*"] border pixel 3
 
