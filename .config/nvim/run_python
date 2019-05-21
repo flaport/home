@@ -1,18 +1,22 @@
 #!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____ 
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#
 
 # run a file in a tmux session named after the command to run it
 
-
-COMMAND="ipython"
 FILENAME=$1
 
 
-~/.config/nvim/make_tmux_session $COMMAND
+~/.config/nvim/make_tmux_session ipython
 
-tmux send-keys -t $COMMAND C-c Enter quit Enter
+tmux send-keys -t ipython C-c Enter quit Enter
 sleep 0.2
 echo "running python..."
-tmux send-keys -t $COMMAND cd Space $PWD Enter clear Enter $COMMAND Space -i Space $FILENAME Enter;
+tmux send-keys -t ipython cd Space $PWD Enter clear Enter ipython Space -i Space --no-banner Space $FILENAME Enter;
 
-~/.config/nvim/open_i3_window $COMMAND
+~/.config/nvim/open_i3_window ipython
 
