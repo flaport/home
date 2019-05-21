@@ -177,13 +177,14 @@ bindsym $mod+Shift+w move workspace to output left
 bindsym $mod+r exec --no-startup-id $terminal -e vifm
 
 # toggle split direction (below/right)
-bindsym $mod+t split toggle
+bindsym $mod+t exec --no-startup-id ~/.config/i3/split_toggle
+# bindsym $mod+t split toggle
 
 # toggle split direction and enable it to windows present in workspace
-bindsym $mod+Shift+t layout toggle split
+bindsym $mod+Shift+t layout toggle split; exec --no-startup-id inverted layout
 
 # enable stacking layout
-bindsym $mod+e layout stacking
+bindsym $mod+e layout stacking; exec --no-startup-id notify-send "layout" "stacking"
 
 # drop down terminal
 bindsym $mod+u exec --no-startup-id ~/.config/i3/floating_terminal
@@ -294,10 +295,10 @@ bindsym $mod+Shift+g workspace prev
 bindsym $mod+Tab workspace back_and_forth
 
 # Open new terminal to the right of current window
-bindsym $mod+apostrophe split horizontal; exec --no-startup-id $terminal
+bindsym $mod+apostrophe split horizontal; exec --no-startup-id $terminal; exec --no-startup-id echo "horizontal" > ~/.orientation; exec --no-startup-id notify-send "split" "horizontal"
 
 # Open new terminal below current window
-bindsym $mod+slash split vertical; exec --no-startup-id $terminal
+bindsym $mod+slash split vertical; exec --no-startup-id $terminal; exec --no-startup-id echo "vertical" > ~/.orientation; exec --no-startup-id notify-send "split" "vertical"
 
 # Function Buttons
 bindsym $mod+F2 restart
