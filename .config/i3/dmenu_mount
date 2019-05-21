@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____ 
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#
 
 import os
 import sys
@@ -26,6 +32,10 @@ class Device:
         self.fstype = kwargs["fstype"] or "none"
         self.uuid = kwargs["uuid"] or ""
         self.mountpoint = kwargs["mountpoint"] or ""
+        if "@" in self.name:
+            self.username, self.name = self.name.split("@")
+        else:
+            self.username = os.environ.get("USER")
 
     def mount(self, mountpoint):
         mountpoint = os.path.abspath(os.path.expanduser(mountpoint))
@@ -41,8 +51,10 @@ class Device:
         if self.fstype in ("vfat", "ntfs"):
             options += f",uid={os.getuid()},gid={os.getgid()},dmask=033,umask=033"
         elif self.fstype == "cifs":
-            options += f",credentials={os.path.expanduser('~/.smbcredentials')},uid={os.getuid()},gid={os.getgid()},dir_mode=0744,file_mode=0744"
-        status = call(["st", "-n", "dmenu_mount", "-e", "sudo", "mount", f"{self.name}", mountpoint, "--options", options])
+            password = check_output([os.environ.get("SUDO_ASKPASS"), f"password for {self.username}@{self.name}"]).decode()[:-1]
+            options += f",username={self.username},password={password},uid={os.getuid()},gid={os.getgid()},dir_mode=0744,file_mode=0744" #credentials=~/.smbcredentials
+        print(" ".join(["sudo", "-A", "mount", f"{self.name}", mountpoint, "--options", options]))
+        status = call(["sudo", "-A", "mount", f"{self.name}", mountpoint, "--options", options])
         if status != 0:
             raise MountError(f"Mounting device {self.name} resulted in an exit status {status}")
         else:
@@ -53,7 +65,7 @@ class Device:
         if not self.mountpoint:
             raise UnmountError(f"Device {self.name} is not mounted")
 
-        status = call(["st", "-n", "dmenu_mount", "-e", "sudo", "umount", self.mountpoint])
+        status = call(["sudo", "-A", "umount", self.mountpoint])
 
         if status != 0:
             raise UnmountError(f"Unmounting device {self.name}\n"
@@ -147,6 +159,8 @@ try:
     else:
         devices_choice = dmenu(devices.keys(), "unmount device")
         device = get_device(devices_choice)
+        if not device.mountpoint:
+            device.mountpoint = device.name
         device.unmount()
 
 except Exception as e:
