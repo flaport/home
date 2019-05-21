@@ -16,6 +16,7 @@ set -gx BROWSER "qutebrowser"
 set -gx READER "zathura"
 set -gx ICAROOT "$HOME/.ica"
 set -gx GTK2_RC_FILES "/usr/share/themes/Arc-solid/gtk-2.0/gtkrc"
+set -gx SUDO_ASKPASS "/usr/lib/openssh/ssh-askpass-fullscreen"
 # set -gx QT_QPA_PLATFORMTHEME="qt5ct"
 
 ## path

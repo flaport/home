@@ -17,6 +17,7 @@ export BROWSER="qutebrowser"
 export READER="zathura"
 export ICAROOT="$HOME/.ica"
 export GTK2_RC_FILES="/usr/share/themes/Arc-solid/gtk-2.0/gtkrc"
+export SUDO_ASKPASS="/usr/lib/openssh/ssh-askpass-fullscreen"
 # export QT_QPA_PLATFORMTHEME="qt5ct"
 
 ## Path
