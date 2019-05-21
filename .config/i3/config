@@ -21,13 +21,13 @@ exec --no-startup-id ~/.config/i3/lock_screen
 set $mod Mod4
 
 # transparent terminal
-set $terminal --no-startup-id $TERMINAL -f mono:pixelsize=18
+set $terminal $TERMINAL -f mono:pixelsize=18
 
 # non-transparent terminal
-set $ntterminal --no-startup-id ~/.config/i3/non-transparent-terminal -f mono:pixelsize=18
+set $ntterminal ~/.config/i3/non-transparent-terminal -f mono:pixelsize=18
 
 # browser
-set $browser --no-startup-id $BROWSER
+set $browser $BROWSER
 
 # workspaces
 set $ws0 "0"
@@ -126,10 +126,10 @@ for_window [class="^.*"] border pixel 3
 bindsym $mod+c exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
 
 # new terminal
-bindsym $mod+Return exec $terminal
+bindsym $mod+Return exec --no-startup-id $terminal
 
 # new non-transparent terminal
-bindsym $mod+Shift+Return exec $ntterminal
+bindsym $mod+Shift+Return exec --no-startup-id $ntterminal
 
 # make window floating
 bindsym $mod+Shift+space floating toggle
@@ -219,7 +219,7 @@ bindsym $mod+x exec --no-startup-id ~/.config/i3/lock_screen
 # lock screen and suspend
 bindsym $mod+Shift+x exec --no-startup-id ~/.config/i3/lock_screen && systemctl suspend
 
-# show status bar
+# show/hide status bar
 bindsym $mod+b bar mode toggle
 
 # floating window in bottom left corner
@@ -294,13 +294,13 @@ bindsym $mod+Shift+g workspace prev
 # Navigate between last two workspaces
 bindsym $mod+Tab workspace back_and_forth
 
-# Open new terminal to the right of current window
+# open new terminal to the right of current window
 bindsym $mod+apostrophe split horizontal; exec --no-startup-id $terminal; exec --no-startup-id echo "horizontal" > ~/.orientation; exec --no-startup-id notify-send "split" "horizontal"
 
-# Open new terminal below current window
+# open new terminal below current window
 bindsym $mod+slash split vertical; exec --no-startup-id $terminal; exec --no-startup-id echo "vertical" > ~/.orientation; exec --no-startup-id notify-send "split" "vertical"
 
-# Function Buttons
+# restart i3
 bindsym $mod+F2 restart
 
 # volume louder
