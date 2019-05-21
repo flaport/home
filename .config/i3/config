@@ -226,34 +226,34 @@ bindsym $mod+b bar mode toggle
 bindsym $mod+Shift+b floating toggle; sticky toggle; exec --no-startup-id bottomleft
 
 # switch to workspace 0
-bindsym $mod+0 workspace $ws0
+bindsym $mod+0 workspace $ws0; exec notify-send $ws0
 
 # switch to workspace 1
-bindsym $mod+1 workspace $ws1
+bindsym $mod+1 workspace $ws1; exec notify-send $ws1
 
 # switch to workspace 2
-bindsym $mod+2 workspace $ws2
+bindsym $mod+2 workspace $ws2; exec notify-send $ws2
 
 # switch to workspace 3
-bindsym $mod+3 workspace $ws3
+bindsym $mod+3 workspace $ws3; exec notify-send $ws3
 
 # switch to workspace 4
-bindsym $mod+4 workspace $ws4
+bindsym $mod+4 workspace $ws4; exec notify-send $ws4
 
 # switch to workspace 5
-bindsym $mod+5 workspace $ws5
+bindsym $mod+5 workspace $ws5; exec notify-send $ws5
 
 # switch to workspace 6
-bindsym $mod+6 workspace $ws6
+bindsym $mod+6 workspace $ws6; exec notify-send $ws6
 
 # switch to workspace 7
-bindsym $mod+7 workspace $ws7
+bindsym $mod+7 workspace $ws7; exec notify-send $ws7
 
 # switch to workspace 8
-bindsym $mod+8 workspace $ws8
+bindsym $mod+8 workspace $ws8; exec notify-send $ws8
 
 # switch to workspace 9
-bindsym $mod+9 workspace $ws9
+bindsym $mod+9 workspace $ws9; exec notify-send $ws9
 
 # move focused window to workspace 0
 bindsym $mod+Shift+0 move container to workspace $ws0
