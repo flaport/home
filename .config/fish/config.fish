@@ -1,3 +1,10 @@
+#    _____ _     ____  ____  ____  ____  _____ 
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#
+
 ## fish greeting (suppressed)
 function fish_greeting
 end
@@ -17,7 +24,7 @@ set -gx READER "zathura"
 set -gx ICAROOT "$HOME/.ica"
 set -gx GTK2_RC_FILES "/usr/share/themes/Arc-solid/gtk-2.0/gtkrc"
 set -gx SUDO_ASKPASS "/usr/lib/openssh/ssh-askpass-fullscreen"
-# set -gx QT_QPA_PLATFORMTHEME="qt5ct"
+set -gx QT_QPA_PLATFORMTHEME "qt5ct"
 
 ## path
 # web apps

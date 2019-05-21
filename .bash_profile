@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-
-#
-# ~/.bash_profile
-#
+#    _____ _     ____  ____  ____  ____  _____ 
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
 
 # Source .bashrc
 [[ -f ~/.bashrc ]] && source ~/.bashrc
@@ -18,7 +19,7 @@ export READER="zathura"
 export ICAROOT="$HOME/.ica"
 export GTK2_RC_FILES="/usr/share/themes/Arc-solid/gtk-2.0/gtkrc"
 export SUDO_ASKPASS="/usr/lib/openssh/ssh-askpass-fullscreen"
-# export QT_QPA_PLATFORMTHEME="qt5ct"
+export QT_QPA_PLATFORMTHEME="qt5ct"
 
 ## Path
 # web apps
