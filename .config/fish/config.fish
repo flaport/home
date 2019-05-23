@@ -1,65 +1,56 @@
-#    _____ _     ____  ____  ____  ____  _____ 
+#!/usr/bin/env fish
+#    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
-#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
-#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
-#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
-## fish greeting (suppressed)
-function fish_greeting
+
+## Fish greeting
+#-------------------------------------------------------------------------------
+function fish_greeting # suppress greeting
 end
 
-# turn on vim mode (enable default mode first to circumvent unmapped "btab" error)
-fish_default_key_bindings
+
+## Vim Mode
+#-------------------------------------------------------------------------------
+fish_default_key_bindings # enable default mode first to circumvent unmapped "btab" error
 fish_vi_key_bindings
 
-## environment variables
-set -gx CC "gcc"
-set -gx CXX "g++"
-set -gx FM "vifm"
-set -gx EDITOR "vim"
-set -gx TERMINAL "st"
-set -gx BROWSER "qutebrowser"
-set -gx READER "zathura"
-set -gx ICAROOT "$HOME/.ica"
-set -gx GTK2_RC_FILES "/usr/share/themes/Arc-solid/gtk-2.0/gtkrc"
-set -gx SUDO_ASKPASS "/usr/lib/openssh/ssh-askpass-fullscreen"
-set -gx QT_QPA_PLATFORMTHEME "qt5ct"
 
-## path
-# web apps
-set -gx PATH "$HOME/.webapps:$PATH"
-# custom scripts
-set -gx PATH "$HOME/.scripts:$PATH"
-# custom vifm script
-set -gx PATH "$HOME/.config/vifm/scripts:$PATH"
-# custom nvim script
-set -gx PATH "$HOME/.config/nvim/nvim:$PATH"
-# i3 commands
-set -gx PATH "$HOME/.config/i3:$PATH"
-# anaconda python
-set -gx PATH "$HOME/.anaconda/bin:$PATH"
+## Environment variables
+#-------------------------------------------------------------------------------
+# some magic to source the variables defined in .bash_profile.
+sed -n '/^export/p' $HOME/.bash_profile | sed -e 's/export/set\ -gx/g' | sed -e 's/=/\ /g' | source
 
-## python
-# to enable conda activate
+
+## Python
+#-------------------------------------------------------------------------------
+# create python startup file if it does not exist
+touch $HOME/.pythonpath
+# create python path file if it does not exist
+touch $HOME/.pythonstartup
+# set python path from "~/.pythonpath" file
+set -gx PYTHONPATH (tr '\n' ':' < $HOME/.pythonpath | head -c -1 | sed -e 's|~|'$HOME'|g')
+# enable anaconda python
 if test -e "$HOME/.anaconda/etc/fish/conf.d/conda.fish"
     source "$HOME/.anaconda/etc/fish/conf.d/conda.fish"
 end
-# set python path from "~/.pythonpath" file
-touch $HOME/.pythonpath # create pythonpath file if it does not exist
-set -gx PYTHONPATH (string replace "~" $HOME (tr '\n' ':' < ~/.pythonpath | head -c -1))
-# set python startup file
-touch $HOME/.pythonstartup # create pythonstartup file if it does not exist 
-set -gx PYTHONSTARTUP "$HOME/.pythonstartup"
 
+
+## Keyboard shortcuts
+#-------------------------------------------------------------------------------
 ## accept autosuggestion
 bind -M insert \cp accept-autosuggestion
 bind \cp accept-autosuggestion
 bind -M insert \cn accept-autosuggestion
 bind \cn accept-autosuggestion
 
-## i3 [this should be placed last]
-# start i3 if it is not yet running
+
+## Start i3
+#-------------------------------------------------------------------------------
+# [this should be placed last]
 if test (tty) = "/dev/tty1"
     while not test (pgrep -x i3)
         sleep 3

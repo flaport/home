@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
-#   __ _                        _
-#  / _| | __ _ _ __   ___  _ __| |_
-# | |_| |/ _` | '_ \ / _ \| '__| __|
-# |  _| | (_| | |_) | (_) | |  | |_
-# |_| |_|\__,_| .__/ \___/|_|   \__|
-#             |_|
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
 # ---------------------------------------------------- #
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
 
-# ------ #
-# CHECKS #
-# ------ #
+## Checks
+#-------------------------------------------------------------------------------
 
 ## Pre-installation checks
 if [ $USER == root ]; then
@@ -29,27 +27,27 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     exit 1
 else
 
-# ---------- #
-# USER INPUT #
-# ---------- #
+
+## User input
+#-------------------------------------------------------------------------------
 
 # Ask for password, this will be used for all the sudo calls.:
 # and to change the shell later on.
 read -s -p "[sudo] password for $USER: " password
 echo
 
-# ------ #
-# UPDATE #
-# ------ #
+
+## Update
+#-------------------------------------------------------------------------------
 
 ## Update arch
 printf "Updating Arch Linux..."
 echo $password | sudo -S pacman -Syu --noconfirm &> /dev/null
 
 
-# -------------------------- #
-# INSTALL/CONFIGURE PACKAGES #
-# -------------------------- #
+
+## Custom installation function
+#-------------------------------------------------------------------------------
 
 ## Package/Program Installation function
 install() {
@@ -92,6 +90,10 @@ install() {
         fi
     fi
 }
+
+
+## Install and configure packages
+#-------------------------------------------------------------------------------
 
 ## Security
 install gnupg # gpg --full-gen-key (generate gpg key)
@@ -377,9 +379,9 @@ echo $password | sudo -S chmod a+w /sys/power/state
 ## install programs for the user (disabled by default as this is up to the user):
 # source ~/.first_install/user_install.sh
 
-# ------ #
-# PYTHON #
-# ------ #
+
+## Python
+#-------------------------------------------------------------------------------
 
 # create files where the system depends upon (check .bashrc and config.fish)
 touch $HOME/.pythonpath # defines the $PYTHONPATH environment variable
@@ -395,14 +397,18 @@ install python-numpy
 install python2-numpy
 install python-matplotlib
 install python2-matplotlib
+
 # Scientific computing octave (matlab alternative)
 install octave
+
 # install neovim integration for system python
 echo $password | sudo -S pip3 install neovim
 echo $password | sudo -S pip2 install neovim
 echo $password | sudo -S pip3 install neovim-remote
+
 # image previews in vifm/ranger
 echo $password | sudo -S pip3 install ueberzug
+
 # document portability
 echo $password | sudo -S pip3 install pandoc
 echo $password | sudo -S pip2 install pandoc
@@ -410,42 +416,36 @@ echo $password | sudo -S pip3 install google-api-python-client google-auth-httpl
 echo $password | sudo -S pip2 install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
 
-# -------- #
-# Services #
-# -------- #
-echo $password | sudo -S $HOME/.first_install/services # TODO: merge the services file with this one.
+## Services
+#-------------------------------------------------------------------------------
+# TODO: merge the services file with this one.
+
+echo $password | sudo -S $HOME/.first_install/services
 echo $password | sudo -S systemctl daemon-reload
 echo $password | sudo -S systemctl enable jupyterhub.service
 
 
-# --------------- #
-# System settings #
-# --------------- #
-
+## System settings
+#-------------------------------------------------------------------------------
 # set correct date/time
 echo $password | sudo -S timedatectl set-local-rtc 1
+# make sure everyone can mount in /mnt
+echo $password | sudo -S chmod a+rwx /mnt
 
 
-# ------------------ #
-# Alternative Shells #
-# ------------------ #
-
+## Alternative shell
+#-------------------------------------------------------------------------------
 # dash is a posix complient shell
 install dash
 # we will make sh point to dash in stead to bash
 echo $password | sudo -S ln -sf /usr/bin/dash /bin/sh
 
-# fish is the friendly interactive shell
+# fish is totally not posix complient, but friendly and interactive ;)
 install fish
 # we will make fish our main shell
 echo $password | chsh -s /usr/bin/fish
 
-# --------------#
-# Mount options #
-# --------------#
 
-# make sure everyone can mount in /mnt
-echo $password | sudo -S chmod a+rwx /mnt
-
-#-------------------------------------
+## Stop if
+#-------------------------------------------------------------------------------
 fi # stop if to check for source (an exit 1 would have closed the terminal).

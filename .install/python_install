@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
-#   __ _                        _
-#  / _| | __ _ _ __   ___  _ __| |_
-# | |_| |/ _` | '_ \ / _ \| '__| __|
-# |  _| | (_| | |_) | (_) | |  | |_
-# |_| |_|\__,_| .__/ \___/|_|   \__|
-#             |_|
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
 # ---------------------------------------------------- #
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# ------ #
-# CHECKS #
-# ------ #
+## Checks
+#-------------------------------------------------------------------------------
 
 ## Pre-installation checks
 if [ $USER == root ]; then
@@ -29,9 +27,8 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
 else
 
 
-# --------------- #
-# ANACONDA PYTHON #
-# --------------- #
+## Anaconda python
+#-------------------------------------------------------------------------------
 
 CONDA="$HOME/.anaconda/bin/conda"
 
@@ -46,9 +43,9 @@ else
     echo "already installed"
 fi
 
-# ---------------- #
-# BASE ENVIRONMENT #
-# ---------------- #
+
+## Base environment
+#-------------------------------------------------------------------------------
 
 PIP="$HOME/.anaconda/bin/pip"
 NPM="$HOME/.anaconda/bin/npm"
@@ -107,9 +104,8 @@ $PIP install neovim &> /dev/null
 $NPM install -g neovim &> /dev/null
 
 
-# -------------------- #
-# PYTHON 2 ENVIRONMENT #
-# -------------------- #
+## Python 2 environment
+#-------------------------------------------------------------------------------
 
 PIP="$HOME/.anaconda/envs/py2/bin/pip"
 
@@ -130,9 +126,9 @@ echo "installing neovim support for environment: py2"
 $PIP install neovim &> /dev/null
 
 
-# ------------- #
-# R ENVIRONMENT #
-# ------------- #
+## R environment
+#-------------------------------------------------------------------------------
+
 echo "creating R environment: r"
 if [ ! -d "$HOME/.anaconda/envs/r" ]; then
     $CONDA create -y -n r &> /dev/null
@@ -145,9 +141,10 @@ home=$(echo $HOME | sed 's/\//\\\//g')
 sed "0,/R/{s/R/$home\/.anaconda\/envs\/r\/bin\/R/}" $HOME/.anaconda/share/jupyter/kernels/ir/kernel.json > $HOME/.anaconda/share/jupyter/kernels/ir/kernel2.json
 mv $HOME/.anaconda/share/jupyter/kernels/ir/kernel2.json $HOME/.anaconda/share/jupyter/kernels/ir/kernel.json
 
-# ----------------- #
-# JULIA ENVIRONMENT #
-# ----------------- #
+
+## Julia environment
+#-------------------------------------------------------------------------------
+
 echo "creating Julia environment: r"
 if [ ! -d "$HOME/.anaconda/envs/julia" ]; then
     $CONDA create -y -n julia &> /dev/null
@@ -160,9 +157,8 @@ $HOME/.anaconda/envs/julia/bin/julia -E 'using IJulia; installkernel("Julia")' &
 mv $HOME/.local/share/jupyter/kernels/julia* $HOME/.anaconda/share/jupyter/kernels/
 
 
-# ----- #
-# FIXES #
-# ----- #
+## Fixes
+#-------------------------------------------------------------------------------
 
 # remove $CONDA ld binary because it causes trouble for cython:
 echo "disabling $CONDA ld binary in favor of the system one [fixes cython on arch linux] "
@@ -171,10 +167,8 @@ mv $HOME/.anaconda/envs/py2/compiler_compat/ld $HOME/.anaconda/envs/py2/compiler
 mv $HOME/.anaconda/envs/py36/compiler_compat/ld $HOME/.anaconda/envs/py36/compiler_compat/ld_disabled
 
 
-
-# --------------------- #
-# JUPYTERLAB EXTENSIONS #
-# --------------------- #
+## Jupyterlab extensions
+#-------------------------------------------------------------------------------
 
 JUPYTER = "$HOME/.anaconda/bin/jupyter"
 
@@ -204,5 +198,7 @@ $JUPYTER labextension install @ryantam626/jupyterlab_code_format &> /dev/null
 $PIP install jupyterlab_code_formatter &> /dev/null
 $JUPYTER serverextension enable --py jupyterlab_code_formatter &> /dev/null
 
-#-------------------------------------
-fi # stop if
+
+## Stop if
+#-------------------------------------------------------------------------------
+fi
