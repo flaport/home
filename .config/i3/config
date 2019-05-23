@@ -21,10 +21,10 @@ exec --no-startup-id ~/.config/i3/lock_screen
 set $mod Mod4
 
 # transparent terminal
-set $terminal $TERMINAL -f mono:pixelsize=18
+set $terminal $TERMINAL
 
 # non-transparent terminal
-set $ntterminal ~/.config/i3/non-transparent-terminal -f mono:pixelsize=18
+set $ntterminal $TERMINAL nt
 
 # browser
 set $browser $BROWSER

@@ -30,6 +30,8 @@ export PATH="$HOME/.config/nvim/nvim:$PATH"
 export PATH="$HOME/.config/i3:$PATH"
 # anaconda python
 export PATH="$HOME/.anaconda/bin:$PATH"
+# wrapper around st terminal emulator
+export PATH="$HOME/.config/st:$PATH"
 
 
 ## Environment variables
