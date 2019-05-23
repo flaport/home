@@ -194,7 +194,7 @@ $JUPYTER labextension install @jupyterlab/git &> /dev/null
 $PIP install jupyterlab_git &> /dev/null
 $JUPYTER serverextension enable --py jupyterlab_git &> /dev/null
 echo "installing jupyterlab code formatter extension"
-$JUPYTER labextension install @ryantam626/jupyterlab_code_format &> /dev/null
+$JUPYTER labextension install @ryantam626/jupyterlab_code_formatter &> /dev/null
 $PIP install jupyterlab_code_formatter &> /dev/null
 $JUPYTER serverextension enable --py jupyterlab_code_formatter &> /dev/null
 
