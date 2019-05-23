@@ -53,7 +53,10 @@ touch $HOME/.pythonstartup # create pythonstartup file if it does not exist
 set -gx PYTHONSTARTUP "$HOME/.pythonstartup"
 
 ## accept autosuggestion
-bind \ea accept-autosuggestion
+bind -M insert \cp accept-autosuggestion
+bind \cp accept-autosuggestion
+bind -M insert \cn accept-autosuggestion
+bind \cn accept-autosuggestion
 
 ## i3 [this should be placed last]
 # start i3 if it is not yet running
