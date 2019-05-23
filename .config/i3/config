@@ -197,22 +197,22 @@ bindsym $mod+a exec --no-startup-id ~/.config/i3/floating_python
 bindsym $mod+i exec --no-startup-id $terminal -e htop
 
 # application launcher
-bindsym $mod+d exec --no-startup-id dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
+bindsym $mod+d exec --no-startup-id ~/.config/dmenu/dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
 
 # choose screen layout
-bindsym $mod+p exec --no-startup-id ~/.config/i3/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
+bindsym $mod+p exec --no-startup-id ~/.config/dmenu/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
 
 # default screen layout
 bindsym $mod+Shift+p exec --no-startup-id ~/.config/screenlayout/default
 
 # select keyboard shortcut
-bindsym $mod+F1 exec --no-startup-id ~/.config/i3/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
+bindsym $mod+F1 exec --no-startup-id ~/.config/dmenu/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
 
 # mount drive menu
-bindsym $mod+m exec --no-startup-id ~/.config/i3/dmenu_mount mount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
+bindsym $mod+m exec --no-startup-id ~/.config/dmenu/dmenu_mount mount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
 
 # unmount drive menu
-bindsym $mod+Shift+m exec --no-startup-id ~/.config/i3/dmenu_mount unmount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
+bindsym $mod+Shift+m exec --no-startup-id ~/.config/dmenu/dmenu_mount unmount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
 
 # lock screen
 bindsym $mod+x exec --no-startup-id ~/.config/i3/lock_screen

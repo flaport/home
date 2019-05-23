@@ -8,23 +8,13 @@
 # NOTE: this script should be placed in your path such that it takes
 #       priority over the nvim binary `/usr/bin/nvim`.
 
-# if the script is called from outside the terminal, spawn a new terminal to
-# run this script. (assumes this vifm script takes priority over the vifm
-# binary in your path.)
-
-caller=$(ps -o stat= -p $PPID)
-if [ $caller = "S" ]; then
-    $TERMINAL -n nvim -e nvim $@
-    exit 0
-fi
-
 if [ -f /usr/bin/nvr ]; then
-    if [ ! $2 ]; then
-        if [ ${1: -4} == ".tex" ]; then
-            /usr/bin/nvr --servername 127.0.0.1:9999 $@
-            exit 0
-        fi
-    fi
+     if [ ! $2 ]; then
+         if [ ${1:-4} == ".tex" ]; then
+             /usr/bin/nvr --servername 127.0.0.1:9999 $@
+             exit 0
+         fi
+     fi
 fi
 
 /usr/bin/nvim $@

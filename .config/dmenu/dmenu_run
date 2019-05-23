@@ -1,0 +1,11 @@
+#!/bin/bash
+
+OPEN_IN_TERMINAL="vim:vifm"
+
+chosen=$(dmenu_path | dmenu "$@")
+
+if [[ ":$OPEN_IN_TERMINAL:" =~ .*:$chosen:.* ]]; then
+    $TERMINAL -e $chosen
+else
+    $chosen
+fi
