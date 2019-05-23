@@ -153,6 +153,8 @@ install htop
 install sc-im
 # large ascii letters
 install figlet
+# build from source
+install cmake
 
 ## Graphical server: xorg
 # the graphical server
