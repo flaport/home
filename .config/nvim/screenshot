@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-#    _____ _     ____  ____  ____  ____  _____ 
+#    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
-#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
-#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
-#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
 import os
@@ -15,9 +15,11 @@ from subprocess import Popen, call, check_output, PIPE
 def get_clipboard():
     return check_output(["xclip", "-o"])
 
+
 def set_clipboard(value):
     echo_out = Popen(["echo", value], stdout=PIPE).stdout
     call(["xclip", "-i"], stdin=echo_out)
+
 
 def make_screenshot():
     call(["import", "/tmp/screenshot.png"])
@@ -25,9 +27,11 @@ def make_screenshot():
         encoded = base64.b64encode(file.read())
     return encoded
 
+
 def make_screenshot_and_copy_to_clipboard():
     encoded = make_screenshot()
     set_clipboard(encoded)
+
 
 def make_and_show_screenshot(filename="screenshot.png"):
     encoded = make_screenshot()
@@ -35,10 +39,14 @@ def make_and_show_screenshot(filename="screenshot.png"):
     with open(filename, "wb") as file:
         file.write(raw_png)
     import matplotlib.pyplot as plt
+
     img = plt.imread(filename)
     plt.imshow(img)
     plt.show()
+
+
 # ------------------------------------------------------------------------------------- #
+
 
 def make_and_save_screenshot(filename=None):
     copy_screenshot_to_clipboard = False
@@ -50,8 +58,8 @@ def make_and_save_screenshot(filename=None):
             filename = "/tmp/screenshot.png"
             copy_screenshot_to_clipboard = True
 
-    if not filename.endswith('.png'):
-        filename = filename + '.png'
+    if not filename.endswith(".png"):
+        filename = filename + ".png"
 
     # make screenshot and save as filename
     # NOTE: imagemagick needs to be installed!
@@ -70,9 +78,9 @@ def make_and_save_screenshot(filename=None):
 
     print(filename)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     from sys import argv
 
     filename = None if len(argv) < 2 else argv[1]
     make_and_save_screenshot(filename)
-

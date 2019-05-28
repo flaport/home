@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-#    _____ _     ____  ____  ____  ____  _____ 
+#    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
-#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
-#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
-#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
 import os
@@ -15,14 +15,18 @@ from subprocess import check_output, call, Popen, PIPE, CalledProcessError
 class MountError(RuntimeError):
     title = "Error while mounting drive"
 
+
 class UnmountError(RuntimeError):
     title = "Error while unmounting drive"
+
 
 class MountCancelled(RuntimeError):
     title = "Nothing (un)mounted."
 
+
 class Success(RuntimeError):
     title = "Success"
+
 
 class Device:
     def __init__(self, **kwargs):
@@ -40,7 +44,9 @@ class Device:
     def mount(self, mountpoint):
         mountpoint = os.path.abspath(os.path.expanduser(mountpoint))
         if self.mountpoint:
-            raise MountError(f"Device {self.name} is already mounted at {self.mountpoint}")
+            raise MountError(
+                f"Device {self.name} is already mounted at {self.mountpoint}"
+            )
         if os.path.isdir(mountpoint):
             if os.listdir(mountpoint):
                 raise MountError(f"Mount location {mountpoint} is not an empty folder")
@@ -51,12 +57,33 @@ class Device:
         if self.fstype in ("vfat", "ntfs"):
             options += f",uid={os.getuid()},gid={os.getgid()},dmask=033,umask=033"
         elif self.fstype == "cifs":
-            password = check_output([os.environ.get("SUDO_ASKPASS"), f"password for {self.username}@{self.name}"]).decode()[:-1]
-            options += f",username={self.username},password={password},uid={os.getuid()},gid={os.getgid()},dir_mode=0744,file_mode=0744" #credentials=~/.smbcredentials
-        print(" ".join(["sudo", "-A", "mount", f"{self.name}", mountpoint, "--options", options]))
-        status = call(["sudo", "-A", "mount", f"{self.name}", mountpoint, "--options", options])
+            password = check_output(
+                [
+                    os.environ.get("SUDO_ASKPASS"),
+                    f"password for {self.username}@{self.name}",
+                ]
+            ).decode()[:-1]
+            options += f",username={self.username},password={password},uid={os.getuid()},gid={os.getgid()},dir_mode=0744,file_mode=0744"  # credentials=~/.smbcredentials
+        print(
+            " ".join(
+                [
+                    "sudo",
+                    "-A",
+                    "mount",
+                    f"{self.name}",
+                    mountpoint,
+                    "--options",
+                    options,
+                ]
+            )
+        )
+        status = call(
+            ["sudo", "-A", "mount", f"{self.name}", mountpoint, "--options", options]
+        )
         if status != 0:
-            raise MountError(f"Mounting device {self.name} resulted in an exit status {status}")
+            raise MountError(
+                f"Mounting device {self.name} resulted in an exit status {status}"
+            )
         else:
             self.mountpoint = mountpoint
             raise Success(f"drive mounted\n{self.name} --> {self.mountpoint}")
@@ -68,9 +95,11 @@ class Device:
         status = call(["sudo", "-A", "umount", self.mountpoint])
 
         if status != 0:
-            raise UnmountError(f"Unmounting device {self.name}\n"
-                                "from mount point {self.mountpoint}\n"
-                                "resulted in an exit status {status}")
+            raise UnmountError(
+                f"Unmounting device {self.name}\n"
+                "from mount point {self.mountpoint}\n"
+                "resulted in an exit status {status}"
+            )
         else:
             os.rmdir(self.mountpoint)
             self.mountpoint = ""
@@ -92,9 +121,9 @@ class Device:
     @staticmethod
     def _normalize_string(s, length):
         if len(s) > length:
-            return s[:length-5] + "...  "
+            return s[: length - 5] + "...  "
         else:
-            return s + " "*(length - len(s))
+            return s + " " * (length - len(s))
 
     def __str__(self):
         s = ""
@@ -109,7 +138,9 @@ class Device:
 
 def lsblk():
     lsblk1 = json.loads(check_output(["lsblk", "-J", "-l"]).decode())["blockdevices"]
-    lsblk2 = json.loads(check_output(["lsblk", "-J", "-l", "-f"]).decode())["blockdevices"]
+    lsblk2 = json.loads(check_output(["lsblk", "-J", "-l", "-f"]).decode())[
+        "blockdevices"
+    ]
     lsblk = {}
     for dic1, dic2 in zip(lsblk1, lsblk2):
         dic1.update(dic2)
@@ -118,13 +149,17 @@ def lsblk():
         lsblk[str(device)] = device
     return lsblk
 
+
 def dmenu(list_in, prompt):
     dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
     try:
-        choice = check_output(["dmenu", "-l", "100", "-p", prompt] + sys.argv[2:], stdin=dmenu_in).decode()[:-1]
+        choice = check_output(
+            ["dmenu", "-l", "100", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+        ).decode()[:-1]
     except CalledProcessError:
         raise MountCancelled("no drive was selected")
     return choice
+
 
 def get_mount_mode():
     try:
@@ -140,12 +175,20 @@ def get_mount_mode():
         raise MountCancelled("no mode selected: mount/unmount")
     return mount
 
+
 def get_device(choice):
     try:
         return devices[choice]
     except KeyError:
         # network device?
-        return Device(name=choice, label=None, size=None, fstype="cifs", uuid=None, mountpoint=None)
+        return Device(
+            name=choice,
+            label=None,
+            size=None,
+            fstype="cifs",
+            uuid=None,
+            mountpoint=None,
+        )
 
 
 try:
@@ -164,6 +207,12 @@ try:
         device.unmount()
 
 except Exception as e:
-    call(["notify-send", e.__class__.__name__ if not hasattr(e, "title") else e.title, str(e)])
+    call(
+        [
+            "notify-send",
+            e.__class__.__name__ if not hasattr(e, "title") else e.title,
+            str(e),
+        ]
+    )
     if not isinstance(e, Success):
         exit(1)

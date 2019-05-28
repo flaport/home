@@ -36,10 +36,13 @@ if not os.path.isdir(os.path.dirname(filename)):
     os.mkdir(os.path.dirname(filename))
 
 with open(filename, "w") as file:
-    file.write(dedent("""
+    file.write(
+        dedent(
+            """
         [Service]
         ExecStart=
         ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin flaport --noclear %I $TERM
         Type=simple
-        """).format(username=USERNAME))
-
+        """
+        ).format(username=USERNAME)
+    )

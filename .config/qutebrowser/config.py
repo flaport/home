@@ -1465,7 +1465,9 @@ c.url.default_page = "https://raw.githubusercontent.com/qutebrowser/qutebrowser/
 
 ## Page(s) to open at the start.
 ## Type: List of FuzzyUrl, or FuzzyUrl
-c.url.start_pages = ["https://raw.githubusercontent.com/qutebrowser/qutebrowser/master/doc/img/cheatsheet-big.png"]
+c.url.start_pages = [
+    "https://raw.githubusercontent.com/qutebrowser/qutebrowser/master/doc/img/cheatsheet-big.png"
+]
 
 ## URL parameters to strip with `:yank url`.
 ## Type: List of String
@@ -1566,8 +1568,8 @@ c.url.start_pages = ["https://raw.githubusercontent.com/qutebrowser/qutebrowser/
 # config.bind('F', 'hint all tab')
 # config.bind('G', 'scroll-to-perc')
 # config.bind('H', 'back')
-config.bind('J', 'tab-prev') # tab-next
-config.bind('K', 'tab-next') # tab-prev
+config.bind("J", "tab-prev")  # tab-next
+config.bind("K", "tab-next")  # tab-prev
 # config.bind('L', 'forward')
 # config.bind('M', 'bookmark-add')
 # config.bind('N', 'search-prev')
@@ -1589,7 +1591,7 @@ config.bind('K', 'tab-next') # tab-prev
 # config.bind('b', 'set-cmd-text -s :quickmark-load')
 # config.bind('cd', 'download-clear')
 # config.bind('co', 'tab-only')
-config.bind('d', 'nop')
+config.bind("d", "nop")
 # config.bind('f', 'hint')
 # config.bind('g$', 'tab-focus -1')
 # config.bind('g0', 'tab-focus 1')

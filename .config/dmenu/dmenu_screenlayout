@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-#    _____ _     ____  ____  ____  ____  _____ 
+#    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
-#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
-#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
-#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
 import os
@@ -12,18 +12,17 @@ from subprocess import call, check_output, CalledProcessError, Popen, PIPE
 
 # get possible layouts
 layouts = os.listdir(os.path.expanduser("~/.config/screenlayout"))
-layouts = ["default", "same"] + sorted([layout for layout in layouts if layout[0] == "["])
+layouts = ["default", "same"] + sorted(
+    [layout for layout in layouts if layout[0] == "["]
+)
 
 # pipe the layouts as input commands [to dmenu]
 commands = Popen(["printf", "\n".join(layouts)], stdout=PIPE).stdout
 
 # take the input commands and select one with dmenu
 try:
-    command = check_output(["dmenu"] + sys.argv[1:], stdin = commands).decode().strip()
+    command = check_output(["dmenu"] + sys.argv[1:], stdin=commands).decode().strip()
     # call the final layout command
     call([os.path.join(os.path.expanduser("~/.config/screenlayout"), command)])
 except CalledProcessError:
     pass
-
-
-

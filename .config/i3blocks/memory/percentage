@@ -2,11 +2,13 @@
 
 from subprocess import check_output
 
-free_result = check_output("free").decode().split('\n')[1]
+free_result = check_output("free").decode().split("\n")[1]
 
 while "  " in free_result:
-    free_result = free_result.replace("  "," ")
+    free_result = free_result.replace("  ", " ")
 
-total, used, free, shared, cache, available = [float(x) for x in free_result.split(' ')[1:]]
+total, used, free, shared, cache, available = [
+    float(x) for x in free_result.split(" ")[1:]
+]
 
-print("{:.0f}%".format(int(100*used/total)))
+print("{:.0f}%".format(int(100 * used / total)))

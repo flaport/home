@@ -15,6 +15,7 @@ def tuple_to_res(lst):
     assert isinstance(lst, list)
     return "x".join(map(str, lst))
 
+
 ## Build subcommands
 
 xrandr_output = check_output(["xrandr", "-q"]).decode().splitlines()
@@ -27,7 +28,9 @@ for i, line in enumerate(xrandr_output):
         output = line.split(" ")[0]
         off_commands[output] = None
     elif "connected" in line:
-        resolution = list(map(int, xrandr_output[i+1].strip().split(" ")[0].strip().split("x")))
+        resolution = list(
+            map(int, xrandr_output[i + 1].strip().split(" ")[0].strip().split("x"))
+        )
         output = line.split(" ")[0]
         # command = ["--output", output, "--mode", mode, "--pos", pos, "--rotate", "normal"]
         on_commands[output] = resolution
@@ -46,12 +49,21 @@ for output in off_commands.keys():
     command += ["--output", output, "--off"]
 for output, resolution in on_commands.items():
     mode = tuple_to_res(resolution)
-    command += ["--output", output, "--mode", mode, "--pos", "0x0", "--rotate", "normal"]
+    command += [
+        "--output",
+        output,
+        "--mode",
+        mode,
+        "--pos",
+        "0x0",
+        "--rotate",
+        "normal",
+    ]
 filename = os.path.join(os.path.expanduser("~/.config/screenlayout/"), "same")
 with open(filename, "w") as file:
     file.write("#!/usr/bin/env bash\n")
     file.write(" ".join(command))
-os.chmod(filename, stat.S_IRWXU | stat.S_IRWXG) # make executable for user and group
+os.chmod(filename, stat.S_IRWXU | stat.S_IRWXG)  # make executable for user and group
 
 # build screen layouts for all screen permutations:
 all_keys = set(on_commands.keys())
@@ -69,7 +81,16 @@ for option in options:
         if output in option:
             mode = tuple_to_res(resolution)
             pos = tuple_to_res([start_x, 0])
-            command += ["--output", output, "--mode", mode, "--pos", pos, "--rotate", "normal"]
+            command += [
+                "--output",
+                output,
+                "--mode",
+                mode,
+                "--pos",
+                pos,
+                "--rotate",
+                "normal",
+            ]
             if primary:
                 command += ["--primary"]
                 primary = False
@@ -77,12 +98,17 @@ for option in options:
         else:
             command += ["--output", output, "--off"]
 
-    filename = os.path.join(os.path.expanduser("~/.config/screenlayout/"), " ".join("[{}]".format(o) for o in option))
+    filename = os.path.join(
+        os.path.expanduser("~/.config/screenlayout/"),
+        " ".join("[{}]".format(o) for o in option),
+    )
     with open(filename, "w") as file:
         file.write("#!/usr/bin/env bash\n")
         file.write(" ".join(command))
 
-    os.chmod(filename, stat.S_IRWXU | stat.S_IRWXG) # make executable for user and group
+    os.chmod(
+        filename, stat.S_IRWXU | stat.S_IRWXG
+    )  # make executable for user and group
 
 ## Execute last command: (different output on all screens)
 print(" ".join(command))

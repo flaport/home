@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-#    _____ _     ____  ____  ____  ____  _____ 
+#    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
-#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
-#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
-#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
 # very hacky script... needs updating !!
@@ -27,7 +27,7 @@ with open(os.path.expanduser("~/.config/i3/config"), "r") as file:
     content = file.read().splitlines()
 for line in content:
     if line.startswith("set_from_resource"):
-        line = line.replace("\t"," ").strip()
+        line = line.replace("\t", " ").strip()
         while "  " in line:
             line = line.replace("  ", " ")
         _, variable_name, color_name = line.split(" ")
@@ -48,7 +48,11 @@ for k, v in config_variables.items():
     print(k, v)
 
 try:
-    content = [(comment.strip(), command.strip()) for comment, command in zip(content, content[1:]) if command.startswith("bindsym")]
+    content = [
+        (comment.strip(), command.strip())
+        for comment, command in zip(content, content[1:])
+        if command.startswith("bindsym")
+    ]
 
     normal = []
     shift = []
@@ -56,7 +60,15 @@ try:
     commands = {}
     comments = {}
     for comment, line in content:
-        line = line.replace("bindsym","").replace("--no-startup-id","").replace("\t"," ").replace("$mod","◻️").replace("Shift","⬆️").replace("~",os.environ.get("HOME")).strip()
+        line = (
+            line.replace("bindsym", "")
+            .replace("--no-startup-id", "")
+            .replace("\t", " ")
+            .replace("$mod", "◻️")
+            .replace("Shift", "⬆️")
+            .replace("~", os.environ.get("HOME"))
+            .strip()
+        )
         while "  " in line:
             line = line.replace("  ", " ")
         for k, v in config_variables.items():
@@ -69,29 +81,38 @@ try:
         elif not "⬆️" in shortcut:
             normal.append(shortcut)
         else:
-            shortcut = "◻️+"+shortcut[6:] + "⬆️"
+            shortcut = "◻️+" + shortcut[6:] + "⬆️"
             shift.append(shortcut)
 
-        comments[shortcut] = comment.replace("#","").strip() if comment.startswith("#") else " ".join(command)
+        comments[shortcut] = (
+            comment.replace("#", "").strip()
+            if comment.startswith("#")
+            else " ".join(command)
+        )
         commands[comments[shortcut]] = command
 
-    shortcuts = sorted(normal+shift, key=str.lower) + sorted(other, key=str.lower)
+    shortcuts = sorted(normal + shift, key=str.lower) + sorted(other, key=str.lower)
 
     def maybe_shift_shortcut(shortcut):
         if shortcut.endswith("⬆️"):
-            return shortcut.replace("⬆️","").replace("◻️+", "◻️+⬆️+")
+            return shortcut.replace("⬆️", "").replace("◻️+", "◻️+⬆️+")
         return shortcut
-    content = [maybe_shift_shortcut(shortcut) + ": " + comments[shortcut] for shortcut in shortcuts]
+
+    content = [
+        maybe_shift_shortcut(shortcut) + ": " + comments[shortcut]
+        for shortcut in shortcuts
+    ]
 
     dmenu_commands = Popen(["echo", "-n", "\n".join(content)], stdout=PIPE).stdout
-    shortcut, comment = check_output(["dmenu"] + sys.argv[1:], stdin = dmenu_commands).decode().split(":")
+    shortcut, comment = (
+        check_output(["dmenu"] + sys.argv[1:], stdin=dmenu_commands).decode().split(":")
+    )
     command = commands[comment.strip()]
     call(["notify-send", shortcut])
     if command[0] == "exec":
-        command = ["exec", '`'+" ".join(command[1:]) + '`']
+        command = ["exec", "`" + " ".join(command[1:]) + "`"]
     call(["i3-msg"] + command)
 except CalledProcessError as e:
     pass
 except Exception as e:
     call(["notify-send", e.__class__.__name__, str(e)])
-

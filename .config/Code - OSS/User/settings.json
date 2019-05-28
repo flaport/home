@@ -44,6 +44,6 @@
     "window.restoreWindows": "none",
     "window.zoomLevel": -1,
     "workbench.colorTheme": "Default Light+",
-    "workbench.iconTheme": "vscode-icons",
+    "workbench.iconTheme": "material-icon-theme",
     "explorer.confirmDragAndDrop": false,
 }
