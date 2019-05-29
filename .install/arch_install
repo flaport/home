@@ -273,8 +273,10 @@ install dosfstools
 install exfat-utils
 # ntfs-3g: access NTFS network drives
 install ntfs-3g
-# acces media on external device (phone, ...)
+# access media on external device (phone, ...)
 install simple-mtpfs
+# access ssh file system
+install sshfs
 # install scripts for bootstrapping new arch installation
 install arch-install-scripts
 

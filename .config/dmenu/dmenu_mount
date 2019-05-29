@@ -40,6 +40,8 @@ class Device:
             self.username, self.name = self.name.split("@")
         else:
             self.username = os.environ.get("USER")
+        if self.fstype == "ssh" and ":" not in self.name:
+            self.name += f":/home/{self.username}"
 
     def mount(self, mountpoint):
         mountpoint = os.path.abspath(os.path.expanduser(mountpoint))
@@ -64,22 +66,26 @@ class Device:
                 ]
             ).decode()[:-1]
             options += f",username={self.username},password={password},uid={os.getuid()},gid={os.getgid()},dir_mode=0744,file_mode=0744"  # credentials=~/.smbcredentials
-        print(
-            " ".join(
-                [
-                    "sudo",
-                    "-A",
-                    "mount",
-                    f"{self.name}",
-                    mountpoint,
-                    "--options",
-                    options,
-                ]
+        if self.fstype == "ssh":
+            status = call(
+                ["sudo", "-A", "sshfs", "-o", f"allow_other,IdentityFile={os.path.expanduser('~/.ssh/id_rsa')}", f"{self.username}@{self.name}", mountpoint],
             )
-        )
-        status = call(
-            ["sudo", "-A", "mount", f"{self.name}", mountpoint, "--options", options]
-        )
+            if status != 0:
+                password = check_output(
+                    [
+                        os.environ.get("SUDO_ASKPASS"),
+                        f"password for {self.username}@{self.name}",
+                    ]
+                ).decode()[:-1]
+                password_out = Popen(["echo", password], stdout=PIPE).stdout
+                status = call(
+                    ["sudo", "-A", "sshfs", "-o", "allow_other,password_stdin", f"{self.username}@{self.name}", mountpoint],
+                    stdin=password_out,
+                )
+        else:
+            status = call(
+                ["sudo", "-A", "mount", f"{self.name}", mountpoint, "--options", options]
+            )
         if status != 0:
             raise MountError(
                 f"Mounting device {self.name} resulted in an exit status {status}"
@@ -109,7 +115,10 @@ class Device:
         options = []
         if self.label:
             options.append(f"/mnt/{self.label}")
-        options.append(f"/mnt/{self.name.split('/')[-1]}")
+        if "/" in self.name:
+            options.append(f"/mnt/{self.name.split('/')[-1]}")
+        if ":" in self.name:
+            options.append(f"/mnt/{self.name.split(':')[0]}")
         if self.uuid:
             if "-" in self.uuid:
                 options.append(f"/mnt/{self.uuid.split('-')[0]}")
@@ -181,11 +190,21 @@ def get_device(choice):
         return devices[choice]
     except KeyError:
         # network device?
+        if choice.startswith("//"): # try cifs mount
+            return Device(
+                name=choice,
+                label=None,
+                size=None,
+                fstype="cifs",
+                uuid=None,
+                mountpoint=None,
+            )
+        # try ssh mount:
         return Device(
             name=choice,
             label=None,
             size=None,
-            fstype="cifs",
+            fstype="ssh",
             uuid=None,
             mountpoint=None,
         )
