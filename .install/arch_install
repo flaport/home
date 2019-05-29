@@ -314,6 +314,7 @@ install network-manager-applet
 install openvpn
 # ssh (client and server)
 install openssh
+echo $password | sudo -S systemctl enable sshd
 # autossh (for ssh daemons)
 install autossh
 # whois information
