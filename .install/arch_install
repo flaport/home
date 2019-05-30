@@ -183,6 +183,8 @@ install i3-gaps
 install i3blocks
 # i3-lock: screen lock for i3
 install i3lock-fancy-git
+# sxhkd: keyboard shortcuts
+install sxhkd
 # xautolock to automatically lock the screen
 install xautolock
 # wallpapers
