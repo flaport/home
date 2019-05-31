@@ -195,8 +195,6 @@ install socat
 install dmenu
 # theme:  Arc
 install arc-solid-gtk-theme
-# graphical way to ask for passwords
-install ssh-askpass-fullscreen
 
 ## Printers
 # printer system (cups @ localhost:631)
