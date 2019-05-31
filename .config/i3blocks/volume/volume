@@ -10,7 +10,7 @@ else
 fi
 
 show() {
-    $HOME/.config/i3/non-transparent-terminal -n tvolume -f mono:pixelsize=12 -e alsamixer;
+    $TERMINAL -n tvolume -f mono:pixelsize=12 -e alsamixer;
 }
 
 case $BLOCK_BUTTON in

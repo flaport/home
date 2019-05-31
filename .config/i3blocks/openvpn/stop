@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-sudo systemctl stop openvpn
-echo "stopping openvVPN..."
-sleep 1
-pkill -RTMIN+11 i3blocks

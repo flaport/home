@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-sudo systemctl stop sshtunnel
-echo "stopping sshtunnel..."
-sleep 1
-pkill -RTMIN+13 i3blocks

@@ -7,7 +7,7 @@ if [ -f /etc/systemd/system/openvpn.service ]; then
             notify-send "OpenVPN" "active\n(right click to stop)\n\n$($HOME/.config/i3blocks/openvpn/openvpnstatus)"
         }
         stopp() {
-            $HOME/.config/i3/non-transparent-terminal -n topenvpn -f mono:pixelsize=18 -e $HOME/.config/i3blocks/openvpn/stop;
+            sudo -A systemctl stop openvpn && /usr/bin/pkill -RTMIN+11 i3blocks 
         }
         case $BLOCK_BUTTON in
             1) show ;;
@@ -19,7 +19,7 @@ if [ -f /etc/systemd/system/openvpn.service ]; then
             notify-send "OpenVPN" "inactive\n(right click to start)\n\n$($HOME/.config/i3blocks/openvpn/openvpnstatus)"
         }
         startt() {
-            $HOME/.config/i3/non-transparent-terminal -n topenvpn -f mono:pixelsize=18 -e  $HOME/.config/i3blocks/openvpn/start;
+            sudo -A systemctl start openvpn && /usr/bin/pkill -RTMIN+11 i3blocks 
         }
         case $BLOCK_BUTTON in
             1) show ;;

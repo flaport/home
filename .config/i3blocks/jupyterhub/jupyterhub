@@ -7,7 +7,7 @@ if [ -f /etc/systemd/system/jupyterhub.service ]; then
             notify-send "Jupyterhub" "active\n(right click to stop)\n\n$($HOME/.config/i3blocks/jupyterhub/jupyterhubstatus)"
         }
         stopp() {
-            $HOME/.config/i3/non-transparent-terminal -n tjupyterhub -f mono:pixelsize=18 -e $HOME/.config/i3blocks/jupyterhub/stop;
+            sudo -A systemctl stop jupyterhub && /usr/bin/pkill -RTMIN+12 i3blocks 
         }
         case $BLOCK_BUTTON in
             1) show ;;
@@ -20,7 +20,7 @@ if [ -f /etc/systemd/system/jupyterhub.service ]; then
             notify-send "Jupyterhub" "inactive\n(right click to start)\n\n$($HOME/.config/i3blocks/jupyterhub/jupyterhubstatus)"
         }
         startt() {
-            $HOME/.config/i3/non-transparent-terminal -n tjupyterhub -f mono:pixelsize=18 -e $HOME/.config/i3blocks/jupyterhub/start;
+            sudo -A systemctl start jupyterhub && /usr/bin/pkill -RTMIN+12 i3blocks
         }
         case $BLOCK_BUTTON in
             1) show ;;

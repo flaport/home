@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-sudo systemctl start openvpn
-echo "starting openvVPN..."
-sleep 2
-pkill -RTMIN+11 i3blocks

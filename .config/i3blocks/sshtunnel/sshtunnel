@@ -7,7 +7,7 @@ if [ -f /etc/systemd/system/sshtunnel.service ]; then
             notify-send "sshtunnel" "active\n(right click to stop)\n\n$($HOME/.config/i3blocks/sshtunnel/sshtunnelstatus)"
         }
         stopp() {
-            $HOME/.config/i3/non-transparent-terminal -n tsshtunnel -f mono:pixelsize=18 -e $HOME/.config/i3blocks/sshtunnel/stop;
+            sudo -A systemctl stop sshtunnel && /usr/bin/pkill -RTMIN+13 i3blocks 
         }
         case $BLOCK_BUTTON in
             1) show ;;
@@ -20,7 +20,7 @@ if [ -f /etc/systemd/system/sshtunnel.service ]; then
             notify-send "sshtunnel" "inactive\n(right click to start)\n\n$($HOME/.config/i3blocks/sshtunnel/sshtunnelstatus)"
         }
         startt() {
-            $HOME/.config/i3/non-transparent-terminal -n tsshtunnel -f mono:pixelsize=18 -e $HOME/.config/i3blocks/sshtunnel/start;
+            sudo -A systemctl start sshtunnel && /usr/bin/pkill -RTMIN+13 i3blocks 
         }
         case $BLOCK_BUTTON in
             1) show ;;
