@@ -29,7 +29,7 @@ dunst & disown
 nm-applet & disown
 
 # automatically lock screen after 10 minutes
-xautolock -time 10 -locker ~/.config/i3/lock_screen & disown
+xautolock -time 10 -locker ~/.scripts/lock_screen & disown
 
 # make the mouse invisible after a brief period of not using it.
 unclutter & disown
@@ -39,3 +39,6 @@ xset r rate 200 45
 
 # execute i3
 exec i3 > ~/.i3.log
+
+# execute wdm
+# exec wdm > ~/.wdm.log
