@@ -1,0 +1,97 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+import os
+import sys
+from subprocess import call, check_output, Popen, PIPE, CalledProcessError
+
+max_key_length = 0
+
+def dmenu(list_in, prompt):
+    dmenu_in = Popen(["echo", "\n".join(str(x) for x in list_in)], stdout=PIPE).stdout
+    try:
+        choice = check_output(
+            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+        ).decode()[:-1]
+        return choice
+    except CalledProcessError:
+        pass
+
+def split_string(s):
+    double_quotes = s.split('"')
+    for i, part in enumerate(double_quotes):
+        if i%2 == 1:
+            double_quotes[i] = part
+        else:
+            double_quotes[i] = part.replace(" ", ";")
+    s = ''.join(double_quotes).replace("'", '"')
+    return s.split(";")
+
+def notify(title, message=None):
+    if message is not None:
+        check_output(["notify-send", title, message])
+    check_output(["notify-send", title])
+
+class Shortcut:
+    def __init__(self, keys, description, command):
+        global max_key_length, shortcuts
+        self.keys = keys.strip().replace(" "," ").replace("super", "◻️")
+        if len(self.keys) > max_key_length:
+            max_key_length = len(self.keys)
+        self.description = description.replace("#","").strip()
+        self.command = command.strip().replace("~", os.environ.get("HOME"))
+    def __call__(self):
+        commands = self.command.split(";")
+        outputs = []
+        for command in commands:
+            for k, v in os.environ.items():
+                command = command.replace("$"+k, v)
+            # TODO: find a good way to split this string, so that we don't have to use 
+            #       the shell=True flag.
+            call(command, shell=True)
+        if len(outputs) == 1:
+            return outputs[0]
+        return outputs
+    def __str__(self):
+        padding = " "*(max_key_length + 5 - len(self.keys))
+        return self.keys + ":" + padding + self.description
+
+if __name__ == "__main__":
+    with open(os.path.expanduser("~/.config/sxhkd/sxhkdrc")) as file:
+        lines = file.read().splitlines()
+
+    shortcuts = {}
+    for i, line in enumerate(lines):
+        if (line.strip() != ""
+            and not line.startswith("\t")
+            and not line.startswith(" ")
+            and not line.startswith("#")
+        ):
+            # if no description, do not offer it as an option
+            description = lines[i-1].strip()
+            if not description.startswith("#"):
+                continue
+
+            # else create a shortcut reference
+            shortcut = Shortcut(
+                keys = line,
+                description = lines[i-1],
+                command = lines[i+1],
+            )
+
+            shortcuts[shortcut.keys] = shortcut
+
+    chosen = dmenu(shortcuts.values(), prompt="shortcuts")
+
+    if chosen is None:
+        exit(0)
+
+    shortcut = shortcuts[chosen.split(":")[0]]
+
+    output = shortcut()
+

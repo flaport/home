@@ -23,7 +23,8 @@ fish_vi_key_bindings
 #-------------------------------------------------------------------------------
 # some magic to source the variables defined in .bash_profile.
 sed -n '/^export/p' $HOME/.bash_profile | sed -e 's/export/set\ -gx/g' | sed -e 's/=/\ /g' | source
-
+# some more magic to source the color variables in ~/.Xresources as environment variables
+cat $HOME/.Xresources | grep \*color | sed s/^.// | awk -F': ' '{print "set -gx "$1" \""$2"\""}' | source
 
 ## Python
 #-------------------------------------------------------------------------------

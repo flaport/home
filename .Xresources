@@ -5,6 +5,7 @@ are more guidelines than strict rules.
 
 */
 
+
 !! backgroud
 *color0: #1b1918
 
@@ -54,4 +55,4 @@ are more guidelines than strict rules.
 *color15: #fdf6e3
 
 !! window transparency
-*.alpha: 0.7
+*alpha: 0.7

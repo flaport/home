@@ -20,28 +20,7 @@ exec --no-startup-id ~/.config/i3/lock_screen
 # modifier key
 set $mod Mod4
 
-# transparent terminal
-set $terminal $TERMINAL
-
-# non-transparent terminal
-set $ntterminal $TERMINAL nt
-
-# browser
-set $browser $BROWSER
-
-# workspaces
-set $ws0 "0"
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-
-# Set Xresources colors:
+# set Xresources colors:
 set $transparent #00000000
 set_from_resource $background color0
 set_from_resource $urgent color1
@@ -65,7 +44,7 @@ set_from_resource $foreground color15
 #-------------------------------------------------------------------------------
 
 # font
-font pango:Droid Sans 11
+font pango:Droid Sans 12
 # drag floating windows with modifier key
 floating_modifier $mod
 # default workspace layout
@@ -83,22 +62,6 @@ client.background       $background
 
 ## Initialization
 #-------------------------------------------------------------------------------
-# set wallpaper
-exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper.png
-# composite manager (window transparency etc)
-exec_always --no-startup-id xcompmgr
-# update color database of xcompmgr
-exec_always --no-startup-id xrdb ~/.Xresources
-# export your desired screenlayout with `arandr`
-exec --no-startup-id ~/.config/screenlayout/default & disown
-# notifications
-exec --no-startup-id dunst
-# network manager applet (in most right corner of the screen)
-exec --no-startup-id nm-applet
-# automatically lock screen after 10 minutes
-exec --no-startup-id xautolock -time 10 -locker ~/.config/i3/lock_screen
-# make the mouse invisible after a brief period of not using it.
-exec --no-startup-id unclutter
 # status bar
 bar {
   i3bar_command i3bar -t
@@ -118,219 +81,6 @@ bar {
 }
 # show border on all active windows
 for_window [class="^.*"] border pixel 3
-# keyboard shortcuts
-exec --no-startup-id sxhkd
-
-## Key bindings
-#-------------------------------------------------------------------------------
-
-# set wallpaper from path/url specified in clipboard
-bindsym $mod+c exec $terminal -e ~/.config/i3/set_wallpaper $(xclip -selection clipboard -o)
-
-# new terminal
-bindsym $mod+Return exec --no-startup-id $terminal
-
-# new non-transparent terminal
-bindsym $mod+Shift+Return exec --no-startup-id $ntterminal
-
-# make window floating
-bindsym $mod+Shift+space floating toggle
-
-# select floating window
-bindsym $mod+space focus mode_toggle
-
-# select window on the left of current window
-bindsym $mod+h focus left
-
-# move selected window to the left (100 points if floating)
-bindsym $mod+Shift+h move left 100
-
-# select window below current window
-bindsym $mod+j focus down
-
-# move selected window down (100 points if floating)
-bindsym $mod+Shift+j move down 100
-
-# select window above to current window
-bindsym $mod+k focus up
-
-# move selected window up (100 points if floating)
-bindsym $mod+Shift+k move up 100
-
-# select window to the right of current window
-bindsym $mod+l focus right
-
-# move selected window to the right (100 points if floating)
-bindsym $mod+Shift+l move right 100
-
-# close current window
-bindsym $mod+q kill
-
-# close current window
-bindsym $mod+Shift+q kill
-
-# start default browser
-bindsym $mod+w exec --no-startup-id $browser
-
-# move workspace to other monitor
-bindsym $mod+Shift+w move workspace to output left
-
-# start default file manager
-bindsym $mod+r exec --no-startup-id $terminal -e vifm
-
-# toggle split direction (below/right)
-bindsym $mod+t exec --no-startup-id ~/.config/i3/split_toggle
-# bindsym $mod+t split toggle
-
-# toggle split direction and enable it to windows present in workspace
-bindsym $mod+Shift+t layout toggle split; exec --no-startup-id inverted layout
-
-# enable stacking layout
-bindsym $mod+e layout stacking; exec --no-startup-id notify-send "layout" "stacking"
-
-# drop down terminal
-bindsym $mod+u exec --no-startup-id ~/.config/i3/floating_terminal
-
-# drop down calculator (python shell)
-bindsym $mod+a exec --no-startup-id ~/.config/i3/floating_python
-
-# process information
-bindsym $mod+i exec --no-startup-id $terminal -e htop
-
-# application launcher
-bindsym $mod+d exec --no-startup-id ~/.config/dmenu/dmenu_run -i -l 7 -p 'dmenu' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
-
-# choose screen layout
-bindsym $mod+p exec --no-startup-id ~/.config/dmenu/dmenu_screenlayout -i -l 100 -p 'screen layout' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
-
-# default screen layout
-bindsym $mod+Shift+p exec --no-startup-id ~/.config/screenlayout/default
-
-# select keyboard shortcut
-bindsym $mod+F1 exec --no-startup-id ~/.config/dmenu/dmenu_keyboard_shortcuts -i -l 15 -p 'keyboard shortcut' -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'sans-serif-12'
-
-# mount drive menu
-bindsym $mod+m exec --no-startup-id ~/.config/dmenu/dmenu_mount mount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
-
-# unmount drive menu
-bindsym $mod+Shift+m exec --no-startup-id ~/.config/dmenu/dmenu_mount unmount -i -nb '$foreground' -nf '$main' -sb '$main' -sf '$foreground' -fn 'monospace-14'
-
-# lock screen
-bindsym $mod+x exec --no-startup-id ~/.config/i3/lock_screen
-
-# lock screen and suspend
-bindsym $mod+Shift+x exec --no-startup-id ~/.config/i3/lock_screen && systemctl suspend
-
-# show/hide status bar
-bindsym $mod+b bar mode toggle
-
-# floating window in bottom left corner
-bindsym $mod+Shift+b floating toggle; sticky toggle; exec --no-startup-id bottomleft
-
-# switch to workspace 0
-bindsym $mod+0 workspace $ws0; exec notify-send $ws0
-
-# switch to workspace 1
-bindsym $mod+1 workspace $ws1; exec notify-send $ws1
-
-# switch to workspace 2
-bindsym $mod+2 workspace $ws2; exec notify-send $ws2
-
-# switch to workspace 3
-bindsym $mod+3 workspace $ws3; exec notify-send $ws3
-
-# switch to workspace 4
-bindsym $mod+4 workspace $ws4; exec notify-send $ws4
-
-# switch to workspace 5
-bindsym $mod+5 workspace $ws5; exec notify-send $ws5
-
-# switch to workspace 6
-bindsym $mod+6 workspace $ws6; exec notify-send $ws6
-
-# switch to workspace 7
-bindsym $mod+7 workspace $ws7; exec notify-send $ws7
-
-# switch to workspace 8
-bindsym $mod+8 workspace $ws8; exec notify-send $ws8
-
-# switch to workspace 9
-bindsym $mod+9 workspace $ws9; exec notify-send $ws9
-
-# move focused window to workspace 0
-bindsym $mod+Shift+0 move container to workspace $ws0
-
-# move focused window to workspace 1
-bindsym $mod+Shift+1 move container to workspace $ws1
-
-# move focused window to workspace 2
-bindsym $mod+Shift+2 move container to workspace $ws2
-
-# move focused window to workspace 3
-bindsym $mod+Shift+3 move container to workspace $ws3
-
-# move focused window to workspace 4
-bindsym $mod+Shift+4 move container to workspace $ws4
-
-# move focused window to workspace 5
-bindsym $mod+Shift+5 move container to workspace $ws5
-
-# move focused window to workspace 6
-bindsym $mod+Shift+6 move container to workspace $ws6
-
-# move focused window to workspace 7
-bindsym $mod+Shift+7 move container to workspace $ws7
-
-# move focused window to workspace 8
-bindsym $mod+Shift+8 move container to workspace $ws8
-
-# move focused window to workspace 9
-bindsym $mod+Shift+9 move container to workspace $ws9
-
-# Next workspace
-bindsym $mod+g workspace next
-
-# previous workspace
-bindsym $mod+Shift+g workspace prev
-
-# Navigate between last two workspaces
-bindsym $mod+Tab workspace back_and_forth
-
-# open new terminal to the right of current window
-bindsym $mod+apostrophe split horizontal; exec --no-startup-id $terminal; exec --no-startup-id echo "horizontal" > ~/.orientation; exec --no-startup-id notify-send "split" "horizontal"
-
-# open new terminal below current window
-bindsym $mod+slash split vertical; exec --no-startup-id $terminal; exec --no-startup-id echo "vertical" > ~/.orientation; exec --no-startup-id notify-send "split" "vertical"
-
-# restart i3
-bindsym $mod+F2 restart
-
-# volume louder
-bindsym $mod+plus exec --no-startup-id amixer -D pulse set Master 5%+ && pkill -RTMIN+10 i3blocks
-
-# volume quieter
-bindsym $mod+minus exec --no-startup-id amixer -D pulse set Master 5%- && pkill -RTMIN+10 i3blocks
-
-# mute sound
-bindsym $mod+Shift+minus exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
-
-# mute sound
-bindsym $mod+Shift+plus exec --no-startup-id amixer -D pulse set Master 1+ toggle && pkill -RTMIN+10 i3blocks
-
-# full screen window
-bindsym $mod+f fullscreen toggle
-
-# resize window: move border to the left
-bindsym $mod+Shift+y exec --no-startup-id ~/.config/i3/resize_window left
-
-# resize window: move border down
-bindsym $mod+Shift+u exec --no-startup-id ~/.config/i3/resize_window down
-
-# resize window: move border up
-bindsym $mod+Shift+i exec --no-startup-id ~/.config/i3/resize_window up
-
-# resize window: move border to the left
-bindsym $mod+Shift+o exec --no-startup-id ~/.config/i3/resize_window right
 
 
 ## Special behavior for windows with certain names.
@@ -393,9 +143,9 @@ for_window [instance="dropdown_*"] resize set width 500px
 for_window [instance="dropdown_*"] move scratchpad
 
 # application dependent workspaces
-for_window [class="Spotify"] move to workspace $ws8
-for_window [title="GIMP Startup"] move workspace $ws5
-for_window [class="Gimp"] move workspace $ws5
+for_window [class="Spotify"] move to workspace 8
+for_window [title="GIMP Startup"] move workspace 5
+for_window [class="Gimp"] move workspace 5
 for_window [window_role="GtkFileChooserDialog"] resize shrink height 10 px
 for_window [title="Default - Wine desktop"] floating enable
 

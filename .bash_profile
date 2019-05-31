@@ -51,6 +51,9 @@ export PYTHONSTARTUP="$HOME/.pythonstartup"
 export SUDO_ASKPASS="/usr/lib/openssh/ssh-askpass-fullscreen"
 export GTK2_RC_FILES="/usr/share/themes/Arc-solid/gtk-2.0/gtkrc"
 
+# some magic to source color variables defined in ~/.Xresources as environment variables
+source <(cat $HOME/.Xresources | grep *color | sed s/^.// | awk -F':\t' '{print "export "$1"=\""$2"\""}')
+
 
 ## Start i3
 #-------------------------------------------------------------------------------
