@@ -1,11 +1,57 @@
-#!/bin/bash
+#!/usr/bin/python3
+"""
+    Open executable; if executable is not found open it in default browser.
+"""
 
-OPEN_IN_TERMINAL="vim:vifm"
+import os
+import sys
+from subprocess import call, check_output, Popen, PIPE, CalledProcessError
 
-chosen=$(dmenu_path | dmenu "$@")
 
-if [[ ":$OPEN_IN_TERMINAL:" =~ .*:$chosen:.* ]]; then
-    $TERMINAL -e $chosen
-else
-    $chosen
-fi
+TERMINAL = os.environ.get("TERMINAL")
+BROWSER = os.environ.get("BROWSER")
+OPEN_IN_TERMINAL=["vifm", "vim"]
+DMENU_PATH = check_output(["dmenu_path"]).decode().splitlines()[4:]
+DMENU_HISTORY_PATH = os.path.expanduser("~/.config/dmenu/dmenu_history.txt")
+
+def dmenu(list_in, prompt):
+    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+    try:
+        choice = check_output(
+            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+        ).decode()[:-1]
+        return choice
+    except CalledProcessError:
+        pass
+    return ""
+
+if __name__ == "__main__":
+    with open(DMENU_HISTORY_PATH, "a") as file:
+        pass # create file if it does not exist
+    with open(DMENU_HISTORY_PATH, "r") as file:
+        dmenu_history = file.read().splitlines()
+
+    dmenu_commands = list({k: None for k in dmenu_history[::-1]}) + DMENU_PATH
+
+    choice = dmenu(dmenu_commands, "open")
+
+    if not choice:
+        exit(0)
+
+    if choice in OPEN_IN_TERMINAL:
+        Popen([TERMINAL, "-e", choice])
+    else:
+        try:
+            Popen([choice])
+        except FileNotFoundError:
+            if "http://" in choice or "https://" in choice or len(choice.split(".")) in (2,3):
+                Popen([BROWSER, choice])
+            else:
+                duckduckgo_query = "https://duckduckgo.com/?q=" + choice.replace(" ", "+")
+                Popen([BROWSER, duckduckgo_query])
+                exit(1) # command given does not exist, it's also not a valid url
+
+    with open(DMENU_HISTORY_PATH, "a") as file:
+        file.write(choice+"\n")
+
+
