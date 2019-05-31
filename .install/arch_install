@@ -351,6 +351,9 @@ install xdotool
 # install firefox
 install chromium
 install qutebrowser
+install webkit2gtk # surf dependency
+install gcr # surf dependency
+install xorg-xprop # surf dependency
 
 ## Email
 # send email

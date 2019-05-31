@@ -27,7 +27,7 @@ super + C
 
 # dmenu application launcher
 super + d
-    ~/.config/dmenu/dmenu_run -i -l 7 -p "dmenu" -nb '$color15' -nf '$color2' -sb '$color2' -sf '$color15' -fn monospace-14
+    ~/.config/dmenu/dmenu_run -i -l 7 -p dmenu -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 super + D
 
@@ -91,11 +91,11 @@ super + L
 
 # dmenu mount drive menu
 super + m
-    ~/.config/dmenu/dmenu_mount mount -i -nb '$color15' -nf '$color2' -sb '$color2' -sf '$color15' -fn monospace-14
+    ~/.config/dmenu/dmenu_mount mount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 # dmenu unmount drive menu
 super + M
-    ~/.config/dmenu/dmenu_mount unmount -i -nb '$color15' -nf '$color2' -sb '$color2' -sf '$color15' -fn monospace-14
+    ~/.config/dmenu/dmenu_mount unmount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 super + n
 
@@ -109,7 +109,7 @@ super + O
 
 # dmenu choose screen layout
 super + p
-    ~/.config/dmenu/dmenu_screenlayout -i -l 100 -p "screen layout" -nb '$color15' -nf '$color2' -sb '$color2' -sf '$color15' -fn monospace-14
+    ~/.config/dmenu/dmenu_screenlayout -i -l 100 -p "screen layout" -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 # default screen layout
 super + P
@@ -297,7 +297,7 @@ super + shift + 9
 
 # select keyboard shortcut
 super + F1
-    ~/.config/sxhkd/dmenu_keyboard_shortcuts -i  -nb '$color15' -nf '$color2' -sb '$color2' -sf '$color15' -fn monospace-14
+    ~/.config/sxhkd/dmenu_keyboard_shortcuts -i  -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 # restart display manager
 super + F2
