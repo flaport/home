@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-sxhkd
+sxhkd -c ~/.config/sxhkd/sxhkdrcdwm
