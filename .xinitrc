@@ -7,7 +7,7 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
 #
 
-# set wallpaper
+set wallpaper
 feh --bg-scale ~/.config/wallpaper.png & disown
 
 # enable transparent windows
@@ -18,9 +18,6 @@ xrdb ~/.Xresources & disown
 
 # export your desired screenlayout with `arandr`
 ~/.config/screenlayout/default & disown
-
-# enable sxhkd keyboard bindings
-sxhkd & disown
 
 # notifications
 dunst & disown
@@ -37,8 +34,12 @@ unclutter & disown
 # set cursor speed
 xset r rate 200 45
 
-# execute i3
-exec i3 > ~/.i3.log
+# enable sxhkd keyboard bindings
+# sxhkd & disown
 
-# execute wdm
-# exec wdm > ~/.wdm.log
+# execute i3
+# exec i3 > ~/.i3.log
+
+# execute dwm
+exec dwm
+

@@ -11,83 +11,68 @@ super + a
 
 # drop down calculator (python shell)
 super + A
-    ~/.scripts/floating_python
 
 # show/hide status bar
 super + b
-    i3-msg bar mode toggle
+    # handled by dwm
 
 super + B
 
-# set wallpaper from path/url specified in clipboard
 super + c
-    ~/.scripts/set_wallpaper $(xclip -selection clipboard -o)
 
 super + C
 
-# dmenu application launcher
+# decrease number of windows in master area
 super + d
-    ~/.config/dmenu/dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    # handled by dwm
 
 super + D
 
-# enable stacking layout
 super + e
-    i3-msg layout stacking; notify-send "layout" "stacking"
 
 super + E
 
-# full screen window
+# enable floating layout
 super + f
-    i3-msg fullscreen toggle
+    # handled by dwm
 
 super + F
 
-# next workspace
 super + g
-    i3-msg workspace next
 
-# previous workspace
 super + G
-    i3-msg workspace prev
 
-# select window on the left of current window
+# decrease master window size
 super + h
-    i3-msg focus left
+    # handled by dwm
 
-# move selected window to the left
 super + H
-    i3-msg move left 100
 
-# resize window: move border up
+# increase number of windows in master area
 super + i
-    ~/.config/i3/resize_window up
+    # handled by dwm
 
 super + I
 
-# select window below current window
+# focus on window higher on the stack
 super + j
-    i3-msg focus down
+    # handled by dwm
 
-# move selected window down
+# promote window
 super + J
-    i3-msg move down 100
+    # handled by dwm
 
-# move window above current window
+# focus on window lower on the stack
 super + k
-    i3-msg focus up
+    # handled by dwm
 
-# move selected window up
 super + K
-    i3-msg move up 100
 
-# select window to the right of current window
+# increase master window size
 super + l
-    i3-msg focus right
+    # handled by dwm
 
-# move selected window to the right
 super + L
-    i3-msg move right 100
 
 # dmenu mount drive menu
 super + m
@@ -97,13 +82,13 @@ super + m
 super + M
     ~/.config/dmenu/dmenu_mount unmount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
+# set monocle layout
 super + n
+    # handled by dwm
 
 super + N
 
-# resize window: move border to the left
 super + o
-    ~/.config/i3/resize_window right
 
 super + O
 
@@ -117,29 +102,25 @@ super + P
 
 # kill current window
 super + q
-    i3-msg kill
+    # handled by dwm
 
-# kill current window
 super + Q
-    i3-msg kill
 
 super + R
 
+# run a program
 super + s
+    ~/.config/dmenu/dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 super + S
 
-# toggle split direction (below/right)
+# enable layout 0
 super + t
-    ~/.config/i3/split_toggle
+    # handled by dwm
 
-# toggle split direction and enable it to windows present in workspace
 super + T
-    i3-msg layout toggle split; i3-msg exec inverted layout
 
-# resize window: move border down
 super + u
-    ~/.config/i3/resize_window down
 
 # drop down terminal
 super + U
@@ -153,9 +134,7 @@ super + V
 super + w
     $BROWSER
 
-# move workspace to other monitor
 super + W
-    i3-msg move workspace to output left
 
 # lock screen
 super + x
@@ -165,9 +144,7 @@ super + x
 super + X
     ~/.scripts/lock_screen; systemctl suspend
 
-# resize window: move border to the left
 super + y
-    ~/.config/i3/resize_window left
 
 super + Y
 
@@ -177,138 +154,123 @@ super + Z
 
 # new terminal
 super + Return
-    $TERMINAL
+    # handled by dwm
 
 # new non-transparent terminal
 super + shift + Return
     $TERMINAL nt
 
-# volume louder
 super + equal
-    amixer -D pulse set Master 5%+; pkill -RTMIN+10 i3blocks
 
-# volume quieter
 super + minus
-    amixer -D pulse set Master 5%-; pkill -RTMIN+10 i3blocks
 
-# toggle mute volume
 super + shift + minus
-    amixer -D pulse set Master 1+ toggle; pkill -RTMIN+10 i3blocks
 
-# focus on floating window
+# toggle between layouts
 super + space
-    i3-msg focus mode_toggle
+    # handled by dwm
 
-# make window floating
+# toggle window floating
 super + shift + space
-    i3-msg floating toggle
+    # handled by dwm
 
-# Navigate between last two workspaces
+# toggle between previous tags
 super + Tab
-    i3-msg workspace back_and_forth
 
-# switch to workspace 0
-super + 0
-    i3-msg workspace 0
-
-# move focused window to workspace 0
-super + shift + 0
-    i3-msg move container to workspace 0
-
-# open new terminal below current window
 super + slash
-    i3-msg split vertical; echo "vertical" > ~/.orientation; notify-send "split" "vertical"; $TERMINAL
 
-# open new terminal to the right of current window
 super + apostrophe
-    i3-msg split horizontal; echo "horizontal" > ~/.orientation; notify-send "split" "horizontal"; $TERMINAL
 
-# switch to workspace 1
+# enable all tas
+super + 0
+    # handled by dwm
+
+# apply all tags to focused windows
+super + shift + 0
+    # handled by dwm
+
+# view all windows with tag #1
 super + 1
-    i3-msg workspace 1
+    # handled by dwm
 
-# move focused window to workspace 1
+# apply tag 1 to focused window
 super + shift + 1
-    i3-msg move container to workspace 1
+    # handled by dwm
 
-# switch to workspace 2
+# view all windows with tag #2
 super + 2
-    i3-msg workspace 2
+    # handled by dwm
 
-# move focused window to workspace 2
+# apply tag 2 to focused window
 super + shift + 2
-    i3-msg move container to workspace 2
+    # handled by dwm
 
-# switch to workspace 3
+# view all windows with tag #3
 super + 3
-    i3-msg workspace 3
+    # handled by dwm
 
-# move focused window to workspace 0
+# apply tag 3 to focused window
 super + shift + 3
-    i3-msg move container to workspace 3
+    # handled by dwm
 
-# switch to workspace 4
+# view all windows with tag #4
 super + 4
-    i3-msg workspace 4
+    # handled by dwm
 
-# move focused window to workspace 4
+# apply tag 4 to focused window
 super + shift + 4
-    i3-msg move container to workspace 4
+    # handled by dwm
 
-# switch to workspace 5
+# view all windows with tag #5
 super + 5
-    i3-msg workspace 5
+    # handled by dwm
 
-# move focused window to workspace 5
+# apply tag 5 to focused window
 super + shift + 5
-    i3-msg move container to workspace 5
+    # handled by dwm
 
-# switch to workspace 6
+# view all windows with tag #6
 super + 6
-    i3-msg workspace 6
+    # handled by dwm
 
-# move focused window to workspace 6
+# apply tag 6 to focused window
 super + shift + 6
-    i3-msg move container to workspace 6
+    # handled by dwm
 
-# switch to workspace 7
+# view all windows with tag #7
 super + 7
-    i3-msg workspace 7
+    # handled by dwm
 
-# move focused window to workspace 7
+# apply tag 7 to focused window
 super + shift + 7
-    i3-msg move container to workspace 7
+    # handled by dwm
 
-# switch to workspace 8
+# view all windows with tag #8
 super + 8
-    i3-msg workspace 8
+    # handled by dwm
 
-# move focused window to workspace 8
+# apply tag 8 to focused window
 super + shift + 8
-    i3-msg move container to workspace 8
+    # handled by dwm
 
-# switch to workspace 9
+# view all windows with tag #9
 super + 9
-    i3-msg workspace 9
+    # handled by dwm
 
-# move focused window to workspace 9
+# apply tag 9 to focused window
 super + shift + 9
-    i3-msg move container to workspace 9
+    # handled by dwm
 
 # select keyboard shortcut
 super + F1
     ~/.config/sxhkd/dmenu_keyboard_shortcuts -i  -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
-# restart display manager
 super + F2
-    i3 restart
 
 super + F3
     notify-send "it workssssssssssssssssss"
 
-# exit display manager
 super + F4
-    i3-msg exit
 
 super + F5
 
