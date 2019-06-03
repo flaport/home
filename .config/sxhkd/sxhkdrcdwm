@@ -9,7 +9,6 @@
 super + a
     notify-send "sxhkd" "it's working!"
 
-# drop down calculator (python shell)
 super + A
 
 # show/hide status bar
@@ -36,11 +35,17 @@ super + E
 super + f
     # handled by dwm
 
+# enable default layout
 super + F
+    # handled by dwm
 
+# enable fibonacci dwindle layout
 super + g
+    # handled by dwm
 
+# enable default layout
 super + G
+    # handled by dwm
 
 # decrease master window size
 super + h
@@ -86,7 +91,9 @@ super + M
 super + n
     # handled by dwm
 
+# enable default layout
 super + N
+    # handled by dwm
 
 super + o
 
@@ -104,7 +111,9 @@ super + P
 super + q
     # handled by dwm
 
+# quit dwm
 super + Q
+    # handled by dwm
 
 super + R
 
@@ -114,17 +123,17 @@ super + s
 
 super + S
 
-# enable layout 0
+# enable tiling layout
 super + t
     # handled by dwm
 
+# enable default layout
 super + T
+    # handled by dwm
 
 super + u
 
-# drop down terminal
 super + U
-    ~/.scripts/floating_terminal
 
 super + v
 
@@ -160,9 +169,17 @@ super + Return
 super + shift + Return
     $TERMINAL nt
 
+# increase gap size
 super + equal
+    # handled by dwm
 
+# decrease gap size
 super + minus
+    # handled by dwm
+
+# reset gap size to zero
+super + shift + equal
+    # handled by dwm
 
 super + shift + minus
 
@@ -180,6 +197,22 @@ super + Tab
 super + slash
 
 super + apostrophe
+
+# focus on monitor left
+super + comma
+    # handled by dwm
+
+# focus on monitor right
+super + period
+    # handled by dwm
+
+# move active window to monitor left
+super + shift + comma
+    # handled by dwm
+
+# move active window to monitor right
+super + shift + period
+    # handled by dwm
 
 # enable all tas
 super + 0
@@ -268,7 +301,6 @@ super + F1
 super + F2
 
 super + F3
-    notify-send "it workssssssssssssssssss"
 
 super + F4
 

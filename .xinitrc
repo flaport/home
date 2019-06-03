@@ -7,6 +7,9 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
 #
 
+# select window manager [i3 / dwm]
+export WM=dwm
+
 set wallpaper
 feh --bg-scale ~/.config/wallpaper.png & disown
 
@@ -34,9 +37,6 @@ unclutter & disown
 # set cursor speed
 xset r rate 200 45
 
-# execute i3
-# exec i3 > ~/.i3.log
-
-# execute dwm
-exec dwm
+# execute window manager
+exec $WM
 
