@@ -79,8 +79,12 @@ bar {
     urgent_workspace $urgent $urgent $transparent
   }
 }
+
 # show border on all active windows
 for_window [class="^.*"] border pixel 3
+
+# keyboard shortcuts (handled by sxhkd)
+exec --no-startup-id sxhkd -c ~/.config/sxhkd/sxhkdrci3
 
 
 ## Special behavior for windows with certain names.

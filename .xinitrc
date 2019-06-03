@@ -34,9 +34,6 @@ unclutter & disown
 # set cursor speed
 xset r rate 200 45
 
-# enable sxhkd keyboard bindings
-# sxhkd & disown
-
 # execute i3
 # exec i3 > ~/.i3.log
 
