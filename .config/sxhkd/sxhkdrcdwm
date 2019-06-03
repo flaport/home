@@ -51,7 +51,9 @@ super + G
 super + h
     # handled by dwm
 
+# decrease gaps between windows
 super + H
+    # handled by dwm
 
 # increase number of windows in master area
 super + i
@@ -63,21 +65,41 @@ super + I
 super + j
     # handled by dwm
 
-# promote window
+# focus on monitor left
 super + J
+    # handled by dwm
+
+# move focused window to monitor left
+super + control + j
+    # handled by dwm
+
+# move focused window to monitor left and focus on monitor left
+super + control + J
     # handled by dwm
 
 # focus on window lower on the stack
 super + k
     # handled by dwm
 
+# focus on monitor right
 super + K
+    # handled by dwm
+
+# move focused window to monitor right
+super + control + k
+    # handled by dwm
+
+# move focused window to monitor right and focus on monitor right
+super + control + K
+    # handled by dwm
 
 # increase master window size
 super + l
     # handled by dwm
 
+# increase gaps between windows
 super + L
+    # handled by dwm
 
 # dmenu mount drive menu
 super + m
@@ -165,23 +187,27 @@ super + Z
 super + Return
     # handled by dwm
 
+# promote window
+super + control + Return
+    # handled by dwm
+
 # new non-transparent terminal
 super + shift + Return
     $TERMINAL nt
 
-# increase gap size
+# volume louder
 super + equal
-    # handled by dwm
+    amixer -D pulse set Master 5%+; pkill -RTMIN+10 i3blocks
 
-# decrease gap size
+# volume quieter
 super + minus
-    # handled by dwm
+    amixer -D pulse set Master 5%-; pkill -RTMIN+10 i3blocks
 
-# reset gap size to zero
-super + shift + equal
-    # handled by dwm
-
+# toggle mute volume
 super + shift + minus
+    amixer -D pulse set Master 1+ toggle; pkill -RTMIN+10 i3blocks
+
+super + shift + equal
 
 # toggle between layouts
 super + space
@@ -198,23 +224,15 @@ super + slash
 
 super + apostrophe
 
-# focus on monitor left
 super + comma
-    # handled by dwm
 
-# focus on monitor right
 super + period
-    # handled by dwm
 
-# move active window to monitor left
 super + shift + comma
-    # handled by dwm
 
-# move active window to monitor right
 super + shift + period
-    # handled by dwm
 
-# enable all tas
+# enable all tags
 super + 0
     # handled by dwm
 
