@@ -182,7 +182,9 @@ install i3-gaps
 # i3-blocks: status bar for i3
 install i3blocks
 # i3-lock: screen lock for i3
-install i3lock-fancy-git
+install i3lock
+# xsetroot: for status bar in dwm
+install xorg-xsetroot
 # sxhkd: keyboard shortcuts
 install sxhkd
 # xautolock to automatically lock the screen
