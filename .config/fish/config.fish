@@ -54,7 +54,6 @@ bind \cn accept-autosuggestion
 # [this should be placed last]
 if test (tty) = "/dev/tty1"
     while not test (pgrep -x i3)
-        sleep 3
         exec startx -- vt1 > /dev/null 2>&1
     end
 end
