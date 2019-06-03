@@ -1,0 +1,3 @@
+[submodule ".build/dwm"]
+	path = .build/dwm
+	url = https://github.com/flaport/dwm.git
