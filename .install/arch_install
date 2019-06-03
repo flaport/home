@@ -262,7 +262,6 @@ code --install-extension codezombiech.gitignore
 code --install-extension james-yu.latex-workshop
 code --install-extension formulahendry.code-runner
 code --install-extension shardulm94.trailing-spaces
-code --install-extension robertohuertasm.vscode-icons
 code --install-extension richie5um2.vscode-sort-json
 code --install-extension pkief.material-icon-theme
 
@@ -340,7 +339,7 @@ install pulseaudio
 
 ## Latex
 # tex-live
-# install texlive-most
+install texlive-most
 # bibliographies
 install biber
 # viewer with synctex support
@@ -431,7 +430,7 @@ echo $password | sudo -S pip2 install google-api-python-client google-auth-httpl
 #-------------------------------------------------------------------------------
 # TODO: merge the services file with this one.
 
-echo $password | sudo -S $HOME/.first_install/services
+echo $password | sudo -S $HOME/.install/services
 echo $password | sudo -S systemctl daemon-reload
 echo $password | sudo -S systemctl enable jupyterhub.service
 
