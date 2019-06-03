@@ -59,7 +59,6 @@ source <(cat $HOME/.Xresources | grep *color | sed s/^.// | awk -F': ' '{print "
 #-------------------------------------------------------------------------------
 # [this should be placed last]
 if [ "$(tty)" = "/dev/tty1" ]; then
-    sleep 3
 	pgrep -x i3 || exec startx &> /dev/null
 fi
 
