@@ -103,6 +103,7 @@ The first thing to do after booting up into the root account is to make a new us
     * add this git repository (or your fork) as origin: `git remote add origin http://github.com/flaport/arch_home`
     * pull the repository: `git pull origin master`
     * set up the master branch to track the master brach at origin: `git branch --set-upstream-to=origin/master master`
+    * pull in all git submodules for custom builds: `git submodule update --init --recursive`
 
 * Install all my preferred Arch Linux programs and packages and do some configuration:
 ```
