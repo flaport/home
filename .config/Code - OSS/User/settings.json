@@ -54,4 +54,5 @@
         "-xelatex",
         "%DOC%"
     ],
+    "vim.useSystemClipboard": true,
 }
