@@ -117,7 +117,9 @@ super + n
 super + N
     # handled by dwm
 
+# activate tags to which current window belongs
 super + o
+    # handled by dwm
 
 super + O
 
