@@ -49,11 +49,3 @@ bind -M insert \cn accept-autosuggestion
 bind \cn accept-autosuggestion
 
 
-## Start i3
-#-------------------------------------------------------------------------------
-# [this should be placed last]
-if test (tty) = "/dev/tty1"
-    while not test (pgrep -x i3)
-        exec startx -- vt1 > /dev/null 2>&1
-    end
-end

@@ -54,11 +54,3 @@ export GTK2_RC_FILES="/usr/share/themes/Arc-solid/gtk-2.0/gtkrc"
 # some magic to source color variables defined in ~/.Xresources as environment variables
 source <(cat $HOME/.Xresources | grep *color | sed s/^.// | awk -F': ' '{print "export "$1"=\""$2"\""}')
 
-
-## Start i3
-#-------------------------------------------------------------------------------
-# [this should be placed last]
-if [ "$(tty)" = "/dev/tty1" ]; then
-	pgrep -x i3 || exec startx &> /dev/null
-fi
-
