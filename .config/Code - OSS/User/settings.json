@@ -46,4 +46,12 @@
     "workbench.colorTheme": "Default Light+",
     "workbench.iconTheme": "material-icon-theme",
     "explorer.confirmDragAndDrop": false,
+    "workbench.settings.useSplitJSON": true,
+    "latex-workshop.latex.magic.args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-xelatex",
+        "%DOC%"
+    ],
 }
