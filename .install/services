@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
 # this script expects the location of your HOME directory as single argument.
 
@@ -41,7 +46,7 @@ with open(filename, "w") as file:
             """
         [Service]
         ExecStart=
-        ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin flaport --noclear %I $TERM
+        ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin {username} --noclear %I $TERM
         Type=simple
         """
         ).format(username=USERNAME)
