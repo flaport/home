@@ -17,9 +17,13 @@ super + b
 
 super + B
 
+# shift focus to monitor C
 super + c
+    # handled by dwm
 
+# move active window to monitor C
 super + C
+    # handled by dwm
 
 # decrease number of windows in master area
 super + d
@@ -31,29 +35,22 @@ super + e
 
 super + E
 
-# enable floating layout
+# full screen (monocle) layout
 super + f
     # handled by dwm
 
-# enable default layout
+# floating layout
 super + F
-    # handled by dwm
 
-# enable fibonacci dwindle layout
 super + g
-    # handled by dwm
 
-# enable default layout
 super + G
-    # handled by dwm
 
 # decrease master window size
 super + h
     # handled by dwm
 
-# decrease gaps between windows
 super + H
-    # handled by dwm
 
 # increase number of windows in master area
 super + i
@@ -65,41 +62,17 @@ super + I
 super + j
     # handled by dwm
 
-# focus on monitor left
 super + J
-    # handled by dwm
 
-# move focused window to monitor left
-super + control + j
-    # handled by dwm
-
-# move focused window to monitor left and focus on monitor left
-super + control + J
-    # handled by dwm
-
-# focus on window lower on the stack
 super + k
-    # handled by dwm
 
-# focus on monitor right
 super + K
-    # handled by dwm
-
-# move focused window to monitor right
-super + control + k
-    # handled by dwm
-
-# move focused window to monitor right and focus on monitor right
-super + control + K
-    # handled by dwm
 
 # increase master window size
 super + l
     # handled by dwm
 
-# increase gaps between windows
 super + L
-    # handled by dwm
 
 # dmenu mount drive menu
 super + m
@@ -109,19 +82,17 @@ super + m
 super + M
     ~/.config/dmenu/dmenu_mount unmount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
-# set monocle layout
 super + n
-    # handled by dwm
 
-# enable default layout
 super + N
-    # handled by dwm
 
-# activate tags to which current window belongs
+# activate all tags to which current window belongs
 super + o
     # handled by dwm
 
+# enable all tags
 super + O
+    # handled by dwm
 
 # dmenu choose screen layout
 super + p
@@ -147,7 +118,7 @@ super + s
 
 super + S
 
-# enable tiling layout
+# toggle between last two layouts
 super + t
     # handled by dwm
 
@@ -159,9 +130,13 @@ super + u
 
 super + U
 
+# shift focus to monitor V
 super + v
+    # handled by dwm
 
+# move active window to monitor V
 super + V
+    # handled by dwm
 
 # start default browser
 super + w
@@ -169,29 +144,28 @@ super + w
 
 super + W
 
-# lock screen
+# shift focus to monitor X
 super + x
-    ~/.scripts/lock_screen
+    # handled by dwm
 
-# lock screen and suspend
+# move active window to monitor X
 super + X
-    ~/.scripts/lock_screen; systemctl suspend
 
 super + y
 
 super + Y
 
+# shift focus to monitor Z
 super + z
+    # handled by dwm
 
+# move active window to monitor Z
 super + Z
+    # handled by dwm
 
 # new terminal
 super + Return
-    # handled by dwm
-
-# promote window
-super + control + Return
-    # handled by dwm
+    $TERMINAL
 
 # new non-transparent terminal
 super + shift + Return
@@ -211,16 +185,27 @@ super + shift + minus
 
 super + shift + equal
 
-# toggle between layouts
+# promote (zoom) window
 super + space
     # handled by dwm
 
-# toggle window floating
+super + control + space
+    
+# toggle floating for current window
 super + shift + space
     # handled by dwm
 
 # toggle between previous tags
 super + Tab
+    # handled by dwm
+
+# cycle forward through layout list
+super + semicolon
+    # handled by dwm
+
+# cycle backward through layout list
+super + shift + semicolon
+    # handled by dwm
 
 super + slash
 
@@ -316,7 +301,7 @@ super + shift + 9
 
 # select keyboard shortcut
 super + F1
-    ~/.config/sxhkd/dmenu_keyboard_shortcuts -i  -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    ~/.config/sxhkd/dmenu_keyboard_shortcuts -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 super + F2
 
