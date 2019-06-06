@@ -103,8 +103,8 @@ class Device:
         if status != 0:
             raise UnmountError(
                 f"Unmounting device {self.name}\n"
-                "from mount point {self.mountpoint}\n"
-                "resulted in an exit status {status}"
+                f"from mount point {self.mountpoint}\n"
+                f"resulted in an exit status {status}"
             )
         else:
             os.rmdir(self.mountpoint)
@@ -185,12 +185,15 @@ def get_mount_mode():
     return mount
 
 
-def get_device(choice):
+def get_mount_device(choice):
     try:
         return devices[choice]
     except KeyError:
         # network device?
-        if choice.startswith("//"): # try cifs mount
+        if not "@" in choice:
+            raise MountError("Cannot mount a network drive without username\n"
+                             "Make sure to mount as <username>@<network-location>.")
+        if choice.split("@")[1].startswith("//"): # try cifs mount
             return Device(
                 name=choice,
                 label=None,
@@ -209,18 +212,24 @@ def get_device(choice):
             mountpoint=None,
         )
 
+def get_unmount_device(choice):
+    try:
+        return devices[choice]
+    except KeyError:
+        return Device(name=None, label=None, size=None, fstype=None, uuid=None, mountpoint=choice)
+
 
 try:
     devices = lsblk()
     mount = get_mount_mode()
     if mount:
         devices_choice = dmenu(devices.keys(), "mount device")
-        device = get_device(devices_choice)
+        device = get_mount_device(devices_choice)
         mountpoint = dmenu(device.mountpoint_options(), f"mount {device.name} in")
         device.mount(mountpoint)
     else:
         devices_choice = dmenu(devices.keys(), "unmount device")
-        device = get_device(devices_choice)
+        device = get_unmount_device(devices_choice)
         if not device.mountpoint:
             device.mountpoint = device.name
         device.unmount()

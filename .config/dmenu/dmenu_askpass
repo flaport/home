@@ -6,4 +6,9 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
-echo -n "" | dmenu -p "[sudo] password for $USER" -nb "$color15" -nf "$color15" -sb "$color2" -sf "$color15" -fn monospace-24
+prompt="[sudo] password for $USER"
+if [ $1 ]; then
+    prompt=$1;
+fi
+
+echo -n "" | dmenu -p "$prompt" -nb "$color15" -nf "$color15" -sb "$color2" -sf "$color15" -fn monospace-22
