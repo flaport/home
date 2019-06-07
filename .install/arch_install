@@ -100,7 +100,6 @@ yay_install(){ # will only install the first argument!
 
     # check if package is already installed...
     echo $password | sudo -S pacman -Q $1 >> $LOG 2>> $ERR;
-    echo $password | sudo -S pacman -Q $1 >> $LOG 2>> $ERR;
     if [ $? = 0 ]; then
         printf "already installed.\n"
         printf "already installed.\n" >> $LOG
@@ -124,7 +123,6 @@ git_install(){ # will only install the first argument!
 
     # check if package is already installed...
     echo $password | sudo -S pacman -Q $name >> $LOG 2>> $ERR;
-    echo $password | sudo -S pacman -Q $name >> $LOG 2>> $ERR;
     if [ $? = 0 ]; then
         printf "already installed.\n"
         printf "already installed.\n" >> $LOG
@@ -143,24 +141,39 @@ git_install(){ # will only install the first argument!
     printf "makepkg -si --noconfirm --noprogress\n" >> $LOG
     printf "makepkg -si --noconfirm --noprogress\n" >> $ERR
     makepkg -si --noconfirm --noprogress >> $LOG 2>> $ERR
-
-    if [ $? -ne 0 ]; then
-        failed=1
-    fi
+    echo_success $?
 
     printf "cd ~\n" >> $LOG
     printf "cd ~\n" >> $ERR
-    cd ~ >> $LOG 2>> $ERR
+    cd $HOME >> $LOG 2>> $ERR
 
     printf "rm -rf /tmp/gitpkg\n" >> $LOG
     printf "rm -rf /tmp/gitpkg\n" >> $ERR
     rm -rf /tmp/gitpkg >> $LOG 2>> $ERR
     
-    echo_success $failed
+}
+
+submodule_install(){ # will only install the first argument!
+    printf "installing $1... "
+    printf "\n\n\ninstalling $1...\n" >> $LOG
+    printf "\n\n\ninstalling $1...\n" >> $ERR
+
+    printf "cd $HOME/.build/$1\n" >> $LOG
+    printf "cd $HOME/.build/$1\n" >> $ERR
+    cd "$HOME/.build/$1" >> $LOG 2>> $ERR
+
+    printf "sudo make clean install\n" >> $LOG
+    printf "sudo make clean install\n" >> $ERR
+    echo $password | sudo -S make clean install >> $LOG 2>> $ERR
+    echo_success $?
+
+    printf "cd $HOME\n" >> $LOG
+    printf "cd $HOME\n" >> $ERR
+    cd $HOME >> $LOG 2>> $ERR
 }
 
 pip3_install() {
-    printf "pip3 install $1\n"
+    printf "pip3 install $1... "
     printf "\n\n\npip3 install $1\n" >> $LOG
     printf "\n\n\npip3 install $1\n" >> $ERR
     printf "sudo /usr/bin/python3 -m pip install $1\n" >> $LOG
@@ -301,10 +314,12 @@ pacman_install xautolock
 pacman_install feh
 # sockets
 pacman_install socat
-# dmenu
-pacman_install dmenu
 # theme:  Arc
 pacman_install arc-solid-gtk-theme
+# dmenu
+submodule_install dmenu
+# dwm
+submodule_install dwm
 
 ## Printers
 # printer system (cups @ localhost:631)
