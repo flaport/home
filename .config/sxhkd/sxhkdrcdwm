@@ -169,11 +169,11 @@ super + Z
 
 # new terminal
 super + Return
-    $TERMINAL
+    cd ~; $TERMINAL
 
 # new non-transparent terminal
 super + shift + Return
-    $TERMINAL nt
+    cd ~; $TERMINAL nt
 
 # volume louder
 super + equal
