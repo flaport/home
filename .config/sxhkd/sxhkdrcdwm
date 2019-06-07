@@ -175,15 +175,15 @@ super + shift + Return
 
 # volume louder
 super + equal
-    amixer -D pulse set Master 5%+; pkill -RTMIN+10 i3blocks
+    amixer -D pulse set Master 5%+; ~/.config/dwm/status.sh
 
 # volume quieter
 super + minus
-    amixer -D pulse set Master 5%-; pkill -RTMIN+10 i3blocks
+    amixer -D pulse set Master 5%-; ~/.config/dwm/status.sh
 
 # toggle mute volume
 super + shift + minus
-    amixer -D pulse set Master 1+ toggle; pkill -RTMIN+10 i3blocks
+    amixer -D pulse set Master 1+ toggle; ~/.config/dwm/status.sh
 
 super + shift + equal
 
