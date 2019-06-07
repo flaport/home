@@ -118,7 +118,9 @@ super + R
 super + s
     ~/.config/dmenu/dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
+# start/stop a service
 super + S
+    ~/.config/dmenu/dmenu_services -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 # toggle between last two layouts
 super + t
