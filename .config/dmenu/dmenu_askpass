@@ -6,9 +6,18 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
-prompt="[sudo] password for $USER"
+prompt="[sudo] password for $USER          "
 if [ $1 ]; then
     prompt=$1;
 fi
 
-echo -n "" | dmenu -p "$prompt" -nb "$color15" -nf "$color15" -sb "$color2" -sf "$color15" -fn monospace-22
+dmenu=/usr/local/bin/dmenu
+choice="hallo\nfloris"
+passwordflag="-P"
+if [ ! -x $dmenu ]; then
+    dmenu=/usr/bin/dmenu
+    choice=""
+    passwordflag=""
+fi
+
+echo -n $choice | $dmenu $passwordflag -p "$prompt" -nb "$color15" -nf "$color15" -sb "$color2" -sf "$color15" -fn monospace-18
