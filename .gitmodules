@@ -1,3 +1,6 @@
 [submodule ".build/dwm"]
 	path = .build/dwm
 	url = https://github.com/flaport/dwm.git
+[submodule ".build/dmenu"]
+	path = .build/dmenu
+	url = https://github.com/flaport/dmenu
