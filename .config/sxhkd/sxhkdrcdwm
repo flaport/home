@@ -82,7 +82,9 @@ super + m
 super + M
     ~/.config/dmenu/dmenu_mount unmount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
+# make current monitor the master monitor
 super + n
+    # handled by dwm
 
 super + N
 
