@@ -24,7 +24,15 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     echo
     echo "first_install.sh should NOT be sourced."
     exit 1
-else
+fi
+
+## Logging
+#-------------------------------------------------------------------------------
+
+LOG="$HOME/.python_install.log"
+ERR="$HOME/.python_install_errors.log"
+printf "PYTHON PACKAGE INSTALL\n\n\n" > $LOG
+printf "PYTHON PACKAGE INSTALL\n\n\n" > $ERR
 
 
 ## Anaconda python
@@ -36,7 +44,7 @@ printf "installing anaconda python... "
 if [ ! -d $HOME/.anaconda ]; then
     cd $HOME
     curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output miniconda.sh --silent
-    sh miniconda.sh -b -p $HOME/.anaconda &> /dev/null
+    sh miniconda.sh -b -p $HOME/.anaconda >> $LOG 2>> $ERR
     rm miniconda.sh
     echo "installed."
 else
@@ -51,57 +59,57 @@ PIP="$HOME/.anaconda/bin/pip"
 NPM="$HOME/.anaconda/bin/npm"
 
 echo "installing base packages for environment: base [takes long!]"
-$CONDA install -y -S jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib tensorflow keras h5py flask pandoc pylint mypy line_profiler pytz simplejson jupyterlab &> /dev/null
+$CONDA install -y -S jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib tensorflow keras h5py flask pandoc pylint mypy line_profiler pytz simplejson jupyterlab >> $LOG 2>> $ERR
 
 echo "installing pytorch for environment: base [takes long!]"
-$CONDA install -y -S -c pytorch pytorch &> /dev/null
+$CONDA install -y -S -c pytorch pytorch >> $LOG 2>> $ERR
 
 echo "installing octave for environment: base"
-$PIP install octave_kernel &> /dev/null
+$PIP install octave_kernel >> $LOG 2>> $ERR
 
 # echo "installing matlab for environment: base"
 # cd <matlabinstallation>/extern/engines/python
-# sudo python setup.py install &> /dev/null
+# sudo python setup.py install >> $LOG 2>> $ERR
 # cd $HOME
-# $PIP install matlab_kernel &> /dev/null
+# $PIP install matlab_kernel >> $LOG 2>> $ERR
 # altair
 
 echo "installing altair for environment: base"
-$CONDA install -y -S -c conda-forge altair vega &> /dev/null
+$CONDA install -y -S -c conda-forge altair vega >> $LOG 2>> $ERR
 
 echo "installing plotly for environment: base"
-$PIP install plotly &> /dev/null # plotting library
+$PIP install plotly >> $LOG 2>> $ERR # plotting library
 
 echo "installing grip for environment: base"
-$PIP install grip &> /dev/null # markdown previews
+$PIP install grip >> $LOG 2>> $ERR # markdown previews
 
 echo "installing ipdb for environment: base"
-$PIP install ipdb &> /dev/null # pdb in jupyter notebooks
+$PIP install ipdb >> $LOG 2>> $ERR # pdb in jupyter notebooks
 
 echo "installing black for environment: base"
-$PIP install black &> /dev/null # code formatting
+$PIP install black >> $LOG 2>> $ERR # code formatting
 
 echo "installing ueberzug for environment: base"
-$PIP install ueberzug &> /dev/null # display images in terminal
+$PIP install ueberzug >> $LOG 2>> $ERR # display images in terminal
 
 echo "installing bayesian-optimization for environment: base"
-$PIP install bayesian-optimization &> /dev/null # optimization of hyperparameters
+$PIP install bayesian-optimization >> $LOG 2>> $ERR # optimization of hyperparameters
 
 echo "installing pygmo for environment: base"
-$PIP install pygmo &> /dev/null # optimization of multi-variable functions
+$PIP install pygmo >> $LOG 2>> $ERR # optimization of multi-variable functions
 
 echo "installing google cloud api for environment: base"
-$PIP install google-api-python-client google-auth-httplib2 google-auth-oauthlib &> /dev/null
+$PIP install google-api-python-client google-auth-httplib2 google-auth-oauthlib >> $LOG 2>> $ERR
 
 echo "installing nodejs for environment: base"
-$CONDA install -y -S nodejs=8 &> /dev/null
+$CONDA install -y -S nodejs=8 >> $LOG 2>> $ERR
 
 echo "installing jupyterhub for environment: base"
-$CONDA install -y -S -c jupyterhub -y -c conda-forge &> /dev/null
+$CONDA install -y -S -c jupyterhub -y -c conda-forge >> $LOG 2>> $ERR
 
 echo "installing neovim support for environment: base"
-$PIP install neovim &> /dev/null
-$NPM install -g neovim &> /dev/null
+$PIP install neovim >> $LOG 2>> $ERR
+$NPM install -g neovim >> $LOG 2>> $ERR
 
 
 ## Python 2 environment
@@ -111,19 +119,19 @@ PIP="$HOME/.anaconda/envs/py2/bin/pip"
 
 echo "creating python 2 environment: py2"
 if [ ! -d "$HOME/.anaconda/envs/py2" ]; then
-    $CONDA create -y -n py2 python=2.7 &> /dev/null
+    $CONDA create -y -n py2 python=2.7 >> $LOG 2>> $ERR
 fi
 echo "installing base packages for environment: py2"
-$CONDA install -y -S -n py2 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets h5py flask pandoc pylint line_profiler pytz simplejson &> /dev/null
+$CONDA install -y -S -n py2 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets h5py flask pandoc pylint line_profiler pytz simplejson >> $LOG 2>> $ERR
 echo "installing pytorch for environment: py2"
-$CONDA install -y -S -n py2 pytorch -c pytorch &> /dev/null
+$CONDA install -y -S -n py2 pytorch -c pytorch >> $LOG 2>> $ERR
 echo "installing ipykernel for environment: py2"
 $HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name python2 --display-name "Python 2"
 mv $HOME/.local/share/jupyter/kernels/python2 $HOME/.anaconda/share/jupyter/kernels/python2
 echo "installing altair for environment: py2"
-$CONDA install -y -S -n py2 -c conda-forge altair vega &> /dev/null
+$CONDA install -y -S -n py2 -c conda-forge altair vega >> $LOG 2>> $ERR
 echo "installing neovim support for environment: py2"
-$PIP install neovim &> /dev/null
+$PIP install neovim >> $LOG 2>> $ERR
 
 
 ## R environment
@@ -131,10 +139,10 @@ $PIP install neovim &> /dev/null
 
 echo "creating R environment: r"
 if [ ! -d "$HOME/.anaconda/envs/r" ]; then
-    $CONDA create -y -n r &> /dev/null
+    $CONDA create -y -n r >> $LOG 2>> $ERR
 fi
 echo "installing base packages for environment: r"
-$CONDA install -y -S -n r -c r r-irkernel &> /dev/null
+$CONDA install -y -S -n r -c r r-irkernel >> $LOG 2>> $ERR
 echo "installing ipykernel for environment: r"
 cp -rf $HOME/.anaconda/envs/r/share/jupyter/kernels/ir $HOME/.anaconda/share/jupyter/kernels
 home=$(echo $HOME | sed 's/\//\\\//g')
@@ -147,13 +155,13 @@ mv $HOME/.anaconda/share/jupyter/kernels/ir/kernel2.json $HOME/.anaconda/share/j
 
 echo "creating Julia environment: r"
 if [ ! -d "$HOME/.anaconda/envs/julia" ]; then
-    $CONDA create -y -n julia &> /dev/null
+    $CONDA create -y -n julia >> $LOG 2>> $ERR
 fi
 echo "installing base packages for environment: julia"
-$CONDA install -y -S -n julia -c conda-forge julia &> /dev/null
-$HOME/.anaconda/envs/julia/bin/julia -E 'using Pkg; Pkg.add("IJulia"); precompile' &> /dev/null
+$CONDA install -y -S -n julia -c conda-forge julia >> $LOG 2>> $ERR
+$HOME/.anaconda/envs/julia/bin/julia -E 'using Pkg; Pkg.add("IJulia"); precompile' >> $LOG 2>> $ERR
 echo "installing ipykernel for environment: julia"
-$HOME/.anaconda/envs/julia/bin/julia -E 'using IJulia; installkernel("Julia")' &> /dev/null
+$HOME/.anaconda/envs/julia/bin/julia -E 'using IJulia; installkernel("Julia")' >> $LOG 2>> $ERR
 mv $HOME/.local/share/jupyter/kernels/julia* $HOME/.anaconda/share/jupyter/kernels/
 
 
@@ -174,31 +182,26 @@ JUPYTER = "$HOME/.anaconda/bin/jupyter"
 
 # jupyterlab extensions
 echo "installing jupyterlab vim extension"
-$JUPYTER labextension install jupyterlab_vim &> /dev/null
+$JUPYTER labextension install jupyterlab_vim >> $LOG 2>> $ERR
 echo "installing jupyterlab hub extension"
-$JUPYTER labextension install @jupyterlab/hub-extension &> /dev/null
+$JUPYTER labextension install @jupyterlab/hub-extension >> $LOG 2>> $ERR
 echo "installing jupyterlab plotly extension"
-$JUPYTER labextension install @jupyterlab/plotly-extension &> /dev/null
+$JUPYTER labextension install @jupyterlab/plotly-extension >> $LOG 2>> $ERR
 echo "installing jupyterlab table of contents extension"
-$JUPYTER labextension install @jupyterlab/toc &> /dev/null
+$JUPYTER labextension install @jupyterlab/toc >> $LOG 2>> $ERR
 echo "installing jupyterlab manager extension"
-$JUPYTER labextension install @jupyter-widgets/jupyterlab-manager &> /dev/null
+$JUPYTER labextension install @jupyter-widgets/jupyterlab-manager >> $LOG 2>> $ERR
 echo "installing jupyterlab variable inspector extension"
-$JUPYTER labextension install @lckr/jupyterlab_variableinspector &> /dev/null
+$JUPYTER labextension install @lckr/jupyterlab_variableinspector >> $LOG 2>> $ERR
 echo "installing jupyterlab latex extension"
-$JUPYTER labextension install @jupyterlab/latex &> /dev/null
-$PIP install jupyterlab_latex &> /dev/null
-$JUPYTER serverextension enable --py jupyterlab_latex &> /dev/null
+$JUPYTER labextension install @jupyterlab/latex >> $LOG 2>> $ERR
+$PIP install jupyterlab_latex >> $LOG 2>> $ERR
+$JUPYTER serverextension enable --py jupyterlab_latex >> $LOG 2>> $ERR
 echo "installing jupyterlab git extension"
-$JUPYTER labextension install @jupyterlab/git &> /dev/null
-$PIP install jupyterlab_git &> /dev/null
-$JUPYTER serverextension enable --py jupyterlab_git &> /dev/null
+$JUPYTER labextension install @jupyterlab/git >> $LOG 2>> $ERR
+$PIP install jupyterlab_git >> $LOG 2>> $ERR
+$JUPYTER serverextension enable --py jupyterlab_git >> $LOG 2>> $ERR
 echo "installing jupyterlab code formatter extension"
-$JUPYTER labextension install @ryantam626/jupyterlab_code_formatter &> /dev/null
-$PIP install jupyterlab_code_formatter &> /dev/null
-$JUPYTER serverextension enable --py jupyterlab_code_formatter &> /dev/null
-
-
-## Stop if
-#-------------------------------------------------------------------------------
-fi
+$JUPYTER labextension install @ryantam626/jupyterlab_code_formatter >> $LOG 2>> $ERR
+$PIP install jupyterlab_code_formatter >> $LOG 2>> $ERR
+$JUPYTER serverextension enable --py jupyterlab_code_formatter >> $LOG 2>> $ERR
