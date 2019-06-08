@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/python3
 #    _____ _     ____  ____  ____  ____  _____ 
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
 #   |  __\| |   | / \||  \/|| / \||  \/|  / \  
@@ -6,12 +6,32 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
 #
 
-if [[ "$1" == *.py ]]; then
-    ~/.config/nvim/run_python $1
-elif [[ "$1" == *.md ]]; then
-    ~/.config/nvim/run_markdown $1
-elif [[ "$1" == *.tex ]]; then
-    ~/.config/nvim/run_latex $1
-else
-    echo "not able to run $1"
-fi
+import os
+import sys
+from pathlib import Path
+from subprocess import call, Popen, check_output, PIPE
+
+FILENAME = sys.argv[1]
+TERMINAL = os.environ.get("TERMINAL")
+with open(FILENAME, "r") as file:
+    SHEBANG = file.readline()
+
+
+def run_python(filename):
+    Popen(["killall", "ipython"])
+    Popen([TERMINAL, "-e", "ipython", "-i", "--no-banner"] + [filename])
+
+def run_latex(filename):
+    Popen(["killall", "less"])
+    with open(f"/tmp/run.sh", "w") as file:
+        file.write(f"latexmk -pdf -synctex=1 -interaction=nonstopmode {filename} | less")
+    Popen([TERMINAL, "-e", f"bash /tmp/run.sh"])
+
+
+if __name__ == "__main__":
+    if FILENAME.endswith(".py") or "python" in SHEBANG:
+        run_python(FILENAME)
+    elif FILENAME.endswith(".tex"):
+        run_latex(FILENAME)
+    else:
+        exit(1)
