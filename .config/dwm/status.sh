@@ -41,7 +41,11 @@ vol(){
 
 wtr(){
     s=$(cat ~/.weatherreportshort)
-    echo -e " $s |"
+    if [ -n "$s" ]; then
+        echo -e " $s |"
+    else
+        echo -e ""
+    fi
 }
 
 hub(){
