@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+import sys
+from subprocess import call, check_output, Popen, PIPE, CalledProcessError
+
+def dmenu(list_in, prompt):
+    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+    try:
+        choice = check_output(
+            ["dmenu", "-l", "100", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+        ).decode()[:-1]
+    except CalledProcessError:
+        return None
+    return choice
+
+def git_status():
+    raw_status = check_output(["git", "status", "--short"]).decode().splitlines()
+    status = []
+    for s in raw_status:
+        status.append(s + "  [add]")
+    for s in raw_status:
+        status.append(s + "  [reset]")
+    return status
+
+try:
+    while True:
+        old_status = "old status:\n" + check_output(["git", "status", "--short"]).decode()
+
+        status = git_status()
+        action = dmenu(["   [git add -A]"] + status + ["   [git reset]", "   [git reset --hard]"], "git status")
+
+        if action == "   [git add -A]":
+            print("git add -A")
+            call(["git", "add", "-A"])
+        elif action == "   [git reset]":
+            print("git reset")
+            call(["git", "reset", "--quiet"])
+        elif action == "   [git reset --hard]":
+            #call(["git", "reset", "--quiet", "--hard"])
+            print("git reset --hard [disabled]")
+        elif "[add]" in action:
+            filename = action[3:].replace("[add]","").strip()
+            print(f"git add {filename}")
+            call(["git", "add", filename])
+        elif "[reset]" in action:
+            filename = action[3:].replace("[reset]","").strip()
+            print(f"git checkout -- {filename}")
+            call(f"git checkout -- {filename}", shell=True)
+        elif action:
+            call(["git", "commit", "-m", f'"{action}"'])
+        else:
+            exit(1)
+
+        new_status = "new status:\n" + check_output(["git", "status", "--short"]).decode()
+        print(old_status)
+        print(new_status)
+        call(["notify-send", f"success", old_status+new_status])
+except:
+    exit(1)
