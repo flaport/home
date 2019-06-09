@@ -42,9 +42,13 @@ super + f
 # floating layout
 super + F
 
+# open git log for the home folder
 super + g
+    cd ~; ~/.config/git/git-log
 
+# open git add for the home folder
 super + G
+    cd ~; ~/.config/git/git-add
 
 # decrease master window size
 super + h
