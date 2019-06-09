@@ -146,7 +146,9 @@ super + V
 super + w
     $BROWSER
 
+# search the web
 super + W
+    ~/.scripts/search --dmenuargs -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 # shift focus to monitor X
 super + x
