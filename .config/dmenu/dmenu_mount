@@ -68,7 +68,7 @@ class Device:
             options += f",username={self.username},password={password},uid={os.getuid()},gid={os.getgid()},dir_mode=0744,file_mode=0744"  # credentials=~/.smbcredentials
         if self.fstype == "ssh":
             status = call(
-                ["sudo", "-A", "sshfs", "-o", f"allow_other,IdentityFile={os.path.expanduser('~/.ssh/id_rsa')}", f"{self.username}@{self.name}", mountpoint],
+                ["sudo", "-A", "sshfs", "-F", os.path.expanduser("~/.ssh/config"), "-o", f"allow_other,IdentityFile={os.path.expanduser('~/.ssh/id_rsa')}", f"{self.username}@{self.name}", mountpoint],
             )
             if status != 0:
                 password = check_output(
@@ -79,7 +79,7 @@ class Device:
                 ).decode()[:-1]
                 password_out = Popen(["echo", password], stdout=PIPE).stdout
                 status = call(
-                    ["sudo", "-A", "sshfs", "-o", "allow_other,password_stdin", f"{self.username}@{self.name}", mountpoint],
+                    ["sudo", "-A", "sshfs", "-F", os.path.expanduser("~/.ssh/config"), "-o", "allow_other,password_stdin", f"{self.username}@{self.name}", mountpoint],
                     stdin=password_out,
                 )
         else:
