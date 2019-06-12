@@ -8,11 +8,15 @@ message() {
     fi
 }
 
-service=$(ls /etc/systemd/system/ | dmenu -l 20 -p "select service" $@)
-
+service=$( ls /etc/systemd/system/ /usr/lib/systemd/system/ | dmenu -l 20 -p "select service" $@)
 
 if [ ! $service ]; then
-    message "" "no service selected" ""
+    notify-send "no service selected"
+    exit 1
+fi
+
+if [[ $service == *:* ]]; then
+    notify-send "no valid service selected"
     exit 1
 fi
 

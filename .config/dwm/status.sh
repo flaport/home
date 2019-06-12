@@ -57,6 +57,7 @@ hub(){
     fi
     echo -e ""
 }
+
 ssh(){
     if [ -f /etc/systemd/system/sshtunnel.service ]; then
         if [[ $(systemctl is-active sshtunnel) == "active" ]]; then
@@ -77,6 +78,16 @@ vpn(){
     echo -e ""
 }
 
+sshd(){
+    if [ -f /usr/lib/systemd/system/sshd.service ]; then
+        if [[ $(systemctl is-active sshd) == "active" ]]; then
+            echo -e " ⛓️ |";
+            return;
+        fi
+    fi
+    echo -e ""
+}
+
 cpu(){
   read cpu a b c previdle rest < /proc/stat
   prevtotal=$((a+b+c+previdle))
@@ -88,4 +99,4 @@ cpu(){
 }
 
 
-xsetroot -name "$(vpn)$(hub)$(ssh)$(bat)$(vol)$(wtr)$(dte)"
+xsetroot -name "$(vpn)$(hub)$(ssh)$(sshd)$(bat)$(vol)$(wtr)$(dte)"
