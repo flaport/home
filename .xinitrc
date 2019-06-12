@@ -38,5 +38,5 @@ unclutter & disown
 xset r rate 200 45
 
 # execute window manager
-exec $WM > ~/$WM.log
+exec $WM > ~/.$WM.log
 
