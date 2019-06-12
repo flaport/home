@@ -80,11 +80,11 @@ super + L
 
 # dmenu mount drive menu
 super + m
-    ~/.config/dmenu/dmenu_mount mount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    ~/.config/dmenu/dmenu_mount mount -i 
 
 # dmenu unmount drive menu
 super + M
-    ~/.config/dmenu/dmenu_mount unmount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    ~/.config/dmenu/dmenu_mount unmount -i 
 
 # make current monitor the master monitor
 super + n
@@ -102,7 +102,7 @@ super + O
 
 # dmenu choose screen layout
 super + p
-    ~/.config/dmenu/dmenu_screenlayout -i -l 100 -p "screen layout" -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    ~/.config/dmenu/dmenu_screenlayout -i -l 100 -p "screen layout" 
 
 # default screen layout
 super + P
@@ -120,11 +120,11 @@ super + R
 
 # run a program
 super + s
-    ~/.config/dmenu/dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    ~/.config/dmenu/dmenu_run -i -l 15 
 
 # start/stop a service
 super + S
-    ~/.config/dmenu/dmenu_services -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    ~/.config/dmenu/dmenu_services -i 
 
 # toggle between last two layouts
 super + t
@@ -152,7 +152,7 @@ super + w
 
 # search the web
 super + W
-    ~/.scripts/search --dmenuargs -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    ~/.scripts/search --dmenuargs -i 
 
 # shift focus to monitor X
 super + x
@@ -311,7 +311,7 @@ super + shift + 9
 
 # select keyboard shortcut
 super + F1
-    ~/.config/sxhkd/dmenu_keyboard_shortcuts -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    ~/.config/sxhkd/dmenu_keyboard_shortcuts -i 
 
 super + F2
 
