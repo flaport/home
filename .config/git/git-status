@@ -53,7 +53,7 @@ try:
             print(f"git checkout -- {filename}")
             call(f"git checkout -- {filename}", shell=True)
         elif action:
-            call(["git", "commit", "-m", f'"{action}"'])
+            call(["git", "commit", "-m", f'{action}'])
         else:
             exit(1)
 
