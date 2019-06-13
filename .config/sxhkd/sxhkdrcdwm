@@ -15,7 +15,9 @@ super + A
 super + b
     # handled by dwm
 
+# connect to bluetooth device (devices should be paired using bluetoothctl)
 super + B
+    ~/.config/dmenu/dmenu_bluetooth
 
 # shift focus to monitor C
 super + c

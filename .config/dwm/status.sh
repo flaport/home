@@ -98,5 +98,14 @@ cpu(){
   echo -e " 💻 $cpu% cpu |"
 }
 
+bt(){
+    device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]")
+    if [ $device = "[bluetooth]" ]; then
+        echo -e ""
+    else
+        echo -e " 🦷 |"
+    fi
+}
 
-xsetroot -name "$(vpn)$(hub)$(ssh)$(sshd)$(bat)$(vol)$(wtr)$(dte)"
+
+xsetroot -name "$(vpn)$(hub)$(ssh)$(sshd)$(bt)$(bat)$(vol)$(wtr)$(dte)"
