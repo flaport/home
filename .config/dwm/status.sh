@@ -15,7 +15,7 @@ mem(){
 }
 
 bat(){
-    string=$(acpi -b &> /dev/null)
+    string=$(acpi -b 2> /dev/null)
     if [[ $string == *"Battery"* ]]; then
         if [[ $string == *"Discharging"* ]]; then
             percentage=$(echo $string | cut -d "," -f2 | cut -d "," -f1)
