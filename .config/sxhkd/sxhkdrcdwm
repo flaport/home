@@ -231,6 +231,14 @@ super + shift + comma
 
 super + shift + period
 
+# enable hidden tag
+super + grave
+    # handled by dwm
+
+# apply hidden tag to focused window
+super + shift + grave
+    # handled by dwm
+
 # enable all tags
 super + 0
     # handled by dwm
