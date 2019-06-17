@@ -185,11 +185,11 @@ super + Return
 super + shift + Return
     cd ~; $TERMINAL nt
 
-# volume louder
+# raise volume
 super + equal
     amixer -D pulse set Master 5%+; ~/.config/dwm/status.sh
 
-# volume quieter
+# lower volume
 super + minus
     amixer -D pulse set Master 5%-; ~/.config/dwm/status.sh
 
@@ -346,4 +346,46 @@ super + F10
 super + F11
 
 super + F12
+
+XF86AudioMute
+    amixer -D pulse set Master 1+ toggle; ~/.config/dwm/status.sh
+
+XF86AudioLowerVolume
+    amixer -D pulse set Master 5%-; ~/.config/dwm/status.sh
+
+XF86AudioRaiseVolume
+    amixer -D pulse set Master 5%+; ~/.config/dwm/status.sh
+
+XF86AudioNext
+    notify-send XF86AudioNext "not implemented"
+
+XF86AudioPrev
+    notify-send XF86AudioPrev "not implemented"
+
+XF86AudioPause
+    notify-send XF86AudioPause "not implemented"
+
+XF86AudioPlay
+    notify-send XF86AudioPlay "not implemented"
+
+XF86AudioStop
+    notify-send XF86AudioStop "not implemented"
+
+XF86AudioRewind
+    notify-send XF86AudioRewind "not implemented"
+
+XF86AudioForward
+    notify-send XF86AudioForward "not implemented"
+
+XF86AudioRecord
+    notify-send XF86AudioRecord "not implemented"
+
+XF86AudioMedia
+    notify-send XF86AudioMedia "not implemented"
+
+XF86Search
+    notify-send XF86Search "not implemented"
+
+XF86Calculator
+    notify-send XF86Calculator "not implemented"
 
