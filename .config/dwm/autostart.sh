@@ -22,9 +22,9 @@ done &
 
 
 update_weather(){
-    curl -s wttr.in > ~/.weatherreport
-    printf "%s" "$(sed '16q;d' ~/.weatherreport | grep -wo "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/☔ /g" | tr -d '\n')"
-    sed '13q;d' ~/.weatherreport | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " ❄️",$1 "°","🌞",$2 "°"}' > ~/.weatherreportshort
+    curl -s wttr.in > ~/.cache/weatherreport
+    printf "%s" "$(sed '16q;d' ~/.cache/weatherreport | grep -wo "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/☔ /g" | tr -d '\n')" > ~/.cache/weatherreportshort
+    sed '13q;d' ~/.cache/weatherreport | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " ❄️",$1 "°","🌞",$2 "°"}' >> ~/.cache/weatherreportshort
 }
 while true; do
     update_weather

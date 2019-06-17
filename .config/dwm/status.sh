@@ -6,7 +6,11 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
 dte(){
-    date +' %Y-%m-%d | 🕒 %H:%M |'
+    date +' %Y-%m-%d |'
+}
+
+tme(){
+    date +' 🕒 %H:%M |'
 }
 
 mem(){
@@ -18,13 +22,23 @@ bat(){
     string=$(acpi -b 2> /dev/null)
     if [[ $string == *"Battery"* ]]; then
         if [[ $string == *"Discharging"* ]]; then
-            percentage=$(echo $string | cut -d "," -f2 | cut -d "," -f1)
-            echo -e " 🔋"$percentage" |"
-            return;
+            icon=🔋
+        else
+            icon=🔌
         fi
-        echo -e " 🔌 |"
-        return;
+        if [[ $string == *"100%"* ]]; then
+            if [[ $icon == 🔋 ]]; then
+                echo -e " 🔋 Full |"
+            else
+                echo -e " 🔌 |"
+            fi
+            return
+        fi
+        percentage=$(echo $string | cut -d "," -f2 | cut -d "," -f1)
+        echo -e " "$icon$percentage" |"
+        return
     fi
+    # on desktop, its not necessary to display battery info:
     echo -e ""
 }
 
@@ -40,7 +54,7 @@ vol(){
 }
 
 wtr(){
-    s=$(cat ~/.weatherreportshort)
+    s=$(cat ~/.cache/weatherreportshort)
     if [ -n "$s" ]; then
         echo -e " $s |"
     else
@@ -107,5 +121,5 @@ bt(){
     fi
 }
 
+xsetroot -name "$(vpn)$(hub)$(ssh)$(sshd)$(bt)$(vol)$(bat)$(wtr)$(dte)$(tme)"
 
-xsetroot -name "$(vpn)$(hub)$(ssh)$(sshd)$(bt)$(bat)$(vol)$(wtr)$(dte)"
