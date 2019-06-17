@@ -148,6 +148,10 @@ autocmd BufWritePre *.py :%s/\s\+$//e
 " enable all Python syntax highlighting features
 let python_highlight_all = 1
 
+" enable undo after file save
+set undofile
+set undodir=$HOME/.config/nvim/undo
+
 " save as sudo (make sure SUDO_ASKPASS is set to a password asking program)
 ca w!! w !sudo -A tee '%' &> /dev/null
 
