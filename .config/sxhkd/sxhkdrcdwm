@@ -33,7 +33,9 @@ super + d
 
 super + D
 
+# show a list of emojis
 super + e
+    ~/.config/dmenu/dmenu_emoji
 
 super + E
 
