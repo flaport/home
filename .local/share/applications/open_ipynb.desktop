@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+NoDisplay=true
+Exec=open_ipynb %f
+Name=Open Jupyter Notebook
+Comment=Open Jupyter Notebook in Jupyter Lab
+Icon=/usr/share/icons/jupyter.ico
+MimeType=text/x-ipynb;application/x-ipynb+json;
