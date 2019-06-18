@@ -5,6 +5,6 @@ Type=Application
 NoDisplay=true
 Exec=st -e vifm %F %f
 Name=vifm
-Icon=vifm;
+Icon=vifm
 Comment=Open folder with VIFM
 MimeType=inode/directory;

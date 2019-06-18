@@ -1,0 +1,23 @@
+[Default Applications]
+application/x-ipynb+json=open_ipynb.desktop
+text/plain=nvim.desktop
+application/x-shellscript=nvim.desktop
+text/x-csrc=nvim.desktop
+application/octet-stream=nvim.desktop
+text/x-python=nvim.desktop
+image/jpeg=sxiv.desktop
+image/png=sxiv.desktop
+image/svg+xml=inkscape.desktop;
+application/pdf=org.pwmt.zathura.desktop
+
+[Added Associations]
+application/x-ipynb+json=open_ipynb.desktop
+text/plain=nvim.desktop
+application/x-shellscript=nvim.desktop
+text/x-csrc=nvim.desktop
+application/octet-stream=nvim.desktop
+text/x-python=nvim.desktop
+image/jpeg=sxiv.desktop
+image/png=sxiv.desktop
+image/svg+xml=inkscape.desktop;
+application/pdf=org.pwmt.zathura.desktop
