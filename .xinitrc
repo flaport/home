@@ -11,32 +11,32 @@
 export WM=dwm
 
 set wallpaper
-feh --bg-scale ~/.config/wallpaper.png & disown
+feh --bg-scale ~/.config/wallpaper.png &
 
 # enable transparent windows
-xcompmgr & disown
+xcompmgr &
 
 # update color database of xcompmgr
-xrdb ~/.Xresources & disown
+xrdb ~/.Xresources &
 
 # export your desired screenlayout with `arandr`
-~/.config/screenlayout/default & disown
+~/.config/screenlayout/default &
 
 # notifications
-dunst & disown
+dunst &
 
 # network manager applet (in most right corner of the screen)
-nm-applet & disown
+nm-applet &
 
 # automatically lock screen after 10 minutes
-xautolock -time 10 -locker ~/.scripts/lock_screen & disown
+xautolock -time 10 -locker ~/.scripts/lock_screen &
 
 # make the mouse invisible after a brief period of not using it.
-unclutter & disown
+unclutter &
 
 # set cursor speed
-xset r rate 200 45
+xset r rate 200 45 &
 
 # execute window manager
-exec $WM > ~/.$WM.log
+exec $WM > ~/.local/share/$WM.log
 
