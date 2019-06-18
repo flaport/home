@@ -1,0 +1,61 @@
+#!/usr/bin/python3
+"""
+Open a file in a chromium app window inside jupyterhub
+
+Args:
+    $1: The path of the file to open.
+
+Note:
+    Requires a jupyterhub instance running at port 8000.
+"""
+
+# Imports
+
+import os
+import sys
+import uuid
+import getpass
+from subprocess import Popen
+
+
+# Constants
+
+USER = getpass.getuser()
+HOME = os.path.expanduser("~")
+PATH = os.path.abspath(os.path.expanduser(sys.argv[1]))
+
+# Functions
+
+def open_url(url):
+    """ Open a url with chromium app
+
+    Args:
+        url: the url to open
+    """
+    Popen(["chromium", f"--app={url}"])
+
+def open_with_jupyterhub(abspath):
+    """ Create a new jupyterhub workspace and open file in that workspace
+
+    Args:
+        abspath: the absolute path of the file to open
+
+    Note:
+        this function requires a jupyterhub instance running at port 8000.
+    """
+    id = uuid.uuid4().hex[:4]
+    relpath = abspath.replace(HOME, "")
+    open_url(f"http://localhost:8000/user/{USER}/lab/workspaces/{id}/tree/{relpath}")
+
+
+# Run program
+
+if __name__ == "__main__":
+    # first check if the requested path exists
+    if not os.path.exists(PATH):
+        print("requested path does not exist. exiting.")
+        exit(1)
+
+    # if the path exists, open it:
+    open_with_jupyterhub(PATH)
+

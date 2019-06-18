@@ -645,7 +645,7 @@
 #    indicating the root path.
 
 ## Allow access to hidden files
-# c.ContentsManager.allow_hidden = False
+c.ContentsManager.allow_hidden = False
 
 ##
 # c.ContentsManager.checkpoints = None
