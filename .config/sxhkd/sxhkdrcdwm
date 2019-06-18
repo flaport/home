@@ -5,11 +5,13 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
 #
 
-# test if sxhkd is working
+# open vifm file manager 
 super + a
-    notify-send "sxhkd" "it's working!"
+    st -e vifm
 
+# open nemo file manager
 super + A
+    nemo
 
 # show/hide status bar
 super + b
