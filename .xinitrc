@@ -17,7 +17,9 @@ set wallpaper
 xcompmgr &
 
 # update color database of xcompmgr
-xrdb ~/.Xresources &
+if [ -f ~/.Xresources ]; then
+    xrdb ~/.Xresources &
+fi
 
 # export your desired screenlayout with `arandr`
 ~/.config/screenlayout/default &
