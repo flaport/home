@@ -13,11 +13,6 @@
 #define S_background    #fdf6e3
 #define S_foreground    #002b36
 
-! dark
-!#define S_background    #002b36
-!#define S_foreground    #fdf6e3
-
-
 
 /* Xresources */
 
