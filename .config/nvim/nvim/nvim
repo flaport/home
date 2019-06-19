@@ -10,7 +10,7 @@
 
 if [ -f /usr/bin/nvr ]; then
      if [ ! $2 ]; then
-         if [ ${1:-4} == ".tex" ]; then
+         if [[ $1 == *".tex" ]]; then
              /usr/bin/nvr --servername 127.0.0.1:9999 $@
              exit 0
          fi

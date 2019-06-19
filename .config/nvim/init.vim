@@ -8,7 +8,10 @@
 "" Plugins
 "-------------------------------------------------------------------------------
 
-" load plugins
+" set leader key
+let mapleader = " "
+
+" loader plugins
 source ~/.config/nvim/plugins.vim
 
 
@@ -61,9 +64,6 @@ inoremap jj <Esc>
 
 "" Normal mode shortcuts
 "-------------------------------------------------------------------------------
-
-" set leader key
-let mapleader = " "
 
 " latex synctex forward
 " <Leader>s
