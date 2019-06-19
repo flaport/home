@@ -11,7 +11,7 @@
 export WM=dwm
 
 set wallpaper
-feh --bg-scale ~/.config/wallpaper.png &
+~/.scripts/set_wallpaper ~/.config/wallpaper.png &
 
 # enable transparent windows
 xcompmgr &
