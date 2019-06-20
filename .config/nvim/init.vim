@@ -221,9 +221,13 @@ set foldmethod=indent
 "" Theme / colorscheme
 "-------------------------------------------------------------------------------
 
+" colorscheme desert2
+colorscheme xresources
+
 " use 256 colors when possible
 " set notermguicolors
 " set termguicolors
+" highlight clear
 
 " white colorscheme
 " colorscheme delek

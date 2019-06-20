@@ -17,7 +17,7 @@ if [ $1 = ls ]; then
     exit 0
 fi
 
-rm ~/.Xresources
+rm -f ~/.Xresources
 cp ~/.config/Xresources/$1 ~/.Xresources
 
 if [ $alpha ]; then
