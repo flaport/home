@@ -27,6 +27,9 @@
 ! foreground
 *foreground: S_foreground
 
+! cursor color
+*cursorColor: S_cyan
+
 ! vim: light highlighted foreground
 *color0: S_foreground
 
@@ -60,7 +63,7 @@
 ! fish: path [urxvt/xterm]
 *color10: S_blue
 
-! vim: keywords, line numbers
+! vim: keywords, line numbers, search highlighted
 *color11: S_orange
 
 ! last line vim: foreground of _3 (whats this?)
