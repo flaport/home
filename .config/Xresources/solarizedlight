@@ -10,8 +10,8 @@
 #define S_green         #2aa198
 
 ! light
-#define S_background    #fdf6e3
-#define S_foreground    #002b36
+#define S_foreground    #fdf6e3
+#define S_background    #002b36
 
 
 /* Xresources */
