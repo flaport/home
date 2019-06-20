@@ -11,13 +11,9 @@ if [ $1 ]; then
     prompt=$1;
 fi
 
-dmenu=/usr/local/bin/dmenu
-choice="hallo\nfloris"
-passwordflag="-P"
-if [ ! -x $dmenu ]; then
-    dmenu=/usr/bin/dmenu
-    choice=""
-    passwordflag=""
+if [ -x /usr/local/bin/dmenu ]; then # custom dmenu build
+    echo -n | /usr/local/bin/dmenu -P -p "$prompt" -fn monospace-18
+else # standard pacman dmenu build
+    echo -n "" | /usr/bin/dmenu -p "$prompt" -nb "#fdf6e3" -nf "#fdf6e3" -sb "#2aa198" -sf "#fdf6e3" -fn monospace-18
 fi
 
-echo -n $choice | $dmenu $passwordflag -p "$prompt" -nb "$color15" -nf "$color15" -sb "$color2" -sf "$color15" -fn monospace-18
