@@ -44,11 +44,11 @@ if __name__ == "__main__":
     if not choice:
         exit(0)
 
-    if choice in OPEN_IN_TERMINAL:
+    if choice.split(" ")[0] in OPEN_IN_TERMINAL:
         Popen([TERMINAL, "-e", choice])
     else:
         try:
-            Popen([choice])
+            Popen(choice.split(" "))
         except FileNotFoundError:
             if "http://" in choice or "https://" in choice or len(choice.split(".")) in (2,3):
                 Popen([BROWSER, choice])
