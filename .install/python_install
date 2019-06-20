@@ -29,8 +29,8 @@ fi
 ## Logging
 #-------------------------------------------------------------------------------
 
-LOG="$HOME/.python_install.log"
-ERR="$HOME/.python_install_errors.log"
+LOG="$HOME/.local/share/python_install.log"
+ERR="$HOME/.local/share/python_install_errors.log"
 printf "PYTHON PACKAGE INSTALL\n\n\n" > $LOG
 printf "PYTHON PACKAGE INSTALL\n\n\n" > $ERR
 
