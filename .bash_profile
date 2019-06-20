@@ -18,6 +18,8 @@
 
 ## Path
 #-------------------------------------------------------------------------------
+# anaconda python
+export PATH="$HOME/.anaconda/bin:$PATH"
 # web apps
 export PATH="$HOME/.webapps:$PATH"
 # custom scripts
@@ -28,8 +30,6 @@ export PATH="$HOME/.config/vifm/scripts:$PATH"
 export PATH="$HOME/.config/nvim/nvim:$PATH"
 # i3 commands
 export PATH="$HOME/.config/i3:$PATH"
-# anaconda python
-export PATH="$HOME/.anaconda/bin:$PATH"
 # wrapper around st terminal emulator
 export PATH="$HOME/.config/st:$PATH"
 # wrapper around dmenu (and customized menus!)
