@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [ $2 ]; then
+    >&2 echo "just one argument expected."
+    exit 1
+fi
+
+if [ $1 = ls ]; then
+    cd ~/.config/Xresources
+    find . -executable
+    exit 0
+fi
+
+ln -sf ~/.config/Xresources/$1 ~/.Xresources
+xrdb ~/.Xresources
