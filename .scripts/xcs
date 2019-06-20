@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
-if [ $2 ]; then
-    >&2 echo "just one argument expected."
+if [ $1 = "-a" ] || [ $1 = "--alpha" ]; then
+    shift
+    alpha=$1
+    shift
+fi
+
+if [ ! $1 ] || [ $2 ]; then
+    >&2 echo "usage: xcs [ --alpha <value> ] <value>"
     exit 1
 fi
 
@@ -11,5 +17,11 @@ if [ $1 = ls ]; then
     exit 0
 fi
 
-ln -sf ~/.config/Xresources/$1 ~/.Xresources
-xrdb ~/.Xresources
+rm ~/.Xresources
+cp ~/.config/Xresources/$1 ~/.Xresources
+
+if [ $alpha ]; then
+    echo *.alpha: $alpha >> ~/.Xresources
+fi
+
+xrdb ~/.Xresources 2> /dev/null

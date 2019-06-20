@@ -1,3 +1,5 @@
+/* Solarized dark */
+
 /* Color definitions */
 
 #define S_yellow        #f8df9c
@@ -10,8 +12,8 @@
 #define S_green         #2aa198
 
 ! dark
-#define S_foreground    #002b36
-#define S_background    #fdf6e3
+#define S_background    #002b36
+#define S_foreground    #fdf6e3
 
 
 /* Xresources */
@@ -55,8 +57,8 @@
 ! vim: trailing spaces
 *color9: S_yellow
 
-! (?)
-*color10: #00ff00
+! fish: path [urxvt/xterm]
+*color10: S_blue
 
 ! vim: keywords, line numbers
 *color11: S_orange
