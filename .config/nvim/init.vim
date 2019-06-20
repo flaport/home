@@ -68,7 +68,10 @@ inoremap jj <Esc>
 " latex synctex forward
 " <Leader>s
 function! SyncTexForward()
-    let execstr = "silent !zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
+    " either do synctex on the pdf path stored in $SYNCTEXPDF, or do synctex
+    " on the pdf with the same base name as the tex file.
+    let execstr = "![ $SYNCTEXPDF ] && zathura --synctex-forward ".line(".").":".col(".").":%:p $SYNCTEXPDF"
+    let execstr = execstr." || zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
     exec execstr
 endfunction
 au FileType tex nmap <Leader>s :call SyncTexForward()<CR>
@@ -103,9 +106,9 @@ nnoremap <C-l> <C-w>l
 "" Function keys
 "-------------------------------------------------------------------------------
 
-" edit this configuration file
-nnoremap <F2> :w<CR>:e ~/.config/nvim/init.vim<CR>
-inoremap <F2> <Esc>:w<CR>:e ~/.config/nvim/init.vim<CR>
+" edit this configuration file (requires set hidden)
+nnoremap <F2> :e ~/.config/nvim/init.vim<CR>
+inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
 
 " save and execute file (requires tmux and i3)
 nnoremap <F5> :w<CR>:silent !~/.config/nvim/run %<CR>
@@ -216,6 +219,9 @@ set scrolloff=3
 " code folding
 " zM: fold all; zR: unfold all; za: toggle fold, zv: unfold one; zc: fold one
 set foldmethod=indent
+
+" allow opening a new buffer without saving the current one
+set hidden
 
 
 "" Theme / colorscheme
