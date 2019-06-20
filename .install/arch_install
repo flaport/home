@@ -562,6 +562,8 @@ systemctl_enable jupyterhub.service
 echo $password | sudo -S timedatectl set-local-rtc 1 >> $LOG 2>> $ERR
 # make sure everyone can mount in /mnt
 echo $password | sudo -S chmod a+rwx /mnt >> $LOG 2>> $ERR
+# link dark solarized theme to ~/.Xresources -> default color scheme
+ln -s ~/.config/Xresources/solarizeddark ~/.Xresources >> $LOG 2>> $ERR
 
 
 ## Alternative shell
