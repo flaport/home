@@ -7,6 +7,7 @@ text/x-python=nvim.desktop
 image/jpeg=sxiv.desktop
 image/png=sxiv.desktop
 image/svg+xml=inkscape.desktop;
+inode/directory=nemo.desktop
 
 [Added Associations]
 application/x-ipynb+json=open_ipynb.desktop
@@ -19,3 +20,4 @@ image/png=sxiv.desktop
 image/svg+xml=inkscape.desktop;
 application/pdf=org.pwmt.zathura.desktop
 application/octet-stream=fdtd-solutions.desktop;klayout.desktop;
+inode/directory=code-oss.desktop;nemo.desktop;
