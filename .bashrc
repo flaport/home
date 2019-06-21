@@ -7,7 +7,7 @@
 
 ## Note
 #-------------------------------------------------------------------------------
-# I switched to fish, so this file will not run except when running bash explicitly
+# I switched to zsh, so this file will not run except when running bash explicitly
 
 
 ## General settings

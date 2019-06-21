@@ -31,7 +31,7 @@
 *cursorColor: S_cyan
 
 ! vim: light highlighted foreground
-*color0: S_foreground
+*color0: #aaaaaa
 
 ! vim: max-characters line mark, git status
 *color1: S_orange
@@ -49,7 +49,7 @@
 *color5: S_violet
 
 ! last line vim: background of _3 (whats this?)
-*color6: #000000
+*color6: #aaaaaa
 
 ! vifm: file info
 *color7: S_yellow
@@ -77,3 +77,4 @@
 
 ! dark highlighted foreground
 *color15: S_background
+*.alpha: 0.87

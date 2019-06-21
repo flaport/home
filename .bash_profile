@@ -7,14 +7,12 @@
 
 ## Note
 #-------------------------------------------------------------------------------
-# I switched to fish, so this file will not run. However, the Path and other
-# environment variables defined HERE, WILL be used in the fish initialization.
-
-
-## Source bashrc
-#-------------------------------------------------------------------------------
-[[ -f ~/.bashrc ]] && source ~/.bashrc
-
+# if default shell is bash or zsh, this file will be sourced at login
+# if default shell is fish, the lines starting with export (environment variables)
+#   will be smartly translated into fish environment variables, the rest will be ignored.
+#
+# current shell: zsh
+#
 
 ## Path
 #-------------------------------------------------------------------------------

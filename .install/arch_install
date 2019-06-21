@@ -259,6 +259,8 @@ yay_install googler
 yay_install ddgr
 # search tool (grep alternative, necessary for some vim extensions)
 pacman_install ack
+# faster navigation in the shell
+pacman_install autojump
 # fuzzy finder tool
 pacman_install fzf
 # multiple terminals in one
@@ -341,7 +343,8 @@ systemctl_enable org.cups.cupsd
 
 ## fonts
 # monospace
-pacman_install ttf-inconsolata
+# pacman_install ttf-inconsolata
+yay_install nerd-fonts-inconsolata-go
 # serif
 pacman_install ttf-linux-libertine
 # sans-serif + chromium/firefox dependency
@@ -470,7 +473,7 @@ pacman_install pulseaudio
 # pacman_install texlive-most
 # bibliographies
 pacman_install biber
-# viewer with synctex support
+# viewer with synctex support, and some custom plugins
 pacman_install xdotool
 
 ## Browsers
@@ -575,8 +578,16 @@ pacman_install dash
 # we will make sh point to dash in stead to bash
 link /usr/bin/dash /bin/sh
 
-# fish is totally not posix complient, but friendly and interactive ;)
-pacman_install fish
+# fish is not posix complient, but friendly and interactive ;)
+# pacman_install fish
 # we will make fish our main shell
-echo $password | chsh -s /usr/bin/fish
+# echo $password | chsh -s /usr/bin/fish
+
+# zsh is posix complient + extra's
+pacman_install zsh
+yay_install oh-my-zsh-git
+# fish-like autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.config/zsh/zsh-autosuggestions >> $LOG 2>> $ERR
+# we will make zsh our main shell
+echo $password | chsh -s /usr/bin/zsh
 
