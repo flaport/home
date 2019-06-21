@@ -297,6 +297,8 @@ pacman_install xcompmgr
 pacman_install xorg-xbacklight
 # get info on current active windows
 pacman_install xorg-xdpyinfo
+# virtual x server
+pacman_install xorg-server-xvfb
 # hide an inactive mouse
 yay_install unclutter-xfixes-git
 
