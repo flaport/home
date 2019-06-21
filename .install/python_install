@@ -178,7 +178,7 @@ mv $HOME/.anaconda/envs/py36/compiler_compat/ld $HOME/.anaconda/envs/py36/compil
 ## Jupyterlab extensions
 #-------------------------------------------------------------------------------
 
-JUPYTER = "$HOME/.anaconda/bin/jupyter"
+JUPYTER="$HOME/.anaconda/bin/jupyter"
 
 # jupyterlab extensions
 echo "installing jupyterlab vim extension"
