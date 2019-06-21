@@ -1,37 +1,106 @@
 #!/usr/bin/python3
-#    _____ _     ____  ____  ____  ____  _____ 
+#    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
-#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
-#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
-#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
+
+""" Run/compile/build af file/project
+
+This script is linked to <F5> in vim.
+
+"""
+
+
+# Imports
 
 import os
 import sys
-from pathlib import Path
-from subprocess import call, Popen, check_output, PIPE
+from time import sleep
+from subprocess import Popen, check_output, CalledProcessError
 
-FILENAME = sys.argv[1]
+# Environment variables
 TERMINAL = os.environ.get("TERMINAL")
-with open(FILENAME, "r") as file:
-    SHEBANG = file.readline()
 
+# Functions
+
+def xdotool_search(process_name):
+    try:
+        return check_output(["xdotool", "search", "--classname", process_name])[
+            :-1
+        ].decode()
+    except CalledProcessError:
+        return None
+
+def xdotool_control_c(terminal):
+    return check_output(["xdotool", "key", "--window", terminal, "control+c"])
+
+def xdotool_send(terminal, command):
+    special_characters = {
+        " ": "space",
+        ".": "period",
+        "%": "percent",
+        "=": "equal",
+        "-": "minus",
+        "|": "bar",
+        "/": "slash",
+        "\\": "backslash",
+        "\n": "Return",
+    }
+    characters = [special_characters.get(c, c) for c in command]
+    return check_output(["xdotool", "key", "--window", terminal] + characters)
+
+def new_terminal(name=None, execute=None):
+    name_list = ["-n", name] if name else []
+    execute_list = ["-e", execute] if execute else []
+    Popen([TERMINAL] + name_list + execute_list)
+    for i in range(5):  # five tries to find the newly spawned terminal.
+        sleep(0.1)
+        terminal = xdotool_search(name)
+        if terminal is not None:
+            return terminal
+    # if no terminal is found, raise an error:
+    raise CalledProcessError(
+        f"cannot find terminal with process name {process_name}"
+    )
 
 def run_python(filename):
-    Popen(["killall", "ipython"])
-    Popen([TERMINAL, "-e", "ipython", "-i", "--no-banner"] + [filename])
+    # necessary to send keystrokes later on.
+    escaped_filename = filename.replace(" ", "\\ ")
+    process_name = f"ipython_{filename}".replace("/", "_").replace(" ", "_")
+    terminal = xdotool_search(process_name)
+    if terminal is None:
+        terminal = new_terminal(name=process_name, execute="ipython")
+    xdotool_send(terminal, f"%run {escaped_filename}\n")
+    return
 
 def run_latex(filename):
-    Popen(["killall", "less"])
-    with open(f"/tmp/run.sh", "w") as file:
-        file.write(f"latexmk -pdf -synctex=1 -interaction=nonstopmode {filename} | less")
-    Popen([TERMINAL, "-e", f"bash /tmp/run.sh"])
+    escaped_filename = filename.replace(" ", "\\ ")
+    process_name = f"latex_{filename}".replace("/", "_").replace(" ", "_")
+    terminal = xdotool_search(process_name)
+    if terminal is None:
+        terminal = new_terminal(name=process_name)
+    xdotool_control_c(terminal)
+    xdotool_send(terminal, f"latexmk -xelatex -synctex=1 -interaction=nonstopmode {filename} | less -FKX\n")
 
+
+# Main script
 
 if __name__ == "__main__":
-    if FILENAME.endswith(".py") or "python" in SHEBANG:
-        run_python(FILENAME)
-    elif FILENAME.endswith(".tex"):
-        run_latex(FILENAME)
+    # checks
+    if len(sys.argv) > 2:
+        print("Run expects one single argument. Multiple arguments supplied.")
+
+    # important variables
+    filename = sys.argv[1]
+    with open(filename, "r") as file:
+        shebang = file.readline()
+
+    # different cases:
+    if filename.endswith(".py") or "python" in shebang:
+        run_python(filename)
+    elif filename.endswith(".tex"):
+        run_latex(filename)
     else:
         exit(1)
