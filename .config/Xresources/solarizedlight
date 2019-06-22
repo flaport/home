@@ -28,7 +28,7 @@
 *foreground: S_foreground
 
 ! cursor color
-*cursorColor: S_cyan
+*cursorColor: S_blue
 
 ! vim: light highlighted foreground
 *color0: S_foreground
