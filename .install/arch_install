@@ -241,10 +241,12 @@ link /usr/bin/nvim /usr/bin/vim
 pacman_install rsync
 # atool gives information about archives
 pacman_install atool
-# unrar
-pacman_install unrar
+# zip
+pacman_install zip
 # unzip
 pacman_install unzip
+# unrar
+pacman_install unrar
 # rpm extraction shell script
 yay_install rpmextract
 # pv: progress bars on stdout
