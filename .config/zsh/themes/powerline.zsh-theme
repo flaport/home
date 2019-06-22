@@ -88,7 +88,7 @@ prompt_git() {
     zstyle ':vcs_info:*' enable git
     zstyle ':vcs_info:*' get-revision true
     zstyle ':vcs_info:*' check-for-changes true
-    zstyle ':vcs_info:*' stagedstr '✚'
+    zstyle ':vcs_info:*' stagedstr '+' #'✚'
     zstyle ':vcs_info:*' unstagedstr '.' #'●'
     zstyle ':vcs_info:*' formats ' %u%c'
     zstyle ':vcs_info:*' actionformats ' %u%c'
@@ -148,7 +148,7 @@ prompt_virtualenv() {
       env=$CONDA_DEFAULT_ENV
   fi
   if [[ -n $env ]]; then
-    [ $RETVAL = 0 ] && CURRENT_BG=2 # status prompt before this one, otherwise one this one is first in powerline.
+    [[ $RETVAL == 0 && $bat == "none" ]] && CURRENT_BG=2 # status prompt before this one, otherwise one this one is first in powerline.
     prompt_segment 2 15 $CONDA_DEFAULT_ENV
   fi
 }
@@ -170,11 +170,34 @@ prompt_status() {
   fi
 }
 
+prompt_battery(){
+    bat="none"
+    string=$(acpi -b 2> /dev/null)
+    if [[ $string == *"Battery"* ]]; then
+        if [[ $string == *"Discharging"* ]]; then
+            icon=🔋
+        else
+            icon=🔌
+        fi
+        if [[ $string == *"100%"* ]]; then
+            return
+        fi
+        percentage=$(echo $string | cut -d "," -f2 | cut -d "," -f1 | tr -d '[:space:]')
+        bat=$icon$percentage"%"
+    fi
+    if [[ $bat == "none" ]]; then
+        return
+    fi
+    [ $RETVAL = 0 ] && CURRENT_BG=3 # status prompt before this one, otherwise one this one is first in powerline.
+    prompt_segment 3 15 $bat
+}
+
 
 ## Main prompt
 build_prompt() {
   RETVAL=$?
   prompt_status
+  prompt_battery
   prompt_virtualenv
   prompt_dir
   prompt_git

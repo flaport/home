@@ -21,7 +21,6 @@ ZSH_THEME_RANDOM_CANDIDATES=( robbyrussell agnoster )
 # plugins to load:
 plugins=( 
     autojump
-    battery
     colorize
     colored-man-pages
     command-not-found
