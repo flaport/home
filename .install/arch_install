@@ -32,8 +32,8 @@ fi
 #-------------------------------------------------------------------------------
 
 mkdir -p $HOME/.local/share
-LOG="$HOME/local/share/.arch_install.log"
-ERR="$HOME/local/share/.arch_install_errors.log"
+LOG="$HOME/.local/share/arch_install.log"
+ERR="$HOME/.local/share/arch_install_errors.log"
 printf "ARCH PACKAGE INSTALL\n\n\n" > $LOG
 printf "ARCH PACKAGE INSTALL\n\n\n" > $ERR
 

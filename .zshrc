@@ -15,7 +15,7 @@ ZSH=/usr/share/oh-my-zsh
 ZSH_CUSTOM=$HOME/.config/zsh
 
 # Set name of the theme to load, random=random choice from predefined list.
-ZSH_THEME=agnoster
+ZSH_THEME=powerline
 ZSH_THEME_RANDOM_CANDIDATES=( robbyrussell agnoster )
 
 # plugins to load:

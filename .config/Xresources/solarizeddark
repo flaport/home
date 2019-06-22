@@ -31,7 +31,7 @@
 *cursorColor: S_cyan
 
 ! vim: light highlighted foreground
-*color0: #aaaaaa
+*color0: S_foreground
 
 ! vim: max-characters line mark, git status
 *color1: S_orange
