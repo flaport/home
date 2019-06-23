@@ -115,7 +115,7 @@ nnoremap <F5> :w<CR>:silent !~/.config/nvim/run %<CR>
 inoremap <F5> <Esc>:w<CR>:silent !~/.config/nvim/run %<CR>
 
 " save and execute selection
-vnoremap <F5> "+y:w<CR>:!~/.config/nvim/run_selection %<CR>
+vnoremap <F5> "+y:silent !~/.config/nvim/run % SELECTION<CR>
 
 " enable spell checker:
 nnoremap <F6> :setlocal spell! spelllang=en_us<CR>

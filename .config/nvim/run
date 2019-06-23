@@ -20,23 +20,34 @@ import sys
 from time import sleep
 from subprocess import Popen, check_output, CalledProcessError
 
+
 # Environment variables
+
 TERMINAL = os.environ.get("TERMINAL")
+
 
 # Functions
 
 def xdotool_search(process_name):
+    """ search for a terminal [window] id given the classname of the terminal [window]
+
+    Args:
+        process_name: the name of the process (classname) to search for
+
+    """
     try:
-        return check_output(["xdotool", "search", "--classname", process_name])[
-            :-1
-        ].decode()
+        out = check_output(["xdotool", "search", "--classname", process_name])
+        return out[:-1].decode()
     except CalledProcessError:
         return None
 
-def xdotool_control_c(terminal):
-    return check_output(["xdotool", "key", "--window", terminal, "control+c"])
-
 def xdotool_send(terminal, command):
+    """ send a command (key per key) to a window (terminal)
+
+    Args:
+        terminal: the terminal [window] id
+        command: the command to execute (the keys to send)
+    """
     special_characters = {
         " ": "space",
         ".": "period",
@@ -47,11 +58,20 @@ def xdotool_send(terminal, command):
         "/": "slash",
         "\\": "backslash",
         "\n": "Return",
+        # some special characters signifying control operations
+        "🛑": "control+c", # stop sign emoji
+        "📋": "alt+v", # clipboard emoji
     }
     characters = [special_characters.get(c, c) for c in command]
     return check_output(["xdotool", "key", "--window", terminal] + characters)
 
 def new_terminal(name=None, execute=None):
+    """ spawn a new terminal
+
+    Args:
+        name: the classname of the new terminal
+        execute: the (single word) command to execute inside the terminal
+    """
     name_list = ["-n", name] if name else []
     execute_list = ["-e", execute] if execute else []
     Popen([TERMINAL] + name_list + execute_list)
@@ -66,14 +86,37 @@ def new_terminal(name=None, execute=None):
     )
 
 def run_python(filename):
-    # necessary to send keystrokes later on.
+    """ run a python file
+
+    Args:
+        filename: the filename of the file to run
+    """
     escaped_filename = filename.replace(" ", "\\ ")
     process_name = f"ipython_{filename}".replace("/", "_").replace(" ", "_")
     terminal = xdotool_search(process_name)
     if terminal is None:
-        terminal = new_terminal(name=process_name, execute="ipython")
+        terminal = new_terminal(name=process_name, execute="ipython --matplotlib")
     xdotool_send(terminal, f"%run {escaped_filename}\n")
-    return
+
+def run_python_selection(filename):
+    """ run a selection
+
+    Args:
+        filename: the filename of the file of which a selection is run.
+
+    Notes:
+        - assumes the selection has been copied into the normal
+            clipboard buffer [ + buffer ] by nvim
+        - assumes the hotkey to paste in the terminal is alt+v
+    """
+    escaped_filename = filename.replace(" ", "\\ ")
+    process_name = f"ipython_{filename}".replace("/", "_").replace(" ", "_")
+    terminal = xdotool_search(process_name)
+    if terminal is None:
+        terminal = new_terminal(name=process_name, execute="ipython --matplotlib")
+        sleep(2) # give time for the terminal to spawn
+    xdotool_send(terminal, f"📋\n")
+
 
 def run_latex(filename):
     escaped_filename = filename.replace(" ", "\\ ")
@@ -81,25 +124,31 @@ def run_latex(filename):
     terminal = xdotool_search(process_name)
     if terminal is None:
         terminal = new_terminal(name=process_name)
-    xdotool_control_c(terminal)
-    xdotool_send(terminal, f"latexmk -xelatex -synctex=1 -interaction=nonstopmode {filename} | less -FKX\n")
+    xdotool_send(terminal, f"🛑latexmk -xelatex -synctex=1 -interaction=nonstopmode {filename} | less -FKX\n")
 
 
 # Main script
 
 if __name__ == "__main__":
     # checks
+    run_selection = False
     if len(sys.argv) > 2:
-        print("Run expects one single argument. Multiple arguments supplied.")
+        run_selection = (sys.argv[2] == "SELECTION")
+        if not run_selection:
+            print("Too many arguments.")
 
     # important variables
     filename = sys.argv[1]
+
     with open(filename, "r") as file:
         shebang = file.readline()
 
     # different cases:
     if filename.endswith(".py") or "python" in shebang:
-        run_python(filename)
+        if not run_selection:
+            run_python(filename)
+        else:
+            run_python_selection(filename) # assumes the selection has been copied by nvim!
     elif filename.endswith(".tex"):
         run_latex(filename)
     else:

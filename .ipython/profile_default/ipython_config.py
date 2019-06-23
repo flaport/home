@@ -49,7 +49,7 @@ c.InteractiveShellApp.exec_PYTHONSTARTUP = True
 #c.InteractiveShellApp.hide_initial_ns = True
 
 ## Configure matplotlib for interactive use with the default matplotlib backend.
-#c.InteractiveShellApp.matplotlib = None
+c.InteractiveShellApp.matplotlib = "qt"
 
 ## Run the module as a script.
 #c.InteractiveShellApp.module_to_run = ''
