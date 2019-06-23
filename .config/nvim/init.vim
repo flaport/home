@@ -68,9 +68,10 @@ inoremap jj <Esc>
 " latex synctex forward
 " <Leader>s
 function! SyncTexForward()
-    " either do synctex on the pdf path stored in $SYNCTEXPDF, or do synctex
-    " on the pdf with the same base name as the tex file.
-    let execstr = "![ $SYNCTEXPDF ] && zathura --synctex-forward ".line(".").":".col(".").":%:p $SYNCTEXPDF"
+    " either do synctex on the pdf with basename [filename without extension] $TEXBASE, 
+    " or do synctex on the pdf with the same base name as the current tex file if 
+    " the environment variable $TEXBASE does not exist.
+    let execstr = "![ $TEXBASE ] && zathura --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf"
     let execstr = execstr." || zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
     exec execstr
 endfunction

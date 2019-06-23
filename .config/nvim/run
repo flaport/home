@@ -23,7 +23,8 @@ from subprocess import Popen, check_output, CalledProcessError
 
 # Environment variables
 
-TERMINAL = os.environ.get("TERMINAL")
+TEXBASE = os.environ.get("TEXBASE", "").replace("\\ ", " ") # un-escape
+TERMINAL = os.environ.get("TERMINAL", "")
 
 
 # Functions
@@ -91,8 +92,11 @@ def run_python(filename):
     Args:
         filename: the filename of the file to run
     """
-    escaped_filename = filename.replace(" ", "\\ ")
+    # un-escape filename if it is escaped:
+    filename = filename.replace("\\ ", " ")
+    # create a process name [classname] for the new terminal 
     process_name = f"ipython_{filename}".replace("/", "_").replace(" ", "_")
+    escaped_filename = filename.replace(" ", "\\ ")
     terminal = xdotool_search(process_name)
     if terminal is None:
         terminal = new_terminal(name=process_name, execute="ipython --matplotlib")
@@ -109,7 +113,9 @@ def run_python_selection(filename):
             clipboard buffer [ + buffer ] by nvim
         - assumes the hotkey to paste in the terminal is alt+v
     """
-    escaped_filename = filename.replace(" ", "\\ ")
+    # un-escape filename if it is escaped:
+    filename = filename.replace("\\ ", " ")
+    # create a process name [classname] for the new terminal 
     process_name = f"ipython_{filename}".replace("/", "_").replace(" ", "_")
     terminal = xdotool_search(process_name)
     if terminal is None:
@@ -119,8 +125,13 @@ def run_python_selection(filename):
 
 
 def run_latex(filename):
-    escaped_filename = filename.replace(" ", "\\ ")
+    # un-escape filename if it is escaped:
+    filename = filename.replace("\\ ", " ")
+    # create a process name [classname] for the new terminal 
     process_name = f"latex_{filename}".replace("/", "_").replace(" ", "_")
+    # run latex on TEXBASE in stead of current file if TEXBASE is defined:
+    filename = TEXBASE or filename[:-4]
+    escaped_filename = filename.replace(" ", "\\ ")
     terminal = xdotool_search(process_name)
     if terminal is None:
         terminal = new_terminal(name=process_name)
