@@ -16,8 +16,6 @@
 
 ## Path
 #-------------------------------------------------------------------------------
-# anaconda python
-export PATH="$HOME/.anaconda/bin:$PATH"
 # web apps
 export PATH="$HOME/.webapps:$PATH"
 # custom scripts
