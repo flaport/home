@@ -15,6 +15,7 @@
 }
 
 # color of foreground [path] letters: black/white: 
+FIRST=1
 CURRENT_BG=4 # should be same as path background color, as usually path will be first in powerline.
 CURRENT_FG=15
 
@@ -148,8 +149,9 @@ prompt_virtualenv() {
       env=$CONDA_DEFAULT_ENV
   fi
   if [[ -n $env ]]; then
-    [[ $RETVAL == 0 && $bat == "none" ]] && CURRENT_BG=2 # status prompt before this one, otherwise one this one is first in powerline.
+    [[ $FIRST == 1 ]] && CURRENT_BG=2 # status prompt before this one, otherwise one this one is first in powerline.
     prompt_segment 2 15 $CONDA_DEFAULT_ENV
+    FIRST=0
   fi
 }
 
@@ -165,8 +167,9 @@ prompt_status() {
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{15}%}$(echo $(jobs -l | grep -oE '\[[0-9]*\]'))"
 
   if [[ -n "$symbols" ]]; then
-      CURRENT_BG=2 # if nonzero status, this will be first one in the powerline
+      [[ $FIRST == 1 ]] && CURRENT_BG=2 # if nonzero status, this will be first one in the powerline
       prompt_segment 2 15 "$symbols"
+      FIRST=0
   fi
 }
 
@@ -188,8 +191,9 @@ prompt_battery(){
     if [[ $bat == "none" ]]; then
         return
     fi
-    [ $RETVAL = 0 ] && CURRENT_BG=3 # status prompt before this one, otherwise one this one is first in powerline.
+    [[ $FIRST == 1 ]] && CURRENT_BG=3 # status prompt before this one, otherwise one this one is first in powerline.
     prompt_segment 3 15 $bat
+    FIRST=0
 }
 
 
