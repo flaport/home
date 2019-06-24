@@ -14,41 +14,52 @@
   SEGMENT_SEPARATOR=$'\ue0b0'
 }
 
-# color of foreground [path] letters: black/white: 
-FIRST=1
-CURRENT_BG=4 # should be same as path background color, as usually path will be first in powerline.
-CURRENT_FG=15
+# colors
+# COLOR1 and COLOR2 will be switched at the end of each segment
+COLOR1=2  # first color
+COLOR2=4  # second color
+COLORU=5  # urgent color
+COLORT=15 # text colors
 
 
-# segment
 prompt_segment() {
-  local bg fg
-  [[ -n $1 ]] && bg="%K{$1}" || bg="%k"
-  [[ -n $2 ]] && fg="%F{$2}" || fg="%f"
-  if [[ $CURRENT_BG != 'NONE' && $1 != $CURRENT_BG ]]; then
-    echo -n " %{$bg%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{$fg%} "
-  else
-    echo -n "%{$bg%}%{$fg%} "
-  fi
-  CURRENT_BG=$1
-  [[ -n $3 ]] && echo -n $3
+    local bg fg colorbg
+
+    # get the background color for the prompt
+    [[ -n $1 ]] && colorbg=$1 || colorbg=$COLOR1
+
+    # create the prompt background
+    if [[ -n $COLORBG && $colorbg != $COLORBG ]]; then
+        echo -n " %{%K{$colorbg}%F{$COLORBG}%}$SEGMENT_SEPARATOR%{%F{$COLORT}%} "
+    else
+        echo -n "%{%K{$colorbg}%}%{%F{$COLORT}%} "
+    fi
+
+    # save the last used background color for the next prompt segment
+    COLORBG=$colorbg
+
+    # switch COLOR1 and COLOR2
+    colorbg=$COLOR1
+    COLOR1=$COLOR2
+    COLOR2=$colorbg
 }
 
 # End the prompt, closing any open segments
 prompt_end() {
-  if [[ -n $CURRENT_BG ]]; then
-    echo -n " %{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
+  if [[ -n $COLORBG ]]; then
+    echo -n " %{%k%F{$COLORBG}%}$SEGMENT_SEPARATOR"
   else
     echo -n "%{%k%}"
   fi
   echo -n "%{%f%}"
-  CURRENT_BG=''
+  COLORBG=''
 }
 
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    prompt_segment 0 15 "%(!.%{%F{yellow}%}.)%n@%m"
+    prompt_segment
+    echo -n "%(!.%{%F{yellow}%}.)%n@%m"
   fi
 }
 
@@ -70,9 +81,9 @@ prompt_git() {
     dirty=$(parse_git_dirty)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
     if [[ -n $dirty ]]; then
-      prompt_segment red 15
+      prompt_segment $COLORU
     else
-      prompt_segment green 15
+      prompt_segment
     fi
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
@@ -105,15 +116,15 @@ prompt_hg() {
     if $(hg prompt >/dev/null 2>&1); then
       if [[ $(hg prompt "{status|unknown}") = "?" ]]; then
         # if files are not added
-        prompt_segment red 15
+        prompt_segment $COLORU
         st='±'
       elif [[ -n $(hg prompt "{status|modified}") ]]; then
         # if any modification
-        prompt_segment red 15
+        prompt_segment $COLORU
         st='±'
       else
         # if working copy is clean
-        prompt_segment green 15
+        prompt_segment
       fi
       echo -n $(hg prompt "☿ {rev}@{branch}") $st
     else
@@ -121,13 +132,13 @@ prompt_hg() {
       rev=$(hg id -n 2>/dev/null | sed 's/[^-0-9]//g')
       branch=$(hg id -b 2>/dev/null)
       if `hg st | grep -q "^\?"`; then
-        prompt_segment red 15
+        prompt_segment $COLORU
         st='±'
       elif `hg st | grep -q "^[MA]"`; then
-        prompt_segment red 15
+        prompt_segment $COLORU
         st='±'
       else
-        prompt_segment green 15
+        prompt_segment
       fi
       echo -n "☿ $rev@$branch" $st
     fi
@@ -136,7 +147,8 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment 4 15 '%~'
+  prompt_segment
+  echo -n '%~'
 }
 
 # Virtualenv: current working virtualenv
@@ -149,9 +161,8 @@ prompt_virtualenv() {
       env=$CONDA_DEFAULT_ENV
   fi
   if [[ -n $env ]]; then
-    [[ $FIRST == 1 ]] && CURRENT_BG=2 # status prompt before this one, otherwise one this one is first in powerline.
-    prompt_segment 2 15 $CONDA_DEFAULT_ENV
-    FIRST=0
+    prompt_segment
+    echo -n $env
   fi
 }
 
@@ -167,9 +178,8 @@ prompt_status() {
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{15}%}$(echo $(jobs -l | grep -oE '\[[0-9]*\]'))"
 
   if [[ -n "$symbols" ]]; then
-      [[ $FIRST == 1 ]] && CURRENT_BG=2 # if nonzero status, this will be first one in the powerline
-      prompt_segment 2 15 "$symbols"
-      FIRST=0
+      prompt_segment
+      echo -n "$symbols"
   fi
 }
 
@@ -191,9 +201,8 @@ prompt_battery(){
     if [[ $bat == "none" ]]; then
         return
     fi
-    [[ $FIRST == 1 ]] && CURRENT_BG=3 # status prompt before this one, otherwise one this one is first in powerline.
-    prompt_segment 3 15 $bat
-    FIRST=0
+    prompt_segment
+    echo -n $bat
 }
 
 
@@ -201,7 +210,7 @@ prompt_battery(){
 build_prompt() {
   RETVAL=$?
   prompt_status
-  prompt_battery
+  #prompt_battery
   prompt_virtualenv
   prompt_dir
   prompt_git
