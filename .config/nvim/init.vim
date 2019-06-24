@@ -71,7 +71,7 @@ function! SyncTexForward()
     " either do synctex on the pdf with basename [filename without extension] $TEXBASE, 
     " or do synctex on the pdf with the same base name as the current tex file if 
     " the environment variable $TEXBASE does not exist.
-    let execstr = "![ $TEXBASE ] && zathura --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf"
+    let execstr = "silent ![ $TEXBASE ] && zathura --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf"
     let execstr = execstr." || zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
     exec execstr
 endfunction
