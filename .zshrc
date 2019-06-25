@@ -19,6 +19,7 @@ if [[ $(tty) == /dev/tty* ]]; then
     ZSH_THEME=dieter
 else
     ZSH_THEME=powerline
+    xset r rate 200 45 &> /dev/null # also put here, because it sometimes stops working
 fi
 ZSH_THEME_RANDOM_CANDIDATES=( robbyrussell agnoster )
 
