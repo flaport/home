@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+
+usage(){
+    echo "fsed (fuzzy sed)"
+    echo ----
+    echo "Usage:  fsed [sed-FLAGS] \"s/<search>/<replace>/<options>\" <single-filename/single-folder> "
+    echo "        fsed [sed-FLAGS] \"s/<search>/<replace>/<options>\" <multiple-filenames/multiple folders> "
+    echo 
+    echo "Note:   although sed accepts any single bit character as a regex seperator"
+    echo "        this cript does not. Accepted regex seperators: '/' and '|'".
+    echo
+    echo "sed (original sed)"
+    echo ---
+    echo
+    sed --help
+    exit 0
+}
+
+
+# parse arguments
+FLAGS=""
+QUERY=""
+FILENAMES=""
+while [[ $1 == "-"* ]]; do
+    FLAGS="$FLAGS"" ""$1"
+    shift
+done
+QUERY=$1 && shift
+DIRNAME=$1 # only used if the first and only argument is a directory.
+FILENAMES=""
+NUM_FILES=$#
+
+# validate arguments
+[[ $FLAGS == -h  || $FLAGS == --help || -z $QUERY ]] && usage
+
+# parse search & replace query
+parse_error(){
+    echo fsed: could not parse search query.
+    exit 1
+}
+if [[ $QUERY =~ ^s?\/.+\/.*/.*$ ]]; then
+    OPTIONS=$(echo "$QUERY" | sed 's/.*\/\(.*\)$/\1/g') || parse_error
+    SEARCHFLAGS=$(echo "$OPTIONS" | sed 's/[^iI]//g' | sed 's/I/i/g' ) || parse_error
+    SEARCHQUERY=$(echo "$QUERY" | sed 's/s\/\(.*\)\/.*\/.*$/\1/g') || parse_error
+    REPLACERESULT=$(echo "$QUERY" | sed 's/s\/.*\/\(.*\)\/.*$/\1/g') || parse_error
+    [[ ! -z $SEARCHFLAGS ]] && SEARCHFLAGS=-$SEARCHFLAGS
+elif [[ $QUERY =~ ^s?\|.+\|.*\|.*$ ]]; then
+    OPTIONS=$(echo "$QUERY" | sed 's/.*|\(.*\)$/\1/g') || parse_error
+    SEARCHFLAGS=$(echo "$OPTIONS" | sed 's/[^iI]//g' | sed 's/I/i/g' ) || parse_error
+    SEARCHQUERY=$(echo "$QUERY" | sed 's/s|\(.*\)|.*|.*$/\1/g') || parse_error
+    REPLACERESULT=$(echo "$QUERY" | sed 's/s|.*|\(.*\)|.*$/\1/g') ||  parse_error
+    [[ ! -z $SEARCHFLAGS ]] && SEARCHFLAGS=-$SEARCHFLAGS
+else
+    SEARCHFLAGS=-i
+    SEARCHQUERY="$QUERY"
+    REPLACERESULT="$QUERY"
+    QUERY="s|""$QUERY""|""$QUERY""|gI"
+fi
+
+# if no argument present, wait for stdin:
+if [[ -z $1 ]]; then
+    # parse stdin:
+    STDIN=""
+    while IFS= read -r line; do
+        STDIN="$STDIN""$line""\n"
+    done
+    STDIN="$STDIN""$line"
+    # if there is input from stdin, call this script with xargs and exit
+    printf "$STDIN" | xargs --delimiter="\n" $0 $FLAGS "$QUERY"
+    exit 0
+fi
+
+FOLDERWARNING="" #when multiple arguments are supplied, folders are ignored."
+NONEXISTWARNING="" #some non-existent files were ignored."
+while [[ ! -z $1 ]]; do
+    if [[ $NUM_FILES > 1 && -d $1 ]]; then
+        [[ ! -z $FOLDERWARNING ]] && echo "$FOLDERWARNING"
+        FOLDERWARNING=""
+    elif [[ ! -f $1 && ! -d $1 ]]; then
+        [[ ! -z $NONEXISTWARNING ]] && echo "$NONEXISTWARNING"
+        NONEXISTWARNING=""
+    else
+        grep $SEARCHFLAGS $SEARCHQUERY $1 &> /dev/null
+        [[ $? == 0 ]] && FILENAMES="$FILENAMES""$1""\n"
+    fi
+    shift
+done
+
+# if $FILENAMES is a single directory call this script with xargs and exit.
+if [[ -d $DIRNAME ]]; then
+    find $DIRNAME -type f -print0 | xargs -0 $0 $FLAGS "$QUERY"
+    exit 0
+fi
+
+# if no $FILENAMES containing the search query found, exit.
+if [[ -z $FILENAMES ]]; then
+   echo "the search query \""$SEARCHQUERY"\" yielded no results. 🥴"
+   exit 1
+fi
+
+FILENAMES=$(printf "$FILENAMES" | fzf --multi --layout=reverse --height=60% --header='sed select files. [Tab] to select, [ctrl+a] to select all, [Enter] to confirm' --bind=ctrl-a:select-all --preview="cat {} | sed \""$QUERY"\""" | grep --color=always -n -C 3 "$REPLACERESULT"")
+[[ -z $FILENAMES ]] && echo "no files selected." && exit 1
+
+# output the result
+RESULT="$(sed $FLAGS $QUERY $FILENAMES)"
+STATUS=$?
+printf "$FILENAMES\n"
+exit $STATUS
