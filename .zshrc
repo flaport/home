@@ -33,12 +33,12 @@ plugins=(
     copydir
     copyfile
     common-aliases
-    fzf
     git 
     pip
     pylint
     python
     vi-mode
+    fzf
 )
 
 # case-sensitive completion.
