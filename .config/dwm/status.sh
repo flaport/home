@@ -36,27 +36,10 @@ mem(){
 
 # battery ---
 bat(){
-    string=$(acpi -b 2> /dev/null)
-    if [[ $string == *"Battery"* ]]; then
-        if [[ $string == *"Discharging"* ]]; then
-            icon=🔋
-        else
-            icon=🔌
-        fi
-        if [[ $string == *"100%"* ]]; then
-            if [[ $icon == 🔋 ]]; then
-                echo -e "🔋 Full"
-            else
-                echo -e 🔌
-            fi
-            return
-        fi
-        percentage=$(echo $string | cut -d "," -f2 | cut -d "," -f1)
-        echo -e $icon$percentage
-        return
-    fi
-    # on desktop, its not necessary to display battery info:
-    echo -e ""
+    BATTERY=$(acpi -b 2> /dev/null)
+    BATTERY=$(echo $BATTERY | sed "s/^.*: //" | sed "s/^Full,.*$//")
+    BATTERY=$(echo $BATTERY | sed "s/^Discharging,/🔋/" | sed "s/^Charging,/🔌/" | sed "s/^\(.*%\),.*/\1/")
+    echo -e $BATTERY
 }
 bat1(){
     notify-send "$(acpi -b)"

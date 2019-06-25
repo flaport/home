@@ -184,25 +184,10 @@ prompt_status() {
 }
 
 prompt_battery(){
-    bat="none"
-    string=$(acpi -b 2> /dev/null)
-    if [[ $string == *"Battery"* ]]; then
-        if [[ $string == *"Discharging"* ]]; then
-            icon=🔋
-        else
-            icon=🔌
-        fi
-        if [[ $string == *"100%"* ]]; then
-            return
-        fi
-        percentage=$(echo $string | cut -d "," -f2 | cut -d "," -f1 | tr -d '[:space:]')
-        bat=$icon$percentage"%"
-    fi
-    if [[ $bat == "none" ]]; then
-        return
-    fi
-    prompt_segment
-    echo -n $bat
+    BATTERY=$(acpi -b 2> /dev/null)
+    BATTERY=$(echo $BATTERY | sed "s/^.*: //" | sed "s/^Full,.*$//")
+    BATTERY=$(echo $BATTERY | sed "s/^Discharging, /🔋/" | sed "s/^Unknown, /🔋/" | sed "s/^Charging, /🔌/" | sed "s/^\(.*\)%,.*/\1%%/")
+    [ ! -z $BATTERY ] && prompt_segment && echo -n "$BATTERY"
 }
 
 
@@ -210,7 +195,7 @@ prompt_battery(){
 build_prompt() {
   RETVAL=$?
   prompt_status
-  #prompt_battery
+  prompt_battery
   prompt_virtualenv
   prompt_dir
   prompt_git
