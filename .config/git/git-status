@@ -6,60 +6,91 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
+import os
 import sys
 from subprocess import call, check_output, Popen, PIPE, CalledProcessError
 
-def dmenu(list_in, prompt):
-    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+def fzf(list_in, prompt):
+    fzf_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
     try:
         choice = check_output(
-            ["dmenu", "-l", "100", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+                ["fzf", "--multi", "--layout=reverse", "--height=60%", f"--header={prompt}", "--bind=ctrl-l:preview-down,ctrl-h:preview-up","--preview=git-status preview \"{}\""], stdin=fzf_in
         ).decode()[:-1]
     except CalledProcessError:
-        return None
-    return choice
+        return []
+    return choice.split("\n")
 
 def git_status():
     raw_status = check_output(["git", "status", "--short"]).decode().splitlines()
+    if not raw_status:
+        status = check_output(["git", "status"]).decode()[:-1]
+        print(status)
+        exit(0)
     status = []
+    L = 0
     for s in raw_status:
-        status.append(s + "  [add]")
+        if s[1] != " ":
+            status.append(s[:3] + " [add]     " + s[3:])
+            if len(status[-1]) > L: L = len(status[-1])
     for s in raw_status:
-        status.append(s + "  [reset]")
+        if s[0] != " " and s[0] != "?":
+            status.append(s[:3] + " [unstage] " + s[3:])
+            if len(status[-1]) > L: L = len(status[-1])
+    for s in raw_status:
+        if s[1] != "?":
+            status.append(s[:3] + " [restore] " + s[3:])
+            if len(status[-1]) > L: L = len(status[-1])
+
+    _status = ["-"*L]
+    __status= [x for x in status if x[0] not in (" ", "?") and "[add]" not in x]
+    if __status:
+        _status +=__status
+        _status += ["-"*L]
+    _status += [x for x in status if x[0] in (" ", "?") or "[add]" in x]
+    _status += ["-"*L]
+
+    status = ["    [add -A]"] + _status + ["    [reset]"]
     return status
 
-try:
-    while True:
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
         old_status = "old status:\n" + check_output(["git", "status", "--short"]).decode()
-
-        status = git_status()
-        action = dmenu(["   [git add -A]"] + status + ["   [git reset]", "   [git reset --hard]"], "git status")
-
-        if action == "   [git add -A]":
-            print("git add -A")
-            call(["git", "add", "-A"])
-        elif action == "   [git reset]":
-            print("git reset")
-            call(["git", "reset", "--quiet"])
-        elif action == "   [git reset --hard]":
-            #call(["git", "reset", "--quiet", "--hard"])
-            print("git reset --hard [disabled]")
-        elif "[add]" in action:
-            filename = action[3:].replace("[add]","").strip()
-            print(f"git add {filename}")
-            call(["git", "add", filename])
-        elif "[reset]" in action:
-            filename = action[3:].replace("[reset]","").strip()
-            print(f"git checkout -- {filename}")
-            call(f"git checkout -- {filename}", shell=True)
-        elif action:
-            call(["git", "commit", "-m", f'{action}'])
-        else:
-            exit(1)
-
+        actions = fzf(git_status(), "git status")
+        for action in actions:
+            if action == "    [add -A]":
+                print("git add -A")
+                call(["git", "add", "-A"])
+            elif action == "    [reset]":
+                print("git reset")
+                call(["git", "reset", "--quiet"])
+            elif "[add]" in action:
+                filename = action[3:].replace("[add]","").strip()
+                print(f"git add -- {filename}")
+                call(f"git add -- {filename}", shell=True)
+            elif "[unstage]" in action:
+                filename = action[3:].replace("[unstage]","").strip()
+                print(f"git reset -- {filename}")
+                call(f"git reset -- {filename}", shell=True)
+            elif "[restore]" in action:
+                filename = action[3:].replace("[restore]","").strip()
+                print(f"git reset -- {filename}")
+                print(f"git checkout -- {filename}")
+                call(f"git reset -- {filename}", shell=True)
+                call(f"git checkout -- {filename}", shell=True)
+            else:
+                continue
         new_status = "new status:\n" + check_output(["git", "status", "--short"]).decode()
-        print(old_status)
-        print(new_status)
-        call(["notify-send", f"success", old_status+new_status])
-except:
-    exit(1)
+        exit(0)
+    elif len(sys.argv) == 3 and sys.argv[1] == "preview":
+        filename = sys.argv[2][3:].replace("[add]","").replace("[unstage]","").replace("[restore]","").replace('"',"").replace("'","").strip()
+        if not os.path.exists(filename):
+            content = filename
+        else:
+            content = call(["git", "diff", "--color=always", filename])
+            if not content:
+                with open(filename, "r") as file:
+                    content = file.read()
+        print(content)
+        exit(0)
+    else:
+        exit(1)
