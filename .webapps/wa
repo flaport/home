@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# open Web App [wa]:
+chromium --app=http://"$1" &>/dev/null & disown

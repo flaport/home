@@ -1,8 +1,2 @@
 #!/usr/bin/env bash
-if type surf &> /dev/null; then
-    BROWSER="surf "
-else
-    BROWSER="chromium --app="
-fi
-BROWSER="chromium --app="
-$BROWSER"http://slides.google.com" &>/dev/null &disown
+wa slides.google.com
