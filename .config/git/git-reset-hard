@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-commit=$(git log --abbrev-commit --oneline | dmenu -i -p 'git reset' -l 30 | sed 's/ .*//')
-if [ $commit ]; then
-    message=$(git reset --hard $commit);
-    notify-send "Reset to $commit" "$message";
-fi

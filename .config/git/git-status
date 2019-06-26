@@ -22,6 +22,7 @@ def fzf(list_in, prompt):
                 "--height=60%",
                 f"--header={prompt}",
                 "--bind=ctrl-l:preview-down,ctrl-h:preview-up",
+                "--preview-window=right:wrap",
                 '--preview=git-status preview "{}"',
             ],
             stdin=fzf_in,
@@ -50,7 +51,7 @@ def git_status():
             if len(status[-1]) > L:
                 L = len(status[-1])
     for s in raw_status:
-        if s[1] != "?":
+        if s[1] != "?" and s[0] != "A":
             status.append(s[:3] + " [restore] " + s[3:])
             if len(status[-1]) > L:
                 L = len(status[-1])
