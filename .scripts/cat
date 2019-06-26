@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ -t 1 ] ; then
+    /usr/bin/cat $@ | highlight -O ansi --force
+else
+    /usr/bin/cat $@
+fi
