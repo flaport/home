@@ -223,7 +223,7 @@ pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store p
 
 ## Source control
 pacman_install git
-pacman_install mercurial
+# pacman_install mercurial
 
 ## build tools
 pacman_install make
@@ -256,12 +256,12 @@ pacman_install acpi
 # vifm: terminal file browser
 pacman_install vifm
 # terminal internet search: google
-yay_install googler
+# yay_install googler
 # terminal internet search: duckduckgo
 yay_install ddgr
 # search tool (grep alternative, necessary for some vim extensions)
 pacman_install ack
-# faster navigation in the shell
+# faster navigation in the shell (combine with zsh extension of the same name)
 pacman_install autojump
 # fuzzy finder tool
 pacman_install fzf
@@ -271,7 +271,7 @@ pacman_install tmux
 pacman_install xclip
 # pdf previews
 pacman_install poppler
-# highlight: to highlight code
+# highlight: to highlight code in the terminal (nice `cat` alternative)
 pacman_install highlight
 # mediainfo: show audio and video information in terminal
 pacman_install mediainfo
@@ -284,7 +284,9 @@ pacman_install figlet
 # build from source
 pacman_install cmake
 # netcat: for socket communication
-pacman_install gnu-netcat
+# pacman_install gnu-netcat
+# sockets
+pacman_install socat
 
 ## Graphical server: xorg
 # the graphical server
@@ -305,12 +307,14 @@ pacman_install xorg-xdpyinfo
 pacman_install xorg-server-xvfb
 # hide an inactive mouse
 yay_install unclutter-xfixes-git
+# viewer with synctex support, and some custom plugins
+pacman_install xdotool
 
 ## Desktop Environment / Window Manager
 # i3-gaps: allow gaps between windows
-pacman_install i3-gaps
+# pacman_install i3-gaps
 # i3-blocks: status bar for i3
-pacman_install i3blocks
+# pacman_install i3blocks
 # i3-lock: screen lock for i3 (and also for dwm!)
 pacman_install i3lock
 # xsetroot: for status bar in dwm
@@ -321,9 +325,7 @@ pacman_install sxhkd
 pacman_install xautolock
 # wallpapers
 pacman_install feh
-# sockets
-pacman_install socat
-# theme:  Arc
+# simple theme to make gtk applications look better
 pacman_install arc-solid-gtk-theme
 # dmenu
 submodule_install dmenu
@@ -337,22 +339,23 @@ pacman_install cups
 pacman_install avahi
 pacman_install nss-mdns
 systemctl_enable avahi-daemon
-pacman_install samba
 # print to pdf
 pacman_install cups-pdf
 # enable cups service
 systemctl_enable org.cups.cupsd
 
-## fonts
-# monospace
+## Fonts
+# best monospace font: inconsolata
 # pacman_install ttf-inconsolata
+# inconsolata on steroids: patched for powerline extensions (zsh/vim...)
 yay_install nerd-fonts-inconsolata-go
-# serif
+# best serif font. Maybe because it looks modern?
 pacman_install ttf-linux-libertine
 # sans-serif + chromium/firefox dependency
 pacman_install ttf-droid
-# symbols
+# symbols: for emojis :)
 yay_install ttf-symbola
+# some general font improvements:
 # disable bitmaps:
 link /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
 # enable sub-pixel RGB rendering
@@ -363,16 +366,16 @@ link /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
 ## GUIs
 # nemo: sometimes a non-terminal file browser can be useful
 pacman_install nemo
-# screen settings: arandr (& xrandr)
+# screen settings: arandr (xrandr included)
 pacman_install arandr
-# general document reader with vim bindings
+# best pdf reader: general document reader with vim bindings
 pacman_install zathura
 # pdf reader extension
 pacman_install zathura-pdf-mupdf
 # djvu reader extension
 pacman_install zathura-djvu
 
-## Artistic
+## Paint etc
 pacman_install pinta
 pacman_install inkscape
 # pacman_install gimp
@@ -387,16 +390,18 @@ pacman_install inkscape
 ## Programming
 # code OSS (open source build of vscode)
 pacman_install code
-code --install-extension vscodevim.vim >> $LOG 2>> $ERR
-code --install-extension ban.spellright >> $LOG 2>> $ERR
-code --install-extension wholroyd.jinja >> $LOG 2>> $ERR
-code --install-extension ms-python.python >> $LOG 2>> $ERR
-code --install-extension codezombiech.gitignore >> $LOG 2>> $ERR
-code --install-extension james-yu.latex-workshop >> $LOG 2>> $ERR
-code --install-extension formulahendry.code-runner >> $LOG 2>> $ERR
-code --install-extension shardulm94.trailing-spaces >> $LOG 2>> $ERR
-code --install-extension richie5um2.vscode-sort-json >> $LOG 2>> $ERR
-code --install-extension pkief.material-icon-theme >> $LOG 2>> $ERR
+if [ ?$ == 0 ]; then
+    code --install-extension vscodevim.vim >> $LOG 2>> $ERR
+    code --install-extension ban.spellright >> $LOG 2>> $ERR
+    code --install-extension wholroyd.jinja >> $LOG 2>> $ERR
+    code --install-extension ms-python.python >> $LOG 2>> $ERR
+    code --install-extension codezombiech.gitignore >> $LOG 2>> $ERR
+    code --install-extension james-yu.latex-workshop >> $LOG 2>> $ERR
+    code --install-extension formulahendry.code-runner >> $LOG 2>> $ERR
+    code --install-extension shardulm94.trailing-spaces >> $LOG 2>> $ERR
+    code --install-extension richie5um2.vscode-sort-json >> $LOG 2>> $ERR
+    code --install-extension pkief.material-icon-theme >> $LOG 2>> $ERR
+fi
 
 ## Drive and file system access
 # mount cifs parititions
@@ -408,11 +413,13 @@ pacman_install exfat-utils
 # ntfs-3g: access NTFS network drives
 pacman_install ntfs-3g
 # access media on external device (phone, ...)
-yay_install simple-mtpfs
+# yay_install simple-mtpfs
 # access ssh file system
 pacman_install sshfs
 # install scripts for bootstrapping new arch installation
 pacman_install arch-install-scripts
+# samba shares = network volumes
+pacman_install samba
 
 ## Desktop notifications
 # libnotify allows desktop notifications
@@ -430,7 +437,7 @@ pacman_install youtube-dl
 # youtube-viewer
 pacman_install youtube-viewer
 # vlc media player
-pacman_install vlc
+# pacman_install vlc
 # mpv media player
 pacman_install mpv
 # ffmpeg command line tool
@@ -454,7 +461,7 @@ pacman_install autossh
 # whois information
 pacman_install whois
 # access to google servers
-yay_install google-cloud-sdk
+# yay_install google-cloud-sdk
 # bluetooth
 pacman_install bluez
 pacman_install bluez-utils
@@ -474,17 +481,15 @@ pacman_install pulseaudio
 # tex-live
 # pacman_install texlive-most
 # bibliographies
-pacman_install biber
-# viewer with synctex support, and some custom plugins
-pacman_install xdotool
+# pacman_install biber
 
 ## Browsers
 # pacman_install firefox
 pacman_install chromium
 pacman_install qutebrowser
-pacman_install webkit2gtk # surf dependency
-pacman_install gcr # surf dependency
-pacman_install xorg-xprop # surf dependency
+pacman_install webkit2gtk # surf build dependency
+pacman_install gcr # surf build dependency
+pacman_install xorg-xprop # surf build dependency
 pacman_install surf
 
 ## Email
@@ -585,7 +590,7 @@ link /usr/bin/dash /bin/sh
 # we will make fish our main shell
 # echo $password | chsh -s /usr/bin/fish
 
-# zsh is posix complient + extra's
+# zsh is posix complient + many extra's (some might call it bloat, but I like it)
 pacman_install zsh
 yay_install oh-my-zsh-git
 # fish-like autosuggestions
