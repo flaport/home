@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+# open notes folder
+$TERMINAL -e nvim $HOME/Notes/readme.md &> /dev/null
+nvim_run $HOME/Notes/readme.md &> /dev/null

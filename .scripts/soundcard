@@ -1,8 +1,0 @@
-#!/usr/bin/env python
-
-with open("/proc/asound/cards", "r") as file:
-    content = "\n" + file.read()
-
-card = int(content.split("[PCH")[0].split("\n")[-1].strip())
-
-print(card)

@@ -19,7 +19,7 @@ super + b
 
 # connect to bluetooth device (devices should be paired using bluetoothctl)
 super + B
-    ~/.config/dmenu/dmenu_bluetooth
+    dmenu_bluetooth
 
 # shift focus to monitor C
 super + c
@@ -37,7 +37,7 @@ super + D
 
 # show a list of emojis
 super + e
-    ~/.config/dmenu/dmenu_emoji
+    dmenu_emoji
 
 super + E
 
@@ -48,13 +48,9 @@ super + f
 # floating layout
 super + F
 
-# open git log for the home folder
 super + g
-    cd ~; ~/.config/git/git-log
 
-# open git add for the home folder
 super + G
-    cd ~; ~/.config/git/git-add
 
 # decrease master window size
 super + h
@@ -86,11 +82,11 @@ super + L
 
 # dmenu mount drive menu
 super + m
-    ~/.config/dmenu/dmenu_mount mount -i 
+    dmenu_mount mount -i 
 
 # dmenu unmount drive menu
 super + M
-    ~/.config/dmenu/dmenu_mount unmount -i 
+    dmenu_mount unmount -i 
 
 # make current monitor the master monitor
 super + n
@@ -108,11 +104,11 @@ super + O
 
 # dmenu choose screen layout
 super + p
-    ~/.config/dmenu/dmenu_screenlayout -i -l 100 -p "screen layout" 
+    dmenu_screenlayout -i -l 100 -p "screen layout" 
 
 # default screen layout
 super + P
-    ~/.config/screenlayout/default
+    default_screenlayout
 
 # kill current window
 super + q
@@ -130,11 +126,11 @@ super + R
 
 # run a program
 super + s
-    ~/.config/dmenu/dmenu_run -i -l 15 
+    dmenu_run -i -l 15 
 
 # start/stop a service
 super + S
-    ~/.config/dmenu/dmenu_services -i 
+    dmenu_services -i 
 
 # toggle between last two layouts
 super + t
@@ -201,15 +197,15 @@ super + shift + equal
 
 # raise volume
 super + equal
-    amixer -D pulse set Master 5%+; ~/.config/dwm/status.sh
+    amixer -D pulse set Master 5%+; dwm_status
 
 # lower volume
 super + minus
-    amixer -D pulse set Master 5%-; ~/.config/dwm/status.sh
+    amixer -D pulse set Master 5%-; dwm_status
 
 # toggle mute volume
 super + shift + minus
-    amixer -D pulse set Master 1+ toggle; ~/.config/dwm/status.sh
+    amixer -D pulse set Master 1+ toggle; dwm_status
 
 super + shift + equal
 
@@ -337,7 +333,7 @@ super + shift + 9
 
 # select keyboard shortcut
 super + F1
-    ~/.config/sxhkd/dmenu_keyboard_shortcuts -i 
+    dmenu_keyboard_shortcuts -i 
 
 super + F2
 
@@ -363,15 +359,15 @@ super + F12
 
 # mute volume
 XF86AudioMute
-    amixer -D pulse set Master 1+ toggle; ~/.config/dwm/status.sh
+    amixer -D pulse set Master 1+ toggle; dwm_status
 
 # lower volume
 XF86AudioLowerVolume
-    amixer -D pulse set Master 5%-; ~/.config/dwm/status.sh
+    amixer -D pulse set Master 5%-; dwm_status
 
 # raise volume
 XF86AudioRaiseVolume
-    amixer -D pulse set Master 5%+; ~/.config/dwm/status.sh
+    amixer -D pulse set Master 5%+; dwm_status
 
 XF86AudioNext
     notify-send XF86AudioNext "not implemented"

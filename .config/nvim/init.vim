@@ -112,11 +112,11 @@ nnoremap <F2> :e ~/.config/nvim/init.vim<CR>
 inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
 
 " save and execute file (requires tmux and i3)
-nnoremap <F5> :w<CR>:silent !~/.config/nvim/run %<CR>
-inoremap <F5> <Esc>:w<CR>:silent !~/.config/nvim/run %<CR>
+nnoremap <F5> :w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+inoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
 
 " save and execute selection
-vnoremap <F5> "+y:silent !~/.config/nvim/run % SELECTION<CR>
+vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
 
 " enable spell checker:
 nnoremap <F6> :setlocal spell! spelllang=en_us<CR>

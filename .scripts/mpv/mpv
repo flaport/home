@@ -1,0 +1,19 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+"""
+launch mpv over a different random socket each time
+"""
+
+import sys
+import uuid
+from subprocess import Popen
+
+
+if __name__ == "__main__":
+    random_socketname = f"/tmp/mpvsocket{uuid.uuid4().hex}"
+    Popen(["/usr/bin/mpv", "--player-operation-mode=pseudo-gui", f"--input-ipc-server={random_socketname}"] + sys.argv[1:])

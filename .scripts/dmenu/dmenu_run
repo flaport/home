@@ -1,0 +1,108 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+"""
+    Open executable; if executable is not found open it in default browser.
+"""
+
+# imports
+import os
+import sys
+from subprocess import call, check_output, Popen, PIPE, CalledProcessError
+
+# constants
+TERMINAL = os.environ.get("TERMINAL")
+BROWSER = os.environ.get("BROWSER")
+OPEN_IN_TERMINAL=["vifm", "vim"]
+DMENU_PATH = check_output(["dmenu_path"]).decode().splitlines()[4:]
+DMENU_HISTORY_PATH = os.path.expanduser("~/.scripts/dmenu/dmenu_run.history")
+DESKTOP_FILE_PATHS = [
+    "~/.local/share/applications/",
+    "/usr/share/applications/",
+]
+
+# functions
+def dmenu(list_in, prompt):
+    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+    try:
+        choice = check_output(
+            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+        ).decode()[:-1]
+        return choice
+    except CalledProcessError:
+        pass
+    return ""
+
+def open_desktop_file(args):
+    desktop_filename = args[0][:-1]
+    for path in DESKTOP_FILE_PATHS:
+        path = os.path.abspath(os.path.expanduser(path))
+        if desktop_filename+".desktop" in os.listdir(path):
+            with open(os.path.join(path,desktop_filename+".desktop"), "r") as file:
+                for line in file.readlines():
+                    if line.startswith("Exec"):
+                        exec_line = line
+                        exec_cmd = [c for c in exec_line[5:].split(" ") if not c.startswith("%")]
+                        break
+            if exec_line:
+                break
+    Popen(exec_cmd + args[1:])
+
+def list_desktop_files():
+    applications = []
+    for path in DESKTOP_FILE_PATHS:
+        path = os.path.abspath(os.path.expanduser(path))
+        applications += [f"{app[:-8]}*" for app in os.listdir(path) if app.endswith(".desktop")]
+    return applications
+
+# main script
+if __name__ == "__main__":
+    with open(DMENU_HISTORY_PATH, "a") as file:
+        pass # create file if it does not exist
+    with open(DMENU_HISTORY_PATH, "r") as file:
+        dmenu_history = file.read().splitlines()
+
+    DESKTOP_FILES = list_desktop_files()
+
+    dmenu_commands = list({k: None for k in (
+            list({k: None for k in dmenu_history[::-1]}) # history
+            + OPEN_IN_TERMINAL
+            + [BROWSER]
+            + DESKTOP_FILES
+            + DMENU_PATH
+            + ["[clear history]"]
+    )})
+
+    choice = dmenu(dmenu_commands, "open")
+
+    if not choice:
+        exit(0)
+
+    if choice == "[clear history]":
+        os.remove(os.path.join(os.path.dirname(__file__), "dmenu_run.history"))
+    elif choice.split(" ")[0] in OPEN_IN_TERMINAL:
+        Popen([TERMINAL, "-e", choice])
+    elif choice.split(" ")[0] in DESKTOP_FILES:
+        open_desktop_file(choice.split(" "))
+    else:
+        try:
+            Popen(choice.split(" "))
+        except FileNotFoundError:
+            if "http://" in choice or "https://" in choice or len(choice.split(".")) in (2,3):
+                Popen([BROWSER, choice])
+            else:
+                if os.path.exists(os.path.expanduser("~/.scripts/search")):
+                    Popen([os.path.expanduser("~/.scripts/search")] +  choice.split(" ") + ["--dmenuargs"] + sys.argv[2:] + ["-l", "25"])
+                else:
+                    duckduckgo_query = "https://duckduckgo.com/?q=" + choice.replace(" ", "+")
+                    Popen([BROWSER, duckduckgo_query])
+                    exit(1) # command given does not exist, it's also not a valid url
+
+    with open(DMENU_HISTORY_PATH, "a") as file:
+        if choice != "[clear history]":
+            file.write(choice+"\n")
+

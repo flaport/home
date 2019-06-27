@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-tmux kill-session -t openvpn
-tmux new-session -s openvpn -d
-
-tmux send-keys -t openvpn cd Space ~/.config/openvpn Enter sudo Space /usr/bin/openvpn Space ./igent.ovpn Enter
-
-tmux attach-session -t openvpn
-    

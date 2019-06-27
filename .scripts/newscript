@@ -1,0 +1,59 @@
+#!/usr/bin/python3
+
+# imports
+import os
+import sys
+import stat
+from subprocess import call
+
+# Validate arguments
+if len(sys.argv) not in (2, 3):
+    print("newscript expects one or two arguments: the relative script path and the shebang.")
+    exit(1)
+
+# go to scripts folder
+os.chdir(os.abspath(os.expanduser("~/.scripts"))
+
+# constants
+SHEBANGS = {
+        "python":"/usr/bin/python",
+        "python3":"/usr/bin/python3",
+        "python2":"/usr/bin/python2",
+        "sh":"/bin/sh",
+        "bash":"/usr/bin/env bash",
+}
+SCRIPTDIR = os.path.abspath(os.path.expanduser("~/.scripts")) # absolute path
+BINDIR = "../.local/bin" # relative path
+FILENAME = os.path.abspath(os.path.expanduser(sys.argv[1])).replace(SCRIPTDIR, ".")
+BASENAME = os.path.basename(FILENAME)
+LINKNAME = os.path.join(BINDIR, BASENAME)
+DIRNAME = os.path.dirname(FILENAME)
+SHEBANG = "" if len(sys.argv) == 2 else SHEBANGS.get(sys.argv[2], sys.argv[2])
+
+# validate filename
+if os.path.exists(FILENAME):
+    print(f"a script with the name {FILENAME} exists already")
+    exit(1)
+
+if os.path.exists(LINKNAME):
+    print(f"another script with the name {BASENAME} already exists")
+    exit(1)
+
+# create folders if necessary
+if not os.path.exists(DIRNAME):
+    os.makedirs(DIRNAME)
+
+# create file
+with open(FILENAME, "w") as file:
+    file.write("#!"+SHEBANG if SHEBANG else "")
+
+# make file executable for user # and group
+os.chmod(FILENAME, stat.S_IRWXU) #| stat.S_IRWXG)
+
+# create relative link to ../.local/bin/
+# TODO: do this with os/shutil or so
+call(["ln", "-sr", FILENAME, LINKNAME])
+
+# force both files into source control
+call(["git", "add", "-f", FILENAME, LINKNAME])
+

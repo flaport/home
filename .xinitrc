@@ -11,7 +11,7 @@
 export WM=dwm
 
 set wallpaper
-~/.scripts/set_wallpaper ~/.config/wallpaper.png &
+set_wallpaper ~/.config/wallpaper.png &
 
 # enable transparent windows
 xcompmgr &
@@ -22,7 +22,7 @@ if [ -f ~/.Xresources ]; then
 fi
 
 # export your desired screenlayout with `arandr`
-~/.config/screenlayout/default &
+default_screenlayout &
 
 # notifications
 dunst &
@@ -31,7 +31,7 @@ dunst &
 nm-applet &
 
 # automatically lock screen after 10 minutes
-xautolock -time 10 -locker ~/.scripts/lock_screen &
+xautolock -time 10 -locker lock_screen &
 
 # make the mouse invisible after a brief period of not using it.
 unclutter &

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____ 
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#
+
+# custom script that replaces split toggle command of i3
+
+orientation=$(cat ~/.cache/i3orientation) || "horizontal"
+
+echo $orientation
+
+if [ $orientation == "horizontal" ]; then
+    opposite_orientation="vertical"
+else
+    opposite_orientation="horizontal"
+fi
+
+echo $opposite_orientation
+
+i3 split $opposite_orientation && notify-send "split" $opposite_orientation && echo $opposite_orientation > ~/.cache/i3orientation

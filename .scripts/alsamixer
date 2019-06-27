@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-/usr/bin/alsamixer -c $($HOME/.scripts/soundcard)
-# let i3blocks know we played with the volume
-pkill -RTMIN+10 i3blocks

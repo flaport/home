@@ -1,0 +1,32 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+import sys
+from subprocess import call, check_output, CalledProcessError
+
+USAGE = "usage: browsercontrol [togglepause]"
+if len(sys.argv) != 2:
+    print(USAGE)
+    exit(1)
+COMMAND = sys.argv[1]
+
+if COMMAND == "togglepause":
+    # TODO: does currently not work with chromium...
+    for browser in ["qutebrowser", "firefox", "surf", "chromium", "epiphany"]: 
+        try:
+            windows = check_output(["xdotool", "search", "--name", browser])[:-1].decode().splitlines()
+        except CalledProcessError:
+            continue
+
+        for window in windows:
+            try:
+                check_output(["xdotool", "key", "--window", window, "space"])
+            except:
+                pass
+else:
+    print(USAGE)

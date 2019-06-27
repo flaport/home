@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+# change matplotlib style globally
+# NOTE: for this to work, you need to have matplotlib
+# stylesheets in ~/.config/matplotlib/stylelib/
+
+if [[ -z $1 ]]; then
+    echo no syle specified.
+    exit 1
+fi
+
+if [[ "$1" =~ "list" ]]; then
+    CWD=$PWD;
+    cd $HOME/.config/matplotlib/stylelib ;
+    ls *.mplstyle | sed -e 's/\..*$//';
+    cd $CWD;
+else
+    cp $HOME/.config/matplotlib/stylelib/"$1".mplstyle $HOME/.config/matplotlib/matplotlibrc ;
+fi

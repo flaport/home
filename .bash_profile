@@ -18,8 +18,8 @@
 #-------------------------------------------------------------------------------
 # web apps
 export PATH="$HOME/.webapps:$PATH"
-# custom scripts
-export PATH="$HOME/.scripts:$PATH"
+# local executables
+export PATH="$HOME/.local/bin:$PATH"
 # custom vifm script
 export PATH="$HOME/.config/vifm/scripts:$PATH"
 # custom nvim script

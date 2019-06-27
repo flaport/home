@@ -23,7 +23,7 @@
 
 # global properties
 #command=/usr/lib/i3blocks/$BLOCK_NAME
-command=~/.config/i3blocks/$BLOCK_NAME
+command=~/.scripts/i3blocks/$BLOCK_NAME
 separator_block_width=15
 markup=none
 

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+if [ -z $1 ]; then
+    echo usage: "mpvcontrol [pause|play|togglepause|toggleplay]"
+    exit 1
+fi
+
+
+if [[ $1 == "pause" ]]; then
+    # pause all mpv (or at least the ones having an active socket file)
+    for i in $(ls /tmp/mpvsoc*); do
+        echo '{ "command": ["set_property", "pause", true] }' | socat - $i;
+        # remove inactive sockets:
+        if [[ $? != 0 ]]; then
+            rm $i
+        fi
+        # save current state to /tmp/mpvstate
+        echo "paused" > ~/.cache/mpvstate
+    done
+fi
+
+if [[ $1 == "play" ]]; then
+    # play all mpv (or at least the ones having an active socket file)
+    for i in $(ls /tmp/mpvsoc*); do
+        echo '{ "command": ["set_property", "pause", false] }' | socat - $i;
+        # remove inactive sockets:
+        if [[ $? != 0 ]]; then
+            rm $i
+        fi
+        # save current state to /tmp/mpvstate
+        echo "playing" > ~/.cache/mpvstate
+    done
+fi
+
+if [[ $1 == "togglepause" || $1 == "toggleplay" ]]; then
+    state=$(cat /tmp/mpvstate)
+    [[ $state == "paused" ]] && mpvcontrol play || mpvcontrol pause
+    exit $?
+fi
+

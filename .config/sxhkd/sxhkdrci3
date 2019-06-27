@@ -9,9 +9,7 @@
 super + a
     notify-send "sxhkd" "it's working!"
 
-# drop down calculator (python shell)
 super + A
-    ~/.scripts/floating_python
 
 # show/hide status bar
 super + b
@@ -21,16 +19,16 @@ super + B
 
 # set wallpaper from path/url specified in clipboard
 super + c
-    ~/.scripts/set_wallpaper $(xclip -selection clipboard -o)
+    set_wallpaper $(xclip -selection clipboard -o)
 
 super + C
 
 # dmenu application launcher
 super + d
-    ~/.config/dmenu/dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 super + D
-    ~/.config/dmenu/dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 # enable stacking layout
 super + e
@@ -62,7 +60,7 @@ super + H
 
 # resize window: move border up
 super + i
-    ~/.config/i3/resize_window up
+    i3_resize_window up
 
 super + I
 
@@ -92,11 +90,11 @@ super + L
 
 # dmenu mount drive menu
 super + m
-    ~/.config/dmenu/dmenu_mount mount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    dmenu_mount mount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 # dmenu unmount drive menu
 super + M
-    ~/.config/dmenu/dmenu_mount unmount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    dmenu_mount unmount -i -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 super + n
 
@@ -104,17 +102,17 @@ super + N
 
 # resize window: move border to the left
 super + o
-    ~/.config/i3/resize_window right
+    i3_resize_window right
 
 super + O
 
 # dmenu choose screen layout
 super + p
-    ~/.config/dmenu/dmenu_screenlayout -i -l 100 -p "screen layout" -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    dmenu_screenlayout -i -l 100 -p "screen layout" -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 # default screen layout
 super + P
-    ~/.config/screenlayout/default
+    screenlayout/default
 
 # kill current window
 super + q
@@ -128,13 +126,13 @@ super + R
 
 # dmenu application launcher
 super + s
-    ~/.config/dmenu/dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    dmenu_run -i -l 7 -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 super + S
 
 # toggle split direction (below/right)
 super + t
-    ~/.config/i3/split_toggle
+    i3_split_toggle
 
 # toggle split direction and enable it to windows present in workspace
 super + T
@@ -142,11 +140,9 @@ super + T
 
 # resize window: move border down
 super + u
-    ~/.config/i3/resize_window down
+    i3_resize_window down
 
-# drop down terminal
 super + U
-    ~/.scripts/floating_terminal
 
 super + v
 
@@ -162,15 +158,15 @@ super + W
 
 # lock screen
 super + x
-    ~/.scripts/lock_screen
+    lock_screen
 
 # lock screen and suspend
 super + X
-    ~/.scripts/lock_screen; systemctl suspend
+    lock_screen; systemctl suspend
 
 # resize window: move border to the left
 super + y
-    ~/.config/i3/resize_window left
+    i3_resize_window left
 
 super + Y
 
@@ -300,7 +296,7 @@ super + shift + 9
 
 # select keyboard shortcut
 super + F1
-    ~/.config/sxhkd/dmenu_keyboard_shortcuts -i  -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
+    dmenu_keyboard_shortcuts -i  -nb "$color15" -nf "$color2" -sb "$color2" -sf "$color15" -fn monospace-14
 
 # restart display manager
 super + F2

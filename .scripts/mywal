@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-wal -c
-wal --backend wal -s -e -a 0.7 -i $HOME/.config/wallpaper.png
-cp $HOME/.cache/wal/colors.Xresources $HOME/.Xresources
-echo "*.alpha: 0.7" >> $HOME/.Xresources
-xrdb $HOME/.Xresources

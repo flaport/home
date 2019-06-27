@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+bluetoothctl -- power on
+device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]")
+if [ $device = "[bluetooth]" ]; then # no connection -> try to connect
+    device=$(bluetoothctl -- paired-devices | dmenu -p "connect to bluetooth device" -l 10 $@)
+    mac=$(echo $device | grep -o "..:..:..:..:..:..")
+    message=$(bluetoothctl -- connect $mac)
+else # a bluetooth connection exists -> try to disconnect
+    message=$(bluetoothctl -- disconnect)
+fi
+notify-send "bluetooth connection" "$message"
+
+# update status bar
+dwm_status
+

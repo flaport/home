@@ -1,0 +1,60 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+import os
+import sys
+import json
+import webbrowser
+from subprocess import call, check_output, Popen, PIPE, CalledProcessError
+
+print(sys.argv)
+try:
+    IDX = sys.argv.index("--dmenuargs")
+except:
+    IDX = None
+DMENU_ARGS = [] if IDX is None else sys.argv[IDX+1:]
+QUERY = " ".join(sys.argv[1:] if IDX is None else sys.argv[1:IDX])
+try:
+    BROWSER = webbrowser.get(os.environ.get("BROWSER"))
+except:
+    BROWSER = webbrowser
+
+def dmenu(list_in, prompt, args=None):
+    if args is None:
+        args = ["-l", "25"] + DMENU_ARGS
+    else:
+        args = args + DMENU_ARGS
+    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+    try:
+        choice = check_output(
+            ["dmenu", "-p", prompt] + args, stdin=dmenu_in
+        ).decode()[:-1]
+    except CalledProcessError:
+        return None
+    return choice
+
+def search(query):
+    dic = {}
+    results = check_output(["ddgr", "-n", "25", "--json", query]).decode()
+    results = json.loads(results)
+    for result in results:
+        dic[result["title"]] = result["url"]
+    return dic
+
+
+if __name__ == "__main__":
+    try:
+        if QUERY.strip() == "":
+            QUERY = dmenu(["      "], "search", [])
+        results = search(QUERY)
+        url = results[dmenu(results, QUERY)]
+        print(url)
+        BROWSER.open(url)
+    except:
+        exit(1)
+

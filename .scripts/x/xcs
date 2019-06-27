@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+if [ $1 = "-a" ] || [ $1 = "--alpha" ]; then
+    shift
+    alpha=$1
+    shift
+fi
+
+if [ ! $1 ] || [ $2 ]; then
+    >&2 echo "usage: xcs [ --alpha <value> ] <value>"
+    exit 1
+fi
+
+if [ $1 = ls ]; then
+    cd ~/.config/Xresources
+    find . -executable
+    exit 0
+fi
+
+rm -f ~/.Xresources
+cp ~/.config/Xresources/$1 ~/.Xresources
+
+if [ $alpha ]; then
+    echo *.alpha: $alpha >> ~/.Xresources
+fi
+
+xrdb ~/.Xresources 2> /dev/null
