@@ -15,30 +15,8 @@ ZSH=/usr/share/oh-my-zsh
 ZSH_CUSTOM=$HOME/.config/zsh
 
 # Set name of the theme to load, random=random choice from predefined list.
-if [[ $(tty) == /dev/tty* ]]; then
-    ZSH_THEME=dieter
-else
-    ZSH_THEME=powerline
-fi
-ZSH_THEME_RANDOM_CANDIDATES=( robbyrussell agnoster )
-
-# plugins to load:
-plugins=( 
-    autojump
-    colorize
-    colored-man-pages
-    command-not-found
-    compleat
-    copydir
-    copyfile
-    common-aliases
-    git 
-    pip
-    pylint
-    python
-    vi-mode
-    fzf
-)
+[[ $(tty) == /dev/tty* ]] && ZSH_THEME=dieter || ZSH_THEME=powerline
+ZSH_THEME_RANDOM_CANDIDATES=( robbyrussell agnoster dieter powerline )
 
 # case-sensitive completion.
 CASE_SENSITIVE=false
@@ -71,7 +49,31 @@ DISABLE_UNTRACKED_FILES_DIRTY=false
 # history timestamp format
 HIST_STAMPS="yyyy-mm-dd"
 
+# plugins to load:
+plugins=( 
+    autojump
+    colorize
+    colored-man-pages
+    command-not-found
+    compleat
+    copydir
+    copyfile
+    common-aliases
+    git 
+    pip
+    pylint
+    python
+    vi-mode
+    fzf
+)
+
 source $ZSH/oh-my-zsh.sh
+
+# remove some of the common aliases
+unalias cp
+unalias mv
+unalias rm
+
 
 
 ## Fish-like autosuggestions
