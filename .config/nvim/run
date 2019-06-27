@@ -18,7 +18,7 @@ This script is linked to <F5> in vim.
 import os
 import sys
 from time import sleep
-from subprocess import Popen, check_output, CalledProcessError
+from subprocess import Popen, call, check_output, CalledProcessError
 
 
 # Environment variables
@@ -64,7 +64,8 @@ def xdotool_send(terminal, command):
         "📋": "alt+v", # clipboard emoji
     }
     characters = [special_characters.get(c, c) for c in command]
-    return check_output(["xdotool", "key", "--window", terminal] + characters)
+    output = check_output(["xdotool", "key", "--window", terminal] + characters)
+    return output
 
 def new_terminal(name=None, execute=None):
     """ spawn a new terminal
@@ -123,8 +124,18 @@ def run_python_selection(filename):
         sleep(2) # give time for the terminal to spawn
     xdotool_send(terminal, f"📋\n")
 
-
 def run_latex(filename):
+    """ build a latex project
+
+    Args:
+        filename: filename of the latex source file (.tex file) to build
+
+    Note:
+        if the environment variable TEXBASE is defined, TEXBASE will be used
+        as latex base file on which to run `latexmk`. Setting this environment 
+        variable is useful when the current Latex file is imported (`input`/`include`)
+        into another Latex file.
+    """
     # un-escape filename if it is escaped:
     filename = filename.replace("\\ ", " ")
     # create a process name [classname] for the new terminal 
@@ -135,8 +146,47 @@ def run_latex(filename):
     terminal = xdotool_search(process_name)
     if terminal is None:
         terminal = new_terminal(name=process_name)
-    xdotool_send(terminal, f"🛑latexmk -xelatex -synctex=1 -interaction=nonstopmode {filename} | less -FKX\n")
+    xdotool_send(terminal, f"🛑latexmk -xelatex -synctex=1 -interaction=nonstopmode {escaped_filename} | less -FKX\n")
 
+def run_markdown(filename):
+    """ preview a markdown file with w3m
+
+    Args:
+        filename: the markdown file to preview
+    """
+    # un-escape filename if it is escaped:
+    filename = filename.replace("\\ ", " ")
+    # create a process name [classname] for the new terminal 
+    process_name = f"markdown_{filename}".replace("/", "_").replace(" ", "_")
+    # escape filename
+    escaped_filename = filename.replace(" ", "\\ ")
+    terminal = xdotool_search(process_name)
+    if terminal is None:
+        terminal = new_terminal(name=process_name)
+    xdotool_send(terminal, f"qy\npandoc --to html {escaped_filename} | w3m -T text/html\n")
+
+def run_markdown_selection(filename):
+    """ run a selection code from a markdown file
+
+    Args:
+        filename: the filename of the file of which a selection is run.
+
+    Notes:
+        - assumes the selection has been copied into the normal
+            clipboard buffer [ + buffer ] by nvim
+        - assumes the hotkey to paste in the terminal is alt+v
+    """
+    # un-escape filename if it is escaped:
+    filename = filename.replace("\\ ", " ")
+    # create a process name [classname] for the new terminal 
+    # TODO: figure out which code is being run and execute the respective interpreter
+    # for now, python (ipython) is assumed:
+    process_name = f"ipython_{filename}".replace("/", "_").replace(" ", "_")
+    terminal = xdotool_search(process_name)
+    if terminal is None:
+        terminal = new_terminal(name=process_name, execute="ipython --matplotlib")
+        sleep(2) # give time for the terminal to spawn
+    xdotool_send(terminal, f"📋\n")
 
 # Main script
 
@@ -160,7 +210,12 @@ if __name__ == "__main__":
             run_python(filename)
         else:
             run_python_selection(filename) # assumes the selection has been copied by nvim!
-    elif filename.endswith(".tex"):
+    elif filename.endswith(".tex") or "latex" in shebang:
         run_latex(filename)
+    if filename.endswith(".md") or "markdown" in shebang:
+        if not run_selection:
+            run_markdown(filename)
+        else:
+            run_markdown_selection(filename) # assumes the selection has been copied by nvim!
     else:
         exit(1)
