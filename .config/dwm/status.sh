@@ -170,7 +170,12 @@ bt(){
     fi
 }
 bt1(){
-    notify-send "bluetooth"
+    device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]")
+    if [[ $device == "\[bluetooth\]" ]]; then
+        notify-send Bluetooth disconnected.
+    else
+        notify-send Bluetooth "connected to $device"
+    fi
 }
 # -----------
 
