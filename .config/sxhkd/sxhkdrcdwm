@@ -122,6 +122,10 @@ super + q
 super + Q
     # handled by dwm
 
+# start an ipython repl
+super + r
+    cd ~; $TERMINAL -e ipython
+
 super + R
 
 # run a program
@@ -189,7 +193,7 @@ super + Return
 
 # new non-transparent terminal
 super + shift + Return
-    cd ~; $TERMINAL nt
+    cd ~; $TERMINAL
 
 # toggle pause / play
 super + shift + equal
