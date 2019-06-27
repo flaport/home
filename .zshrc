@@ -74,6 +74,10 @@ unalias cp
 unalias mv
 unalias rm
 
+# some vim-like aliases:
+alias :q=exit
+alias :x=exit
+alias :e=$EDITOR
 
 
 ## Fish-like autosuggestions

@@ -23,6 +23,14 @@ alias ls='ls -hN --color=auto --group-directories-first'
 alias grep="grep --color=auto"
 
 
+## Aliases
+#-------------------------------------------------------------------------------
+# some vim-like aliases:
+alias :q=exit
+alias :x=exit
+alias :e=$EDITOR
+
+
 ## Python
 #-------------------------------------------------------------------------------
 # create python startup file if it does not exist
