@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if [ -z $1 ]; then
+    echo usage: "mpvcontrol [pause|play]"
+    exit 1
+fi
+
+
+if [[ $1 == "pause" ]]; then
+    # pause all mpv (or at least the ones having an active socket file)
+    for i in $(ls /tmp/mpvsoc*); do
+        echo '{ "command": ["set_property", "pause", true] }' | socat - $i;
+        # remove inactive sockets:
+        if [[ $? != 0 ]]; then
+            rm $i
+        fi
+    done
+fi
+
+if [[ $1 == "play" ]]; then
+    # play all mpv (or at least the ones having an active socket file)
+    for i in $(ls /tmp/mpvsoc*); do
+        echo '{ "command": ["set_property", "pause", false] }' | socat - $i;
+        # remove inactive sockets:
+        if [[ $? != 0 ]]; then
+            rm $i
+        fi
+    done
+fi
+
