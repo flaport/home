@@ -1,6 +1,6 @@
 # First Installation of Arch Linux
 
-***Note:*** These installation instructions were last checked by me on 2019.05.07.
+***Note:*** These installation instructions were last checked by me on 2019.06.26.
 
 ***Note:*** These installation worked definitely for **UEFI** boot mode and should normally also work for **BIOS** boot mode, although I have not performed the latter myself.
 

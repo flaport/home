@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+
+FLAGS=""
+while [[ $1 == "-"* ]]; do
+    FLAGS="$FLAGS"" ""$1"
+    shift
+done
+QUERY=$1
+
+# start transmission daemon if it's not already running
+pgrep -x transmission-da &> /dev/null || (transmission-daemon && notify-send "Starting transmission daemon..." && echo "Starting transmission daemon..."; sleep 3)
+
+# if argument is supplied, assume its a torrent or magnet link and add it 
+[ ! -z "$QUERY" ] && (transmission-remote -a "$QUERY" && notify-send "Torrent added."; exit 0)
+
+# if the next argument is "new-terminal",  open transmission-remote-cli in a new terminal
+[[ "$FLAGS" == *"--new-terminal"* ]] && (($TERMINAL -e transmission-remote-cli); exit 0)
+
+# if the next argument is "stop", open transmission-remote-cli in a new terminal
+if [[ "$FLAGS" == *"--stop"* ]]; then
+    transmission-remote --exit &> /dev/null
+    [[ $? == 0 ]] && STATUS="success" || STATUS = "failed"
+    echo "pkill -3 transmission-daemon"
+    echo $STATUS
+    notify-send "Stopping transmission daemon" "$STATUS"
+    exit 0
+fi
+
+# in all other cases:
+transmission-remote-cli

@@ -35,8 +35,3 @@ export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1 | sed 's|~|'$HOME'
 CONDA_INIT="$( $HOME/.anaconda/bin/conda shell.bash hook 2> /dev/null)"
 [ $? = 0 ] && eval "$CONDA_INIT"
 
-## X settings
-#-------------------------------------------------------------------------------
-if [[ $(tty) != /dev/tty* ]]; then
-    xset r rate 200 45 &> /dev/null # also put here, because it sometimes stops working
-fi

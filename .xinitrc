@@ -37,7 +37,10 @@ xautolock -time 10 -locker ~/.scripts/lock_screen &
 unclutter &
 
 # set cursor speed
-xset r rate 200 45 &
+while true; do
+    xset r rate 200 45 &
+    sleep 10s
+done &
 
 # execute window manager
 exec $WM > ~/.local/share/$WM.log

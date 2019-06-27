@@ -135,11 +135,11 @@ if __name__ == "__main__":
             with open(filename, "r") as file:
                 content = file.read()
             diff = call(["git", "diff", "--color=always", filename])
-            if diff:
-                content = diff
         except:
-            content = filename
-        print(content)
+            if filename == "[add -A]" or filename == "[commit]":
+                call(["git", "-c", "color.status=always", "status"])
+            elif filename == "[reset]":
+                call(["git","diff", "--color=always"])
         exit(0)
     else:
         exit(1)

@@ -140,9 +140,13 @@ super + t
 super + T
     # handled by dwm
 
+# start transmission-cli
 super + u
+    transmission --new-terminal
 
+# stop transmission-cli
 super + U
+    transmission --stop
 
 # shift focus to monitor V
 super + v
