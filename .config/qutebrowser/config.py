@@ -1500,6 +1500,7 @@ c.url.start_pages = [
 # c.zoom.text_only = False
 
 ## Bindings for normal mode
+config.bind("<Ctrl-f>", "hint links spawn --detach mpv --force-window yes {hint-url}")
 # config.bind("'", 'enter-mode jump_mark')
 # config.bind('+', 'zoom-in')
 # config.bind('-', 'zoom-out')
