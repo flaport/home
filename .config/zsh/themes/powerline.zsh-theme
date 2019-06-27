@@ -16,9 +16,9 @@
 
 # colors
 # COLOR1 and COLOR2 will be switched at the end of each segment
-COLOR1=2  # first color
-COLOR2=4  # second color
-COLORU=5  # urgent color
+COLOR1=4  # first color
+COLOR2=6  # second color
+COLORU=13  # urgent color
 COLORT=15 # text colors
 
 

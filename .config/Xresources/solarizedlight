@@ -1,80 +1,71 @@
 /* Solarized light */
 
+
 /* Color definitions */
 
-#define S_yellow        #f8df9c
+#define S_yellow        #b58900
 #define S_orange        #cb4b16
 #define S_red           #dc322f
 #define S_magenta       #d33682
 #define S_violet        #6c71c4
 #define S_blue          #268bd2
 #define S_cyan          #2aa198
-#define S_green         #2aa198
-
-! light
-#define S_background    #fdf6e3
-#define S_foreground    #32302f
+#define S_green         #859900
 
 
-/* Xresources */
+/* Shade definitions */
 
-! transparency
+#define S_base03        #fdf6e3
+#define S_base02        #eee8d5
+#define S_base01        #93a1a1
+#define S_base0         #657b83
+#define S_base1         #586e75
+#define S_base2         #073642
+#define S_base3         #002b36
+
+
+/* Base Colors */
+
+*background:            S_base03
+*foreground:            S_base0
+*cursorColor:           S_base0
+
+
+/* Other Colors */
+
+!! dark dark/light
+*color0:                S_base2
+*color8:                S_base1
+
+!! red dark/light
+*color1:                S_red
+*color9:                S_orange
+
+!! green dark/light
+*color2:                S_green
+*color10:               S_base01
+
+!! yellow dark/light
+*color3:                S_yellow
+*color11:               S_base01
+
+!! blue dark/light
+*color4:                S_blue
+*color12:               S_base02
+
+!! magenta dark/light
+*color5:                S_magenta
+*color13:               S_violet
+
+!! cyan dark/light
+*color6:                S_cyan
+*color14:               S_base01
+
+!! light dark/light
+*color7:                S_base01
+*color15:               S_base02
+
+
+/* Transparency */
+
 *alpha: 0.9
-
-! backgroud
-*background: S_background
-
-! foreground
-*foreground: S_foreground
-
-! cursor color
-*cursorColor: S_blue
-
-! vim: light highlighted foreground
-*color0: S_foreground
-
-! vim: max-characters line mark, git status
-*color1: S_orange
-
-! fish: path
-*color2: S_blue
-
-! fish: user
-*color3: S_magenta
-
-! vim: git added lines
-*color4: S_cyan
-
-! vim: git diff lines, fish: host
-*color5: S_violet
-
-! last line vim: background of _3 (whats this?)
-*color6: #aaaaaa
-
-! vifm: file info
-*color7: S_yellow
-
-! vifm: border color
-*color8: S_green
-
-! vim: trailing spaces
-*color9: S_yellow
-
-! fish: path [urxvt/xterm]
-*color10: S_blue
-
-! vim: keywords, line numbers, search highlighted
-*color11: S_orange
-
-! last line vim: foreground of _3 (whats this?)
-*color12: #ffffff
-
-! vim: strings, completion dialog
-*color13: S_violet
-
-! vim: comments
-*color14: S_cyan
-
-! dark highlighted foreground
-*color15: S_background
-*.alpha: 0.87
