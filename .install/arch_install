@@ -286,7 +286,10 @@ pacman_install cmake
 # netcat: for socket communication
 # pacman_install gnu-netcat
 # sockets
-pacman_install socat
+# pacman_install socat
+# torrents: transmission
+pacman_install transmission-cli
+yay_install transmission-remote-cli-git
 
 ## Graphical server: xorg
 # the graphical server

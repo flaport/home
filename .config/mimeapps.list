@@ -1,4 +1,6 @@
 [Default Applications]
+x-scheme-handler/magnet=transmission.desktop
+application/x-bittorrent=transmission.desktop
 application/x-ipynb+json=open_ipynb.desktop
 text/plain=nvim.desktop
 application/x-shellscript=nvim.desktop
