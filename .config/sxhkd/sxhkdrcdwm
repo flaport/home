@@ -191,6 +191,10 @@ super + Return
 super + shift + Return
     cd ~; $TERMINAL nt
 
+# toggle pause / play
+super + shift + equal
+    notify-send "toggle pause / play"; browsercontrol togglepause; mpvcontrol togglepause
+
 # raise volume
 super + equal
     amixer -D pulse set Master 5%+; ~/.config/dwm/status.sh
@@ -353,12 +357,15 @@ super + F11
 
 super + F12
 
+# mute volume
 XF86AudioMute
     amixer -D pulse set Master 1+ toggle; ~/.config/dwm/status.sh
 
+# lower volume
 XF86AudioLowerVolume
     amixer -D pulse set Master 5%-; ~/.config/dwm/status.sh
 
+# raise volume
 XF86AudioRaiseVolume
     amixer -D pulse set Master 5%+; ~/.config/dwm/status.sh
 
@@ -368,11 +375,13 @@ XF86AudioNext
 XF86AudioPrev
     notify-send XF86AudioPrev "not implemented"
 
+# toggle pause / play
 XF86AudioPause
-    notify-send XF86AudioPause "not implemented"
+    notify-send "toggle pause / play"; browsercontrol togglepause; mpvcontrol togglepause
 
+# toggle pause / play
 XF86AudioPlay
-    notify-send XF86AudioPlay "not implemented"
+    notify-send "toggle pause / play"; mpvcontrol togglepause; browsercontrol togglepause
 
 XF86AudioStop
     notify-send XF86AudioStop "not implemented"

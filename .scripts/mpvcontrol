@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ -z $1 ]; then
-    echo usage: "mpvcontrol [pause|play]"
+    echo usage: "mpvcontrol [pause|play|togglepause|toggleplay]"
     exit 1
 fi
 
@@ -14,6 +14,8 @@ if [[ $1 == "pause" ]]; then
         if [[ $? != 0 ]]; then
             rm $i
         fi
+        # save current state to /tmp/mpvstate
+        echo "paused" > /tmp/mpvstate
     done
 fi
 
@@ -25,6 +27,14 @@ if [[ $1 == "play" ]]; then
         if [[ $? != 0 ]]; then
             rm $i
         fi
+        # save current state to /tmp/mpvstate
+        echo "playing" > /tmp/mpvstate
     done
+fi
+
+if [[ $1 == "togglepause" || $1 == "toggleplay" ]]; then
+    state=$(cat /tmp/mpvstate)
+    [[ $state == "paused" ]] && mpvcontrol play || mpvcontrol pause
+    exit $?
 fi
 
