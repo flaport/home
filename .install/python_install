@@ -105,7 +105,7 @@ echo "installing nodejs for environment: base"
 $CONDA install -y -S nodejs=8 >> $LOG 2>> $ERR
 
 echo "installing jupyterhub for environment: base"
-$CONDA install -y -S -c jupyterhub -y -c conda-forge >> $LOG 2>> $ERR
+$CONDA install -y -S jupyterhub -c conda-forge >> $LOG 2>> $ERR
 
 echo "installing neovim support for environment: base"
 $PIP install neovim >> $LOG 2>> $ERR
@@ -179,6 +179,7 @@ mv $HOME/.anaconda/envs/py36/compiler_compat/ld $HOME/.anaconda/envs/py36/compil
 #-------------------------------------------------------------------------------
 
 JUPYTER="$HOME/.anaconda/bin/jupyter"
+PIP="$HOME/.anaconda/bin/pip"
 
 # jupyterlab extensions
 echo "installing jupyterlab vim extension"
