@@ -1,1 +1,0 @@
-../../.scripts/dwm/autostart.sh
