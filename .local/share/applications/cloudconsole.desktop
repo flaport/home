@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp console.cloud.google.com
+Name=Google Cloud Console
+Icon=/usr/local/share/icons/cloudconsole.png # add this icon yourself.

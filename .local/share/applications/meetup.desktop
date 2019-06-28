@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp meetup.com
+Name=Meetup
+Icon=/usr/local/share/icons/meetup.png # add this icon yourself.

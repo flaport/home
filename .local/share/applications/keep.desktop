@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp keep.google.com
+Name=Google Keep
+Icon=/usr/local/share/icons/keep.png # add this icon yourself.

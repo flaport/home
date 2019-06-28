@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp facebook.com
+Name=Facebook
+Icon=/usr/local/share/icons/facebook.png # add this icon yourself.

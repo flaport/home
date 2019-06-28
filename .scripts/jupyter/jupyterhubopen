@@ -28,7 +28,7 @@ from subprocess import Popen
 
 USER = getpass.getuser()
 HOME = os.path.expanduser("~")
-PATH = os.path.abspath(os.path.expanduser(sys.argv[1]))
+PATH = "" if len(sys.argv) < 2 else os.path.abspath(os.path.expanduser(sys.argv[1]))
 
 # Functions
 
@@ -38,7 +38,7 @@ def open_url(url):
     Args:
         url: the url to open
     """
-    Popen(["chromium", f"--app={url}"])
+    Popen(["webapp", url])
 
 def open_with_jupyterhub(abspath):
     """ Create a new jupyterhub workspace and open file in that workspace
@@ -51,14 +51,14 @@ def open_with_jupyterhub(abspath):
     """
     id = uuid.uuid4().hex[:4]
     relpath = abspath.replace(HOME, "")
-    open_url(f"http://localhost:8000/user/{USER}/lab/workspaces/{id}/tree/{relpath}")
+    open_url(f"localhost:8000/user/{USER}/lab/workspaces/{id}/tree/{relpath}")
 
 
 # Run program
 
 if __name__ == "__main__":
     # first check if the requested path exists
-    if not os.path.exists(PATH):
+    if PATH != "" and not os.path.exists(PATH):
         print("requested path does not exist. exiting.")
         exit(1)
 

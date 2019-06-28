@@ -1,0 +1,5 @@
+[Desktop Entry]
+Exec=webapp calendar.google.com
+Name=Google Calendar
+Comment=Open Google Calendar
+Icon=/usr/local/share/icons/calendar.png # add this icon yourself.

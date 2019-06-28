@@ -176,7 +176,7 @@ filetype .bash*,*.bib,*.c,*.conf,*.css,.flaskenv,.gitconfig,.gitignore,.gitmodul
  
 filetype *.csv,*.ipynb,*.json,
         \ {Open in jupyterhub}
-        \ open_ipynb %f,
+        \ jupyterhubopen %f,
 
 " Open all other files with default system programs (use e to edit them)
 filetype * xdg-open

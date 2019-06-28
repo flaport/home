@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp web.whatsapp.com
+Name=WhatsApp
+Icon=/usr/local/share/icons/whatsapp.png # add this icon yourself.

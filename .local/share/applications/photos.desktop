@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp photos.google.com
+Name=Google Photos
+Icon=/usr/local/share/icons/photos.png # add this icon yourself.

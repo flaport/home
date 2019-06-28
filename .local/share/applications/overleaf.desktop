@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp overleaf.com
+Name=Overleaf
+Icon=/usr/local/share/icons/overleaf.png # add this icon yourself.
