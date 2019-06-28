@@ -12,7 +12,7 @@ from subprocess import call, check_output, CalledProcessError, Popen, PIPE
 
 # get possible layouts
 layouts = os.listdir(os.path.expanduser("~/.scripts/screenlayout"))
-layouts = ["default", "same", "last"] + sorted(
+layouts = ["default_screenlayout", "same", "last"] + sorted(
     [layout for layout in layouts if layout[0] == "["]
 )
 
