@@ -36,3 +36,8 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 export READER="zathura"
 export SUDO_ASKPASS="$HOME/.config/dmenu/dmenu_askpass"
 export TERMINAL="st"
+
+## Anaconda python
+#-------------------------------------------------------------------------------
+CONDA_INIT="$( $HOME/.anaconda/bin/conda shell.bash hook 2> /dev/null)"
+[ $? = 0 ] && eval "$CONDA_INIT"
