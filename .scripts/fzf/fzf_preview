@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+PREVIEW=""
+
+echo2(){>&2 echo $@;}
+
+[[ ! -z $1 ]] && FILENAME=$1 || exit 1
+[[ ! -z $2 ]] && LINES=$2 || LINES=51
+
+if [[ $FILENAME == *.png ]]; then
+    PREVIEW=$FILENAME
+elif [[ $FILENAME == *.py ]]; then
+    PREVIEW=$(cat $FILENAME | highlight --src-lang=python -O ansi --force)
+elif [[ $FILENAME == *.ipynb ]]; then
+    which jupyter &> /dev/null
+    if [[ $? == 0 ]]; then
+        PREVIEW=$(jupyter nbconvert $FILENAME --to python --stdout 2> /dev/null | highlight -O ansi --force)
+    else
+        PREVIEW=$FILENAME
+    fi
+elif [[ $FILENAME == *.htm* ]]; then
+    PREVIEW=$(cat $FILENAME | highlight --src-lang=html -O ansi --force)
+elif [[ $FILENAME == *.md ]]; then
+    PREVIEW=$(cat $FILENAME | highlight --src-lang=markdown -O ansi --force)
+elif [[ $FILENAME == *.pdf ]]; then
+    which pdftotext &> /dev/null
+    if [[ $? == 0 ]]; then
+        PREVIEW=$(pdftotext -q $FILENAME -)
+    else
+        PREVIEW=$FILENAME
+    fi
+elif [[ $FILENAME == *.bash ||  $FILENAME == *.sh ]]; then
+    PREVIEW=$(cat $FILENAME | highlight --src-lang=bash -O ansi --force)
+else
+    PREVIEW=$(cat $FILENAME | highlight -O ansi --force)
+fi
+
+if [[ -z $PREVIEW ]]; then
+    PREVIEW=$FILENAME
+fi
+
+printf "$PREVIEW"
