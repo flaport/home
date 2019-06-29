@@ -146,7 +146,7 @@ def run_latex(filename):
     terminal = xdotool_search(process_name)
     if terminal is None:
         terminal = new_terminal(name=process_name)
-    xdotool_send(terminal, f"🛑latexmk -xelatex -synctex=1 -interaction=nonstopmode {escaped_filename} | less -FKX\n")
+    xdotool_send(terminal, f"🛑latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape {escaped_filename} | less -FKX\n")
 
 def run_markdown(filename):
     """ preview a markdown file with w3m

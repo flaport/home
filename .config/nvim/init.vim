@@ -46,13 +46,19 @@ source ~/.config/nvim/plugins.vim
 inoremap <C-s> <Esc>:w<CR>
 nnoremap <C-s> <Esc>:w<CR>
 
-" exit without saving
-inoremap <C-c> <Esc>:qa!<CR>
-nnoremap <C-c> <Esc>:qa!<CR>
+" exit current buffer without saving
+inoremap <C-c> <Esc>:bd!<CR>
+nnoremap <C-c> <Esc>:bd!<CR>
 
 " save and exit
 inoremap <C-q> <Esc>:wqa<CR>
 nnoremap <C-q> <Esc>:wqa<CR>
+
+" make current split the Only split
+nnoremap <C-o> :only<CR>
+
+" close split Below
+nnoremap <C-b> <C-w>j:q!<CR>
 
 
 "" Insert mode shortcuts
@@ -87,6 +93,11 @@ au FileType tex nmap <Leader>s :call SyncTexForward()<CR>
 " normally, the custom nvim script in the nvim config folder will execute nvr
 " in stead of nvim when a latex file is opened.
 
+"" Custom functions
+"-------------------------------------------------------------------------------
+command! -nargs=* T term <args>
+command! -nargs=* HT split | resize 10 | terminal <args>
+command! -nargs=* VT vsplit | terminal <args>
 
 "" Navigation
 "-------------------------------------------------------------------------------
@@ -103,6 +114,11 @@ nnoremap <C-h> <C-w>h
 " move to split right of current split
 nnoremap <C-l> <C-w>l
 
+" cycle through buffers
+nnoremap <C-]> :bnext<CR>
+nnoremap <C-[> :bprevious<CR>
+" <C-^> switch between last two buffers
+
 
 "" Function keys
 "-------------------------------------------------------------------------------
@@ -112,15 +128,18 @@ nnoremap <F2> :e ~/.config/nvim/init.vim<CR>
 inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
 
 " save and execute file (requires tmux and i3)
-nnoremap <F5> :w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+nnoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
 inoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+
+nnoremap <F6> <Esc>:w<CR>:only<CR>:HT [ $TEXBASE ] && latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -synctex=1 -interaction=nonstopmode<CR><C-w>k
+inoremap <F6> <Esc>:w<CR>:only<CR>:HT [ $TEXBASE ] && latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -synctex=1 -interaction=nonstopmode<CR><C-w>k
 
 " save and execute selection
 vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
 
 " enable spell checker:
-nnoremap <F6> :setlocal spell! spelllang=en_us<CR>
-inoremap <F6> <Esc>:setlocal spell! spelllang=en_us<CR>
+nnoremap <F7> :setlocal spell! spelllang=en_us<CR>
+inoremap <F7> <Esc>:setlocal spell! spelllang=en_us<CR>
 " use zg to add a word to the dictionary
 " use zuw to remove word from dictionary
 " use ]s and [s to navigate between misspelled words
