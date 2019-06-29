@@ -40,5 +40,5 @@ touch $HOME/.pythonstartup
 # set python path from "~/.pythonpath" file
 export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1 | sed 's|~|'$HOME'|g')"
 # enable conda commands
-source "/home/flaport/.anaconda/etc/profile.d/conda.sh"  # commented out by conda initialize
+source "$HOME/.anaconda/etc/profile.d/conda.sh"  # commented out by conda initialize
 
