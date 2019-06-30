@@ -133,11 +133,15 @@ autocmd FileType python,markdown inoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nv
 autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
 autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
 
+:command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
+autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markdown_image<CR>kddk
+
 " compile markdown file on saving
 autocmd BufWritePost *.md silent !~/.scripts/nvim/nvim_run % NOBROWSER
 
 " compile latex file on saving
 autocmd BufWritePost *.tex silent ![ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE || latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode
+
 
 " save and execute selection
 vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
