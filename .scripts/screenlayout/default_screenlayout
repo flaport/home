@@ -102,8 +102,9 @@ for option in options:
 
     filename = os.path.join(
         os.path.expanduser("~/.scripts/screenlayout/"),
-        " ".join("[{}]".format(o) for o in option),
+        "-".join("[{}]".format(o) for o in option),
     )
+    print(filename)
     with open(filename, "w") as file:
         file.write("#!/usr/bin/env bash\n")
         file.write(" ".join(command)+"\n")

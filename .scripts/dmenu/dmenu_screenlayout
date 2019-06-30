@@ -22,6 +22,8 @@ commands = Popen(["printf", "\n".join(layouts)], stdout=PIPE).stdout
 # take the input commands and select one with dmenu
 try:
     command = check_output(["dmenu"] + sys.argv[1:], stdin=commands).decode().strip()
+    if command == "default_screenlayout":
+        os.remove(os.path.expanduser("~/.scripts/screenlayout/last")) # otherwise default_screenlayout will default to last
     # call the final layout command
     call([os.path.join(os.path.expanduser("~/.scripts/screenlayout"), command)])
 except CalledProcessError:
