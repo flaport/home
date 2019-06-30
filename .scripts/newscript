@@ -12,7 +12,7 @@ if len(sys.argv) not in (2, 3):
     exit(1)
 
 # go to scripts folder
-os.chdir(os.abspath(os.expanduser("~/.scripts"))
+os.chdir(os.path.abspath(os.path.expanduser("~/.scripts")))
 
 # constants
 SHEBANGS = {
