@@ -1,4 +1,4 @@
 [Desktop Entry]
-Exec=webapp sheets.google.com
-Name=Google Sheets
-Icon=/usr/local/share/icons/sheets.png # add this icon yourself.
+Exec=webapp slides.google.com
+Name=Google Slides
+Icon=/usr/local/share/icons/slides.png # add this icon yourself.
