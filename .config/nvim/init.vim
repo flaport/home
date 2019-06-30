@@ -1,8 +1,8 @@
-"    _____ _     ____  ____  ____  ____  _____ 
+"    _____ _     ____  ____  ____  ____  _____
 "   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
-"   |  __\| |   | / \||  \/|| / \||  \/|  / \  
-"   | |   | |_/\| |-|||  __/| \_/||    /  | |  
-"   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+"   |  __\| |   | / \||  \/|| / \||  \/|  / \
+"   | |   | |_/\| |-|||  __/| \_/||    /  | |
+"   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 "
 
 "" Plugins
@@ -74,8 +74,8 @@ inoremap jj <Esc>
 " latex synctex forward
 " <Leader>s
 function! SyncTexForward()
-    " either do synctex on the pdf with basename [filename without extension] $TEXBASE, 
-    " or do synctex on the pdf with the same base name as the current tex file if 
+    " either do synctex on the pdf with basename [filename without extension] $TEXBASE,
+    " or do synctex on the pdf with the same base name as the current tex file if
     " the environment variable $TEXBASE does not exist.
     let execstr = "silent ![ $TEXBASE ] && zathura --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf"
     let execstr = execstr." || zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
@@ -128,11 +128,16 @@ nnoremap <F2> :e ~/.config/nvim/init.vim<CR>
 inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
 
 " save and execute file (requires tmux and i3)
-nnoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
-inoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+autocmd FileType python,markdown nnoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+autocmd FileType python,markdown inoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
+autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
 
-nnoremap <F6> <Esc>:w<CR>:only<CR>:HT [ $TEXBASE ] && latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
-inoremap <F6> <Esc>:w<CR>:only<CR>:HT [ $TEXBASE ] && latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
+" compile markdown file on saving
+autocmd BufWritePost *.md silent !~/.scripts/nvim/nvim_run % NOBROWSER
+
+" compile latex file on saving
+autocmd BufWritePost *.tex silent ![ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE || latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode
 
 " save and execute selection
 vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
@@ -160,30 +165,30 @@ autocmd BufEnter * silent! lcd %:p:h
 syntax enable
 
 " underline current line if in insert mode
-:autocmd InsertEnter * set cul
+autocmd InsertEnter * set cul
 
 " remove underline when in normal mode
-:autocmd InsertLeave * set nocul
+autocmd InsertLeave * set nocul
 
 " clear trailing spaces in python files at saving
-autocmd BufWritePre *.py :%s/\s\+$//e
+autocmd BufWritePre *.py %s/\s\+$//e
 
 " enable all Python syntax highlighting features
 let python_highlight_all = 1
 
 " enable undo after file save
 set undofile
-set undodir=$HOME/.config/nvim/undo
+set undodir=$HOME/.local/share/nvim/undo
 
 " save as sudo (make sure SUDO_ASKPASS is set to a password asking program)
 ca w!! w !sudo -A tee '%' &> /dev/null
 
 " remove ugly vertical lines in split
-set fillchars+=vert:\ 
+set fillchars+=vert:\
 
-" fix problems with uncommon shells (fish, zsh, xonsh, ...) and plugins 
+" fix problems with uncommon shells (fish, zsh, xonsh, ...) and plugins
 " running shell commands (neomake, ...)
-set shell=/bin/bash 
+set shell=/bin/bash
 
 " set a column at 90 characters
 set colorcolumn=90

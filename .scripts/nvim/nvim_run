@@ -18,18 +18,23 @@ This script is linked to <F5> in vim.
 import os
 import sys
 from time import sleep
+from textwrap import dedent
 from subprocess import Popen, call, check_output, CalledProcessError
 
 
 # Environment variables
 
+HOME = os.path.expanduser("~")
 TEXBASE = os.environ.get("TEXBASE", "").replace("\\ ", " ") # un-escape
 TERMINAL = os.environ.get("TERMINAL", "")
+BROWSER = os.environ.get("BROWSER", "")
+MDBROWSER = os.environ.get("MDBROWSER", "") # browser to view markdown; usually undefined.
+READER = os.environ.get("READER","")
 
 
 # Functions
 
-def xdotool_search(process_name):
+def xdotool_search(process_name, what="classname"):
     """ search for a terminal [window] id given the classname of the terminal [window]
 
     Args:
@@ -37,7 +42,7 @@ def xdotool_search(process_name):
 
     """
     try:
-        out = check_output(["xdotool", "search", "--classname", process_name])
+        out = check_output(["xdotool", "search", f"--{what}", process_name])
         return out[:-1].decode()
     except CalledProcessError:
         return None
@@ -83,9 +88,44 @@ def new_terminal(name=None, execute=None):
         if terminal is not None:
             return terminal
     # if no terminal is found, raise an error:
-    raise CalledProcessError(
-        f"cannot find terminal with process name {process_name}"
-    )
+    print("failed to open a new terminal")
+    exit(1)
+
+def new_browser(url=None):
+    """ spawn a new browser """
+    if url is None:
+        url = ""
+    elif not url.startswith("http") and not url.startswith("file"):
+        url = "file:///"+url
+    with open(os.devnull) as NULL:
+        if MDBROWSER:
+            command = [MDBROWSER, url]
+        elif call(["which", "surf"], stdout=NULL, stderr=NULL) == 0:
+            command = ["surf", url]
+        elif call(["which", "chromium"], stdout=NULL, stderr=NULL) == 0:
+            command = ["chromium", f"--app={url}"]
+        elif BROWSER:
+            command = [BROWSER, url]
+        else:
+            print("could not find a browser to open url")
+            exit(1)
+    Popen(command)
+
+def new_reader(filename=None):
+    """ spawn a new reader """
+    if filename is None:
+        url = ""
+    with open(os.devnull) as NULL:
+        if call(["which", "zathura"], stdout=NULL, stderr=NULL) == 0:
+            command = ["zathura", filename]
+        elif READER:
+            command = [READER, url]
+        elif BROWSER:
+            command = [BROWSER, url]
+        else:
+            print("could not find a reader to open file")
+            exit(1)
+    Popen(command)
 
 def run_python(filename):
     """ run a python file
@@ -95,7 +135,7 @@ def run_python(filename):
     """
     # un-escape filename if it is escaped:
     filename = filename.replace("\\ ", " ")
-    # create a process name [classname] for the new terminal 
+    # create a process name [classname] for the new terminal
     process_name = f"ipython_{filename}".replace("/", "_").replace(" ", "_")
     escaped_filename = filename.replace(" ", "\\ ")
     terminal = xdotool_search(process_name)
@@ -116,7 +156,7 @@ def run_python_selection(filename):
     """
     # un-escape filename if it is escaped:
     filename = filename.replace("\\ ", " ")
-    # create a process name [classname] for the new terminal 
+    # create a process name [classname] for the new terminal
     process_name = f"ipython_{filename}".replace("/", "_").replace(" ", "_")
     terminal = xdotool_search(process_name)
     if terminal is None:
@@ -132,13 +172,13 @@ def run_latex(filename):
 
     Note:
         if the environment variable TEXBASE is defined, TEXBASE will be used
-        as latex base file on which to run `latexmk`. Setting this environment 
+        as latex base file on which to run `latexmk`. Setting this environment
         variable is useful when the current Latex file is imported (`input`/`include`)
         into another Latex file.
     """
     # un-escape filename if it is escaped:
     filename = filename.replace("\\ ", " ")
-    # create a process name [classname] for the new terminal 
+    # create a process name [classname] for the new terminal
     process_name = f"latex_{filename}".replace("/", "_").replace(" ", "_")
     # run latex on TEXBASE in stead of current file if TEXBASE is defined:
     filename = TEXBASE or filename[:-4]
@@ -146,24 +186,45 @@ def run_latex(filename):
     terminal = xdotool_search(process_name)
     if terminal is None:
         terminal = new_terminal(name=process_name)
-    xdotool_send(terminal, f"🛑latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape {escaped_filename} | less -FKX\n")
+    xdotool_send(terminal, f"🛑latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape {escaped_filename} | less -FKX\n")
 
-def run_markdown(filename):
-    """ preview a markdown file with w3m
+def run_markdown(filename, start_browser=True):
+    """ preview a markdown file
 
     Args:
         filename: the markdown file to preview
     """
     # un-escape filename if it is escaped:
     filename = filename.replace("\\ ", " ")
-    # create a process name [classname] for the new terminal 
+    # create a process name [classname] for the new terminal
     process_name = f"markdown_{filename}".replace("/", "_").replace(" ", "_")
     # escape filename
     escaped_filename = filename.replace(" ", "\\ ")
-    terminal = xdotool_search(process_name)
-    if terminal is None:
-        terminal = new_terminal(name=process_name)
-    xdotool_send(terminal, f"qy\npandoc --to html {escaped_filename} | w3m -T text/html\n")
+    try:
+        content = check_output(["pandoc", "--from", "gfm", "--to", "html", escaped_filename]).decode()
+    except CalledProcessError:
+        print("could not compile markdown to html")
+        exit(1)
+    content = dedent(
+        f"""
+        <!DOCTYPE html>
+        <html>
+        <meta http-equiv="refresh" content="1"> <!-- automatically refresh every second -->
+        <head> <link rel="stylesheet" href="file://{HOME}/.local/share/markdown/github-markdown.css"> </head>
+        <body>
+        <article class="markdown-body">
+        {content}
+        </body>
+        </html>
+        """
+    )
+    with open("/tmp/md.html", "w") as file:
+        file.write(content)
+    browser = xdotool_search("md.html", what="name")
+    with open("/home/flaport/log.log", "w") as file:
+        file.write(str(start_browser))
+    if browser is None and start_browser:
+        browser = new_browser("/tmp/md.html")
 
 def run_markdown_selection(filename):
     """ run a selection code from a markdown file
@@ -178,10 +239,10 @@ def run_markdown_selection(filename):
     """
     # un-escape filename if it is escaped:
     filename = filename.replace("\\ ", " ")
-    # create a process name [classname] for the new terminal 
+    # create a process name [classname] for the new terminal
     # TODO: figure out which code is being run and execute the respective interpreter
     # for now, python (ipython) is assumed:
-    process_name = f"ipython_{filename}".replace("/", "_").replace(" ", "_")
+    process_name = f"markdown_{filename}".replace("/", "_").replace(" ", "_")
     terminal = xdotool_search(process_name)
     if terminal is None:
         terminal = new_terminal(name=process_name, execute="ipython --matplotlib")
@@ -192,11 +253,9 @@ def run_markdown_selection(filename):
 
 if __name__ == "__main__":
     # checks
-    run_selection = False
+    argument = ""
     if len(sys.argv) > 2:
-        run_selection = (sys.argv[2] == "SELECTION")
-        if not run_selection:
-            print("Too many arguments.")
+        argument = sys.argv[2]
 
     # important variables
     filename = sys.argv[1]
@@ -206,16 +265,18 @@ if __name__ == "__main__":
 
     # different cases:
     if filename.endswith(".py") or "python" in shebang:
-        if not run_selection:
-            run_python(filename)
-        else:
+        if argument == "SELECTION":
             run_python_selection(filename) # assumes the selection has been copied by nvim!
+        else:
+            run_python(filename)
     elif filename.endswith(".tex") or "latex" in shebang:
         run_latex(filename)
     if filename.endswith(".md") or "markdown" in shebang:
-        if not run_selection:
-            run_markdown(filename)
-        else:
+        if argument == "SELECTION":
             run_markdown_selection(filename) # assumes the selection has been copied by nvim!
+        elif argument == "NOBROWSER":
+            run_markdown(filename, start_browser=False)
+        else:
+            run_markdown(filename)
     else:
         exit(1)
