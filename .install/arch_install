@@ -416,7 +416,9 @@ pacman_install exfat-utils
 # ntfs-3g: access NTFS network drives
 pacman_install ntfs-3g
 # access media on external device (phone, ...)
-# yay_install simple-mtpfs
+pacman_install libmtp
+pacman_install fuse
+yay_install jmtpfs
 # access ssh file system
 pacman_install sshfs
 # install scripts for bootstrapping new arch installation
