@@ -131,8 +131,8 @@ inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
 nnoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
 inoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
 
-nnoremap <F6> <Esc>:w<CR>:only<CR>:HT [ $TEXBASE ] && latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -synctex=1 -interaction=nonstopmode<CR><C-w>k
-inoremap <F6> <Esc>:w<CR>:only<CR>:HT [ $TEXBASE ] && latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -synctex=1 -interaction=nonstopmode<CR><C-w>k
+nnoremap <F6> <Esc>:w<CR>:only<CR>:HT [ $TEXBASE ] && latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
+inoremap <F6> <Esc>:w<CR>:only<CR>:HT [ $TEXBASE ] && latexmk -xelatex -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
 
 " save and execute selection
 vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
