@@ -78,7 +78,9 @@ super + K
 super + l
     # handled by dwm
 
+# lock computer
 super + L
+    lock_screen
 
 # dmenu mount drive menu
 super + m
