@@ -109,9 +109,11 @@ nnoremap <C-[> :bprevious<CR>
 "-------------------------------------------------------------------------------
 
 " python
-autocmd FileType python nnoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
-autocmd FileType python inoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+autocmd FileType python nnoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+autocmd FileType python inoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
 autocmd FileType python vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
+autocmd FileType python nnoremap <F5> <Esc>:w<CR>:only<CR>:HT python %<CR>G<C-w>k
+autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT python %<CR>G<C-w>k
 
 " tex / latex / xelatex
 autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
