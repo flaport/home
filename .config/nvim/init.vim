@@ -4,7 +4,7 @@
 "   | |   | |_/\| |-|||  __/| \_/||    /  | |
 "   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 "
-
+ 
 "" Plugins
 "-------------------------------------------------------------------------------
 
@@ -60,38 +60,23 @@ nnoremap <C-o> :only<CR>
 " close split Below
 nnoremap <C-b> <C-w>j:q!<CR>
 
+" edit this configuration file (requires set hidden)
+nnoremap <F2> :e ~/.config/nvim/init.vim<CR>
+inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
 
-"" Insert mode shortcuts
-"-------------------------------------------------------------------------------
-
-" exit insert mode
-inoremap jj <Esc>
+" enable spell checker:
+nnoremap <F7> :setlocal spell! spelllang=en_us<CR>
+inoremap <F7> <Esc>:setlocal spell! spelllang=en_us<CR>
+" use zg to add a word to the dictionary
+" use zuw to remove word from dictionary
+" use ]s and [s to navigate between misspelled words
+" use z= to find a suggestion for the misspelled word
 
 
 "" Normal mode shortcuts
 "-------------------------------------------------------------------------------
 
-" latex synctex forward
-" <Leader>s
-function! SyncTexForward()
-    " either do synctex on the pdf with basename [filename without extension] $TEXBASE,
-    " or do synctex on the pdf with the same base name as the current tex file if
-    " the environment variable $TEXBASE does not exist.
-    let execstr = "silent ![ $TEXBASE ] && zathura --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf"
-    let execstr = execstr." || zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
-    exec execstr
-endfunction
-au FileType tex nmap <Leader>s :call SyncTexForward()<CR>
 
-" latex synctex backward
-" Ctrl-Click
-" NOTE: for backward synctex to work, one has to run neovim-remote on port 9999:
-" nvr --servername 127.0.0.1:9999 filename.tex
-" And add the following two lines to zathurarc:
-" set synctex true
-" set synctex-editor-command "nvr --servername 127.0.0.1:9999 +%{line} %{input}"
-" normally, the custom nvim script in the nvim config folder will execute nvr
-" in stead of nvim when a latex file is opened.
 
 "" Custom functions
 "-------------------------------------------------------------------------------
@@ -120,39 +105,48 @@ nnoremap <C-[> :bprevious<CR>
 " <C-^> switch between last two buffers
 
 
-"" Function keys
+"" Run / compile / visualize
 "-------------------------------------------------------------------------------
 
-" edit this configuration file (requires set hidden)
-nnoremap <F2> :e ~/.config/nvim/init.vim<CR>
-inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
+" python
+autocmd FileType python nnoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+autocmd FileType python inoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+autocmd FileType python vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
 
-" save and execute file (requires tmux and i3)
-autocmd FileType python,markdown nnoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
-autocmd FileType python,markdown inoremap <F5> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+" tex / latex / xelatex
 autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
 autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
-
-:command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
-autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markdown_image<CR>kddk
-
-" compile markdown file on saving
-autocmd BufWritePost *.md silent !~/.scripts/nvim/nvim_run % NOBROWSER
-
-" compile latex file on saving
 autocmd BufWritePost *.tex silent ![ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE || latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode
+" <Leader>s  "--> latex synctex forward
+function! SyncTexForward()
+    " either do synctex on the pdf with basename [filename without extension] $TEXBASE,
+    " or do synctex on the pdf with the same base name as the current tex file if
+    " the environment variable $TEXBASE does not exist.
+    let execstr = "silent ![ $TEXBASE ] && zathura --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf"
+    let execstr = execstr." || zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
+    exec execstr
+endfunction
+autocmd FileType tex nmap <Leader>s :call SyncTexForward()<CR>
+" latex synctex backward
+" Ctrl-Click
+" NOTE: for backward synctex to work, one has to run neovim-remote on port 9999:
+" nvr --servername 127.0.0.1:9999 filename.tex
+" And add the following two lines to zathurarc:
+" set synctex true
+" set synctex-editor-command "nvr --servername 127.0.0.1:9999 +%{line} %{input}"
+" normally, the custom nvim script in the nvim config folder will execute nvr
+" in stead of nvim when a latex file is opened.
 
+" markdown
+redir => neovim_server
+silent echo v:servername
+redir end
+autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markdown_image<CR>kddk
+autocmd FileType markdown nnoremap <F5> <Esc>:w<CR>:silent execute '!killall smdv; smdv % -v "'.v:servername'" &> /dev/null & disown'<CR>
+autocmd FileType markdown inoremap <F5> <Esc>:w<CR>:silent execute '!killall smdv; smdv % -v "'.v:servername'" &> /dev/null & disown'<CR>
+autocmd FileType markdown vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
 
-" save and execute selection
-vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
-
-" enable spell checker:
-nnoremap <F7> :setlocal spell! spelllang=en_us<CR>
-inoremap <F7> <Esc>:setlocal spell! spelllang=en_us<CR>
-" use zg to add a word to the dictionary
-" use zuw to remove word from dictionary
-" use ]s and [s to navigate between misspelled words
-" use z= to find a suggestion for the misspelled word
+autocmd BufWritePost *.md silent !smdv --sync %
 
 
 "" Settings

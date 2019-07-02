@@ -17,7 +17,7 @@ if __name__ == "__main__":
         print(s_orig)
         exit(1)
 
-    if not s.split(" [")[0].startswith("[") or not s.split(") ")[-1].endswith(")"):
+    if not s.split(" ![")[0].startswith("[") or not s.split(") ")[-1].endswith(")"):
         print(s_orig)
         exit(1)
 
