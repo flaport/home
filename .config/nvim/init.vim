@@ -84,7 +84,7 @@ nnoremap <C-l> <C-w>l
 
 " cycle through buffers
 nnoremap <C-]> :bnext<CR>
-nnoremap <C-[> :bprevious<CR>
+" nnoremap <C-[> :bprevious<CR> " disabled as this is the Esc combination
 " <C-^> switch between last two buffers
 
 
@@ -124,7 +124,6 @@ autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT python %<CR>G<C-w>
 
 autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
 autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
-autocmd BufWritePost *.tex silent ![ -f $TEXBASE ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE || latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode
 " <Leader>s  "--> latex synctex forward
 function! SyncTexForward()
     " either do synctex on the pdf with basename [filename without extension] $TEXBASE,
@@ -155,7 +154,8 @@ autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markd
 autocmd FileType markdown nnoremap <F5> <Esc>:w<CR>:silent execute '!killall smdv; smdv % -v "'.v:servername'" &> /dev/null & disown'<CR>
 autocmd FileType markdown inoremap <F5> <Esc>:w<CR>:silent execute '!killall smdv; smdv % -v "'.v:servername'" &> /dev/null & disown'<CR>
 autocmd FileType markdown vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
-
+autocmd FileType markdown nnoremap <Leader>d "ayi(:execute ":edit ".@a<CR>:silent !smdv --sync %<CR>
+autocmd FileType markdown nnoremap <Leader>s :silent !smdv --sync %<CR>
 autocmd BufWritePost *.md silent !smdv --sync %
 
 
