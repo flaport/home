@@ -8,13 +8,26 @@
 # NOTE: this script should be placed in your path such that it takes
 #       priority over the nvim binary `/usr/bin/nvim`.
 
-if [ -f /usr/bin/nvr ]; then
-     if [ ! $2 ]; then
-         if [[ $1 == *".tex" ]]; then
-             /usr/bin/nvr --servername 127.0.0.1:9999 $@
-             exit 0
-         fi
-     fi
+if [ ! $2 ]; then
+
+    # if it's a tex file and if nvr is installed, launch on port 9999:
+    if [ -f /usr/bin/nvr ] && [[ $1 == *".tex" ]]; then
+         /usr/bin/nvr --servername 127.0.0.1:9999 $@
+         exit 0
+    fi
+
+    # if the argument does not exist and if theres an executable in path
+    # open the executable for editing.
+    if [ ! -f $1 ]; then
+        exe=$(which $1 2> /dev/null)
+        if [[ $? == 0 ]]; then
+            echo $exe
+            /usr/bin/nvim $exe
+            exit 0
+        fi
+    fi
+
 fi
 
+# all other cases, just open neovim with all the arguments supplied.
 /usr/bin/nvim $@
