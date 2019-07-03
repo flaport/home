@@ -21,6 +21,7 @@
 import os
 import sys
 import time
+import socket
 import argparse
 import textwrap
 import subprocess
@@ -69,7 +70,7 @@ parser.add_argument(
 parser.add_argument(
     "-v",
     "--nvim-address",
-    default="localhost:9877",
+    default="127.0.0.1:9877",
     help="address or socket to communicate with neovim (requires neovim-remote)",
 )
 parser.add_argument(
@@ -101,6 +102,7 @@ parser.add_argument(
 )
 
 ARGS = parser.parse_args()
+ARGS.home = os.path.abspath(os.path.expanduser(ARGS.home))
 
 
 ## Blueprints.
@@ -118,7 +120,7 @@ def browser_open(filename=""):
     if filename.startswith("/"):
         filename = f"{ARGS.home}{filename}"
     url = os.path.abspath(os.path.expanduser(filename)).replace(
-        ARGS.home, f"http://localhost:{ARGS.port}"
+        ARGS.home, f"http://127.0.0.1:{ARGS.port}"
     )
     print(f"smdv: opening browser at {url}")
     with open(os.devnull, "w") as NULL:
@@ -140,8 +142,12 @@ def create_app():
 
 
 def server_start():
-    print("smdv: starting server...")
-    create_app().run(debug=False, port=ARGS.port, threaded=True)
+    print(f"smdv: server started at http://127.0.0.1:{ARGS.port}")
+    old_stdout, old_stderr = sys.stdout, sys.stderr
+    with open(os.devnull, "w") as devnul:
+        sys.stdout, sys.stderr = devnul, devnul
+        create_app().run(debug=False, port=ARGS.port, threaded=True)
+    sys.stdout, sys.stderr = old_stdout, old_stderr
 
 
 def server_status():
@@ -181,9 +187,17 @@ def neovim_remote_open(filename=""):
     path = os.path.abspath(os.path.expanduser(filename))
     if not os.path.exists(path):
         return
-    subprocess.Popen(
-        [ARGS.terminal, "-e", "nvr", "-s", "--servername", ARGS.nvim_address, path]
-    )
+    socket = ARGS.nvim_address.strip()
+    if not ":" in socket:  # unix socket
+        dirname = os.path.dirname(socket)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+    if socket_in_use(socket):
+        subprocess.Popen(["nvr", "-s", "--nostart", "--servername", socket, path])
+    else:
+        subprocess.Popen(
+            [ARGS.terminal, "-e", "nvr", "-s", "--servername", socket, path]
+        )
 
 
 def is_binary_file(filepathname):
@@ -198,6 +212,30 @@ def is_binary_file(filepathname):
         return True
     else:
         return False
+
+
+def unix_socket_in_use(address):
+    if os.path.exists(address):
+        return True
+    return False
+
+
+def inet_socket_in_use(address):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    host, port = address.split(":")
+    result = sock.connect_ex((host, int(port)))
+    if result == 0:
+        return True
+    else:
+        return False
+    sock.close()
+
+
+def socket_in_use(address):
+    if ":" in address:
+        return inet_socket_in_use(address)
+    else:
+        return unix_socket_in_use(address)
 
 
 ## Converters.
@@ -215,12 +253,12 @@ def body2html(body: str):
     stylesheet = ARGS.md_css_cdn
     if not stylesheet.startswith("http"):
         stylesheet = os.path.abspath(os.path.expanduser(stylesheet)).replace(
-            ARGS.home, f"http://localhost:{ARGS.port}/@static"
+            ARGS.home, f"http://127.0.0.1:{ARGS.port}/@static"
         )
     jquery = ARGS.jquery_cdn
     if not jquery.startswith("http"):
         jquery = os.path.abspath(os.path.expanduser(jquery)).replace(
-            ARGS.home, f"http://localhost:{ARGS.port}/@static"
+            ARGS.home, f"http://127.0.0.1:{ARGS.port}/@static"
         )
     html = textwrap.dedent(
         f"""
@@ -271,10 +309,14 @@ def dir2html(path, full=True):
     """
     if path.endswith("/"):
         path = path[:-1]
-    url = lambda path: path.replace(ARGS.home, f"http://localhost:{ARGS.port}").replace(
+    url = lambda path: path.replace(ARGS.home, f"http://127.0.0.1:{ARGS.port}").replace(
         " ", "%20"
     )
-    filenames = {f"<h1>{path}</h1>": None}
+    if ARGS.home == os.path.expanduser("~"):
+        displayed_path = path.replace(os.path.expanduser("~"), "~")
+    else:
+        displayed_path = path.replace(os.path.dirname(ARGS.home)+"/", "")
+    filenames = {f"<h1>{displayed_path}/</h1>": None}
     if path != ARGS.home:
         filenames.update({"<b>⬆️  ..</b>": url(os.path.dirname(path))})
     listdir = sorted([p for p in os.listdir(path)], key=str.upper)
@@ -332,8 +374,12 @@ def md2html(content: str = "", path: str = "", full=True):
             content = file.read()
     if path and full:
         path = path.replace(ARGS.home, "")
+        if ARGS.home == os.path.expanduser("~"):
+            displayed_path = (ARGS.home+path).replace(os.path.expanduser("~"), "~")
+        else:
+            displayed_path = (ARGS.home+path).replace(os.path.dirname(ARGS.home)+"/", "")
         content = (
-            f"# {ARGS.home+path}\n"
+            f"# {displayed_path}\n"
             f"[🖊 edit]({f'{os.path.basename(path)}/@edit'})&nbsp;&nbsp;&nbsp;&nbsp;"
             f"[📁 dir]({f'{os.path.dirname(path)}'})\n"
             f"{content}"
@@ -350,9 +396,11 @@ def md2html(content: str = "", path: str = "", full=True):
         .decode()
         .strip()
     )
-    if path: # fix urls.
+    if path:  # fix urls.
         curdir = os.path.dirname(path).replace(ARGS.home, "")
-        html_out = html_out.replace('<img src="', f'<img src="/@static{curdir}/')
+        html_out = html_out.replace(
+            '<img src="', f'<img src="/@static{curdir}/'
+        ).replace("@static//", "@static/")
     if not full:
         return html_out
     html = body2html(html_out)
@@ -442,7 +490,7 @@ def view_other(path=""):
         return md2html(content=f"```\n{content}\n```", path=path)
     else:
         return flask.redirect(
-            path.replace(ARGS.home, f"http://localhost:{ARGS.port}/@static")
+            path.replace(ARGS.home, f"http://127.0.0.1:{ARGS.port}/@static")
         )
 
 
@@ -450,6 +498,7 @@ def view_other(path=""):
 
 if __name__ == "__main__":
     try:
+        # ARGS.nvim_address = "127.0.0.1:9999"
         # if asked to stop server, stop server and exit
         if ARGS.stop:
             server_stop()
@@ -473,6 +522,11 @@ if __name__ == "__main__":
             with open("/tmp/smdv", "w") as file:
                 file.write(filename)
             exit(0)
+
+        # kill other instance of smdv at this port if there is one running:
+        if inet_socket_in_use(f"127.0.0.1:{ARGS.port}"):
+            subprocess.call(["smdv", "--port", f"{ARGS.port}", "--stop"])
+            time.sleep(1)  # give some time to kill the old server
 
         # open a browser at the current filename. Most browsers will wait for
         # a few miliseconds to get a reply from the server...
