@@ -11,6 +11,7 @@ inode/directory=vifm.desktop
 application/pdf=org.pwmt.zathura.desktop
 x-scheme-handler/magnet=transmission.desktop
 application/x-bittorrent=transmission.desktop
+video/mp4=mpv.desktop
 
 [Added Associations]
 application/x-ipynb+json=jupyterhubopen.desktop
@@ -26,3 +27,4 @@ application/octet-stream=fdtd-solutions.desktop;klayout.desktop;
 inode/directory=code-oss.desktop;nemo.desktop;vifm.desktop
 x-scheme-handler/magnet=transmission.desktop
 application/x-bittorrent=transmission.desktop
+video/mp4=mpv.desktop;
