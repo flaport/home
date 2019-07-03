@@ -1,0 +1,34 @@
+#!/usr/bin/python3
+import os
+import argparse
+import subprocess
+
+# parse arguments
+parser = argparse.ArgumentParser(description="convert svg file to pdf")
+parser.add_argument("filename", type=str, help="file to convert")
+parser.add_argument("-d", "--dpi", type=int, default=96, help="file to convert")
+args = parser.parse_args()
+
+# get filename
+filename = args.filename
+if filename.endswith(".svg"):
+    filename = os.path.abspath(filename[:-4])
+
+# check if file exists
+if not os.path.exists(filename + ".svg"):
+    raise ValueError(f"file {filename}.svg not found.")
+
+# make command
+command = [
+    "inkscape",
+    "--export-area-drawing",  # -D
+    "--without-gui",  # -z
+    "--export-dpi",  # -d
+    str(args.dpi),
+    f"--file={filename}.svg",  # -f
+    f"--export-png={filename}.png",  # -e
+]
+print(" ".join(command))
+
+# run command
+subprocess.call(command)

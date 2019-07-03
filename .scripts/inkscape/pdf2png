@@ -1,0 +1,33 @@
+#!/usr/bin/python3
+import os
+import argparse
+import subprocess
+
+# parse arguments
+parser = argparse.ArgumentParser(description="convert pdf file to png")
+parser.add_argument("filename", type=str, help="file to convert")
+parser.add_argument("-d", "--dpi", type=int, default=96, help="file to convert")
+args = parser.parse_args()
+
+# get filename
+filename = args.filename
+if filename.endswith(".pdf"):
+    filename = os.path.abspath(filename[:-4])
+
+# check if file exists
+if not os.path.exists(filename + ".pdf"):
+    raise ValueError(f"file {filename}.pdf not found.")
+
+# make command
+command = [
+    "inkscape",
+    "--export-dpi",  # -d
+    str(args.dpi),
+    "--export-png",  # -e
+    f"{filename}.png",
+    f"{filename}.pdf",
+]
+print(" ".join(command))
+
+# run command
+subprocess.call(command)
