@@ -34,7 +34,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PYTHONSTARTUP="$HOME/.pythonstartup"
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export READER="zathura"
-export SUDO_ASKPASS="$HOME/.config/dmenu/dmenu_askpass"
+export SUDO_ASKPASS="dmenu_askpass"
 export TERMINAL="st"
 
 ## Anaconda python
