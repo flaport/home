@@ -60,6 +60,9 @@ nnoremap <C-o> :only<CR>
 " close split Below
 nnoremap <C-b> <C-w>j:q!<CR>
 
+" go to edit mode in terminal emulator:
+tnoremap <Esc> <C-\><C-n>
+
 
 "" Custom functions
 "-------------------------------------------------------------------------------
@@ -71,16 +74,47 @@ command! -nargs=* VT vsplit | terminal <args>
 "-------------------------------------------------------------------------------
 
 " move to split below of current split
-nnoremap <C-j> <C-w>j
+nnoremap <C-j> <C-w>j<C-A>
+tnoremap <C-j> <C-\><C-N><C-w>j " navigation out of terminal mode
 
 " move to split above of current split
 nnoremap <C-k> <C-w>k
+tnoremap <C-k> <C-\><C-N><C-w>k " navigation out of terminal mode
 
 " move to split left of current split
 nnoremap <C-h> <C-w>h
+tnoremap <C-h> <C-\><C-N><C-w>h " navigation out of terminal mode
 
 " move to split right of current split
 nnoremap <C-l> <C-w>l
+tnoremap <C-l> <C-\><C-N><C-w>l " navigation out of terminal mode
+
+" make current split the only split
+nnoremap <C-o> :only<cr>
+tnoremap <C-o> <C-\><C-N>:only<cr>
+
+" swap splits (from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946)
+function! DoWindowSwap()
+    let g:markedWinNum = 0
+    "Mark destination
+    let curNum = winnr()
+    let curBuf = bufnr( "%" )
+    exe g:markedWinNum . "wincmd w"
+    "Switch to source and shuffle dest->source
+    let markedBuf = bufnr( "%" )
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' curBuf
+    "Switch to dest and shuffle source->dest
+    exe curNum . "wincmd w"
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' markedBuf 
+endfunction
+" zoom split:
+nnoremap <silent> <leader>z :call DoWindowSwap()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
+
+" move current split in small horizontal split and make split behind the main
+" one.
+
 
 " cycle through buffers
 nnoremap <C-]> :bnext<CR>
@@ -116,8 +150,8 @@ inoremap <F4> <Esc>:<C-p><CR>
 autocmd FileType python nnoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
 autocmd FileType python inoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
 autocmd FileType python vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
-autocmd FileType python nnoremap <F5> <Esc>:w<CR>:only<CR>:HT python %<CR>G<C-w>k
-autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT python %<CR>G<C-w>k
+autocmd FileType python nnoremap <F5> <Esc>:w<CR>:only<CR>:HT ipython -i %<CR>G<C-w>k
+autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT ipython -i %<CR>G<C-w>k
 
 
 " tex / latex / xelatex
