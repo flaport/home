@@ -2,4 +2,4 @@
 	email = floris.laporte@gmail.com
 	name = flaport
 [credential]
-	helper = cache --timeout=43200
+	helper = cache --timeout=100000

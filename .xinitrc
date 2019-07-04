@@ -18,7 +18,7 @@ xcompmgr &
 
 # update color database of xcompmgr
 if [ -f ~/.Xresources ]; then
-    xrdb ~/.Xresources
+    xrdb ~/.Xresources &
 fi
 
 # export your desired screenlayout with `arandr`

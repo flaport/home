@@ -74,6 +74,9 @@ endif
 " set custom status line look
 set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
 
+" disable delete warning (it's in the vifm trash anyway)
+set confirm-=delete
+
 " Marks
 " ------------------------------------------------------------------------------
 
@@ -164,10 +167,15 @@ nnoremap a cW
 " Toggle wrap setting on ,w key
 nnoremap ,w :set wrap!<cr>
 
+" Make file executable
+nnoremap x :!chmod a+x %f<cr>
+
+" Remove executable flag
+nnoremap X :!chmod a-x %f<cr>
+
 
 " Filetypes
 " ------------------------------------------------------------------------------
-
 
 filetype .bash*,*.bib,*.c,*.conf,*.css,.flaskenv,.gitconfig,.gitignore,.gitmodules,*.h,license,LICENSE,*.log,*.md,*.nginx,*.py,*.pyx,*.rst,*rc,*.service,*.sh,*.sty,*.tex,*.txt,.X*,*.yaml,.z*,*.zsh
         \ {Open in vim}
@@ -177,6 +185,16 @@ filetype .bash*,*.bib,*.c,*.conf,*.css,.flaskenv,.gitconfig,.gitignore,.gitmodul
 filetype *.csv,*.ipynb,*.json,
         \ {Open in jupyterhub}
         \ jupyterhubopen %f,
+
+" klayout
+filetype *.gds,
+        \ {Open in Klayout}
+        \ klayout %f,
+
+" fdtd-solutions
+filetype *.fsp,
+        \ {Open in Lumerical FDTD Solutions}
+        \ fdtd-solutions %f,
 
 " Open all other files with default system programs (use e to edit them)
 filetype * xdg-open
@@ -237,7 +255,7 @@ set classify='📁:dir:/, :exe:, :reg:, :link:'
 " various file names
 set classify+=' ::../::, ::*.sh::, ::*.[hc]pp::, ::*.[hc]::, ::/^copying|license$/::, ::.git*::, ::*.epub,,*.fb2,,*.djvu::, ::*.pdf::, ::*.htm,,*.html,,**.[sx]html,,*.xml::'
 " config files
-set classify+='⚙️ ::*.conf,,.*.conf,,*rc,,.*rc,,.X*,,.*config,,.*profile::'
+set classify+=' ::*.conf,,.*.conf,,*rc,,.*rc,,.X*,,.*config,,.*profile::'
 " archives
 set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
 " images
