@@ -12,7 +12,7 @@ def is_leapyear(year: int):
     feb29 = datetime(year, 2, 28) + timedelta(days=1)
     return int(feb29.strftime("%d")) == 29
 
-today = datetime.today()
+today = datetime.today() - timedelta(days=5)
 day = int(today.strftime("%d"))
 month = int(today.strftime("%m"))
 last_month = int((month-2)%12+1)
@@ -44,6 +44,13 @@ calendar += "  " + ("--|--"*8)[2:-2] + "  \n"
 for i in range(0, len(days), 7):
     calendar += "  | " + " | ".join([f"{i:02d}" for i in days[i:i+7]]) + " | \n"
     calendar += "  " + ("--|--"*8)[2:-2] + "  \n"
-calendar = calendar.replace(f" {day:02d} ", f"[{day:02d}]")
+
+if day < 15:
+    calendar = calendar.replace(f" {day:02d} ", f"[{day:02d}]", 1)
+else:
+    l = len(calendar) // 3
+    calendar1, calendar2 = calendar[:l], calendar[l:]
+    calendar2 = calendar2.replace(f" {day:02d} ", f"[{day:02d}]")
+    calendar = calendar1+calendar2
 
 print(calendar)
