@@ -159,7 +159,7 @@ c.TerminalIPythonApp.display_banner = False
 #  it is not applied if there are no more arguments on the line, and '2' for
 #  'full' autocall, where all callable objects are automatically called (even if
 #  no arguments are present).
-c.InteractiveShell.autocall = 2
+c.InteractiveShell.autocall = 1
 
 ## Autoindent IPython code entered interactively.
 c.InteractiveShell.autoindent = True
