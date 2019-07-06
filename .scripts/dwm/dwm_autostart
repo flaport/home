@@ -6,24 +6,30 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
 
-enable_hotkeys() {
-    sxhkd -c ~/.config/sxhkd/sxhkdrcdwm
-}
-enable_hotkeys &
+# enable hotkeys
+sxhkd -c ~/.config/sxhkd/sxhkdrcdwm &
 
-
+# update dwm status bar
 while true; do
     dwm_status
     sleep 10s
 done &
 
-
-update_weather(){
+# update weather report every hour
+while true; do
     curl -s wttr.in > ~/.cache/weatherreport
     printf "%s" "$(sed '16q;d' ~/.cache/weatherreport | grep -wo "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/☔ /g" | tr -d '\n')" > ~/.cache/weatherreportshort
     sed '13q;d' ~/.cache/weatherreport | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " ❄️",$1 "°","🌞",$2 "°"}' >> ~/.cache/weatherreportshort
-}
-while true; do
-    update_weather
     sleep 3600s
+done &
+
+# check for critical battery status every minute
+while true; do
+    battery=$(acpi -b | grep Discharging | grep ", 5%" 2> /dev/null)
+    [[ $? == 0 ]] && notify-send "Battery Critical" $battery
+    battery=$(acpi -b | grep Discharging | grep ", 1%" 2> /dev/null)
+    [[ $? == 0 ]] && notify-send "Battery Critical" $battery
+    battery=$(acpi -b | grep Discharging | grep ", 0%" 2> /dev/null)
+    [[ $? == 0 ]] && notify-send "Battery Critical" $battery
+    sleep 60
 done &
