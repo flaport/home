@@ -424,6 +424,9 @@ def query_reload():
         with open("/tmp/smdv", "r") as file:
             content = file.read()
         os.remove("/tmp/smdv")
+        content = content.replace(ARGS.home, "")
+        if content == "":
+            content = "/"
         return content
     else:
         return ""
@@ -513,14 +516,15 @@ if __name__ == "__main__":
         filename = ARGS.filename
         if filename is None:
             filename = ARGS.home
-        filename = os.path.abspath(os.path.expanduser(filename)).replace(ARGS.home, "")
+        full_filename = os.path.abspath(os.path.expanduser(filename))
+        filename = full_filename.replace(ARGS.home, "")
         if filename == "":
             filename = "/"
 
         # sync current filename and exit (requires a running server)
         if ARGS.sync:
             with open("/tmp/smdv", "w") as file:
-                file.write(filename)
+                file.write(full_filename)
             exit(0)
 
         # kill other instance of smdv at this port if there is one running:

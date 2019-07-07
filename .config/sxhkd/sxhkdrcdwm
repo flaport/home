@@ -96,7 +96,7 @@ super + n
 
 # open ~/Notes with smdv
 super + N
-    smdv -i; sleep 1; echo Notes > /tmp/smdv
+    notes
 
 # activate all tags to which current window belongs
 super + o
