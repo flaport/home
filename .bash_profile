@@ -14,11 +14,10 @@
 # current shell: zsh
 #
 
-## Path
+## Anaconda python
 #-------------------------------------------------------------------------------
-# web apps
-export PATH="$HOME/.webapps:$PATH"
-
+CONDA_INIT="$( $HOME/.anaconda/bin/conda shell.bash hook 2> /dev/null)"
+[ $? = 0 ] && eval "$CONDA_INIT"
 
 ## Environment variables
 #-------------------------------------------------------------------------------
@@ -37,7 +36,3 @@ export READER="zathura"
 export SUDO_ASKPASS="dmenu_askpass"
 export TERMINAL="st"
 
-## Anaconda python
-#-------------------------------------------------------------------------------
-CONDA_INIT="$( $HOME/.anaconda/bin/conda shell.bash hook 2> /dev/null)"
-[ $? = 0 ] && eval "$CONDA_INIT"

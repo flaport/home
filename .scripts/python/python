@@ -1,0 +1,4 @@
+#!/bin/sh
+python=$(which -a python 2> /dev/null | head -2 | tail -1)
+which ipython > /dev/null 2> /dev/null
+[ $? -eq 0 ] && [ -z $1 ] && ipython || $python $@
