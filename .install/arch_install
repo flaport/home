@@ -568,6 +568,9 @@ pip2_install google-api-python-client
 pip2_install google-auth-httplib2
 pip2_install google-auth-oauthlib
 
+# smdv: simple markdown viewer
+pip3_install smdv
+
 
 ## Services
 #-------------------------------------------------------------------------------
