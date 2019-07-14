@@ -1,5 +1,5 @@
 [Default Applications]
-application/x-ipynb+json=jupyterhubopen.desktop
+application/x-ipynb+json=jupyter.desktop
 text/plain=nvim.desktop
 application/x-shellscript=nvim.desktop
 text/x-csrc=nvim.desktop
@@ -14,7 +14,7 @@ application/x-bittorrent=transmission.desktop
 video/mp4=mpv.desktop
 
 [Added Associations]
-application/x-ipynb+json=jupyterhubopen.desktop
+application/x-ipynb+json=jupyter.desktop
 text/plain=nvim.desktop
 application/x-shellscript=nvim.desktop
 text/x-csrc=nvim.desktop
