@@ -59,7 +59,7 @@ PIP="$HOME/.anaconda/bin/pip"
 NPM="$HOME/.anaconda/bin/npm"
 
 echo "installing base packages for environment: base [takes long!]"
-$CONDA install -y -S jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib tensorflow keras h5py flask pandoc pylint mypy line_profiler pytz simplejson jupyterlab >> $LOG 2>> $ERR
+$CONDA install -y -S jupyter ipykernel ipywidgets tqdm numpy pandas cython pillow scikit-learn matplotlib tensorflow keras h5py flask pandoc pylint pydocstyle mypy line_profiler pytz simplejson jupyterlab >> $LOG 2>> $ERR
 
 echo "installing pytorch for environment: base [takes long!]"
 $CONDA install -y -S -c pytorch pytorch >> $LOG 2>> $ERR
@@ -122,7 +122,7 @@ if [ ! -d "$HOME/.anaconda/envs/py2" ]; then
     $CONDA create -y -n py2 python=2.7 >> $LOG 2>> $ERR
 fi
 echo "installing base packages for environment: py2"
-$CONDA install -y -S -n py2 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets h5py flask pandoc pylint line_profiler pytz simplejson >> $LOG 2>> $ERR
+$CONDA install -y -S -n py2 ipykernel tqdm numpy pandas cython pillow scikit-learn matplotlib ipywidgets h5py flask pandoc pylint pydocstyle line_profiler pytz simplejson >> $LOG 2>> $ERR
 echo "installing pytorch for environment: py2"
 $CONDA install -y -S -n py2 pytorch -c pytorch >> $LOG 2>> $ERR
 echo "installing ipykernel for environment: py2"

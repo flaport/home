@@ -55,4 +55,5 @@
         "%DOC%"
     ],
     "vim.useSystemClipboard": true,
+    "python.linting.pydocstyleEnabled": true,
 }
