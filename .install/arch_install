@@ -420,7 +420,7 @@ pacman_install ntfs-3g
 # access media on external device (phone, ...)
 pacman_install libmtp
 pacman_install fuse
-yay_install jmtpfs # android access
+yay_install android-file-transfer # android access
 # access ssh file system
 pacman_install sshfs
 # install scripts for bootstrapping new arch installation
