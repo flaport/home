@@ -10,8 +10,8 @@
 import os
 from textwrap import dedent
 
-USERNAME = os.getlogin()
-HOME = "/home/{}".format(USERNAME)
+USER = os.getlogin()
+HOME = "/home/{}".format(USER)
 
 # jupyterhub service
 # -------------------------------------------------------- #
@@ -32,6 +32,14 @@ with open(os.path.join(HOME, ".config/openvpn/openvpn.service"), "r") as file:
 with open("/etc/systemd/system/openvpn.service", "w") as file:
     file.write(openvpn.format(home=HOME))
 
+# syncthing service
+# -------------------------------------------------------- #
+
+with open(os.path.join(HOME, ".config/syncthing/syncthing.service"), "r") as file:
+    syncthing = file.read()
+
+with open("/etc/systemd/system/syncthing.service", "w") as file:
+    file.write(syncthing.format(user=USER, home=HOME))
 
 # autologon getty service
 # -------------------------------------------------------- #
@@ -49,5 +57,5 @@ with open(filename, "w") as file:
         ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin {username} --noclear %I $TERM
         Type=simple
         """
-        ).format(username=USERNAME)
+        ).format(username=USER)
     )

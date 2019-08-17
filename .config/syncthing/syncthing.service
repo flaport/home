@@ -1,0 +1,11 @@
+[Unit]
+Description=Syncthing
+After=syslog.target network.target
+
+[Service]
+User={user}
+WorkingDirectory={home}
+ExecStart=/usr/bin/syncthing --no-browser
+
+[Install]
+WantedBy=multi-user.target

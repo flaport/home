@@ -239,6 +239,8 @@ pacman_install neovim
 link /usr/bin/nvim /usr/bin/vim
 # rsync: safe and secure copy & backup
 pacman_install rsync
+# syncthing: syncronization between devices
+pacman_install syncthing
 # atool gives information about archives
 pacman_install atool
 # zip
@@ -578,6 +580,7 @@ pip3_install smdv
 
 echo $password | sudo -S $HOME/.install/services >> $LOG 2>> $ERR
 echo $password | sudo -S systemctl daemon-reload >> $LOG 2>> $ERR
+systemctl_enable syncthing.service
 systemctl_enable jupyterhub.service
 
 
