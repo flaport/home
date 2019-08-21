@@ -497,7 +497,8 @@ systemctl_enable mpd
 
 ## Browsers
 # pacman_install firefox
-pacman_install chromium
+# pacman_install chromium
+# yay_install ungoogled_chromium
 pacman_install qutebrowser
 pacman_install webkit2gtk # surf build dependency
 pacman_install gcr # surf build dependency
