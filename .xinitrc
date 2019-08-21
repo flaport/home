@@ -10,8 +10,12 @@
 # select window manager [i3 / dwm]
 export WM=dwm
 
-set wallpaper
-set_wallpaper ~/.config/wallpaper.png &
+# set wallpaper
+# set_wallpaper ~/.config/wallpaper.png &
+while true; do
+    process_wallpaper &
+    sleep 1800
+done &
 
 # enable transparent windows
 xcompmgr &
