@@ -220,6 +220,7 @@ link() {
 ## Security
 pacman_install gnupg # gpg --full-gen-key (generate gpg key)
 pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
+pacman_install passff-host  # host for the firefox extension
 
 ## Source control
 pacman_install git

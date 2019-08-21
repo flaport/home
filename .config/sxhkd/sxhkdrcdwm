@@ -70,7 +70,9 @@ super + j
 
 super + J
 
+# run passmenu
 super + k
+    passmenu -l 20
 
 super + K
 
