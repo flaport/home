@@ -390,6 +390,8 @@ pacman_install inkscape
 ## Office
 # open-source office
 # pacman_install libreoffice
+# open-source office with better compatibility with microsoft office
+# yay_install onlyoffice-bin
 # sqlite database browser
 # pacman_install sqlitebrowser
 
