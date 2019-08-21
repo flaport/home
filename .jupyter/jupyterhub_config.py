@@ -405,7 +405,12 @@
 # c.JupyterHub.template_vars = {}
 
 ## Extra settings overrides to pass to the tornado application.
-# c.JupyterHub.tornado_settings = {}
+c.JupyterHub.tornado_settings = {
+    'headers': {
+        'Content-Security-Policy':
+        "frame-ancestors 'self' *"
+    }
+}
 
 ## Trust user-provided tokens (via JupyterHub.service_tokens) to have good
 #  entropy.
