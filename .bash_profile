@@ -21,7 +21,7 @@ CONDA_INIT="$( $HOME/.anaconda/bin/conda shell.bash hook 2> /dev/null)"
 
 ## Environment variables
 #-------------------------------------------------------------------------------
-export BROWSER="qutebrowser"
+export BROWSER="firefox"
 export CC="gcc"
 export CXX="g++"
 export EDITOR="vim"

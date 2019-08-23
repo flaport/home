@@ -4,3 +4,6 @@
 [submodule ".build/dmenu"]
 	path = .build/dmenu
 	url = https://github.com/flaport/dmenu
+[submodule ".build/LegacyFox"]
+	path = .build/LegacyFox
+	url = https://github.com/girst/LegacyFox
