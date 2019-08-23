@@ -1,25 +1,23 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 """process_wallpaper
 adapted from fhttps://github.com/anirudhajith/process-wallpaper
 """
 
+import io
 import os
+import sys
 import json
 import re, sys
 from PIL import Image
 from wordcloud import WordCloud
 import subprocess
+print(sys.version)
+exit()
 
 configJSON = {
-    "resolution": {
-        "height": 1080,
-        "width": 1920
-    },
-    "wordcloud": {
-        "background": "#101010",
-        "margin": 20
-    }
+    "resolution": {"height": 1080, "width": 1920},
+    "wordcloud": {"background": "#101010", "margin": 20},
 }
 
 assert len(sys.argv) == 1, "No arguments expected"
@@ -29,7 +27,7 @@ commandList = []
 topOutput = subprocess.check_output(["top", "-b", "-n", "1"]).decode().split("\n")[7:]
 
 for line in topOutput[:-1]:
-    line = re.sub(r'\s+', ' ', line).strip()
+    line = re.sub(r"\s+", " ", line).strip()
     fields = line.split(" ")
 
     try:
@@ -63,22 +61,34 @@ for command, [cpu, mem] in commandDict.items():
 
 
 wc = WordCloud(
-    background_color = configJSON["wordcloud"]["background"],
-    width = int(configJSON["resolution"]["width"] - 2 * configJSON["wordcloud"]["margin"]),
-    height = int(configJSON["resolution"]["height"] - 2 * configJSON["wordcloud"]["margin"])
+    background_color=configJSON["wordcloud"]["background"],
+    width=int(
+        configJSON["resolution"]["width"] - 2 * configJSON["wordcloud"]["margin"]
+    ),
+    height=int(
+        configJSON["resolution"]["height"] - 2 * configJSON["wordcloud"]["margin"]
+    ),
 ).generate_from_frequencies(resourceDict)
 
-wc.to_file('wc.png')
-
-wordcloud = Image.open("wc.png")
-wallpaper = Image.new('RGB', (configJSON["resolution"]["width"], configJSON["resolution"]["height"]), configJSON["wordcloud"]["background"])
+wordcloud = wc.to_image()
+wallpaper = Image.new(
+    "RGB",
+    (configJSON["resolution"]["width"], configJSON["resolution"]["height"]),
+    configJSON["wordcloud"]["background"],
+)
 wallpaper.paste(
-    wordcloud,
-    (
-        configJSON["wordcloud"]["margin"],
-        configJSON["wordcloud"]["margin"]
-    )
+    wordcloud, (configJSON["wordcloud"]["margin"], configJSON["wordcloud"]["margin"])
 )
 
 wallpaper.save(os.path.expanduser("~/.config/wallpaper.png"))
 subprocess.call(["set_wallpaper", os.path.expanduser("~/.config/wallpaper.png")])
+subprocess.call(
+    [
+        "convert",
+        "-quality",
+        "100",
+        "-negate",
+        os.path.expanduser("~/.config/wallpaper.png"),
+        os.path.expanduser("~/.config/lockscreen.png"),
+    ]
+)

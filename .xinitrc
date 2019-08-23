@@ -11,10 +11,12 @@
 export WM=dwm
 
 # set wallpaper
-# set_wallpaper ~/.config/wallpaper.png &
+set_wallpaper ~/.config/wallpaper.png &
+
+# update process wallpaper every minute
 while true; do
     process_wallpaper &
-    sleep 1800
+    sleep 60
 done &
 
 # enable transparent windows
