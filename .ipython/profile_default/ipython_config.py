@@ -49,7 +49,8 @@ c.InteractiveShellApp.exec_PYTHONSTARTUP = True
 #c.InteractiveShellApp.hide_initial_ns = True
 
 ## Configure matplotlib for interactive use with the default matplotlib backend.
-c.InteractiveShellApp.matplotlib = "qt"
+# NOTE BY FLORIS: better to just leave it like this, this causes errors for python 2 kernels!
+# c.InteractiveShellApp.matplotlib = None
 
 ## Run the module as a script.
 #c.InteractiveShellApp.module_to_run = ''
