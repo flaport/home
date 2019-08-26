@@ -262,7 +262,7 @@ pacman_install vifm
 # terminal internet search: google
 # yay_install googler
 # terminal internet search: duckduckgo
-yay_install ddgr
+# yay_install ddgr
 # search tool (grep alternative, necessary for some vim extensions)
 pacman_install ack
 # faster navigation in the shell (combine with zsh extension of the same name)
@@ -282,7 +282,7 @@ pacman_install mediainfo
 # process information
 pacman_install htop
 # terminal spreadsheets
-yay_install sc-im
+# yay_install sc-im
 # large ascii letters
 pacman_install figlet
 # build from source
