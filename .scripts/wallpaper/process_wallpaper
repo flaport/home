@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 """process_wallpaper
+
 adapted from fhttps://github.com/anirudhajith/process-wallpaper
+
 """
 
 import io
@@ -12,8 +14,6 @@ import re, sys
 from PIL import Image
 from wordcloud import WordCloud
 import subprocess
-print(sys.version)
-exit()
 
 configJSON = {
     "resolution": {"height": 1080, "width": 1920},
