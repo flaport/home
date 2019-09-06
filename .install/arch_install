@@ -556,8 +556,8 @@ echo $password | sudo -S chmod a+w /sys/power/state
 # pacman_install cuda-toolkit
 
 ## GDS Layouts
-# Klayout (takes very long, hence disabled by default)
-# yay_install klayout
+# Klayout
+yay_install klayout
 
 ## Python
 #-------------------------------------------------------------------------------

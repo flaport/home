@@ -37,7 +37,7 @@ dunst &
 nm-applet &
 
 # automatically lock screen after 10 minutes
-xautolock -time 10 -locker lock_screen &
+xautolock -time 10 -locker validate_and_lock_screen &
 
 # make the mouse invisible after a brief period of not using it.
 unclutter &

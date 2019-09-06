@@ -106,6 +106,9 @@ $PIP install bayesian-optimization >> $LOG 2>> $ERR # optimization of hyperparam
 echo "installing pygmo for environment: base"
 $PIP install pygmo >> $LOG 2>> $ERR # optimization of multi-variable functions
 
+echo "installing smdv for environment: base"
+$PIP install smdv >> $LOG 2>> $ERR # simple markdown viewer
+
 echo "installing neovim support for environment: base"
 $PIP install neovim >> $LOG 2>> $ERR
 $NPM install -g neovim >> $LOG 2>> $ERR
