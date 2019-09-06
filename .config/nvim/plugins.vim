@@ -48,6 +48,7 @@ Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the fi
 Plug 'vim-scripts/YankRing.vim' " Yank history navigation
 Plug 'neomake/neomake' " Linters
 Plug 'myusuf3/numbers.vim' " Relative numbering of lines (0 is the current line)
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 call plug#end() " stop loading plugins
 
 
@@ -124,4 +125,9 @@ let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<Esc>"}
 let g:yankring_clipboard_monitor = 0
 " set directory where yankring can be stored.
 let g:yankring_history_dir = '~/.config/nvim/'
+
+" Instant markdown -----------------------
+let g:instant_markdown_port = 9876
+let g:instant_markdown_autoscroll = 1
+let g:instant_markdown_python = 1
 
