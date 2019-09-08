@@ -200,8 +200,6 @@ labextension_install(){
 # jupyterlab extensions
 echo "installing jupyterlab vim extension"
 labextension_install jupyterlab_vim >> $LOG 2>> $ERR
-echo "installing jupyterlab hub extension"
-labextension_install @jupyterlab/hub-extension >> $LOG 2>> $ERR
 echo "installing jupyterlab plotly extension"
 labextension_install @jupyterlab/plotly-extension >> $LOG 2>> $ERR
 echo "installing jupyterlab table of contents extension"
