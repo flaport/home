@@ -36,6 +36,7 @@ Plug 'tpope/vim-fugitive' " git support
 Plug 'tpope/vim-repeat' " better repeating of last command
 Plug 'tpope/vim-surround' " Surround word with character
 Plug 'junegunn/fzf.vim' " fuzzy file search (needs fzf installed)
+Plug 'junegunn/goyo.vim' " distraction free writing
 Plug 'Shougo/context_filetype.vim' " Completion from other opened files
 Plug 'Shougo/deoplete.nvim' " Async autocompletion
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
@@ -47,8 +48,12 @@ Plug 'mattn/emmet-vim' " Generate html in a simple way
 Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
 Plug 'vim-scripts/YankRing.vim' " Yank history navigation
 Plug 'neomake/neomake' " Linters
-Plug 'myusuf3/numbers.vim' " Relative numbering of lines (0 is the current line)
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'sirver/ultisnips' " snippets
+Plug 'honza/vim-snippets' " snippets
+" Plug 'kien/rainbow_parentheses.vim' " different color paranthesis depending on nesting
+" Plug 'powerline/powerline'
+" Plug 'vim-airline/vim-airline'
+" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 call plug#end() " stop loading plugins
 
 
@@ -126,8 +131,21 @@ let g:yankring_clipboard_monitor = 0
 " set directory where yankring can be stored.
 let g:yankring_history_dir = '~/.config/nvim/'
 
+" Relative numbers -----------------------
+let g:numbers_exclude = ["goyo"]
+
+" Goyo -----------------------------------
+nnoremap <C-g> :Goyo<cr>:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>
+nnoremap <C-m> :Goyo<cr>:nnoremap j j<cr>:nnoremap k k<cr>:set nowrap<cr>
+let g:goyo_linenr = 0
+
+" Ultisnips ------------------------------
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-.>"
+let g:UltiSnipsJumpBackwardTrigger="<c-,>"
+
 " Instant markdown -----------------------
 let g:instant_markdown_port = 9876
 let g:instant_markdown_autoscroll = 1
-let g:instant_markdown_python = 1
+let g:instant_markdown_python = 0
 

@@ -33,7 +33,6 @@ source ~/.config/nvim/plugins.vim
 " open file browser
 " <Leader>t
 
-
 "" All mode shortcuts
 "-------------------------------------------------------------------------------
 
@@ -69,6 +68,7 @@ tnoremap <Esc> <C-\><C-n>
 command! -nargs=* T term <args>
 command! -nargs=* HT split | resize 10 | terminal <args>
 command! -nargs=* VT vsplit | terminal <args>
+
 
 "" Navigation
 "-------------------------------------------------------------------------------
@@ -118,6 +118,7 @@ nnoremap <silent> <leader>z :call DoWindowSwap()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w
 
 " cycle through buffers
 nnoremap <C-]> :bnext<CR>
+tnoremap <C-]> <C-\><C-N>:bnext<cr>
 " nnoremap <C-[> :bprevious<CR> " disabled as this is the Esc combination
 " <C-^> switch between last two buffers
 
@@ -156,8 +157,8 @@ autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT ipython -i %<CR>G<
 
 " tex / latex / xelatex
 
-autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
-autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k
+autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:Goyo!<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>:sleep 300m<cr>:Goyo<cr>
+autocmd FileType tex inoremap <F5> <Esc>:w<CR>:Goyo!<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>G<C-w>k:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>:sleep 300m<cr>:Goyo<cr>
 " <Leader>s  "--> latex synctex forward
 function! SyncTexForward()
     " either do synctex on the pdf with basename [filename without extension] $TEXBASE,
@@ -203,9 +204,6 @@ filetype plugin on
 " automatically cd into folder of current file
 autocmd BufEnter * silent! lcd %:p:h
 
-" enable syntax highlighting
-syntax enable
-
 " underline current line if in insert mode
 autocmd InsertEnter * set cul
 
@@ -214,6 +212,12 @@ autocmd InsertLeave * set nocul
 
 " clear trailing spaces in python files at saving
 autocmd BufWritePre *.py %s/\s\+$//e
+
+" save on focus lost
+au FocusLost * :wa
+
+" enable syntax highlighting
+syntax enable
 
 " enable all Python syntax highlighting features
 let python_highlight_all = 1
@@ -240,6 +244,9 @@ set nowrap
 
 " allow pattern matching with special characters
 set magic
+
+" relative line numbering
+set relativenumber
 
 " new vertical splits appear on the right
 set splitright
@@ -280,7 +287,7 @@ set noautoindent
 " show the matching part of the pair for [] {} and ()
 set showmatch
 
-" when scrolling, keep cursor 3 lines away from screen border
+" when scrolling, keep cursor in the middel of the page
 set scrolloff=1000
 
 " code folding
@@ -290,6 +297,27 @@ set foldmethod=indent
 " allow opening a new buffer without saving the current one
 set hidden
 
+" better search
+nnoremap / /\v
+vnoremap / /\v
+
+" back to normal mode
+inoremap jj <Esc>
+
+" turn of code highlihgting
+nnoremap <leader><leader> :noh<cr>
+
+" easier access to command mode
+nnoremap ; :
+
+" paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+
+" no help file
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
 
 "" Theme / colorscheme
 "-------------------------------------------------------------------------------
