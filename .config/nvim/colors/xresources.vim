@@ -13,7 +13,7 @@ hi SpecialKey	ctermfg=2
 hi NonText	cterm=bold ctermfg=4
 hi Directory	ctermfg=6
 hi Todo	ctermfg=7 ctermbg=2
-hi Error	cterm=bold ctermfg=7 ctermbg=1
+hi Error    cterm=bold ctermfg=1 ctermbg=none
 hi Warning	ctermfg=7 ctermbg=3
 hi ErrorMsg	cterm=bold ctermfg=15 ctermbg=9
 hi WarningMsg	ctermfg=15 ctermbg=3
@@ -45,3 +45,9 @@ hi Type		ctermfg=2
 hi Underlined	cterm=underline ctermfg=5
 hi Ignore	cterm=bold ctermfg=7
 hi Ignore	ctermfg=8
+hi SpellBad cterm=bold ctermfg=9 ctermbg=none
+hi SpellErrors cterm=underline ctermfg=1 ctermbg=none
+hi SpellCap cterm=underline ctermfg=9 ctermbg=none
+hi SpellLocal cterm=underline ctermfg=9 ctermbg=none
+hi SpellRare cterm=underline ctermfg=9 ctermbg=none
+

@@ -35,6 +35,7 @@ call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'tpope/vim-fugitive' " git support
 Plug 'tpope/vim-repeat' " better repeating of last command
 Plug 'tpope/vim-surround' " Surround word with character
+Plug 'tpope/vim-markdown' " markdown syntax highlighting
 Plug 'junegunn/fzf.vim' " fuzzy file search (needs fzf installed)
 Plug 'junegunn/goyo.vim' " distraction free writing
 Plug 'Shougo/context_filetype.vim' " Completion from other opened files
