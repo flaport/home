@@ -173,7 +173,7 @@ prompt_virtualenv() {
 prompt_status() {
   local -a symbols
 
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{15}%}✘"
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{15}%}✘ ($RETVAL)"
   [[ $UID -eq 0 ]] && symbols+="%{%F{15}%}⚡"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{15}%}$(echo $(jobs -l | grep -oE '\[[0-9]*\]'))"
 
