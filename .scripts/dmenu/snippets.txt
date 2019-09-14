@@ -1,0 +1,25 @@
+# figure [requires 'graphicx']
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[]{}
+    \label{}
+    \caption{}
+\end{figure}
+
+# svg figure [requires 'svg' and 'svg-export']
+\begin{figure}[!htbp]
+    \centering
+    \includesvg[]{}
+    \label{}
+    \caption{}
+\end{figure}
+
+# equation (align) [requires 'amsmath']
+\begin{align}
+
+\end{align}
+
+# equation (align*) [requires 'amsmath']
+\begin{align*}
+
+\end{align*}

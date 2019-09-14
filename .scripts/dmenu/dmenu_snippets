@@ -1,0 +1,53 @@
+#!/usr/bin/python3
+
+# imports
+import os
+import sys
+import time
+from subprocess import Popen, call, check_output, PIPE, CalledProcessError
+
+
+# functions
+def dmenu(list_in, prompt):
+    time.sleep(0.1)
+    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+    choice = check_output(
+        ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+    ).decode()[:-1]
+    return choice
+
+def get_snippets(filename="~/.scripts/dmenu/snippets.txt"):
+    filename = os.path.abspath(os.path.expanduser(filename))
+    snippets = {}
+    with open(filename, "r") as file:
+        for line in file:
+            if line.startswith("#"):
+                name = line[1:].strip().capitalize()
+                snippets[name] = ""
+            else:
+                snippets[name] += line.strip() + "\n"
+
+    ordered_snippets = {}
+    for k in sorted(snippets.keys()):
+        ordered_snippets[k] = snippets[k].strip()
+
+    return ordered_snippets
+
+def copy_to_clipboard(content):
+    xclip_in = Popen(["echo", content], stdout=PIPE).stdout
+    status = call(["xclip", "-selection", "clipboard"], stdin=xclip_in)
+    return status
+
+
+# program
+if __name__ == "__main__":
+    snippets = get_snippets()
+    name = dmenu(snippets.keys(), "select snippet")
+    snippet = snippets.get(name, "")
+    if not name:
+        snippet = ""
+    else:
+        snippet = snippets[name]
+    status = copy_to_clipboard(snippet)
+    exit(status)
+

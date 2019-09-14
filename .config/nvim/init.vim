@@ -132,6 +132,10 @@ tnoremap <C-]> <C-\><C-N>:bnext<cr>
 nnoremap <F2> :e ~/.config/nvim/init.vim<CR>
 inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
 
+" edit snippets
+nnoremap <F6> :e ~/.scripts/dmenu/snippets.txt<CR>
+inoremap <F6> <Esc>:e ~/.scripts/dmenu/snippets.txt<CR>
+
 " enable spell checker:
 nnoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
 inoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
@@ -313,6 +317,9 @@ nnoremap ; :
 " paste from clipboard
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
+
+" insert snippet
+nnoremap <leader>i :silent !dmenu_snippets<cr>"+p
 
 " no help file
 inoremap <F1> <ESC>
