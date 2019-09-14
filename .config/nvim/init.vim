@@ -190,7 +190,7 @@ autocmd FileType markdown vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % S
 autocmd FileType markdown nnoremap <F5> <Esc>:w<CR>:silent execute '!killall smdv; smdv % -v "'.v:servername'" &> /dev/null & disown'<CR>
 autocmd FileType markdown inoremap <F5> <Esc>:w<CR>:silent execute '!killall smdv; smdv % -v "'.v:servername'" &> /dev/null & disown'<CR>
 autocmd FileType markdown nnoremap <Leader>d "ayi(:execute ":edit ".@a<CR>:silent !smdv --sync %<CR>
-autocmd FileType markdown nnoremap <Leader>s :silent !smdv --sync %<CR>
+autocmd FileType markdown nnoremap <Leader>s :w<cr>:silent !smdv --sync %<CR>
 autocmd BufWritePost *.md silent !smdv --sync %
 
 
