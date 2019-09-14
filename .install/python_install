@@ -220,3 +220,8 @@ echo "installing jupyterlab code formatter extension"
 labextension_install @ryantam626/jupyterlab_code_formatter >> $LOG 2>> $ERR
 $PIP install jupyterlab_code_formatter >> $LOG 2>> $ERR
 $JUPYTER serverextension enable --py jupyterlab_code_formatter >> $LOG 2>> $ERR
+echo "installing jupyterlab tensorboard"
+labextension_install jupyterlab_tensorboard
+$PIP install jupyter_tensorboard
+$JUPYTER serverextension enable --py jupyter_tensorboard >> $LOG 2>> $ERR
+
