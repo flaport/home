@@ -308,7 +308,7 @@ vnoremap / /\v
 " back to normal mode
 inoremap jj <Esc>
 
-" turn of code highlihgting
+" turn of code highlighting
 nnoremap <leader><leader> :noh<cr>
 
 " easier access to command mode
@@ -320,6 +320,10 @@ nnoremap <leader>P "+P
 
 " insert snippet
 nnoremap <leader>i :silent !dmenu_snippets<cr>"+p
+
+" insert greek letter
+nnoremap <leader>g :silent !dmenu_greek<cr>"+p
+inoremap <leader>g <Esc>:silent !dmenu_greek<cr>"+p
 
 " no help file
 inoremap <F1> <ESC>

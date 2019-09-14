@@ -48,7 +48,9 @@ super + f
 # floating layout
 super + F
 
+# greek letters menu
 super + g
+    dmenu_greek
 
 super + G
 

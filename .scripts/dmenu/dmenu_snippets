@@ -10,11 +10,14 @@ from subprocess import Popen, call, check_output, PIPE, CalledProcessError
 # functions
 def dmenu(list_in, prompt):
     time.sleep(0.1)
-    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
-    choice = check_output(
-        ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
-    ).decode()[:-1]
-    return choice
+    try:
+        dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+        choice = check_output(
+            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+        ).decode()[:-1]
+        return choice
+    except CalledProcessError:
+        return ""
 
 def get_snippets(filename="~/.scripts/dmenu/snippets.txt"):
     filename = os.path.abspath(os.path.expanduser(filename))
@@ -44,10 +47,6 @@ if __name__ == "__main__":
     snippets = get_snippets()
     name = dmenu(snippets.keys(), "select snippet")
     snippet = snippets.get(name, "")
-    if not name:
-        snippet = ""
-    else:
-        snippet = snippets[name]
     status = copy_to_clipboard(snippet)
     exit(status)
 
