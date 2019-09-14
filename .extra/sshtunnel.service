@@ -3,10 +3,10 @@ Description=Keeps a tunnel to a serve location open
 After=network-online.target
 
 [Service]
-User=root
-ExecStart=/usr/bin/autossh -M 0 -N -R 8000:127.0.0.1:8000 -i /home/{user}/.ssh/id_rsa -o "ServerAliveInterval 30" -o "ServerAliveCountMax 10" {user}@{host}
+User=flaport
+ExecStart=/usr/bin/autossh -M 0 -N -R 6006:127.0.0.1:6006 -R 7000:127.0.0.1:7000 -R 8000:127.0.0.1:8000 -R 9000:127.0.0.1:80 -i /home/flaport/.ssh/id_rsa -o "ServerAliveInterval 30" -o "ServerAliveCountMax 10" <user>@<host>
 Restart=always
-RestartSec=10
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
