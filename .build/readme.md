@@ -1,13 +1,24 @@
-# Custom builds
+# Custom builds and patches
+
+## Build
 
 To build all custom builds:
 ```
     sudo make all
 ```
 
-## dmenu [submodule]
-My custom dmenu build
+## Submodules
 
-## dwm [submodule]
-My custom dwm build
+### st
+My custom st fork
+
+### dwm
+My custom dwm fork
+
+### dmenu
+My custom dmenu fork
+
+### LegacyFox
+Firefox patch to allow for legacy plugins
+
 
