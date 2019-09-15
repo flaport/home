@@ -7,3 +7,6 @@
 [submodule ".build/dmenu"]
 	path = .build/dmenu
 	url = https://github.com/flaport/dmenu
+[submodule ".build/legacyfox"]
+	path = .build/legacyfox
+	url = https://github.com/flaport/LegacyFox

@@ -166,6 +166,7 @@ submodule_install(){ # will only install the first argument!
     printf "sudo make clean install\n" >> $LOG
     printf "sudo make clean install\n" >> $ERR
     echo $password | sudo -S make clean >> $LOG 2>> $ERR
+    echo $password | sudo -S make all >> $LOG 2>> $ERR
     echo $password | sudo -S make install >> $LOG 2>> $ERR
     echo_success $?
 
@@ -507,9 +508,7 @@ systemctl_enable mpd
 # firefox
 pacman_install firefox
 # patch firefox to work with some legacy extensions (like vimfx)
-submodule_install LegacyFox
-# cleanup
-echo $password | sudo -S rm ~/.build/LegacyFox/*.gz
+submodule_install legacyfox
 
 # chromium
 # pacman_install chromium

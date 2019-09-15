@@ -18,7 +18,7 @@ My custom dwm fork
 ### dmenu
 My custom dmenu fork
 
-### LegacyFox
+### legacyfox
 Firefox patch to allow for legacy plugins
 
 
