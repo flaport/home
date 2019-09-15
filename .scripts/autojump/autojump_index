@@ -1,0 +1,33 @@
+#!/usr/bin/env python
+
+# a script to index all subfolders of the home folder in autojump
+# this is experimental and takes a long time!
+
+# imports
+import os
+import sys
+from subprocess import call, check_output
+try:
+    from tqdm import tqdm
+    print_path = False
+except ImportError:
+    tqdm = lambda x: x
+    print_path = True
+
+# current directory
+CWD = os.getcwd()
+try:
+    DEPTH = sys.argv[1]
+except IndexError:
+    DEPTH = 1
+
+# get directories
+all_dirs = check_output(["find", ".", "-maxdepth", DEPTH, "-type", "d"]).decode().replace("./",CWD+"/").split("\n")
+all_dirs = [os.path.expanduser(path) for path in all_dirs]
+
+# add to autojump index
+for path in tqdm(all_dirs):
+    if print_path:
+        print(path)
+    call(["autojump", "-a", path])
+
