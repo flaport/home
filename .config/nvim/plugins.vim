@@ -136,8 +136,7 @@ let g:yankring_history_dir = '~/.config/nvim/'
 let g:numbers_exclude = ["goyo"]
 
 " Goyo -----------------------------------
-nnoremap <C-g> :Goyo<cr>:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>
-nnoremap <C-m> :Goyo<cr>:nnoremap j j<cr>:nnoremap k k<cr>:set nowrap<cr>
+" nnoremap <CR> :Goyo<cr> " (default
 let g:goyo_linenr = 0
 
 " Ultisnips ------------------------------

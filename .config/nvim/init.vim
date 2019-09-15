@@ -322,8 +322,8 @@ nnoremap <leader>P "+P
 nnoremap <leader>i :silent !dmenu_snippets<cr>"+p
 
 " insert greek letter
-nnoremap <leader>g :silent !dmenu_greek<cr>"+p
-inoremap <leader>g <Esc>:silent !dmenu_greek<cr>"+p
+nnoremap <C-g> :silent !dmenu_greek<cr>"+p
+inoremap <C-g> <Esc>:silent !dmenu_greek<cr>"+p
 
 " no help file
 inoremap <F1> <ESC>
