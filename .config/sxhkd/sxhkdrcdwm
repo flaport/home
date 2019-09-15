@@ -5,13 +5,17 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
 #
 
-# open vifm file manager 
-super + a
-    st -e vifm
+# decrease alpha of windows
+super + control + a
+    alpha set -10 && dwm_status
 
-# open nemo file manager
-super + A
-    nemo
+# increase alpha of windows
+super + shift + a
+    alpha set +10 && dwm_status
+
+# toggle window transparency (toggle xcompmgr)
+super + a
+    pidof xcompmgr && killall xcompmgr || xcompmgr &; dwm_status
 
 # show/hide status bar
 super + b

@@ -1,0 +1,97 @@
+#!/usr/bin/python3
+
+# imports
+import os
+import sys
+from subprocess import call, Popen
+
+# help
+help = """
+alpha [mode] [alpha]
+
+mode: get/set/kill/-h/--help
+alpha: alpha value for set mode [0-100] or difference (prepend value with +/-)
+"""
+
+mode = ""
+xresources = ""
+alpha = 0
+alpha = 100
+
+# parse arguments
+if "-h" in sys.argv or "--help" in sys.argv:
+    print(help)
+    exit(0)
+if sys.argv[1] != "get" and sys.argv[1] != "set":
+    print("no valid mode (get/set) specified")
+    print(help)
+    exit(1)
+if sys.argv[1] == "get":
+    mode = "get"
+elif sys.argv[1] == "set":
+    mode = "set"
+    try:
+        alpha = sys.argv[2]
+    except IndexError:
+        print("no alpha specified for set mode")
+        print(help)
+        exit(1)
+
+with open(os.path.expanduser("~/.Xresources"), "r") as file:
+    xresources = file.readlines()
+
+
+# functions
+def xcompmgr_status():
+    with open(os.devnull, "w") as DEVNULL:
+        status = call(["pidof", "xcompmgr"], stdout=DEVNULL, stderr=DEVNULL)
+    return status
+
+def get_alpha():
+    for line in xresources:
+        if "alpha" in line:
+            alpha = int(100*(float(line.split(":")[1].strip())))
+    return alpha
+
+
+# script
+if mode == "get":
+    if xcompmgr_status() == 1:
+        print(-1)
+        exit(0)
+    alpha = get_alpha()
+    print(alpha)
+    exit(0)
+
+if mode == "set":
+    if alpha[0] == "+":
+        alpha = min(get_alpha() + int(alpha[1:].strip()), 100)
+    elif alpha[0] == "-":
+        print(alpha)
+        alpha = max(get_alpha() - int(alpha[1:].strip()), 0)
+    alpha = int(alpha)
+    if alpha > 100:
+        print("alpha alpha too high (max 100)")
+        print(help)
+        exit(1)
+    if alpha < 0:
+        print("alpha alpha too low (max 0)")
+        print(help)
+        exit(1)
+    for i, line in enumerate(xresources):
+        if "alpha" in line:
+            xresources[i] = f"*alpha: {alpha/100:.2f}"
+    with open(os.path.expanduser("~/.Xresources"), "w") as file:
+        file.write("".join(xresources))
+
+    if xcompmgr_status() != 0:
+        Popen(["xcompmgr"])
+    
+    call(["xrdb", os.path.expanduser("~/.Xresources")])
+
+    exit(0)
+
+
+# you should never get here:
+exit(1)
+

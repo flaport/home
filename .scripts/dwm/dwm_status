@@ -63,6 +63,23 @@ vol1(){
 }
 # -----------
 
+# alpha ----
+alpha(){
+    pidof xcompmgr > /dev/null
+    if [ $? -eq 0 ]; then
+        alpha=0"$(cat ~/.Xresources | grep alpha | sed s/\*alpha\:\ // | sed s/\[.\]//)"
+        echo -e α"$alpha"% | sed s/α00/α\ / | sed s/α0/α\ /
+    else
+        echo -e α -
+    fi
+}
+alpha1(){
+    alpha=0"$(cat ~/.Xresources | grep alpha | sed s/\*alpha\:\ // | sed s/\[.\]//)"
+    alpha=$(echo -e α"$alpha"% | sed s/α00/α\ / | sed s/α0/α\ /)
+    notify-send "Window transparency" $alpha
+}
+# -----------
+
 # weather ---
 wtr(){
     s=$(cat ~/.cache/weatherreportshort)
@@ -241,7 +258,7 @@ status(){
 # Activate Status Blocks with Status Command
 #--------------------------------------------------------------------------------
 
-status vol bat bt vpn hub ssh sshd wtr dte tme
+status vol alpha bat bt vpn hub ssh sshd wtr dte tme
 
 #--------------------------------------------------------------------------------
 
