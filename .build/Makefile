@@ -8,10 +8,10 @@ dmenu:
 	cd dmenu; make clean install; cd ..
 
 legacyfox:
-	cd LegacyFox; make clean all install; cd ..
+	cd legacyfox; make clean all install; cd ..
 
 all:
 	cd st; make clean install; cd ..
 	cd dwm; make clean install; cd ..
 	cd dmenu; make clean install; cd ..
-	cd LegacyFox; make clean all install; cd ..
+	cd legacyfox; make clean all install; cd ..
