@@ -1,5 +1,4 @@
 /* Gruvbox */
-*alpha: 0.9
 
 *background: #282828
 *foreground: #ebdbb2
@@ -22,3 +21,4 @@
 *color14: #8ec07c
 *color15: #ebdbb2
 
+*alpha: 0.90

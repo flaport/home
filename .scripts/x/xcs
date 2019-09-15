@@ -6,20 +6,38 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
+usage(){
+    >&2 echo "usage: xcs [ --alpha <value> ] <colorscheme>"
+}
+
+available_colorschemes(){
+    echo
+    echo
+    echo available colorschemes [in \~/.config/Xresources]:
+    cd ~/.config/Xresources
+    find . -executable | sed s/[.]//g | sed s/[/]//g
+}
+
+if [ ! $1 ]; then
+    usage
+    available_colorschemes
+    exit 1
+fi
+
 if [ $1 = "-a" ] || [ $1 = "--alpha" ]; then
     shift
     alpha=$1
     shift
 fi
 
-if [ ! $1 ] || [ $2 ]; then
-    >&2 echo "usage: xcs [ --alpha <value> ] <value>"
+if [ ! $1 ]; then
+    usage
+    available_colorschemes
     exit 1
 fi
 
 if [ $1 = ls ]; then
-    cd ~/.config/Xresources
-    find . -executable
+    available_colorschemes
     exit 0
 fi
 
@@ -31,3 +49,4 @@ if [ $alpha ]; then
 fi
 
 xrdb ~/.Xresources 2> /dev/null
+dwm_status
