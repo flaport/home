@@ -1,0 +1,43 @@
+#!/usr/bin/python3
+import gi
+
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
+
+
+class AskPassDialog(Gtk.Dialog):
+    def __init__(self):
+        Gtk.Dialog.__init__(
+            self,
+            "Password",
+            None,
+            0,
+        )
+
+        self.set_default_size(150, 70)
+        self.set_position(1)
+        self.box = self.get_content_area()
+
+        self.grid = Gtk.Grid()
+        self.box.add(self.grid)
+
+        self.label = Gtk.Label(label="Password: ")
+        self.grid.add(self.label)
+
+        self.entry = Gtk.Entry()
+        self.entry.set_visibility(False)
+        self.entry.connect("activate", self.ok)
+        self.grid.add(self.entry)
+
+        self.button = Gtk.Button(label="OK")
+        self.button.connect("clicked", self.ok)
+        self.grid.attach_next_to(self.button, self.entry, Gtk.PositionType.BOTTOM, 1, 2)
+
+        self.show_all()
+
+    def ok(self, button):
+        print(self.entry.get_text())
+        self.destroy()
+
+if __name__ == "__main__":
+    AskPassDialog().run()
