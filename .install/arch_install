@@ -334,6 +334,7 @@ pacman_install xautolock
 # wallpapers
 pacman_install feh
 # simple theme to make gtk applications look better
+pacman_install gtk3
 pacman_install arc-solid-gtk-theme
 # my dwm fork
 submodule_install dwm
@@ -563,6 +564,7 @@ yay_install klayout
 
 # system python packages
 pacman_install tk
+pacman_install python-gobject
 pacman_install python-pip
 pacman_install python2-pip
 pacman_install python-tqdm
