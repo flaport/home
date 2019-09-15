@@ -1,12 +1,9 @@
+[submodule ".build/st"]
+	path = .build/st
+	url = https://github.com/flaport/st
 [submodule ".build/dwm"]
 	path = .build/dwm
 	url = https://github.com/flaport/dwm.git
 [submodule ".build/dmenu"]
 	path = .build/dmenu
 	url = https://github.com/flaport/dmenu
-[submodule ".build/LegacyFox"]
-	path = .build/LegacyFox
-	url = https://github.com/girst/LegacyFox
-[submodule ".build/st"]
-	path = .build/st
-	url = https://github.com/flaport/st
