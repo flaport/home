@@ -2,24 +2,35 @@
 \begin{figure}[!htbp]
     \centering
     \includegraphics[]{}
-    \label{}
     \caption{}
+    \label{fig:}
 \end{figure}
 
 # svg figure [requires 'svg' and 'svg-export']
 \begin{figure}[!htbp]
     \centering
     \includesvg[]{}
-    \label{}
     \caption{}
+    \label{fig:}
 \end{figure}
 
 # equation (align) [requires 'amsmath']
-\begin{align}
+\begin{align}\label{eq:}
 
 \end{align}
 
 # equation (align*) [requires 'amsmath']
-\begin{align*}
+\begin{align*}\label{eq:}
 
 \end{align*}
+
+# list (itemize)
+\begin{itemize}
+    \item 
+\end{itemize}
+
+# list (enumerate)
+\begin{enumerate}
+    \item 
+\end{enumerate}
+

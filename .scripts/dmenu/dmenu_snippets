@@ -13,7 +13,7 @@ def dmenu(list_in, prompt):
     try:
         dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
         choice = check_output(
-            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+            ["dmenu", "-i", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
         ).decode()[:-1]
         return choice
     except CalledProcessError:
