@@ -14,6 +14,22 @@
     \label{fig:}
 \end{figure}
 
+# pgf figure [requires cusom \includepgf command to be defined]
+\begin{figure}[!htbp]
+    \centering
+    \includepgf[]{}
+    \caption{}
+    \label{fig:}
+\end{figure}
+
+# pgf figure [requires 'pgf']
+\begin{figure}[!htbp]
+    \centering
+    \input{}
+    \caption{}
+    \label{fig:}
+\end{figure}
+
 # equation (align) [requires 'amsmath']
 \begin{align}\label{eq:}
 
