@@ -1,0 +1,45 @@
+#!/usr/bin/python3
+
+# imports
+import os
+import sys
+import time
+from subprocess import Popen, call, check_output, PIPE, CalledProcessError
+
+# functions
+def dmenu(list_in, prompt):
+    time.sleep(0.1)
+    try:
+        dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+        choice = check_output(
+            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+        ).decode().strip()
+        return choice
+    except CalledProcessError:
+        return ""
+
+def copy_to_clipboard(content):
+    xclip_in = Popen(["echo", "-n", content], stdout=PIPE).stdout
+    status = call(["xclip", "-selection", "clipboard"], stdin=xclip_in)
+    return status
+
+def get_letters(filename="~/.scripts/dmenu/greek.txt"):
+    filename = os.path.abspath(os.path.expanduser(filename))
+    letters = {}
+    with open(filename, "r") as file:
+        for line in file:
+            letter, name = line.split(" ")
+            letter = letter.strip()
+            name = f"{name.strip()} ({letter})"
+            letters[name] = letter
+
+    return letters
+
+# program
+if __name__ == "__main__":
+    letters = get_letters()
+    name = dmenu(letters.keys(), "select snippet")
+    letter = letters.get(name, "")
+    status = copy_to_clipboard(letter)
+    exit(status)
+
