@@ -1,0 +1,82 @@
+#!/usr/bin/python3
+""" cpy: copy a file in the terminal
+
+All arguments to cpy have to be existing filenames.
+
+This program creates the cp commands necessary to copy the files to the
+current directory. Navigate to a new directory and paste the commands (with 
+whatever keyboard shortcut you have for pasting in terminal), hit enter
+and the files will be copied.
+
+Optional Arguments [should come first(!)]:
+    -R, -r, --recursive:  copy directories recursively.
+    -a, --append:         append to clipboard (useful if you want to copy content from
+                          different directories to another (single) directory)
+
+Requirements:
+    Python3.6+, xclip
+
+"""
+
+# imports
+import os
+import sys
+import subprocess
+
+# constants
+R = "" # recursive copy modifier
+commands = "" # commands already on the clipboard
+
+# help
+if sys.argv[1] == "-h" or sys.argv[1] == "--help":
+    print(__doc__)
+
+# recursive copy
+if sys.argv[1] == "-R" or sys.argv[1] == "-r" or sys.argv[1] == "--recursive":
+    R = sys.argv.pop(1)
+
+# append to clipboard
+if sys.argv[1] == "-a" or sys.argv[1] == "--append":
+    del sys.argv[1]
+    try:
+        commands = subprocess.check_output(["xclip", "-o", "-selection", "clipboard"]).decode().strip()
+    except subprocess.CalledProcessError:
+        print("Failed to append to clipboard.")
+        exit(1)
+    for line in commands.splitlines():
+        if line[:2] != "cp" and line[:2] != "mv":
+            print("Failed to append to clipboard. Previous clipboard content "
+                  "does not exclusively contain cp/mv commands.")
+            exit(1)
+
+# get paths of files to copy
+paths = [os.path.abspath(filename) for filename in sys.argv[1:]]
+
+# filter out paths that were already on the clipboard:
+paths = [path for path in paths if not path in commands]
+
+# check if all of the paths exist
+for path in paths:
+    if not os.path.exists(path):
+        print(f"{path} does not exist.")
+        exit(1)
+
+# make new copy commands out of them
+new_commands = "\n" + "\n".join([f"cp -i {R} {path} ./" for path in paths])
+if not commands:
+    print(f"the following copy commands were generated:\n\n{new_commands}\n")
+    commands = "\n" + new_commands
+else:
+    print(f"the following copy commands will be added to the clipboard:\n\n{new_commands}\n")
+    commands = "\n" + commands + "\n" + new_commands
+
+# copy commands to selection and clipboard
+commands_out = subprocess.Popen(["echo", commands], stdout=subprocess.PIPE).stdout
+status = subprocess.call(["xclip", "-selection", "clipboard"], stdin=commands_out)
+commands_out = subprocess.Popen(["echo", commands], stdout=subprocess.PIPE).stdout
+status = subprocess.call(["xclip", "-selection", "primary"], stdin=commands_out)
+if status != 0:
+    print("Failed to save copy commands to clipboard. Is 'xclip' installed?")
+    exit(1)
+print("copy commands saved to clipboard! Now go paste them somewhere.")
+

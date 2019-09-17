@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+[[ $1 == "-h" || $1 == "--help" ]] && echo \'cpa\' is shorthand for \'cpy -a\'. && exit 0
+
+cpy -a $@

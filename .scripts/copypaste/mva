@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+[[ $1 == "-h" || $1 == "--help" ]] && echo \'mva\' is shorthand for \'mve -a\'. && exit 0
+
+mve -a $@
