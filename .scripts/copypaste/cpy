@@ -62,7 +62,7 @@ for path in paths:
         exit(1)
 
 # make new copy commands out of them
-new_commands = "\n" + "\n".join([f"cp -i {R} {path} ./" for path in paths])
+new_commands = "\n" + "\n".join([f"cp -i {R} \"{path}\" ./" for path in paths])
 if not commands:
     print(f"the following copy commands were generated:\n\n{new_commands}\n")
     commands = "\n" + new_commands
