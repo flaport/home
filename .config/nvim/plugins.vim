@@ -54,7 +54,7 @@ Plug 'honza/vim-snippets' " snippets
 " Plug 'kien/rainbow_parentheses.vim' " different color paranthesis depending on nesting
 " Plug 'powerline/powerline'
 " Plug 'vim-airline/vim-airline'
-" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 call plug#end() " stop loading plugins
 
 
@@ -149,5 +149,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-,>"
 
 " Instant markdown -----------------------
 let g:instant_markdown_port = 9876
+let g:instant_markdown_autostart = 0
 let g:instant_markdown_autoscroll = 1
 let g:instant_markdown_python = 1

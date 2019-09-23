@@ -193,9 +193,8 @@ autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markd
 autocmd FileType markdown vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
 autocmd FileType markdown nnoremap <F5> <Esc>:w<CR>:silent execute '!smdv 'expand('%:p')' -v "'.v:servername'"'<CR>
 autocmd FileType markdown inoremap <F5> <Esc>:w<CR>:silent execute '!smdv 'expand('%:p')' -v "'.v:servername'"'<CR>
+autocmd BufWritePost *.md silent !smdv %
 autocmd FileType markdown nnoremap <Leader>d "ayi(:execute ":edit ".@a<CR>:silent !smdv --sync %<CR>
-autocmd FileType markdown nnoremap <Leader>s :w<cr>:silent !smdv --sync %<CR>
-autocmd BufWritePost *.md silent !smdv --sync %
 
 
 "" Settings
