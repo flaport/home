@@ -59,7 +59,7 @@ vol(){
 vol1(){
     sc=$(soundcard)
     string=$(amixer -c $sc get Master)
-    notify-send "Volume" "$string"
+    notify-send "Volume" "◻️ + plus: increase volume\n◻️ + minus: decrease volume\n◻️ + shift + minus: mute\n\n$string"
 }
 # -----------
 
@@ -74,9 +74,7 @@ alpha(){
     fi
 }
 alpha1(){
-    alpha=0"$(cat ~/.Xresources | grep alpha | sed s/\*alpha\:\ // | sed s/\[.\]//)"
-    alpha=$(echo -e α"$alpha"% | sed s/α00/α\ / | sed s/α0/α\ /)
-    notify-send "Window transparency" $alpha
+    notify-send "Window transparency" "◻️ + shift + a: increase alpha\n◻️ + ctrl + a: decrease alpha\n◻️ + a: toggle transparency on/off"
 }
 # -----------
 
@@ -109,7 +107,7 @@ hub(){
 }
 hub1(){
     name=jupyterhub
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)"
+    notify-send "$(systemctl status $name | sed 1q)" "◻️ + shift + s: toggle a service on/off\n\n$(systemctl status $name | grep Active)"
 }
 # -----------
 
@@ -125,7 +123,7 @@ ssh(){
 }
 ssh1(){
     name=sshtunnel
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)"
+    notify-send "$(systemctl status $name | sed 1q)" "◻️ + shift + s: toggle a service on/off\n\n$(systemctl status $name | grep Active)"
 }
 
 # -----------
@@ -158,7 +156,7 @@ sshd(){
 }
 sshd1(){
     name=sshd
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)"
+    notify-send "$(systemctl status $name | sed 1q)" "◻️ + shift + s: toggle a service on/off\n\n$(systemctl status $name | grep Active)"
 }
 # -----------
 
