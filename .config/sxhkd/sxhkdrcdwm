@@ -76,11 +76,13 @@ super + j
 
 super + J
 
-# run passmenu
+# focus on window lower on the stack
 super + k
-    passmenu -l 20
+    # handled by dwm
 
+# run passmenu
 super + K
+    /usr/bin/passmenu -l 20
 
 # increase master window size
 super + l
@@ -183,7 +185,9 @@ super + x
 # move active window to monitor X
 super + X
 
+# change color scheme
 super + y
+    xcs
 
 super + Y
 
