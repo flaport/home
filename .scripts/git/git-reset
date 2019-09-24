@@ -6,6 +6,8 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
+# git-reset or gitr: small fzf-based CLI utility for easy git-reset
+
 import os
 import sys
 from subprocess import call, check_output, Popen, PIPE, CalledProcessError

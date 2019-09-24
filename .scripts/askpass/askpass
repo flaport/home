@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 # imports
+import sys
 import gi; gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
@@ -21,7 +22,7 @@ class AskPassDialog(Gtk.Dialog):
         self.grid = Gtk.Grid()
         self.box.add(self.grid)
 
-        self.label = Gtk.Label(label=args.label+":\t")
+        self.label = Gtk.Label(label=f"{LABEL}:\t")
         self.grid.add(self.label)
 
         self.entry = Gtk.Entry()
@@ -36,18 +37,16 @@ class AskPassDialog(Gtk.Dialog):
         self.show_all()
 
     def ok(self, button):
-        print(self.entry.get_text())
+        password = self.entry.get_text()
+        if not password:
+            exit(1)
         self.destroy()
+        print(password)
 
 # program
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description="simple markdown viewer")
-    parser.add_argument(
-        "-l",
-        "--label",
-        default="password",
-        help="default askpass label",
-    )
-    args = parser.parse_args()
+    try:
+        LABEL = sys.argv[1]
+    except IndexError:
+        LABEL = "password"
     AskPassDialog().run()

@@ -4,19 +4,25 @@
 #   |  __\| |   | / \||  \/|| / \||  \/|  / \
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
-#
+
 
 import os
 import sys
 from time import sleep
 from subprocess import call, check_output, Popen, PIPE, CalledProcessError
 
+def notify(title, message=""):
+    if message:
+        check_output(["notify-send", title, message])
+    else:
+        check_output(["notify-send", title])
+    print(title+"\n"+message+"\n")
+
+
 try:
     import pyautogui
 except:
-    print(
-        "pyautogui is not installed; some selected keyboard combinations might not work"
-    )
+    notify("pyautogui is not installed", "some selected keyboard combinations might not work")
     pyautogui = None
 
 max_key_length = 0
@@ -32,11 +38,6 @@ def dmenu(list_in, prompt):
     except CalledProcessError:
         pass
 
-
-def notify(title, message=None):
-    if message is not None:
-        check_output(["notify-send", title, message])
-    check_output(["notify-send", title])
 
 
 class Shortcut:

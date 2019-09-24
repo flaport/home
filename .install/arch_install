@@ -573,6 +573,7 @@ pacman_install python-numpy
 pacman_install python2-numpy
 pacman_install python-matplotlib
 pacman_install python2-matplotlib
+pacman_install python-websockets
 
 # Scientific computing octave (matlab alternative)
 pacman_install octave

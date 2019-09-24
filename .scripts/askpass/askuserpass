@@ -1,0 +1,59 @@
+#!/usr/bin/python3
+
+# imports
+import sys
+import gi; gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
+
+# dialog
+class AskPassDialog(Gtk.Dialog):
+    def __init__(self):
+        Gtk.Dialog.__init__(
+            self,
+            "Password",
+            None,
+            0,
+        )
+
+        self.set_default_size(150, 70)
+        self.set_position(1)
+        self.box = self.get_content_area()
+
+        self.grid = Gtk.Grid()
+        self.box.add(self.grid)
+
+        self.label = Gtk.Label(label=f"{LABEL}\n")
+        self.grid.add(self.label)
+
+        self.userentry = Gtk.Entry()
+        self.userentry.set_visibility(True)
+        self.userentry.set_placeholder_text("username")
+        self.userentry.connect("activate", self.ok)
+        self.grid.attach_next_to(self.userentry, self.label, Gtk.PositionType.BOTTOM, 1, 2)
+
+        self.passentry = Gtk.Entry()
+        self.passentry.set_visibility(False)
+        self.passentry.set_placeholder_text("password")
+        self.passentry.connect("activate", self.ok)
+        self.grid.attach_next_to(self.passentry, self.userentry, Gtk.PositionType.BOTTOM, 1, 2)
+
+        self.button = Gtk.Button(label="OK")
+        self.button.connect("clicked", self.ok)
+        self.grid.attach_next_to(self.button, self.passentry, Gtk.PositionType.BOTTOM, 1, 2)
+        self.show_all()
+
+    def ok(self, button):
+        usercontent = self.userentry.get_text()
+        passcontent = self.passentry.get_text()
+        self.destroy()
+        if not usercontent or not passcontent:
+            exit(1)
+        print(f"{usercontent}\n{passcontent}")
+
+# program
+if __name__ == "__main__":
+    try:
+        LABEL = sys.argv[1]
+    except IndexError:
+        LABEL = "username and password"
+    AskPassDialog().run()

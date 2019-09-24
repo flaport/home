@@ -6,6 +6,9 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
+# git-status or gits: small fzf-based CLI utility for easy git-status, git-add, 
+# git-commit, git-reset, git-restore and git-checkout
+
 import os
 import sys
 from subprocess import call, check_output, Popen, PIPE, CalledProcessError

@@ -6,13 +6,14 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
+# search with ddgr
+
 import os
 import sys
 import json
 import webbrowser
 from subprocess import call, check_output, Popen, PIPE, CalledProcessError
 
-print(sys.argv)
 try:
     IDX = sys.argv.index("--dmenuargs")
 except:

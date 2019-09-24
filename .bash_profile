@@ -33,6 +33,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PYTHONSTARTUP="$HOME/.pythonstartup"
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export READER="zathura"
-export SUDO_ASKPASS="askpass"
+export SUDO_ASKPASS="$HOME/.local/bin/askpass"
+export SUDO_ASKUSERPASS="$HOME/.local/bin/askuserpass"
 export TERMINAL="st"
 
