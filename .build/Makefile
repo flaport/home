@@ -11,7 +11,7 @@ legacyfox:
 	cd legacyfox; make clean all install; cd ..
 
 all:
-	cd st; make clean install; cd ..
-	cd dwm; make clean install; cd ..
-	cd dmenu; make clean install; cd ..
-	cd legacyfox; make clean all install; cd ..
+	cd st; git pull; make clean install; cd ..
+	cd dwm; git pull; make clean install; cd ..
+	cd dmenu; git pull; make clean install; cd ..
+	cd legacyfox; git pull; make clean all install; cd ..
