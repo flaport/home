@@ -6,241 +6,292 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
+# imports
 import os
 import sys
 import json
-from subprocess import check_output, call, Popen, PIPE, CalledProcessError
+import shutil
+import argparse
+import warnings
+import subprocess
+
+# dependencies:
+# lsblk
+# findmnt
+
+# globals
+MOUNTPOINTS = {}
+
+# warning messages
+def notify(title, message=None):
+    if message is None:
+        message=""
+    subprocess.check_output(["notify-send", title, message])
 
 
-class MountError(RuntimeError):
-    title = "Error while mounting drive"
+def warn(message):
+    warnings.warn(message)
+    notify("dmenu_mount [warning]", message)
 
 
-class UnmountError(RuntimeError):
-    title = "Error while unmounting drive"
+# askpass and sudo-askpass dialogs
+ASKPASS = os.environ.get("SUDO_ASKPASS", "")
+if not ASKPASS:
+    raise RuntimeError("No $SUDO_ASKPASS environment variable found")
+ASKUSERPASS = os.environ.get("SUDO_ASKUSERPASS", "")
+if not ASKUSERPASS:
+    raise RuntimeError("No $SUDO_ASKUSERPASS environment variable found")
 
 
-class MountCancelled(RuntimeError):
-    title = "Nothing (un)mounted."
+def askpass(prompt):
+    password = subprocess.check_output([ASKPASS, prompt])[:-1].decode()
+    return password
 
 
-class Success(RuntimeError):
-    title = "Success"
+def askuserpass(prompt):
+    username, password = (
+        subprocess.check_output([ASKUSERPASS, prompt]).decode()[:-1].split("\n")
+    )
+    return username, password
+
+
+# Device
 
 
 class Device:
     def __init__(self, **kwargs):
-        self.name = kwargs["name"] or ""
-        self.label = kwargs["label"] or ""
-        self.size = kwargs["size"] or ""
-        self.fstype = kwargs["fstype"] or "none"
-        self.uuid = kwargs["uuid"] or ""
-        self.mountpoint = kwargs["mountpoint"] or ""
-        if "@" in self.name:
-            self.username, self.name = self.name.split("@")
+        kwargs["label"] = kwargs.get("label") or ""
+        self.__dict__.update(kwargs)
+        if hasattr(self, "mountpoint") and self.mountpoint:
+            self.mountpoint = os.path.abspath(os.path.expanduser(self.mountpoint))
+            MOUNTPOINTS[self.mountpoint] = self
         else:
-            self.username = os.environ.get("USER")
-        if self.fstype == "ssh" and ":" not in self.name:
-            self.name += f":/home/{self.username}"
-
-    def mount(self, mountpoint):
-        mountpoint = os.path.abspath(os.path.expanduser(mountpoint))
-        if self.mountpoint:
-            raise MountError(
-                f"Device {self.name} is already mounted at {self.mountpoint}"
-            )
-        if os.path.isdir(mountpoint):
-            if os.listdir(mountpoint):
-                raise MountError(f"Mount location {mountpoint} is not an empty folder")
-        else:
-            os.makedirs(mountpoint)
-
-        options = "defaults,nofail,x-systemd.device-timeout=1s"
-        if self.fstype in ("vfat", "ntfs"):
-            options += f",uid={os.getuid()},gid={os.getgid()},dmask=033,umask=033"
-        elif self.fstype == "cifs":
-            password = check_output(
-                [
-                    os.environ.get("SUDO_ASKPASS"),
-                    f"password for {self.username}@{self.name}",
-                ]
-            ).decode()[:-1]
-            options += f",username={self.username},password={password},uid={os.getuid()},gid={os.getgid()},dir_mode=0744,file_mode=0744"  # credentials=~/.smbcredentials
-        if self.fstype == "ssh":
-            status = call(
-                ["sudo", "-A", "sshfs", "-F", os.path.expanduser("~/.ssh/config"), "-o", f"allow_other,IdentityFile={os.path.expanduser('~/.ssh/id_rsa')}", f"{self.username}@{self.name}", mountpoint],
-            )
-            if status != 0:
-                password = check_output(
-                    [
-                        os.environ.get("SUDO_ASKPASS"),
-                        f"password for {self.username}@{self.name}",
-                    ]
-                ).decode()[:-1]
-                password_out = Popen(["echo", password], stdout=PIPE).stdout
-                status = call(
-                    ["sudo", "-A", "sshfs", "-F", os.path.expanduser("~/.ssh/config"), "-o", "allow_other,password_stdin", f"{self.username}@{self.name}", mountpoint],
-                    stdin=password_out,
-                )
-        else:
-            status = call(
-                ["sudo", "-A", "mount", f"{self.name}", mountpoint, "--options", options]
-            )
-        if status != 0:
-            raise MountError(
-                f"Mounting device {self.name} resulted in an exit status {status}"
-            )
-        else:
-            self.mountpoint = mountpoint
-            raise Success(f"drive mounted\n{self.name} --> {self.mountpoint}")
-
-    def unmount(self):
-        if not self.mountpoint:
-            raise UnmountError(f"Device {self.name} is not mounted")
-
-        status = call(["sudo", "-A", "umount", self.mountpoint])
-
-        if status != 0:
-            raise UnmountError(
-                f"Unmounting device {self.name}\n"
-                f"from mount point {self.mountpoint}\n"
-                f"resulted in an exit status {status}"
-            )
-        else:
-            os.rmdir(self.mountpoint)
             self.mountpoint = ""
-            raise Success(f"drive unmounted\n{self.name}")
 
-    def mountpoint_options(self):
-        options = []
-        if self.label:
-            options.append(f"/mnt/{self.label}")
-        if "/" in self.name:
-            options.append(f"/mnt/{self.name.split('/')[-1]}")
-        if ":" in self.name:
-            options.append(f"/mnt/{self.name.split(':')[0]}")
-        if self.uuid:
-            if "-" in self.uuid:
-                options.append(f"/mnt/{self.uuid.split('-')[0]}")
-            else:
-                options.append(f"/mnt/{self.uuid}")
-        options.append(f"/mnt")
-        return options
-
-    @staticmethod
-    def _normalize_string(s, length):
-        if len(s) > length:
-            return s[: length - 5] + "...  "
-        else:
-            return s + " " * (length - len(s))
-
-    def __str__(self):
+    def __repr__(self):
+        line = (
+            lambda s, l: s[: l - 5] + "...  " if len(s) > l else s + " " * (l - len(s))
+        )
         s = ""
-        s += self._normalize_string(self.label, 10)
-        s += self._normalize_string(self.name, 15)
-        s += self._normalize_string(self.size, 12)
-        s += self._normalize_string(self.fstype, 10)
-        s += self._normalize_string(self.uuid, 15)
-        s += self.mountpoint
+        if self.mountpoint:
+            s += line(self.mountpoint, 30)
+            s += line(self.name, 30)
+            return s
+        s += line(self.name, 15)
+        s += line(self.size, 12)
+        s += line(self.fstype, 10)
+        s += line(self.uuid, 15)
+        s += line(self.label, 10)
         return s
 
+    def __eq__(self, other):
+        return (isinstance(other, Device) and self.uuid == other.uuid) or (
+            str(self) == str(other)
+        )
 
-def lsblk():
-    lsblk1 = json.loads(check_output(["lsblk", "-J", "-l"]).decode())["blockdevices"]
-    lsblk2 = json.loads(check_output(["lsblk", "-J", "-l", "-f"]).decode())[
-        "blockdevices"
-    ]
-    lsblk = {}
-    for dic1, dic2 in zip(lsblk1, lsblk2):
-        dic1.update(dic2)
-        device = Device(**dic1)
-        device.name = "/dev/" + device.name
-        lsblk[str(device)] = device
-    return lsblk
+
+# functions
 
 
 def dmenu(list_in, prompt):
-    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+    dmenu_in = subprocess.Popen(
+        ["echo", "\n".join([str(s) for s in list_in])], stdout=subprocess.PIPE
+    ).stdout
     try:
-        choice = check_output(
-            ["dmenu", "-l", "100", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+        choice = subprocess.check_output(
+            ["dmenu", "-l", "100", "-p", prompt] + sys.argv, stdin=dmenu_in
         ).decode()[:-1]
-    except CalledProcessError:
-        raise MountCancelled("no drive was selected")
+    except subprocess.CalledProcessError:
+        raise RuntimeError("no drive was selected")
     return choice
 
 
-def get_mount_mode():
-    try:
-        mount = False
-        unmount = False
-        if sys.argv[1] == "mount":
-            mount = True
-        if sys.argv[1] == "umount" or sys.argv[1] == "unmount":
-            unmount = True
-        if mount == unmount:
-            raise MountCancelled("no mode selected: mount/unmount")
-    except IndexError:
-        raise MountCancelled("no mode selected: mount/unmount")
-    return mount
+def find_devices_to_mount():
+    lsblk1 = json.loads(subprocess.check_output(["lsblk", "-J", "-l"]).decode())[
+        "blockdevices"
+    ]
+    lsblk2 = json.loads(subprocess.check_output(["lsblk", "-J", "-l", "-f"]).decode())[
+        "blockdevices"
+    ]
+    devices = {}
+    for dic1, dic2 in zip(lsblk1, lsblk2):
+        device = {**dic1, **dic2}
+        name = device["name"] = "/dev/" + device["name"]
+        fstype = device["fstype"]
+        if "loop" not in name and fstype not in [None, "swap"] and not device["mountpoint"]:
+            device = Device(**device)
+            devices[str(device)] = device
+    return devices
 
+def find_devices_to_unmount():
+    parents = json.loads(subprocess.check_output(["findmnt", "--real", "-J"]).decode())["filesystems"]
+    mounted_devices = [dev for dev in parents if dev["target"] == "/"][0]["children"]
+    devices = {}
+    for dic in mounted_devices:
+        device = Device(mountpoint=dic["target"], name=dic["source"], fstype=dic["fstype"])
+        if "loop" not in device.name:
+            devices[str(device)] = device
+            print(device)
+    return devices
 
-def get_mount_device(choice):
-    try:
-        return devices[choice]
-    except KeyError:
-        # network device?
-        if not "@" in choice:
-            raise MountError("Cannot mount a network drive without username\n"
-                             "Make sure to mount as <username>@<network-location>.")
-        if choice.split("@")[1].startswith("//"): # try cifs mount
-            return Device(
-                name=choice,
-                label=None,
-                size=None,
-                fstype="cifs",
-                uuid=None,
-                mountpoint=None,
-            )
-        # try ssh mount:
-        return Device(
-            name=choice,
-            label=None,
-            size=None,
-            fstype="ssh",
-            uuid=None,
-            mountpoint=None,
-        )
-
-def get_unmount_device(choice):
-    try:
-        return devices[choice]
-    except KeyError:
-        return Device(name=None, label=None, size=None, fstype=None, uuid=None, mountpoint=choice)
-
-
-try:
-    devices = lsblk()
-    mount = get_mount_mode()
-    if mount:
-        devices_choice = dmenu(devices.keys(), "mount device")
-        device = get_mount_device(devices_choice)
-        mountpoint = dmenu(device.mountpoint_options(), f"mount {device.name} in")
-        device.mount(mountpoint)
+def parse_device_line(line):
+    """ this is only called when the device line is not found in lsblk"""
+    if line.startswith("//"):
+        return Device(name=line.strip(), fstype="cifs")
+    elif line.startswith("/"):
+        return Device(name=line.strip(), fstype="ext") # mounting a folder in another one
     else:
-        devices_choice = dmenu(devices.keys(), "unmount device")
-        device = get_unmount_device(devices_choice)
-        if not device.mountpoint:
-            device.mountpoint = device.name
-        device.unmount()
+        return Device(name=line.strip(), fstype="ssh")
 
-except Exception as e:
-    call(
-        [
-            "notify-send",
-            e.__class__.__name__ if not hasattr(e, "title") else e.title,
-            str(e),
-        ]
+
+def mount(device: Device, directory: str):
+    directory = os.path.abspath(os.path.expanduser(directory))
+    if os.path.exists(directory):
+        if os.listdir(directory):
+            raise RuntimeError(f"directory {directory} not empty")
+        if directory in MOUNTPOINTS:
+            raise RuntimeError(f"device {MOUNTPOINTS[directory].name} is mounted here.")
+    else:
+        os.makedirs(directory)
+    try:
+        func = {
+            "ext2": _mount_ext,
+            "ext3": _mount_ext,
+            "ext4": _mount_ext,
+            "vfat": _mount_vfat,
+            "ntfs": _mount_ntfs,
+            "cifs": _mount_cifs,
+            "ssh": _mount_ssh,
+        }[device.fstype]
+    except KeyError:
+        raise RuntimeError(f"No recipe for mounting {device.fstype} format.")
+    return func(device, directory)
+
+def unmount(device: Device):
+    if not device.mountpoint:
+        raise RuntimeError(f"Device {device.name} is not mounted")
+    msg = subprocess.check_output(["sudo", "-A", "umount", device.mountpoint])
+    if os.path.isdir(device.mountpoint) and not os.listdir(device.mountpoint):
+        shutil.rmtree(device.mountpoint)
+    return msg
+
+
+def _mount_ext(device: Device, directory: str):
+    options = "defaults,nofail,x-systemd.device-timeout=1s"
+    msg = subprocess.check_output(
+        ["sudo", "-A", "mount", f"{device.name}", directory, "--options", options]
     )
-    if not isinstance(e, Success):
+    return msg
+
+
+def _mount_vfat(device: Device, directory: str):
+    options = ("defaults,nofail,x-systemd.device-timeout=1s,"
+              f"uid={os.getuid()},gid={os.getgid()},dmask=033,umask=033")
+    msg = subprocess.check_output(
+        ["sudo", "-A", "mount", f"{device.name}", directory, "--options", options]
+    )
+    return msg
+
+
+def _mount_ntfs(device: Device, directory: str):
+    options = (
+        "defaults,nofail,x-systemd.device-timeout=1s,"
+        f"uid={os.getuid()},gid={os.getgid()},dmask=033,umask=033"
+    )
+    msg = subprocess.check_output(
+        ["sudo", "-A", "mount", f"{device.name}", directory, "--options", options]
+    )
+    return msg
+
+
+def _mount_cifs(device: Device, directory: str):
+    username, password = askuserpass(f"username and password for {device.name} [cifs]")
+    options = (
+        "defaults,nofail,x-systemd.device-timeout=1s,"
+        f"uid={os.getuid()},gid={os.getgid()},dir_mode=0744,file_mode=0744,"
+        f"username={username},password={password}"
+    )
+    msg = subprocess.check_output(
+        ["sudo", "-A", "mount", f"{device.name}", directory, "--options", options]
+    )
+    return msg
+
+
+def _mount_ssh(device: Device, directory: str):
+    username, password = askuserpass(f"username and password for {device.name} [sshfs]")
+    if ":" not in device.name:
+        device.name = device.name + f":/home/{username}"
+    password_out = subprocess.Popen(["echo", password], stdout=subprocess.PIPE).stdout
+    msg = subprocess.check_output( # no sudo!
+        [
+            "sshfs",
+            "-o",
+            "password_stdin",
+            f"{username}@{device.name}",
+            directory,
+        ],
+        stdin=password_out,
+    )
+    return msg
+
+def mountpoint_options(device):
+    options = []
+    if device.label:
+        options.append(f"/mnt/{device.label}")
+    if "/" in device.name:
+        options.append(f"/mnt/{device.name.split('/')[-1]}")
+    if ":" in device.name:
+        options.append(f"/mnt/{device.name.split(':')[0]}")
+    if hasattr(device, "uuid") and device.uuid:
+        if "-" in device.uuid:
+            options.append(f"/mnt/{device.uuid.split('-')[0]}")
+        else:
+            options.append(f"/mnt/{device.uuid}")
+    options.append(f"/mnt")
+    max_length = max(len(opt) for opt in options)
+    max_length = max(max_length, 100)
+    options = [opt+" "*(max_length-len(opt)) for opt in options]
+    return options
+
+
+# main program
+if __name__ == "__main__":
+    try:
+        _ = sys.argv.pop(0)
+        mode = sys.argv.pop(0)
+    except:
+        print("Usage: dmenu_mount [mount|unmount]")
         exit(1)
+
+    if mode == "mount":
+        devices = find_devices_to_mount()
+    else:
+        devices = find_devices_to_unmount()
+    device_line = dmenu(devices.values(), f"{mode}")
+    chosen_device = devices.get(device_line) or parse_device_line(device_line)
+    if mode == "mount":
+        chosen_directory = dmenu(mountpoint_options(chosen_device), "mount in").strip()
+        msg = mount(chosen_device, chosen_directory)
+    if mode == "unmount":
+        msg = unmount(chosen_device)
+
+    notify(f"{mode} success!", msg)
+    print(f"{mode} success!")
+    if msg:
+        print(str(msg))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
