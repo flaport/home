@@ -10,10 +10,11 @@ launch mpv over a different random socket each time
 """
 
 import sys
-import uuid
+import secrets
 from subprocess import Popen
 
 
 if __name__ == "__main__":
-    random_socketname = f"/tmp/mpvsocket{uuid.uuid4().hex}"
+    random_socketname = f"/tmp/mpvsocket{secrets.token_hex(4)}"
     Popen(["/usr/bin/mpv", "--player-operation-mode=pseudo-gui", f"--input-ipc-server={random_socketname}"] + sys.argv[1:])
+

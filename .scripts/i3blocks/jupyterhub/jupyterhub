@@ -1,4 +1,10 @@
 #!/bin/bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
 
 if [ -f /etc/systemd/system/jupyterhub.service ]; then
     if [[ $(systemctl is-active jupyterhub) == "active" ]]; then

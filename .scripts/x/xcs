@@ -18,31 +18,34 @@ available_colorschemes(){
     find . -executable | sed s/[.]//g | sed s/[/]//g
 }
 
-if [ ! $1 ]; then
-    usage
-    available_colorschemes
-    exit 1
+if [ -z "$1" ]; then
+    cd ~/.config/Xresources
+    cs=$(find . -executable | sed s/[.]//g | sed s/[/]//g | dmenu -i -l 20)
 fi
 
-if [ $1 = "-a" ] || [ $1 = "--alpha" ]; then
+
+if [ "$1" = "-a" ] || [ "$1" = "--alpha" ]; then
     shift
     alpha=$1
     shift
 fi
 
-if [ ! $1 ]; then
-    usage
-    available_colorschemes
-    exit 1
-fi
-
-if [ $1 = ls ]; then
+if [ "$1" = "ls" ]; then
     available_colorschemes
     exit 0
 fi
 
+if [ -z "$cs" ]; then
+    if [ -z "$1" ]; then
+        usage
+        available_colorschemes
+        exit 1
+    fi
+    cs=$1
+fi
+
 rm -f ~/.Xresources
-cp ~/.config/Xresources/$1 ~/.Xresources
+cp ~/.config/Xresources/$cs ~/.Xresources
 
 if [ $alpha ]; then
     echo *.alpha: $alpha >> ~/.Xresources
