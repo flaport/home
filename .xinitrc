@@ -27,6 +27,9 @@ if [ -f ~/.Xresources ]; then
     xrdb ~/.Xresources &
 fi
 
+# start smdv (simple markdown viewer) in the background
+smdv --no-browser &
+
 # export your desired screenlayout with `arandr`
 default_screenlayout &
 
