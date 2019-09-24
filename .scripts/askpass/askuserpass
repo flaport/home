@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 # imports
+import sys
 import gi; gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
@@ -21,7 +22,7 @@ class AskPassDialog(Gtk.Dialog):
         self.grid = Gtk.Grid()
         self.box.add(self.grid)
 
-        self.label = Gtk.Label(label=args.label+"\n")
+        self.label = Gtk.Label(label=f"{LABEL}\n")
         self.grid.add(self.label)
 
         self.userentry = Gtk.Entry()
@@ -51,13 +52,8 @@ class AskPassDialog(Gtk.Dialog):
 
 # program
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description="askuserpass")
-    parser.add_argument(
-        "-l",
-        "--label",
-        default="please give your username and password.",
-        help="default askpass label",
-    )
-    args = parser.parse_args()
+    try:
+        LABEL = sys.argv[1]
+    except IndexError:
+        LABEL = "username and password"
     AskPassDialog().run()
