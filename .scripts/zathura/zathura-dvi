@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+dvipdf $1 $1.pdf && zathura $1.pdf
