@@ -20,7 +20,7 @@ available_colorschemes(){
 
 if [ -z "$1" ]; then
     cd ~/.config/Xresources
-    cs=$(find . -executable | sed s/[.]//g | sed s/[/]//g | dmenu -i -l 20)
+    cs=$(find . -executable | sed s/[.]//g | sed s/[/]//g | dmenu -p "select colorscheme" -i -l 20)
 fi
 
 
