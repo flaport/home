@@ -15,3 +15,7 @@ map K zoom in
 map J zoom out
 map i recolor
 map p print
+
+# settings 
+set recolor-darkcolor "#dcdcdc"
+set recolor-lightcolor "#1f1f1f"
