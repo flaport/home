@@ -71,6 +71,19 @@ alias :e=$EDITOR
 alias ls='ls -hN --color=auto --group-directories-first'
 alias grep="grep --color=auto"
 
+
+## Python
+#-------------------------------------------------------------------------------
+# create python startup file if it does not exist
+touch $HOME/.pythonpath
+# create python path file if it does not exist
+touch $HOME/.pythonstartup
+# set python path from "~/.pythonpath" file
+export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1 | sed 's|~|'$HOME'|g')"
+# enable conda commands
+CONDA="$HOME/.anaconda/etc/profile.d/conda.sh" && [ -f $CONDA ] && source $CONDA 
+
+
 ## Extensions
 #-------------------------------------------------------------------------------
 
