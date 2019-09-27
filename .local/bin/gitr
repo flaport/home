@@ -20,7 +20,7 @@ def fzf(list_in, prompt):
                 "--layout=reverse",
                 "--height=60%",
                 f"--header={prompt}",
-                "--bind=ctrl-l:preview-down,ctrl-h:preview-up",
+                "--bind=j:down,k:up,l:toggle,h:toggle,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up",
                 "--preview-window=right:wrap",
                 '--preview=git show --color=always $(echo {} | sed "s/ .*//")',
             ],
