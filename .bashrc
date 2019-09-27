@@ -25,7 +25,6 @@ PS1='\[\033[01;32m\]\w\[\033[00m\]\$  '
 alias :q=exit
 alias :x=exit
 alias :e=$EDITOR
-alias ls='ls -hN --color=auto --group-directories-first'
 alias grep="grep --color=auto"
 
 

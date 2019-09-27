@@ -68,7 +68,6 @@ fi
 alias :q=exit
 alias :x=exit
 alias :e=$EDITOR
-alias ls='ls -hN --color=auto --group-directories-first'
 alias grep="grep --color=auto"
 
 
