@@ -1,102 +1,87 @@
-#!/usr/bin/env zsh
+#!/usr/bin/zsh
 #    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
 #   |  __\| |   | / \||  \/|| / \||  \/|  / \
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
-# zsh Initialization
-## ------------------------------------------------------------------------------
 
-# Path to your oh-my-zsh installation (install with yay!).
-ZSH=/usr/share/oh-my-zsh
+## General settings
+#-------------------------------------------------------------------------------
 
-# zsh folder for custom scripts:
-ZSH_CUSTOM=$HOME/.config/zsh
+# enable colors
+autoload -U colors && colors
 
-# Set name of the theme to load, random=random choice from predefined list.
-[[ $(tty) == /dev/tty* ]] && ZSH_THEME=dieter || ZSH_THEME=powerline
-ZSH_THEME_RANDOM_CANDIDATES=( robbyrussell agnoster dieter powerline )
+# better tab-completion
+autoload -U compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)		# Include hidden files.
 
-# case-sensitive completion.
-CASE_SENSITIVE=false
+# use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
 
-# hyphen-insensitive completion (case-sensitive should be false)
-HYPHEN_INSENSITIVE=true
+# vi mode
+bindkey -v
+export KEYTIMEOUT=1
 
-# bi-weekly auto-update checks.
-DISABLE_AUTO_UPDATE=true
-DISABLE_UPDATE_PROMPT=false
+# edit line in vim with ctrl-e:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
 
-# magic functions
-DISABLE_MAGIC_FUNCTIONS=false
+# change cursor shape for different vi modes.
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'
+  fi
+}
+zle -N zle-keymap-select
+zle-line-init() {
+    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    echo -ne "\e[5 q"
+}
+zle -N zle-line-init
+echo -ne '\e[5 q' # Use beam shape cursor on startup.
+preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
-# colored ls
-DISABLE_LS_COLORS=false
+# colored zsh prompt
+setopt prompt_subst
+if [[ $(tty) == /dev/tty* ]]; then
+    source $HOME/.config/zsh/themes/dieter.zsh
+else
+    source ~/.config/zsh/themes/powerline.zsh
+fi
 
-# automatic terminal title
-DISABLE_AUTO_TITLE=false
-
-# command auto correction (annoying)
-ENABLE_CORRECTION=false
-
-# display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS=true
-
-# mark untracked files as dirty (status checks much faster if disabled)
-DISABLE_UNTRACKED_FILES_DIRTY=false
-
-# history timestamp format
-HIST_STAMPS="yyyy-mm-dd"
-
-# plugins to load:
-plugins=( 
-    autojump
-    colorize
-    colored-man-pages
-    command-not-found
-    compleat
-    copydir
-    copyfile
-    common-aliases
-    git 
-    pip
-    pylint
-    python
-    vi-mode
-    fzf
-)
-
-source $ZSH/oh-my-zsh.sh
-
-# remove some of the common aliases
-unalias cp
-unalias mv
-unalias rm
-
-# some vim-like aliases:
+## Aliases
+#-------------------------------------------------------------------------------
 alias :q=exit
 alias :x=exit
 alias :e=$EDITOR
+alias ls='ls -hN --color=auto --group-directories-first'
+alias grep="grep --color=auto"
 
-
-## Fish-like autosuggestions
+## Extensions
 #-------------------------------------------------------------------------------
 
-ZSH_AUTOSUGGESTIONS=$HOME/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-[ -f $ZSH_AUTOSUGGESTIONS ] && source $ZSH_AUTOSUGGESTIONS
+# autojump
+source /usr/share/autojump/autojump.zsh
+
+# zsh autosuggestions (like in the fish shell)
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^p' autosuggest-accept #-execute
 bindkey '^n' autosuggest-accept #-execute
 
-
-## Python
-#-------------------------------------------------------------------------------
-# create python startup file if it does not exist
-touch $HOME/.pythonpath
-# create python path file if it does not exist
-touch $HOME/.pythonstartup
-# set python path from "~/.pythonpath" file
-export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1 | sed 's|~|'$HOME'|g')"
-# enable conda commands
-CONDA="$HOME/.anaconda/etc/profile.d/conda.sh" && [ -f $CONDA ] && source $CONDA 
+# Load zsh-syntax-highlighting; should be last.
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 

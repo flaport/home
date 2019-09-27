@@ -51,3 +51,10 @@ bind \cp accept-autosuggestion
 bind -M insert \cn accept-autosuggestion
 bind \cn accept-autosuggestion
 
+
+## Extensions
+#-------------------------------------------------------------------------------
+
+# autojump
+source /usr/share/autojump/autojump.fish
+

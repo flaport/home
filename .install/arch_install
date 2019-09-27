@@ -13,7 +13,7 @@
 ## Checks
 #-------------------------------------------------------------------------------
 
-## Pre-installation checks
+## pre-installation checks
 if [ $USER == root ]; then
     echo
     echo "first_install.sh should not be run as root / with sudo."
@@ -240,7 +240,7 @@ pacman_install neovim
 link /usr/bin/nvim /usr/bin/vim
 # rsync: safe and secure copy & backup
 pacman_install rsync
-# syncthing: syncronization between devices
+# syncthing: synchronization between devices
 pacman_install syncthing
 # atool gives information about archives
 pacman_install atool
@@ -264,8 +264,6 @@ pacman_install vifm
 # yay_install ddgr
 # search tool (grep alternative, necessary for some vim extensions)
 pacman_install ack
-# faster navigation in the shell (combine with zsh extension of the same name)
-pacman_install autojump
 # fuzzy finder tool
 pacman_install fzf
 # multiple terminals in one
@@ -305,7 +303,7 @@ pacman_install xorg-xinit
 pacman_install xorg-xprop
 # for transparent windows etc.
 pacman_install xcompmgr
-# for changing brightnes etc:
+# for changing brightness etc:
 pacman_install xorg-xbacklight
 # get info on current active windows
 pacman_install xorg-xdpyinfo
@@ -322,7 +320,7 @@ submodule_install st
 # i3-gaps: allow gaps between windows
 # pacman_install i3-gaps
 # i3-blocks: status bar for i3
-# pacman_install i3blocks
+# pacman_install i3-blocks
 # i3-lock: screen lock for i3 (and also for dwm!)
 pacman_install i3lock
 # xsetroot: for status bar in dwm
@@ -447,9 +445,9 @@ pacman_install dunst
 pacman_install sxiv
 # imagemagick: for images
 pacman_install imagemagick
-# youtube-dl: download youtube videos
+# youtube-dl: download YouTube videos
 pacman_install youtube-dl
-# youtube-viewer
+# YouTube-viewer
 pacman_install youtube-viewer
 # vlc media player
 # pacman_install vlc
@@ -551,7 +549,7 @@ systemctl_enable acpid
 echo $password | sudo -S chmod a+w /sys/power/state
 
 ## nvidia graphics card:
-# this is disabled by default, as it gives troubles on devices without nvidia gpu
+# this is disabled by default, as it gives troubles on devices without nvidia GPU
 # pacman_install nvidia
 # pacman_install cuda-toolkit
 
@@ -574,8 +572,9 @@ pacman_install python2-numpy
 pacman_install python-matplotlib
 pacman_install python2-matplotlib
 pacman_install python-websockets
+pacman_install python-powerline
 
-# Scientific computing octave (matlab alternative)
+# Scientific computing octave (Matlab alternative)
 pacman_install octave
 
 # install neovim integration for system python
@@ -586,7 +585,7 @@ pip3_install neovim-remote
 # image previews in vifm
 pip3_install ueberzug
 
-# automate gui tasks with pyautogui
+# automate GUI tasks with pyautogui
 pip3_install pyautogui
 
 # to enable wordcloud background
@@ -629,21 +628,25 @@ ln -s ~/.config/Xresources/solarizeddark ~/.Xresources >> $LOG 2>> $ERR
 
 ## Alternative shell
 #-------------------------------------------------------------------------------
-# dash is a posix complient shell
+# dash: a minimal implementation of sh:
 pacman_install dash
-# we will make sh point to dash in stead to bash
+# we'll make sh point to dash in stead to bash
 link /usr/bin/dash /bin/sh
 
-# fish is not posix complient, but friendly and interactive ;)
+# fish: alternative shell. It's not posix complient, but friendly and interactive ;)
 # pacman_install fish
-# we will make fish our main shell
 # echo $password | chsh -s /usr/bin/fish
 
-# zsh is posix complient + many extra's (some might call it bloat, but I like it)
+# zsh: another alternative shell. In contrast to fish, it *is* posix complient.
+# it's my preferred shell.
 pacman_install zsh
-yay_install oh-my-zsh-git
-# fish-like autosuggestions
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.config/zsh/zsh-autosuggestions >> $LOG 2>> $ERR
-# we will make zsh our main shell
+# zsh-extensions:
+pacman_install autojump
+pacman_install zsh-autosuggestions
+pacman_install zsh-syntax-highlighting
+
+# optional: make customizing zsh easy:
+# yay_install oh-my-zsh-git
+# we'll make zsh our main shell
 echo $password | chsh -s /usr/bin/zsh
 
