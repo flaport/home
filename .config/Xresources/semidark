@@ -54,8 +54,8 @@ are more guidelines than strict rules.
 *color14: #00ad9c
 
 !! foreground
-*color15: #fdf6e3
+*color15: #1b1918
 
 !! window transparency
-*alpha: 0.70
+*alpha: 0.95
 
