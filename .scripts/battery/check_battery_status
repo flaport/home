@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
-
-val=5
-[ $1 ] && val=$1
-
-battery=$(acpi -b | grep Discharging | grep ", $val%" 2> /dev/null)
-if [ ! "$battery" ]; then
-    if [ "$val" -gt 0 ]; then
-        val=$((val-1))
-        check_battery_status $val
-        exit $?
-    fi
-    exit 1
-fi
+battery=$(acpi -b | grep Discharging | grep ", 5%" 2> /dev/null)
+[ ! "$battery" ] && battery=$(acpi -b | grep Discharging | grep ", 4%" 2> /dev/null)
+[ ! "$battery" ] && battery=$(acpi -b | grep Discharging | grep ", 3%" 2> /dev/null)
+[ ! "$battery" ] && battery=$(acpi -b | grep Discharging | grep ", 2%" 2> /dev/null)
+[ ! "$battery" ] && battery=$(acpi -b | grep Discharging | grep ", 1%" 2> /dev/null)
+[ ! "$battery" ] && battery=$(acpi -b | grep Discharging | grep ", 0%" 2> /dev/null)
+[ ! "$battery" ] && exit 1
 notify-send "Battery Low" "$battery" -u critical
+exit 0
