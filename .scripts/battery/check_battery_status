@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+val=5
+[ $1 ] && val=$1
+
+battery=$(acpi -b | grep Discharging | grep ", $val%" 2> /dev/null)
+if [ ! "$battery" ]; then
+    if [ "$val" -gt 0 ]; then
+        val=$((val-1))
+        check_battery_status $val
+        exit $?
+    fi
+    exit 1
+fi
+notify-send "Battery Low" "$battery" -u critical

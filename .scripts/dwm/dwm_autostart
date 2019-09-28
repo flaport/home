@@ -7,11 +7,11 @@
 
 
 # enable hotkeys
-sxhkd -c ~/.config/sxhkd/sxhkdrcdwm &
+sxhkd -c ~/.config/sxhkd/sxhkdrcdwm &> /dev/null &
 
 # update dwm status bar
 while true; do
-    dwm_status
+    dwm_status &> /dev/null
     sleep 10s
 done &
 
@@ -23,13 +23,3 @@ while true; do
     sleep 3600s
 done &
 
-# check for critical battery status every minute
-while true; do
-    battery=$(acpi -b | grep Discharging | grep ", 5%" 2> /dev/null)
-    [[ $? == 0 ]] && notify-send "Battery Critical" $battery
-    battery=$(acpi -b | grep Discharging | grep ", 1%" 2> /dev/null)
-    [[ $? == 0 ]] && notify-send "Battery Critical" $battery
-    battery=$(acpi -b | grep Discharging | grep ", 0%" 2> /dev/null)
-    [[ $? == 0 ]] && notify-send "Battery Critical" $battery
-    sleep 60
-done &

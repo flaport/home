@@ -15,7 +15,7 @@ set_wallpaper ~/.config/wallpaper.png &
 
 # update process wallpaper every minute
 while true; do
-    process_wallpaper &
+    process_wallpaper
     sleep 60
 done &
 
@@ -47,8 +47,14 @@ unclutter &
 
 # set cursor speed
 while true; do
-    xset r rate 200 45 &
+    xset r rate 200 45
     sleep 10s
+done &
+
+# check for critical battery status every minute
+while true; do
+    check_battery_status
+    sleep 60;
 done &
 
 # execute window manager
