@@ -235,6 +235,8 @@ pacman_install make
 git_install https://aur.archlinux.org/yay.git
 
 ## Terminal
+# my st fork
+submodule_install st
 # vim / neovim
 pacman_install neovim
 link /usr/bin/nvim /usr/bin/vim
@@ -262,6 +264,8 @@ pacman_install vifm
 # yay_install googler
 # terminal internet search: duckduckgo
 # yay_install ddgr
+# search tool
+pacman_install grep
 # search tool (grep alternative, necessary for some vim extensions)
 pacman_install ack
 # fuzzy finder tool
@@ -294,6 +298,7 @@ yay_install transmission-remote-cli-git
 
 ## Graphical server: xorg
 # the graphical server
+pacman_install xorg
 pacman_install xorg-server
 # querying window information
 pacman_install xorg-xwininfo
@@ -303,8 +308,6 @@ pacman_install xorg-xinit
 pacman_install xorg-xprop
 # for transparent windows etc.
 pacman_install xcompmgr
-# for changing brightness etc:
-pacman_install xorg-xbacklight
 # get info on current active windows
 pacman_install xorg-xdpyinfo
 # virtual x server
@@ -313,8 +316,15 @@ pacman_install xorg-server-xvfb
 yay_install unclutter-xfixes-git
 # viewer with synctex support, and some custom plugins
 pacman_install xdotool
-# my st fork
-submodule_install st
+# for changing brightness etc:
+pacman_install xorg-xbacklight
+# correct settings for xorg-xbacklight:
+cat /etc/X11/xorg.conf 2> /dev/null | grep "Intel Graphics" &> /dev/null
+already_configured=$?
+if [ -d /sys/class/backlight/intel_backlight ] && [ $already_configured -ne 0 ]; then
+    pacman_install xf86-video-intel
+    printf "\nSection \"Device\"\n    Identifier \"Intel Graphics\"\n    Driver \"intel\"\n    Option \"Backlight\" \"intel_backlight\"\nEndSection\n" | sudo tee -a /etc/X11/xorg.conf &> /dev/null
+fi
 
 ## Desktop Environment / Window Manager
 # i3-gaps: allow gaps between windows

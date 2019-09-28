@@ -369,9 +369,13 @@ super + F9
 
 super + F10
 
+# decrease brightness
 super + F11
+    [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
 
+# increase brightness
 super + F12
+    xbacklight -inc 10; dwm_status
 
 # mute volume
 XF86AudioMute
@@ -384,6 +388,14 @@ XF86AudioLowerVolume
 # raise volume
 XF86AudioRaiseVolume
     amixer -D pulse set Master 5%+; dwm_status
+
+# increase brightness
+XF86MonBrightnessUp
+    xbacklight -inc 10; dwm_status
+
+# decrease brightness
+XF86MonBrightnessDown
+    [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
 
 XF86AudioNext
     notify-send XF86AudioNext "not implemented"

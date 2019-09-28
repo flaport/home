@@ -38,6 +38,26 @@ bat1(){ # mouse-button 1 action for battery widget
 
 # -----------
 
+brt(){ # screen brightness
+    dir=/sys/class/backlight/intel_backlight
+    if [ ! -d $dir ]; then
+        echo -e ""
+        return
+    fi
+    max_brightness=$(cat $dir/max_brightness)
+    brightness=$(cat $dir/brightness)
+    python -c "print('💡 %.0f'%(100*$brightness/$max_brightness)+'%')"
+}
+brt1(){ # mouse-button 1 action for brightness widget
+    dir=/sys/class/backlight/intel_backlight
+    max_brightness=$(cat $dir/max_brightness)
+    brightness=$(cat $dir/brightness)
+    brightness=$(python -c "print('%.0f'%(100*$brightness/$max_brightness)+'%')")
+    notify-send "Screen brightness [$brightness]" "◻️ + F11: decrease brightness\n◻️ + F12: increase brightness"
+}
+
+# -----------
+
 bt(){ # bluetooth
     if [ ! -d /sys/class/bluetooth ]; then
         echo -e ""
@@ -262,5 +282,5 @@ status(){
 # Set the status bar
 #--------------------------------------------------------------------------------
 
-status vol bat alpha bt vpn hub ssht sshd wtr dte tme
+status vol brt bat alpha bt vpn hub ssht sshd wtr dte tme
 
