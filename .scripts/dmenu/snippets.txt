@@ -22,6 +22,25 @@
     \label{fig:}
 \end{figure}
 
+# subfigure [requires the caption package]
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\includegraphics{}
+\caption{~}
+\label{fig:}
+\end{subfigure}%
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\includegraphics{}
+\caption{~}
+\label{fig:}
+\end{subfigure}
+\caption{~}
+\label{fig:}
+\end{figure}
+
 # equation (align) [requires 'amsmath']
 \begin{align}
 \end{align}
