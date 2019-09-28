@@ -66,7 +66,7 @@ echo "installing jupyter stack..."
 $CONDA install -y -S -c conda-forge tornado=5 nodejs=8 jupyter ipykernel jupyterlab jupyterhub matplotlib >> $LOG 2>> $ERR
 
 echo "installing scientific stack... [takes long]"
-$CONDA install -y -S numpy pandas cython pillow scikit-learn h5py >> $LOG 2>> $ERR
+$CONDA install -y -S numpy pandas ipympl cython pillow scikit-learn h5py >> $LOG 2>> $ERR
 
 echo "installing machine learning stack... [takes long]"
 $CONDA install -y -S tensorflow keras >> $LOG 2>> $ERR
@@ -224,4 +224,6 @@ echo "installing jupyterlab tensorboard"
 labextension_install jupyterlab_tensorboard
 $PIP install jupyter_tensorboard
 $JUPYTER serverextension enable --py jupyter_tensorboard >> $LOG 2>> $ERR
+echo "installing jupyter-widgets / jupyterlab-manager"
+labextension_install @jupyter-widgets/jupyterlab-manager
 
