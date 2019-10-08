@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 # open Web App [wa]:
-firefox --new-window "$1" &>/dev/null & disown
+# firefox --new-window "$1" &>/dev/null & disown
+chromium --app="$1" &> /dev/null & disown

@@ -1,4 +1,4 @@
 [Desktop Entry]
-Exec=webapp localhost:8000
+Exec=webapp http://localhost:8000
 Name=Jupyter Lab
 Icon=/usr/local/share/icons/lab.png # add this icon yourself.
