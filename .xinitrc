@@ -46,7 +46,11 @@ xautolock -time 10 -locker validate_and_lock_screen &
 unclutter &
 
 # set cursor speed
-xset r rate 200 45 &
+# wrapped into loop, as sometimes this stops working
+while true; do
+    xset r rate 200 45 &
+    sleep 60
+done &
 
 # execute window manager
 exec $WM > ~/.local/share/$WM.log
