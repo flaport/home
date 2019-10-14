@@ -66,7 +66,7 @@ echo "installing jupyter stack..."
 $CONDA install -y -S -c conda-forge tornado=5 nodejs=8 jupyter ipykernel jupyterlab jupyterhub matplotlib >> $LOG 2>> $ERR
 
 echo "installing scientific stack... [takes long]"
-$CONDA install -y -S numpy pandas ipympl cython pillow scikit-learn h5py >> $LOG 2>> $ERR
+$CONDA install -y -S numpy pandas ipympl widgetsnbextension cython pillow scikit-learn h5py >> $LOG 2>> $ERR
 
 echo "installing machine learning stack... [takes long]"
 $CONDA install -y -S tensorflow keras >> $LOG 2>> $ERR
@@ -132,7 +132,7 @@ $HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name py2 --dis
 mv $HOME/.local/share/jupyter/kernels/py2 $HOME/.anaconda/share/jupyter/kernels/
 
 echo "installing scientific stack... [py2]"
-$CONDA install -y -S numpy pandas cython pillow scikit-learn h5py tensorflow keras >> $LOG 2>> $ERR
+$CONDA install -y -S numpy pandas ipympl widgetsnbextension cython pillow scikit-learn h5py tensorflow keras >> $LOG 2>> $ERR
 
 echo "installing machine learning stack... [py2]"
 $CONDA install -y -S tensorflow keras >> $LOG 2>> $ERR
@@ -203,9 +203,10 @@ labextension_install @jupyterlab/plotly-extension
 labextension_install @jupyterlab/toc
 labextension_install @jupyter-widgets/jupyterlab-manager
 labextension_install @lckr/jupyterlab_variableinspector
-labextension_install jupyterlab_vim
-labextension_install jupyter-threejs
 labextension_install @jupyter-widgets/jupyterlab-manager
+labextension_install jupyter-threejs
+labextension_install jupyter-matplotlib
+labextension_install jupyterlab_vim
 $PIP install ipyvolume >> $LOG 2>> $ERR
 labextension_install ipyvolume
 $PIP install jupyterlab_latex >> $LOG 2>> $ERR
