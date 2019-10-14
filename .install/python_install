@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# the last time this script was run: 2019-08-26
+# the last time this script was run: 2019-10-14
 
 ## Checks
 #-------------------------------------------------------------------------------
@@ -34,6 +34,7 @@ fi
 
 LOG="$HOME/.local/share/python_install.log"
 ERR="$HOME/.local/share/python_install_errors.log"
+mkdir -p "$HOME/.local/share"
 printf "PYTHON PACKAGE INSTALL\n\n\n" > $LOG
 printf "PYTHON PACKAGE INSTALL\n\n\n" > $ERR
 
