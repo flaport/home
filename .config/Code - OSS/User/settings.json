@@ -52,6 +52,7 @@
         "-interaction=nonstopmode",
         "-file-line-error",
         "-xelatex",
+        "-shell-escape",
         "%DOC%"
     ],
     "vim.useSystemClipboard": true,
