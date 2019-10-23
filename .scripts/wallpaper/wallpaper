@@ -239,7 +239,10 @@ if __name__ == "__main__":
             exit(1)
 
         c = ""
-        i = names.index("current-wallpaper")
+        try:
+            i = names.index("current-wallpaper")
+        except ValueError:
+            i = 0
         while True:
             print("\n"*1000)
             print("Select background:\n\n"
