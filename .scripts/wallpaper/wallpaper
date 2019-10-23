@@ -1,0 +1,300 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____ 
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#
+
+
+# Requirements
+
+# feh
+# convert (imagemagick) [optional]
+# ueberzug [optional]
+
+
+# Imports
+
+import os
+import sys
+import tty
+import time
+import shutil
+import termios
+import textwrap
+import urllib.request
+import subprocess
+try:
+    import ueberzug.lib.v0 as ubz
+except ImportError:
+    ubz = None
+with open(os.devnull, "w") as out:
+    has_convert = not bool(subprocess.call(["which", "convert"], stdout=out, stderr=out))
+
+
+# Constants
+
+WALLPAPERDIR = os.path.expanduser("~/.local/share/wallpapers")
+URLFILE = os.path.expanduser("~/.local/share/wallpapers/wallpapers.txt")
+CURRENTWALLPAPER = os.path.expanduser("~/.local/share/wallpapers/current-wallpaper")
+CURRENTLOCKSCREEN = os.path.expanduser("~/.local/share/wallpapers/current-lockscreen")
+
+# Functions
+
+def usage():
+    print(textwrap.dedent(f"""wallpaper [filename|name|url|color]
+
+    wallpaper takes no arguments OR one single argument
+
+    * If no arguments specified:
+        - the wallpaper can be interactively chosen from the 
+          wallpapers specified in {URLFILE}
+
+    * If a single argument specified:
+        - this script will figure out the argument type by itself
+
+    Argument types:
+    ---------------
+
+    * filename:
+        - a relative or absolute path
+
+    * name: 
+        - if the argument is not a filename, it can be a name.
+        - a name should be specified in advance in {URLFILE}
+
+    * url:
+        - if the argument is not a filename or a name, it can be a url.
+        - a url has to start with "http://" or "https://"
+
+    * color:
+        - if the filename is not a filename, name or url, it can be a color
+        - a color has to be specified in hex and starts with a "#"
+        - requires imagemagick to be installed.
+    """))
+
+def get_urls():
+    with open(URLFILE, "r") as file:
+        urls = dict(line.split(" ") for line in file.read().split("\n") if " " in line)
+    for name in os.listdir(WALLPAPERDIR):
+        urls[name] = os.path.join(WALLPAPERDIR, name)
+    del urls["wallpapers.txt"]
+    if not urls:
+        return [], []
+    urls = sorted(list(urls.items()))
+    names, urls = zip(*urls)
+    return names, urls
+
+def print_fixed_width(s, width=None, end="\r"):
+    if width is None:
+        width, _ = shutil.get_terminal_size()
+        width = max((width // 10) * 8, 10)
+    print(" "*width, end="\r")
+    print(s + " "*(width - len(s)) if len(s) < width else s[:width], end=end)
+
+def preview(name, url, filename):
+    print_fixed_width(f"{name}\t{url}")
+    if ubz is not None:
+        return ubz_draw(filename)
+    return wait_for_any_input()
+
+def ubz_draw(filename):
+    with ubz.Canvas() as c:
+        width, height = shutil.get_terminal_size()
+        demo = c.create_placement('ueberzug', x=width//4,
+                y=height//8, width=width//2, height=height//2, scaler="contain")
+        demo.path = filename
+        demo.visibility = ubz.Visibility.VISIBLE
+        return wait_for_any_input()
+
+def wait_for_any_input():
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())
+        ch = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
+
+def download_wallpaper(name, url):
+    ext = os.path.splitext(url)
+    filename = os.path.expanduser(os.path.join(WALLPAPERDIR, name))
+    try:
+        urllib.request.urlretrieve(url, filename=filename)
+        return filename
+    except Exception as e:
+        if os.path.exists(filename):
+            return filename
+        if os.path.exists(url):
+            shutil.copy(url, filename)
+            return url
+        return ""
+    time.sleep(0.1)
+
+def set_wallpaper(filename):
+    return subprocess.call(["feh", "--bg-scale", "--no-fehbg", filename])
+
+def create_wallpaper_color(color):
+    code = subprocess.call(["convert", "-size", "100x100", f"xc:{color}", "/tmp/color.png"])
+    time.sleep(0.05)
+    return "/tmp/color.png"
+
+def add_url(name, url):
+    if name == "last" or name == "wallpapers.txt":
+        print(f"the name '{name}' is a reserved name and is not allowed.")
+        exit(1)
+    if name in names:
+        answer = input("name already taken. Overwrite? (Y/n)")
+        if answer in {"n", "N", "no"}:
+            print("url not added to list of wallpapers")
+            exit(0)
+        idx = names.index(name)
+        names[idx] = name
+        urls[idx] = url
+    else:
+        names.append(name)
+        urls.append(url)
+        idx = -1
+    with open(URLFILE, "a") as file:
+        file.write(f"{name} {url}\n")
+    return idx
+
+def maybe_make_paths():
+    if not os.path.exists(os.path.expanduser(WALLPAPERDIR)):
+        os.makedirs(os.path.expanduser(WALLPAPERDIR))
+        time.sleep(0.5)
+    with open(URLFILE, "a") as file:
+        pass
+
+def reset_to_current_wallpaper():
+    set_wallpaper(CURRENTWALLPAPER)
+
+def save_as_current_wallpaper(filename):
+    if filename and not filename == CURRENTWALLPAPER:
+        shutil.copy(filename, CURRENTWALLPAPER)
+    if has_convert:
+        exit_status = subprocess.call(["convert", "-quality", "100", "-negate", CURRENTWALLPAPER, CURRENTLOCKSCREEN])
+        if exit_status == 0:
+            return
+    shutil.copy(CURRENTWALLPAPER, CURRENTLOCKSCREEN)
+
+def parse_args(args):
+    if len(args) > 2:
+        usage()
+        exit(1)
+    if len(args) == 1:
+        return None
+    arg = args[1]
+    if arg in {"-h", "--help"}:
+        usage()
+        exit(0)
+    filename = os.path.abspath(os.path.expanduser(arg))
+    if os.path.exists(filename):
+        return {"filename": filename}
+    if arg in names:
+        return {"name": arg, "url": urls[names.index(arg)]}
+    if arg.startswith("https://") or arg.startswith("http://"):
+        if arg in urls:
+            return {"url": arg, "name": names[urls.index(arg)]}
+        return {"url": arg}
+    if arg.startswith("#"):
+        if not has_convert:
+            print("cannot specify a color when imagemagick is not installed.")
+            exit(1)
+        return {"color": arg}
+    usage()
+    exit(1)
+
+if __name__ == "__main__":
+    try:
+        maybe_make_paths()
+        names, urls = get_urls()
+        arg = parse_args(sys.argv)
+
+        if arg is not None:
+            if "filename" in arg:
+                filename = arg["filename"]
+            elif "name" in arg:
+                filename = download_wallpaper(arg["name"], arg["url"])
+            elif "url" in arg:
+                url = arg["url"]
+                name = input(f"please specify a name for wallpaper with url {url}")
+                filename = download_wallpaper(name, url)
+            elif "color" in arg:
+                filename = create_wallpaper_color(arg["color"])
+            set_wallpaper(filename)
+            save_as_current_wallpaper(filename)
+            exit(0)
+
+        if not names:
+            print("\n\ncannot find any wallpaper urls in {URLFILE}.\n\n"
+                  "add urls to the file by specifying a name, followed by a space,\n"
+                  "followed by the url:\n"
+                  "[name] [url]\n\n"
+                  "------------\n\n"
+                  )
+            usage()
+            exit(1)
+
+        c = ""
+        i = names.index("current-wallpaper")
+        while True:
+            print("\n"*1000)
+            print("Select background:\n\n"
+                  "j: next; k: prev; Enter: select; q: cancel/quit\n"
+                  "n: specify name; f: specify filename; u: specify url; c: specify color\n\n")
+            if c in {"\x03", "\x1b", "q"}:
+                reset_to_current_wallpaper()
+                print("\n\nwallpaper not changed.")
+                exit(1)
+            elif c == "\r":
+                save_as_current_wallpaper(filename)
+                print("\n\nwallpaper changed.")
+                exit(0)
+            elif c == "j":
+                i = (i + 1) % len(urls)
+            elif c == "k":
+                i = (i - 1) % len(urls)
+            elif c == "n":
+                print_fixed_width("give the name of the background. This name should be present in the url file.", end="\n\n")
+                name = input("name:\t")
+                if name not in names:
+                    print(f"cannot find {name} in {URLFILE}.")
+                    exit(1)
+                i = names.index(name)
+                url = urls[i]
+            elif c == "f":
+                print_fixed_width("give the filename for the new background.", end="\n\n")
+                filename = os.path.abspath(os.path.expanduser(input("filename:\t")))
+                if not os.path.exists(filename):
+                    print(f"{filename} does not exist")
+                    exit(1)
+                set_wallpaper(filename)
+                c = preview(filename, filename, filename)
+                continue
+            elif c == "c":
+                print_fixed_width("give the color for the new background.", end="\n\n")
+                color = input("color:\t")
+                if not color.startswith("#"):
+                    color = "#" + color
+                if len(color) != 7:
+                    print("invalid color")
+                filename = create_wallpaper_color(color)
+                set_wallpaper(filename)
+                c = preview(color, color, "/tmp/color.png")
+                continue
+            elif c == "u":
+                print_fixed_width("give the url and name of the background to add to the url file:", end="\n\n")
+                url = input("url:\t")
+                name = input("name:\t")
+                add_url(name, url)
+                i = names.index(name)
+            name, url = names[i], urls[i]
+            filename = download_wallpaper(name, url)
+            set_wallpaper(filename)
+            c = preview(name, url, filename)
+    finally:
+        reset_to_current_wallpaper()
+
