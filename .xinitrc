@@ -11,13 +11,7 @@
 export WM=dwm
 
 # set wallpaper
-set_wallpaper ~/.config/wallpaper.png &
-
-# update process wallpaper every minute
-while true; do
-    process_wallpaper &
-    sleep 60
-done &
+wallpaper current-wallpaper &
 
 # enable transparent windows
 xcompmgr &

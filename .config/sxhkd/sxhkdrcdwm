@@ -189,7 +189,9 @@ super + X
 super + y
     xcs
 
+# change wallpaper
 super + Y
+    $TERMINAL -n float -e wallpaper
 
 # shift focus to monitor Z
 super + z
