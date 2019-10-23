@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# the last time this script was run: 2019-08-26
+# the last time this script was run: 2019-10-14
 
 ## Checks
 #-------------------------------------------------------------------------------
@@ -34,6 +34,7 @@ fi
 
 LOG="$HOME/.local/share/python_install.log"
 ERR="$HOME/.local/share/python_install_errors.log"
+mkdir -p "$HOME/.local/share"
 printf "PYTHON PACKAGE INSTALL\n\n\n" > $LOG
 printf "PYTHON PACKAGE INSTALL\n\n\n" > $ERR
 
@@ -192,38 +193,29 @@ mv $HOME/.anaconda/envs/py2/compiler_compat/ld $HOME/.anaconda/envs/py2/compiler
 #-------------------------------------------------------------------------------
 
 PIP="$HOME/.anaconda/bin/pip"
-JUPYTER="$HOME/.anaconda/bin/jupyter"
 labextension_install(){
-    $JUPYTER labextension check $1 || $JUPYTER labextension install $1
+    echo "installing jupyterlab extension: "$1
+    JUPYTER="$HOME/.anaconda/bin/jupyter"
+    $JUPYTER labextension check $1 || $JUPYTER labextension install $1 >> $LOG 2>> $ERR
 }
 
 # jupyterlab extensions
-echo "installing jupyterlab vim extension"
-labextension_install jupyterlab_vim >> $LOG 2>> $ERR
-echo "installing jupyterlab plotly extension"
-labextension_install @jupyterlab/plotly-extension >> $LOG 2>> $ERR
-echo "installing jupyterlab table of contents extension"
-labextension_install @jupyterlab/toc >> $LOG 2>> $ERR
-echo "installing jupyterlab manager extension"
-labextension_install @jupyter-widgets/jupyterlab-manager >> $LOG 2>> $ERR
-echo "installing jupyterlab variable inspector extension"
-labextension_install @lckr/jupyterlab_variableinspector >> $LOG 2>> $ERR
-echo "installing jupyterlab latex extension"
-labextension_install @jupyterlab/latex >> $LOG 2>> $ERR
-$PIP install jupyterlab_latex >> $LOG 2>> $ERR
-$JUPYTER serverextension enable --py jupyterlab_latex >> $LOG 2>> $ERR
-echo "installing jupyterlab git extension"
-labextension_install @jupyterlab/git >> $LOG 2>> $ERR
-$PIP install jupyterlab_git >> $LOG 2>> $ERR
-$JUPYTER serverextension enable --py jupyterlab_git >> $LOG 2>> $ERR
-echo "installing jupyterlab code formatter extension"
-labextension_install @ryantam626/jupyterlab_code_formatter >> $LOG 2>> $ERR
-$PIP install jupyterlab_code_formatter >> $LOG 2>> $ERR
-$JUPYTER serverextension enable --py jupyterlab_code_formatter >> $LOG 2>> $ERR
-echo "installing jupyterlab tensorboard"
-labextension_install jupyterlab_tensorboard
-$PIP install jupyter_tensorboard
-$JUPYTER serverextension enable --py jupyter_tensorboard >> $LOG 2>> $ERR
-echo "installing jupyter-widgets / jupyterlab-manager"
+labextension_install @jupyterlab/plotly-extension
+labextension_install @jupyterlab/toc
 labextension_install @jupyter-widgets/jupyterlab-manager
+labextension_install @lckr/jupyterlab_variableinspector
+labextension_install @jupyter-widgets/jupyterlab-manager
+labextension_install jupyter-threejs
 labextension_install jupyter-matplotlib
+labextension_install jupyterlab_vim
+$PIP install ipyvolume >> $LOG 2>> $ERR
+labextension_install ipyvolume
+$PIP install jupyterlab_latex >> $LOG 2>> $ERR
+labextension_install @jupyterlab/latex
+$PIP install jupyterlab_git >> $LOG 2>> $ERR
+labextension_install @jupyterlab/git
+$PIP install jupyterlab_code_formatter >> $LOG 2>> $ERR
+labextension_install @ryantam626/jupyterlab_code_formatter
+# $PIP install jupyter_tensorboard
+# labextension_install jupyterlab_tensorboard
+
