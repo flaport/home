@@ -6,6 +6,9 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
+systemctl status bluetooth | grep inactive
+[ $? ] && exit 1
+
 bluetoothctl -- power on
 device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]")
 if [ $device = "[bluetooth]" ]; then # no connection -> try to connect
