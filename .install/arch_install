@@ -346,8 +346,10 @@ pacman_install gtk3
 pacman_install arc-solid-gtk-theme
 # my dwm fork
 submodule_install dwm
-# my dmenu fork
-submodule_install dmenu
+# my dmenu fork (disabled in favor of rofi)
+# submodule_install dmenu
+# rofi (dmenu alternative)
+pacman_install rofi
 
 ## Printers
 # printer system (cups @ localhost:631)

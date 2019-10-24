@@ -99,7 +99,7 @@ def dmenu(list_in, prompt):
     ).stdout
     try:
         choice = subprocess.check_output(
-            ["dmenu", "-l", "100", "-p", prompt] + sys.argv, stdin=dmenu_in
+            ["dmenu", "-l", "15", "-p", prompt] + sys.argv, stdin=dmenu_in
         ).decode()[:-1]
     except subprocess.CalledProcessError:
         raise RuntimeError("no drive was selected")
