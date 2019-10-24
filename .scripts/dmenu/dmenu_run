@@ -72,8 +72,8 @@ if __name__ == "__main__":
             list({k: None for k in dmenu_history[::-1]}) # history
             + OPEN_IN_TERMINAL
             + [BROWSER]
-            + DESKTOP_FILES
             + DMENU_PATH
+            + DESKTOP_FILES
             + ["[clear history]"]
     )})
 
@@ -83,7 +83,7 @@ if __name__ == "__main__":
         exit(0)
 
     if choice == "[clear history]":
-        os.remove(os.path.join(os.path.dirname(__file__), "dmenu_run.history"))
+        os.remove(DMENU_HISTORY_PATH)
     elif choice.split(" ")[0] in OPEN_IN_TERMINAL:
         Popen([TERMINAL, "-e", choice])
     elif choice.split(" ")[0] in DESKTOP_FILES:
