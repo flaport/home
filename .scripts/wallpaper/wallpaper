@@ -38,7 +38,6 @@ with open(os.devnull, "w") as out:
 WALLPAPERDIR = os.path.expanduser("~/.local/share/wallpapers")
 URLFILE = os.path.expanduser("~/.local/share/wallpapers/wallpapers.txt")
 CURRENTWALLPAPER = os.path.expanduser("~/.local/share/wallpapers/current-wallpaper")
-CURRENTLOCKSCREEN = os.path.expanduser("~/.local/share/wallpapers/current-lockscreen")
 
 # Functions
 
@@ -174,11 +173,6 @@ def reset_to_current_wallpaper():
 def save_as_current_wallpaper(filename):
     if filename and not filename == CURRENTWALLPAPER:
         shutil.copy(filename, CURRENTWALLPAPER)
-    if has_convert:
-        exit_status = subprocess.call(["convert", "-quality", "100", "-negate", CURRENTWALLPAPER, CURRENTLOCKSCREEN])
-        if exit_status == 0:
-            return
-    shutil.copy(CURRENTWALLPAPER, CURRENTLOCKSCREEN)
 
 def parse_args(args):
     if len(args) > 2:
