@@ -15,12 +15,12 @@ available_colorschemes(){
     echo
     echo available colorschemes [in \~/.config/Xresources]:
     cd ~/.config/Xresources
-    find . -executable | sed s/[.]//g | sed s/[/]//g
+    find . -executable | sed s/[.]//g | sed s/[/]//g | sed '/^[[:space:]]*$/d'
 }
 
 if [ -z "$1" ]; then
     cd ~/.config/Xresources
-    cs=$(find . -executable | sed s/[.]//g | sed s/[/]//g | dmenu -p "select colorscheme" -i -l 20)
+    cs=$(find . -executable | sed s/[.]//g | sed s/[/]//g | sed '/^[[:space:]]*$/d' | dmenu -p "select colorscheme" -i -l 20)
 fi
 
 
