@@ -118,7 +118,7 @@ super + O
 
 # dmenu choose screen layout
 super + p
-    dmenu_screenlayout -i -l 100 -p "screen layout" 
+    dmenu_screenlayout -i -l 10 -p "screen layout" 
 
 # default screen layout
 super + P
