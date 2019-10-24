@@ -25,7 +25,7 @@ with open(os.devnull, "w") as out:
 
 def move_mouse(x, y):
     if has_xdotool:
-        return subprocess.call(["xdotool", "mousemove", "--sync", x, y])
+        return subprocess.call(["xdotool", "mousemove", x, y])
 
 def dmenu(args):
     return subprocess.Popen(["rofi", "-dmenu"] + args)

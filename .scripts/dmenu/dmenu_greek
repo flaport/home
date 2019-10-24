@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
 
 # imports
 import os
@@ -11,6 +17,7 @@ except:
     pyautogui is None
 with open(os.devnull, "w") as out:
     has_xdotool = not call(["which", "xdotool"], stdout=out, stderr=out)
+has_xdotool = False
 
 # functions
 def dmenu(list_in, prompt):
@@ -51,7 +58,7 @@ def get_letters(filename="~/.scripts/dmenu/greek.txt"):
 
 def get_current_window_name_and_position():
     if not has_xdotool:
-        return 0, 0
+        return "", 0, 0
     window_id = check_output(["xdotool", "getactivewindow"]).strip().decode()
     name = check_output(["xdotool", "getwindowname", window_id]).strip().decode()
     geometry = check_output(["xdotool", "getwindowgeometry", window_id]).strip().decode()

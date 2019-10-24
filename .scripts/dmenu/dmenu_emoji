@@ -37,21 +37,21 @@ def copy_to_clipboard(content):
     status = call(["xclip", "-selection", "clipboard"], stdin=xclip_in)
     return status
 
-def get_letters(filename="~/.scripts/dmenu/emoji.txt"):
+def get_emojis(filename="~/.scripts/dmenu/emoji.txt"):
     filename = os.path.abspath(os.path.expanduser(filename))
-    letters = {}
+    emojis = {}
     with open(filename, "r") as file:
         for line in file:
             line = line.split(";")[0].split(" ")
-            letter = line[0].strip()
+            emoji = line[0].strip()
             name = " ".join(line[1:]).strip()
-            name = f"{name} ({letter})"
-            letters[name] = letter
-    return letters
+            name = f"{name} ({emoji})"
+            emojis[name] = emoji
+    return emojis
 
 def get_current_window_name_and_position():
     if not has_xdotool:
-        return 0, 0
+        return "", 0, 0
     window_id = check_output(["xdotool", "getactivewindow"]).strip().decode()
     name = check_output(["xdotool", "getwindowname", window_id]).strip().decode()
     geometry = check_output(["xdotool", "getwindowgeometry", window_id]).strip().decode()
@@ -68,10 +68,10 @@ def middle_click():
         return 1
     return call(["xdotool", "click", "2"])
 
-def paste_letter(letter):
+def paste_emoji(emoji):
     if windowname in {"st", "xterm", "urxvt"}:
         if not has_xdotool:
-            notify(f"'{letter}' copied to clipboard.")
+            notify(f"'{emoji}' copied to clipboard.")
             exit(0)
         middle_click()
     elif pyautogui is not None:
@@ -81,16 +81,17 @@ def paste_letter(letter):
     elif has_xdotool:
         middle_click()
     else:
-        notify(f"'{letter}' copied to clipboard.")
+        notify(f"'{emoji}' copied to clipboard.")
 
 # program
 if __name__ == "__main__":
-    letters = get_letters()
+    emojis = get_emojis()
     windowname, x, y = get_current_window_name_and_position()
-    name = dmenu(letters.keys(), "")
-    letter = letters.get(name, "")
-    if letter:
-        status = copy_to_clipboard(letter)
+    name = dmenu(emojis.keys(), "")
+    emoji = emojis.get(name, "")
+    if emoji:
+        status = copy_to_clipboard(emoji)
         move_mouse(x, y)
-        paste_letter(letter)
+        paste_emoji(emoji)
+
 
