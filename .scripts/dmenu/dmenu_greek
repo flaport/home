@@ -5,6 +5,8 @@ import os
 import sys
 import time
 from subprocess import Popen, call, check_output, PIPE, CalledProcessError
+with open(os.devnull, "w") as out:
+    has_xdotool = not call(["which", "xdotool"], stdout=out, stderr=out)
 
 # functions
 def dmenu(list_in, prompt):
@@ -18,7 +20,15 @@ def dmenu(list_in, prompt):
     except CalledProcessError:
         return ""
 
+def notify(title, message=""):
+    if message:
+        check_output(["notify-send", title, message])
+    else:
+        check_output(["notify-send", title])
+
 def copy_to_clipboard(content):
+    xclip_in = Popen(["echo", "-n", content], stdout=PIPE).stdout
+    status = call(["xclip", "-selection", "primary"], stdin=xclip_in)
     xclip_in = Popen(["echo", "-n", content], stdout=PIPE).stdout
     status = call(["xclip", "-selection", "clipboard"], stdin=xclip_in)
     return status
@@ -35,11 +45,30 @@ def get_letters(filename="~/.scripts/dmenu/greek.txt"):
 
     return letters
 
+def get_current_window_position():
+    if not has_xdotool:
+        return 0, 0
+    window_id = check_output(["xdotool", "getactivewindow"]).strip().decode()
+    geometry = check_output(["xdotool", "getwindowgeometry", window_id]).strip().decode()
+    x, y = geometry.split("Position: ")[1].split(" ")[0].split(",")
+    return x, y
+
+def move_mouse(x, y):
+    if not has_xdotool:
+        return 1
+    return call(["xdotool", "mousemove", x, y])
+
 # program
 if __name__ == "__main__":
     letters = get_letters()
+    x, y = get_current_window_position()
     name = dmenu(letters.keys(), "select snippet")
     letter = letters.get(name, "")
-    status = copy_to_clipboard(letter)
-    exit(status)
+    if letter:
+        status = copy_to_clipboard(letter)
+        if not has_xdotool:
+            notify(f"'{letter}' copied to clipboard.")
+        else:
+            move_mouse(x, y)
+            call(["xdotool", "click", "2"])
 
