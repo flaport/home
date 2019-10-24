@@ -69,7 +69,6 @@ def middle_click():
     return call(["xdotool", "click", "2"])
 
 def paste_letter(letter):
-    print("pasting")
     if windowname in {"st", "xterm", "urxvt"}:
         if not has_xdotool:
             notify(f"'{letter}' copied to clipboard.")
@@ -88,7 +87,7 @@ def paste_letter(letter):
 if __name__ == "__main__":
     letters = get_letters()
     windowname, x, y = get_current_window_name_and_position()
-    name = dmenu(letters.keys(), "select snippet")
+    name = dmenu(letters.keys(), "")
     letter = letters.get(name, "")
     if letter:
         status = copy_to_clipboard(letter)

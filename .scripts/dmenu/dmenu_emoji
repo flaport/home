@@ -1,17 +1,96 @@
-#!/bin/sh
-# Give dmenu list of all emoji characters to copy.
-# Shows the selected character in dunst if running.
+#!/usr/bin/python3
 
-chosen=$(grep -v "#" ~/.scripts/dmenu/emoji.txt | dmenu -i -l 20 -fn Monospace-18)
+# imports
+import os
+import sys
+import time
+from subprocess import Popen, call, check_output, PIPE, CalledProcessError
+try:
+    import pyautogui
+except:
+    pyautogui is None
+with open(os.devnull, "w") as out:
+    has_xdotool = not call(["which", "xdotool"], stdout=out, stderr=out)
 
-[ "$chosen" != "" ] || exit
+# functions
+def dmenu(list_in, prompt):
+    time.sleep(0.1)
+    try:
+        dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+        choice = check_output(
+            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+        ).decode().strip()
+        return choice
+    except CalledProcessError:
+        return ""
 
-c=$(echo "$chosen" | sed "s/ .*//")
-echo "$c" | tr -d '\n' | xclip -selection primary &> /dev/null
-notify-send "'$c' copied to clipboard." &
+def notify(title, message=""):
+    if message:
+        check_output(["notify-send", title, message])
+    else:
+        check_output(["notify-send", title])
 
-s=$(echo "$chosen" | sed "s/.*; //" | awk '{print $1}')
-echo "$s" | tr -d '\n' | xclip -selection clipboard &> /dev/null
-notify-send "'$s' copied to primary." &
+def copy_to_clipboard(content):
+    xclip_in = Popen(["echo", "-n", content], stdout=PIPE).stdout
+    status = call(["xclip", "-selection", "primary"], stdin=xclip_in)
+    xclip_in = Popen(["echo", "-n", content], stdout=PIPE).stdout
+    status = call(["xclip", "-selection", "clipboard"], stdin=xclip_in)
+    return status
 
-echo $c
+def get_letters(filename="~/.scripts/dmenu/emoji.txt"):
+    filename = os.path.abspath(os.path.expanduser(filename))
+    letters = {}
+    with open(filename, "r") as file:
+        for line in file:
+            line = line.split(";")[0].split(" ")
+            letter = line[0].strip()
+            name = " ".join(line[1:]).strip()
+            name = f"{name} ({letter})"
+            letters[name] = letter
+    return letters
+
+def get_current_window_name_and_position():
+    if not has_xdotool:
+        return 0, 0
+    window_id = check_output(["xdotool", "getactivewindow"]).strip().decode()
+    name = check_output(["xdotool", "getwindowname", window_id]).strip().decode()
+    geometry = check_output(["xdotool", "getwindowgeometry", window_id]).strip().decode()
+    x, y = geometry.split("Position: ")[1].split(" ")[0].split(",")
+    return name, x, y
+
+def move_mouse(x, y):
+    if not has_xdotool:
+        return 1
+    return call(["xdotool", "mousemove", x, y])
+
+def middle_click():
+    if not has_xdotool:
+        return 1
+    return call(["xdotool", "click", "2"])
+
+def paste_letter(letter):
+    if windowname in {"st", "xterm", "urxvt"}:
+        if not has_xdotool:
+            notify(f"'{letter}' copied to clipboard.")
+            exit(0)
+        middle_click()
+    elif pyautogui is not None:
+        middle_click()
+        pyautogui.press("apps")
+        pyautogui.hotkey("ctrl", "v")
+    elif has_xdotool:
+        middle_click()
+    else:
+        notify(f"'{letter}' copied to clipboard.")
+
+# program
+if __name__ == "__main__":
+    letters = get_letters()
+    windowname, x, y = get_current_window_name_and_position()
+    name = dmenu(letters.keys(), "")
+    letter = letters.get(name, "")
+    if letter:
+        status = copy_to_clipboard(letter)
+        move_mouse(x, y)
+        paste_letter(letter)
+
