@@ -1,6 +1,5 @@
 /**
  * Flaport color theme
- * Based on Qball by Dave Davenport
 **/
 
 * {
@@ -36,8 +35,15 @@
     border: 0px 0px 0px 0px;
     border-radius:  0px 0px 0px 0px;
     border-color: @highlight;
+    children: [prompt, textbox-prompt-colon, entry, case-indicator];
 }
 #entry,prompt,case-indicator {
     text-color:@text;
+}
+#textbox-prompt-colon {
+    expand:     false;
+    str:        ":";
+    margin:     0px 5px 0px -3px ;
+    text-color: @text;
 }
 
