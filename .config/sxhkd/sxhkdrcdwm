@@ -104,9 +104,9 @@ super + M
 super + n
     # handled by dwm
 
-# open ~/Notes with smdv
+# open nemo file browser
 super + N
-    notes
+    nemo
 
 # activate all tags to which current window belongs
 super + o
