@@ -1,0 +1,43 @@
+/**
+ * Flaport color theme
+ * Based on Qball by Dave Davenport
+**/
+
+* {
+    text: #fdf6e3;
+    highlight: #2aa198;
+    green: #00ff00;
+    dark: #32302fcc;
+    background-color:  #00000000;
+}
+#mainbox {
+    spacing: 4;
+    children: [ inputbar, message, listview ];
+}
+#element {
+    padding: 3px;
+    color: @text;
+}
+#element selected.normal {
+    background-color: @highlight;
+}
+#listview {
+    padding: 15px;
+    border-radius: 0px 0px 0px 0px;
+    border-color: @green;
+    border: 2px 2px 2px 2px;
+    background-color: @dark;
+    lines: 12;
+}
+#inputbar {
+    color: @text;
+    padding: 2px;
+    background-color: @highlight;
+    border: 0px 0px 0px 0px;
+    border-radius:  0px 0px 0px 0px;
+    border-color: @highlight;
+}
+#entry,prompt,case-indicator {
+    text-color:@text;
+}
+
