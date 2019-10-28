@@ -7,7 +7,7 @@
 #
 
 systemctl status bluetooth | grep inactive
-[ $? ] && exit 1
+[ $? -eq 0 ] || exit 1
 
 bluetoothctl -- power on
 device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]")
