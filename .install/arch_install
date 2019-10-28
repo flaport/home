@@ -295,6 +295,8 @@ pacman_install socat
 # torrents: transmission
 pacman_install transmission-cli
 yay_install transmission-remote-cli-git
+# a more beautiful ls command
+pacman_install lsd
 
 ## Graphical server: xorg
 # the graphical server

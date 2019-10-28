@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
-# alias ls='ls -hN --color=auto --group-directories-first'
-# alias ls='ls -hN --color=auto --group-directories-first'
 
-LS=$(which lsd 2> /dev/null)
-[ $? -ne 0 ] && LS=/usr/bin/ls
+# use normal ls command when used in a script
+LS=/usr/bin/ls
+
+# however, in an interactive session (i.e. in a shell, use lsd if available)
+if [ -t 1 ]; then
+    LS=$(which lsd 2> /dev/null)
+    [ $? -ne 0 ] && LS=/usr/bin/ls
+fi
+
+# call ls with all arguments supplied
 $LS $@
