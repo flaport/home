@@ -1,0 +1,64 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+# rofi uses the mouse location to detect the currently active
+# monitor. This is annoying for tiling window managers, as 
+# the active monitor might be different from the monitor where the
+# mouse is.
+
+# This script moves the mouse to the currently active monitor
+# before invoking `rofi -dmenu`. This way, rofi will open on the 
+# requested monitor
+
+import os
+import sys
+import time
+import subprocess
+
+with open(os.devnull, "w") as out:
+    has_xdotool = not subprocess.call(["which", "xdotool"], stdout=out, stderr=out)
+
+def move_mouse(x, y):
+    if has_xdotool:
+        return subprocess.call(["xdotool", "mousemove", x, y])
+
+def dmenu(args):
+    return subprocess.Popen(["/usr/bin/rofi", "-dmenu"] + args)
+
+def get_current_mouse_location():
+    if not has_xdotool:
+        return 0, 0
+    location = subprocess.check_output(["xdotool", "getmouselocation"]).strip().decode()
+    x, y = [coord[2:].strip() for coord in location.split(" ")[:2]]
+    return x, y
+
+def get_current_window_name_and_position():
+    if not has_xdotool:
+        return "", 0, 0
+    try:
+        window_id = subprocess.check_output(["xdotool", "getactivewindow"]).strip().decode()
+        name = subprocess.check_output(["xdotool", "getwindowname", window_id]).strip().decode()
+        geometry = subprocess.check_output(["xdotool", "getwindowgeometry", window_id]).strip().decode()
+        x, y = geometry.split("Position: ")[1].split(" ")[0].split(",")
+        return name, x, y
+    except:
+        return "", 0, 0
+
+
+if __name__ == "__main__":
+    x0, y0 = get_current_mouse_location()
+    name, x, y = get_current_window_name_and_position()
+    if name:
+        status = move_mouse(x, y)
+
+    status = dmenu(sys.argv[1:])
+
+    if name:
+        time.sleep(0.05)
+        move_mouse(x0, y0)
+

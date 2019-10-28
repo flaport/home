@@ -269,6 +269,9 @@ if __name__ == "__main__":
         devices = find_devices_to_unmount()
     device_line = dmenu(devices.values(), f"{mode}")
     chosen_device = devices.get(device_line) or parse_device_line(device_line)
+    if not chosen_device.name:
+        print("no device chosen")
+        exit(1)
     if mode == "mount":
         chosen_directory = dmenu(mountpoint_options(chosen_device), "mount in").strip()
         msg = mount(chosen_device, chosen_directory)

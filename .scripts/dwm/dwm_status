@@ -23,6 +23,9 @@ alpha(){ # window transparency
 alpha1(){ # mouse-button 1 action for alpha widget
     notify-send "Window transparency" "◻️ + shift + a: increase alpha\n◻️ + ctrl + a: decrease alpha\n◻️ + a: toggle transparency on/off"
 }
+alpha2(){ # mouse-button 1 action for alpha widget
+    notify-send "Window transparency" "◻️ + shift + a: increase alpha\n◻️ + ctrl + a: decrease alpha\n◻️ + a: toggle transparency on/off"
+}
 
 # -----------
 
