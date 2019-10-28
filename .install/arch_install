@@ -407,7 +407,10 @@ pacman_install inkscape
 ## Office
 # open-source office
 # pacman_install libreoffice
-# open-source office with better compatibility with microsoft office
+# recommended font packages for compatibility with MS Office
+# yay_install ttf-ms-fonts
+# yay_install ttf-vista-fonts
+# open-source office MS Office look-and-feel.
 # yay_install onlyoffice-bin
 # sqlite database browser
 # pacman_install sqlitebrowser
