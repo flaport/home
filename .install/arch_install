@@ -348,6 +348,7 @@ pacman_install feh
 # simple theme to make gtk applications look better
 pacman_install gtk3
 pacman_install arc-solid-gtk-theme
+sudo rsync -a /usr/share/themes/Arc-solid/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
 # my dwm fork
 submodule_install dwm
 # my dmenu fork (disabled in favor of rofi)
