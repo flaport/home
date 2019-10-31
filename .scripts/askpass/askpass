@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
 # imports
+import os
 import sys
 import gi; gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
+from getpass import getpass
 
 # dialog
 class AskPassDialog(Gtk.Dialog):
@@ -45,8 +47,21 @@ class AskPassDialog(Gtk.Dialog):
 
 # program
 if __name__ == "__main__":
-    try:
-        LABEL = sys.argv[1]
-    except IndexError:
-        LABEL = "password"
-    AskPassDialog().run()
+        with open(os.devnull, "w") as file:
+            stdout, sys.stdout = sys.stdout, file
+            stderr, sys.stderr = sys.stderr, file
+            try:
+                LABEL = sys.argv[1]
+            except IndexError:
+                LABEL = "password"
+            try:
+                    dialog = AskPassDialog()
+            except RuntimeError:
+                sys.stdout = stdout
+                sys.stderr = stderr
+                print(getpass(prompt=LABEL+": "))
+                exit()
+            sys.stdout = stdout
+            sys.stderr = stderr
+            dialog.run()
+
