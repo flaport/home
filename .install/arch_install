@@ -297,6 +297,8 @@ pacman_install transmission-cli
 yay_install transmission-remote-cli-git
 # a more beautiful ls command
 pacman_install lsd
+# reverse proxy
+pacman_install nginx
 
 ## Graphical server: xorg
 # the graphical server
