@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-$TERMINAL -n dropdown_weather -e ~/.config/i3blocks/weather/popweather

@@ -7,7 +7,7 @@
 
 
 # enable hotkeys
-sxhkd -c ~/.config/sxhkd/sxhkdrcdwm &> /dev/null &
+sxhkd &> /dev/null &
 
 # update dwm status bar
 while true; do

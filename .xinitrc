@@ -7,9 +7,6 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
 #
 
-# select window manager [i3 / dwm]
-export WM=dwm
-
 # set wallpaper
 wallpaper current-wallpaper &
 
@@ -47,5 +44,5 @@ while true; do
 done &
 
 # execute window manager
-exec $WM > ~/.local/share/$WM.log
+exec dwm > ~/.local/share/dwm.log
 
