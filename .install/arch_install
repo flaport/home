@@ -358,6 +358,8 @@ pacman_install rofi
 ## Printers
 # printer system (cups @ localhost:631)
 pacman_install cups
+# common printer drivers
+pacman_install gutenprint
 # for network printing
 pacman_install avahi
 pacman_install nss-mdns
