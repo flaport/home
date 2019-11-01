@@ -21,7 +21,7 @@ def is_int(x):
         return False
 
 
-EXTS = {".png", ".jpg", ".svg"}
+EXTS = {".png", ".jpg", ".svg", ".JPG", ".PNG"}
 ARGS = [arg for arg in sys.argv[1:] if not is_int(arg) and os.path.splitext(arg)[1] in EXTS]
 XYWH = [int(arg) for arg in sys.argv[1:] if is_int(arg)]
 
