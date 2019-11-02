@@ -120,8 +120,9 @@ nnoremap <silent> <leader>z :call DoWindowSwap()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w
 nnoremap <C-]> :bnext<CR>
 tnoremap <C-]> <C-\><C-N>:bnext<cr>
 " nnoremap <C-[> :bprevious<CR> " disabled as this is the Esc combination
-" <C-^> switch between last two buffers
 
+" switch between last two buffers (FYI)
+" <C-^> 
 
 "" Run / compile / visualize
 "-------------------------------------------------------------------------------
@@ -163,25 +164,17 @@ autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT ipython -i %<CR>G<
 
 autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:Goyo!<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>:sleep 200m<cr>:Goyo<cr>
 autocmd FileType tex inoremap <F5> <Esc>:w<CR>:Goyo!<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<C-w>k:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>:sleep 200m<cr>:Goyo<cr>
-" <Leader>s  "--> latex synctex forward
-function! SyncTexForward()
+
+" <Leader>s  --> latex synctex tex->pdf
+function! SyncTex()
     " either do synctex on the pdf with basename [filename without extension] $TEXBASE,
     " or do synctex on the pdf with the same base name as the current tex file if
     " the environment variable $TEXBASE does not exist.
-    let execstr = "silent ![ $TEXBASE ] && zathura --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf"
-    let execstr = execstr." || zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
-    exec execstr
+    exec "silent !test -z $TEXBASE && TEXBASE=%:p:r; zathura --synctex-editor-command 'nvr --servername ".v:servername." +\\%{line} \\%{input}' --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf &"
 endfunction
-autocmd FileType tex nmap <Leader>s :call SyncTexForward()<CR>
-" latex synctex backward
-" Ctrl-Click
-" NOTE: for backward synctex to work, one has to run neovim-remote on port 9999:
-" nvr --servername 127.0.0.1:9999 filename.tex
-" And add the following two lines to zathurarc:
-" set synctex true
-" set synctex-editor-command "nvr --servername 127.0.0.1:9999 +%{line} %{input}"
-" normally, the custom nvim script in the nvim config folder will execute nvr
-" in stead of nvim when a latex file is opened.
+autocmd FileType tex nmap <Leader>s :call SyncTex()<CR>
+
+" Ctrl-Click  --> latex synctex pdf->tex
 
 
 " markdown

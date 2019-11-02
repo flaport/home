@@ -9,13 +9,6 @@
 #       priority over the nvim binary `/usr/bin/nvim`.
 
 if [ ! $2 ]; then
-
-    # if it's a tex file and if nvr is installed, launch on port 9999:
-    if [ -f /usr/bin/nvr ] && [[ $1 == *".tex" ]]; then
-         /usr/bin/nvr --servername 127.0.0.1:9999 $@
-         exit 0
-    fi
-
     # if the argument does not exist and if theres an executable in path
     # open the executable for editing.
     if [ ! -f $1 ]; then

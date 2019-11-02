@@ -1,9 +1,4 @@
-# allow synctex
-#
-set synctex true
-set synctex-editor-command "nvr --servername 127.0.0.1:9999 +%{line} %{input}"
-
-# vim-like keys
+# vim-like key-bindings
 set statusbar-h-padding 0
 set statusbar-v-padding 0
 set page-padding 0
@@ -23,3 +18,16 @@ map <A-Button5> zoom out
 # settings 
 set recolor-darkcolor "#dcdcdc"
 set recolor-lightcolor "#1f1f1f"
+
+# synctex with neovim
+set synctex true
+# the following setting will be overridden when zathura is launched from within neovim:
+set synctex-editor-command 'st -e nvr --servername 127.0.0.1:9999 +%{line} %{input}'
+# it's usually preferred to launch zathura from within vim when working with Latex files.
+# To launch zathura from within vim, add the following lines to your init.vim:
+# (note that it requires neovim-remove (nvr) to be installed)
+# function! SyncTex()
+#     exec "silent !test -z $TEXBASE && TEXBASE=%:p:r; zathura --synctex-editor-command 'nvr --servername ".v:servername." +\\%{line} \\%{input}' --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf &"
+# endfunction
+# nmap <Leader>s :call SyncTex()<CR>
+# then, use the synctex keyboard shortcut <leader>+s to launch zathura from within vim.
