@@ -17,13 +17,13 @@ super + shift + a
 super + a
     pidof xcompmgr && killall xcompmgr || xcompmgr &; dwm_status
 
-# show/hide status bar
-super + b
-    # handled by dwm
-
 # connect to bluetooth device (devices should be paired using bluetoothctl)
-super + B
+super + b
     dmenu_bluetooth
+
+# show/hide status bar
+super + B
+    # handled by dwm
 
 # shift focus to monitor C
 super + c
