@@ -1,8 +1,4 @@
 # vim-like key-bindings
-set statusbar-h-padding 0
-set statusbar-v-padding 0
-set page-padding 0
-map 0 adjust_window best-fit
 map u scroll half-up
 map d scroll half-down
 map D toggle_page_mode
@@ -12,10 +8,13 @@ map K zoom in
 map J zoom out
 map i recolor
 map p print
-map <A-Button4> zoom in
-map <A-Button5> zoom out
+map <A-Button1> zoom in
+map <A-Button3> zoom out
 
 # settings 
+set page-padding 0
+set statusbar-h-padding 0
+set statusbar-v-padding 0
 set recolor-darkcolor "#dcdcdc"
 set recolor-lightcolor "#1f1f1f"
 
