@@ -1,7 +1,7 @@
 # figure [requires 'graphicx']
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[]{}
+    \includegraphics{}
     \caption{}
     \label{fig:}
 \end{figure}
@@ -9,7 +9,7 @@
 # svg figure [requires 'svg' and 'svg-export']
 \begin{figure}[!htbp]
     \centering
-    \includesvg[]{}
+    \includesvg{}
     \caption{}
     \label{fig:}
 \end{figure}
