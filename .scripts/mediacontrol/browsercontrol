@@ -25,7 +25,12 @@ if COMMAND == "togglepause":
 
         for window in windows:
             try:
+                if browser == "firefox": # handling of the vim plugin
+                    check_output(["xdotool", "key", "--window", window, "Shift+Escape"])
+                    check_output(["xdotool", "key", "--window", window, "i"])
                 check_output(["xdotool", "key", "--window", window, "space"])
+                if browser == "firefox": # handling of the vim plugin
+                    check_output(["xdotool", "key", "--window", window, "Shift+Escape"])
             except:
                 pass
 else:
