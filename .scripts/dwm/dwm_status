@@ -135,6 +135,17 @@ mem1() { # mouse-button 1 action for memory widget
 
 # -----------
 
+pcmn(){ # pacman
+    num=$(pacman -Qu | wc -l)
+    echo -e 📦 $num
+}
+pcmn1(){ # pacman
+    num=$(pacman -Qu | wc -l)
+    notify-send "Pacman ($num)" "$num packages can be upgraded"
+}
+
+# -----------
+
 sshd(){ # ssh daemon
     if [ -f /usr/lib/systemd/system/sshd.service ]; then
         if [[ $(systemctl is-active sshd) == "active" ]]; then
@@ -282,8 +293,6 @@ status(){
 }
 
 
-# Set the status bar
-#--------------------------------------------------------------------------------
-
-status vol brt bat alpha bt vpn hub ssht sshd wtr dte tme
+# Set the status bar #-------------------------------------------------------------------------------- 
+status bt vpn hub ssht sshd pcmn vol brt bat alpha wtr dte tme
 
