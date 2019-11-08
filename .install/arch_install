@@ -347,8 +347,18 @@ pacman_install xautolock
 pacman_install feh
 # simple theme to make gtk applications look better
 pacman_install gtk3
-pacman_install arc-solid-gtk-theme
-sudo rsync -a /usr/share/themes/Arc-solid/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
+pacman_install adapta-gtk-theme
+#pacman_install arc-solid-gtk-theme
+sudo rm -r /etc/gtk-2.0/*
+sudo rsync -a /usr/share/themes/Adapta-Nokto-Eta/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
+#sudo rsync -a /usr/share/themes/Arc-solid/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
+# it's nice to have the qt apps look similar as the gtk apps:
+pacman_install qt5ct
+pacman_install lxappearance
+pacman_install adapta-kde 
+pacman_install kvantum-qt5
+pacman_install papirus-icon-theme
+pacman_install kvantum-theme-adapta
 # my dwm fork
 submodule_install dwm
 # my dmenu fork (disabled in favor of rofi)
