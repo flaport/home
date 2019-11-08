@@ -636,6 +636,7 @@ echo $password | sudo -S $HOME/.install/services >> $LOG 2>> $ERR
 echo $password | sudo -S systemctl daemon-reload >> $LOG 2>> $ERR
 systemctl_enable syncthing.service
 systemctl_enable jupyterhub.service
+systemctl_enable pacmanquery.service
 
 
 ## System settings

@@ -1,0 +1,12 @@
+[Unit]
+Description=Query the packages that can be updated
+After=network-online.target
+
+[Service]
+User=root
+ExecStart=/usr/bin/pacman -Syup
+Restart=always
+RestartSec=3600
+
+[Install]
+WantedBy=multi-user.target

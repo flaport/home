@@ -13,33 +13,46 @@ from textwrap import dedent
 USER = os.getlogin()
 HOME = "/home/{}".format(USER)
 
+
 # jupyterhub service
 # -------------------------------------------------------- #
 
 with open(os.path.join(HOME, ".jupyter/jupyterhub.service"), "r") as file:
-    jupyterhub = file.read()
+    content = file.read()
 
 with open("/etc/systemd/system/jupyterhub.service", "w") as file:
-    file.write(jupyterhub.format(home=HOME))
+    file.write(content.format(home=HOME))
 
 
 # openvpn service
 # -------------------------------------------------------- #
 
 with open(os.path.join(HOME, ".config/openvpn/openvpn.service"), "r") as file:
-    openvpn = file.read()
+    content = file.read()
 
 with open("/etc/systemd/system/openvpn.service", "w") as file:
-    file.write(openvpn.format(home=HOME))
+    file.write(content.format(home=HOME))
+
 
 # syncthing service
 # -------------------------------------------------------- #
 
 with open(os.path.join(HOME, ".config/syncthing/syncthing.service"), "r") as file:
-    syncthing = file.read()
+    content = file.read()
 
 with open("/etc/systemd/system/syncthing.service", "w") as file:
-    file.write(syncthing.format(user=USER, home=HOME))
+    file.write(content.format(user=USER, home=HOME))
+
+
+# pacman query service
+# -------------------------------------------------------- #
+
+with open(os.path.join(HOME, ".config/pacman/pacmanquery.service"), "r") as file:
+    content = file.read()
+
+with open("/etc/systemd/system/pacmanquery.service", "w") as file:
+    file.write(content)
+
 
 # autologon getty service
 # -------------------------------------------------------- #
@@ -59,3 +72,4 @@ with open(filename, "w") as file:
         """
         ).format(username=USER)
     )
+
