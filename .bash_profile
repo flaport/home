@@ -39,7 +39,6 @@ export ICAROOT="$HOME/.ica"
 export PATH="$HOME/.local/bin:$PATH"
 export PYTHONSTARTUP="$HOME/.pythonstartup"
 export QT_QPA_PLATFORMTHEME="qt5ct"
-# export QT_STYLE_OVERRIDE=adwaita
 export READER="zathura"
 export SAVEHIST=10000
 export SUDO_ASKPASS="$HOME/.local/bin/askpass"
