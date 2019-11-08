@@ -578,7 +578,7 @@ echo $password | sudo -S chmod a+w /sys/power/state
 
 ## GDS Layouts
 # Klayout
-yay_install klayout
+pacman_install klayout
 
 ## Python
 #-------------------------------------------------------------------------------
