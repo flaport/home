@@ -294,5 +294,5 @@ status(){
 
 
 # Set the status bar #-------------------------------------------------------------------------------- 
-status bt vpn hub ssht sshd pcmn vol brt bat alpha wtr dte tme
+status vpn hub ssht sshd pcmn vol brt bat alpha wtr dte tme
 

@@ -30,6 +30,9 @@ dunst &
 # network manager applet (in most right corner of the screen)
 nm-applet &
 
+# bluetooth manager
+blueman-applet &
+
 # automatically lock screen after 10 minutes
 xautolock -time 10 -locker validate_and_lock_screen &
 
