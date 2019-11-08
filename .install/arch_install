@@ -506,6 +506,9 @@ systemctl_enable bluetooth
 # remote desktop
 pacman_install remmina
 pacman_install freerdp
+# barrier: seemless mouse and keyboard sharing between computers
+yay_install barrier
+yay_install barrier-headless
 
 ## Sound
 # alsamixer
