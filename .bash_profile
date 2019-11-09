@@ -30,8 +30,8 @@ export CXX="g++"
 export EDITOR="vim"
 export FM="vifm"
 export FZF_DEFAULT_OPTS="--layout=reverse --height=60% --multi --bind=ctrl-l:preview-down,ctrl-h:preview-up,ctrl-a:select-all --preview-window=right:wrap --preview='fzf_preview {} $LINES'"
-export GTK_THEME="Adapta-Nokto-Eta"
-export GTK2_RC_FILES="/usr/share/themes/Adapta-Nokto-Eta/gtk-2.0/gtkrc"
+export GTK_THEME="Arc"
+export GTK2_RC_FILES="/usr/share/themes/Arc/gtk-2.0/gtkrc"
 export HISTFILE="$HOME/.bash_history"
 export HISTSIZE=10000
 export HOST=$(hostname)
