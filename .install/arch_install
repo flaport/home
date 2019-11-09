@@ -350,7 +350,7 @@ pacman_install gtk3
 pacman_install adapta-gtk-theme
 #pacman_install arc-solid-gtk-theme
 sudo rm -r /etc/gtk-2.0/*
-sudo rsync -a /usr/share/themes/Adapta-Nokto-Eta/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
+sudo rsync -a /usr/share/themes/Adapta-Eta/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
 #sudo rsync -a /usr/share/themes/Arc-solid/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
 # it's nice to have the qt apps look similar as the gtk apps:
 # fot this the following packages should be downloaded:
@@ -360,7 +360,7 @@ pacman_install kvantum-qt5
 pacman_install kvantum-theme-adapta
 # further manual configuration necessary after this:
 #   - export QT_QPA_PLATFORMTHEME="qt5ct"
-#   - select AdaptaNokto in kvantummanager
+#   - select Adapta in kvantummanager
 #   - select kvantum theme in qt5ct
 #   - choose gtk widgets in qt5ct
 # my dwm fork
