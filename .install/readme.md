@@ -1,6 +1,6 @@
 # First Installation of Arch Linux
 
-***Note:*** These installation instructions were last checked by me on 2019.06.26.
+***Note:*** These installation instructions were last checked by me on 2019.11.09.
 
 ***Note:*** These installation worked definitely for **UEFI** boot mode and should normally also work for **BIOS** boot mode, although I have not performed the latter myself.
 
@@ -40,7 +40,7 @@
         * `mount /dev/sda1 /mnt/boot`
     * **BIOS**: Set the bootable flag on `/dev/sda1`
         * `cfdisk` -> `[ Type ]` -> `BIOS boot` -> `[ Write ]`
-* Finally, install archlinux: `pacstrap -i /mnt base base-devel dialog`. When prompted choose all the default answers. We need dialog to have `wifi-menu` working after installation.
+* Finally, install archlinux: `pacstrap -i /mnt base base-devel linux linux-firmware dialog`. When prompted choose all the default answers. We need dialog to have `wifi-menu` working after installation.
 * Create fstab file: `genfstab -U /mnt >> /mnt/etc/fstab`
 * Change root: `arch-chroot /mnt`
 * Set the time zone: `ln -sf /usr/share/zoneinfo/Europe/Brussels /etc/localtime`
