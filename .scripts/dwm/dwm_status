@@ -49,7 +49,7 @@ brt(){ # screen brightness
     fi
     max_brightness=$(cat $dir/max_brightness)
     brightness=$(cat $dir/brightness)
-    python -c "print('💡 %.0f'%(100*$brightness/$max_brightness)+'%')"
+    python -c "print('☀️ %.0f'%(100*$brightness/$max_brightness)+'%')"
 }
 brt1(){ # mouse-button 1 action for brightness widget
     dir=/sys/class/backlight/intel_backlight

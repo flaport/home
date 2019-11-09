@@ -219,20 +219,17 @@ link() {
 ## Install and configure packages
 #-------------------------------------------------------------------------------
 
-## Security
-pacman_install gnupg # gpg --full-gen-key (generate gpg key)
-pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
-yay_install passff-host  # host for the firefox extension
-
-## Source control
-pacman_install git
-# pacman_install mercurial
-
 ## build tools
+pacman_install git
 pacman_install make
 
 ## AUR package manager
 git_install https://aur.archlinux.org/yay.git
+
+## Security
+pacman_install gnupg # gpg --full-gen-key (generate gpg key)
+pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
+yay_install passff-host  # host for the firefox extension
 
 ## Terminal
 # my st fork
@@ -302,7 +299,7 @@ pacman_install nginx
 
 ## Graphical server: xorg
 # the graphical server
-pacman_install xorg
+# pacman_install xorg
 pacman_install xorg-server
 # querying window information
 pacman_install xorg-xwininfo
@@ -351,18 +348,13 @@ pacman_install arc-gtk-theme
 sudo rm -r /etc/gtk-2.0/*
 sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
 # it's nice to have the qt apps look similar as the gtk apps:
-# for this the following packages should be downloaded:
+# gtk look-and-feel for qt:
 pacman_install qt5ct
 pacman_install kvantum-qt5
-# further manual configuration necessary after this:
-#   - export QT_QPA_PLATFORMTHEME="qt5ct"
-#   - select kvantum theme in qt5ct
-#   - choose gtk widgets in qt5ct
-#   - select kvArc in kvantummanager
 # my dwm fork
 submodule_install dwm
 # my dmenu fork (disabled in favor of rofi)
-# submodule_install dmenu
+submodule_install dmenu
 # rofi (dmenu alternative)
 pacman_install rofi
 
@@ -389,8 +381,9 @@ yay_install nerd-fonts-inconsolata-go
 pacman_install ttf-linux-libertine
 # sans-serif + chromium/firefox dependency
 pacman_install ttf-droid
-# symbols: for emojis :)
+# symbols / emojis
 yay_install ttf-symbola
+# yay_install ttf-twemoji-color
 # some general font improvements:
 # disable bitmaps:
 link /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
@@ -411,7 +404,7 @@ pacman_install zathura-pdf-mupdf
 # djvu reader extension
 pacman_install zathura-djvu
 # etcher: GUI dd alternative
-# yay_install etcher
+# yay_install etcher-bin
 
 ## Paint etc
 pacman_install pinta
@@ -455,16 +448,16 @@ pacman_install dosfstools
 pacman_install exfat-utils
 # ntfs-3g: access NTFS network drives
 pacman_install ntfs-3g
+# samba shares = network volumes
+pacman_install samba
 # access media on external device (phone, ...)
 pacman_install libmtp
 pacman_install fuse
-yay_install android-file-transfer # android access
+pacman_install android-file-transfer # android access
 # access ssh file system
 pacman_install sshfs
 # install scripts for bootstrapping new arch installation
-pacman_install arch-install-scripts
-# samba shares = network volumes
-pacman_install samba
+# pacman_install arch-install-scripts
 
 ## Desktop notifications
 # libnotify allows desktop notifications
@@ -532,10 +525,10 @@ pacman_install mpd
 systemctl_enable mpd
 
 ## Latex
-# tex-live
+# tex-live (diabled by default bc heavy package)
 # pacman_install texlive-most
 # bibliographies
-# pacman_install biber
+pacman_install biber
 
 
 ## Browsers
@@ -572,6 +565,8 @@ pacman_install isync
 # mutt email client
 pacman_install neomutt
 link /usr/bin/neomutt /usr/bin/mutt
+# notmuch: email indexing
+pacman_install notmuch
 # html email view (also browser!)
 # pacman_install w3m
 pacman_install lynx
@@ -598,17 +593,17 @@ pacman_install klayout
 
 # system python packages
 pacman_install tk
-pacman_install python-gobject
 pacman_install python-pip
 pacman_install python2-pip
 pacman_install python-tqdm
 pacman_install python2-tqdm
 pacman_install python-numpy
 pacman_install python2-numpy
+pacman_install python-gobject
+pacman_install python-powerline
+pacman_install python-websockets
 pacman_install python-matplotlib
 pacman_install python2-matplotlib
-pacman_install python-websockets
-pacman_install python-powerline
 
 # Scientific computing octave (Matlab alternative)
 pacman_install octave
@@ -678,7 +673,7 @@ link /usr/bin/dash /bin/sh
 # it's my preferred shell.
 pacman_install zsh
 # zsh-extensions:
-pacman_install autojump
+yay_install autojump-git
 pacman_install zsh-autosuggestions
 pacman_install zsh-syntax-highlighting
 
