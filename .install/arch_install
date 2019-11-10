@@ -366,6 +366,7 @@ pacman_install rofi
 pacman_install syncthing
 # jellyfin: media center
 # pacman_install jellyfin
+# systemctl_enable jellyfin
 
 ## Printers
 # printer system (cups @ localhost:631)
