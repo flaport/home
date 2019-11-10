@@ -294,6 +294,9 @@ pacman_install transmission-cli
 yay_install transmission-remote-cli-git
 # a more beautiful ls command
 pacman_install lsd
+# conky: a system monitor
+pacman_install conky
+# yay_install conky-lua-nv
 # reverse proxy
 pacman_install nginx
 
@@ -390,6 +393,9 @@ pacman_install ttf-droid
 # symbols / emojis
 yay_install ttf-symbola
 # yay_install ttf-twemoji-color
+# yay_install ttf-pizzadude-bullets
+# yay_install otf-font-awesome-5-free
+# yay_install ttf-weather-icons
 # some general font improvements:
 # disable bitmaps:
 link /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
