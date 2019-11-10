@@ -25,6 +25,7 @@ pacman -R # remove program
 pacman -Rs # remove program and dependencies
 pacman -Rns # remove program and system config files and dependencies
 pacman -Q # list all installed packages
+pacman -Scc # remove pacman cache
 pacman -Qe # list all installed packages that were explicitly installed by user
 pacman -Qq # list all installed packages (no extra details)
 pacman -Qn # list all installed packes installed from main repository
