@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp localhost:8384
+Name=Syncthing
+Icon=/usr/local/share/icons/syncthing.png # add this icon yourself.

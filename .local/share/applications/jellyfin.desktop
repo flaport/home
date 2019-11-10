@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp localhost:8096
+Name=Jellyfin
+Icon=/usr/local/share/icons/jellyfin.png # add this icon yourself.

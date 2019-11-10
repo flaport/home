@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp localhost:9876
+Name=smdv
+Icon=/usr/local/share/icons/smdv.png # add this icon yourself.

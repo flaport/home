@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp localhost:8000
+Name=Jupyterhub
+Icon=/usr/local/share/icons/jupyterhub.png # add this icon yourself.

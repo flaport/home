@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=webapp localhost:631
+Name=CUPS
+Icon=/usr/local/share/icons/cups.png # add this icon yourself.
