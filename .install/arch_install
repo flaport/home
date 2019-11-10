@@ -9,6 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
+# last full run: 2019.11.10
 
 ## Checks
 #-------------------------------------------------------------------------------
@@ -221,6 +222,7 @@ link() {
 
 ## build tools
 pacman_install git
+pacman_install man
 pacman_install make
 
 ## AUR package manager
@@ -239,8 +241,6 @@ pacman_install neovim
 link /usr/bin/nvim /usr/bin/vim
 # rsync: safe and secure copy & backup
 pacman_install rsync
-# syncthing: synchronization between devices
-pacman_install syncthing
 # atool gives information about archives
 pacman_install atool
 # zip
@@ -357,6 +357,12 @@ submodule_install dwm
 submodule_install dmenu
 # rofi (dmenu alternative)
 pacman_install rofi
+
+# Web interfaces
+# syncthing: synchronization between devices
+pacman_install syncthing
+# jellyfin: media center
+# pacman_install jellyfin
 
 ## Printers
 # printer system (cups @ localhost:631)
