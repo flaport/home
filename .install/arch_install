@@ -338,8 +338,8 @@ fi
 # pacman_install i3-gaps
 # i3-blocks: status bar for i3
 # pacman_install i3-blocks
-# i3-lock: screen lock for i3 (and also for dwm!)
-pacman_install i3lock
+# i3-lock: screen lock. When display manager is available, use dm-tool lock instead.
+# pacman_install i3lock
 # xsetroot: for status bar in dwm
 pacman_install xorg-xsetroot
 # sxhkd: keyboard shortcuts
