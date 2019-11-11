@@ -10,14 +10,19 @@ systemctl status bluetooth | grep inactive
 [ $? -eq 0 ] && exit 1
 
 bluetoothctl -- power on
-device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]")
-if [ $device = "[bluetooth]" ]; then # no connection -> try to connect
+device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]" | sed "s/.*\[\(.*\)\].*/\1/g")
+
+if [[ $device == bluetooth ]]; then # no connection -> try to connect
     device=$(bluetoothctl -- paired-devices | dmenu -p "connect to bluetooth device" -l 10 $@)
     mac=$(echo $device | grep -o "..:..:..:..:..:..")
-    message=$(bluetoothctl -- connect $mac)
+    [ -z $mac ] && exit 0
+    message=$(bluetoothctl -- connect $mac | grep successful)
 else # a bluetooth connection exists -> try to disconnect
-    message=$(bluetoothctl -- disconnect)
+    message=$(bluetoothctl -- disconnect | grep disconnected)
 fi
+
+[ -z $message ] && exit 0
+
 notify-send "bluetooth connection" "$message"
 
 # update status bar

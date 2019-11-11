@@ -66,16 +66,16 @@ bt(){ # bluetooth
         echo -e ""
         return
     fi
-    device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]")
-    if [ $device = "[bluetooth]" ]; then
+    device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]" | sed "s/.*\[\(.*\)\].*/\1/g")
+    if [[ $device == bluetooth ]]; then
         echo -e ""
     else
         echo -e 🦷
     fi
 }
 bt1(){ # mouse-button 1 action for bluetooth widget
-    device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]")
-    if [[ $device == "\[bluetooth\]" ]]; then
+    device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]" | sed "s/.*\[\(.*\)\].*/\1/g")
+    if [[ $device == bluetooth ]]; then
         notify-send Bluetooth disconnected.
     else
         notify-send Bluetooth "connected to $device"
@@ -294,5 +294,5 @@ status(){
 
 
 # Set the status bar #-------------------------------------------------------------------------------- 
-status vpn hub ssht sshd pcmn vol brt bat alpha wtr dte tme
+status bt vpn hub ssht sshd pcmn vol brt bat alpha wtr dte tme
 

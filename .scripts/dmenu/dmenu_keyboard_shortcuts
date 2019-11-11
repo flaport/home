@@ -82,8 +82,7 @@ class Shortcut:
 
 
 if __name__ == "__main__":
-    window_manager = os.environ.get("WM")  # this variable is set in ~/.xinitrc
-    with open(os.path.expanduser(f"~/.config/sxhkd/sxhkdrc{window_manager}")) as file:
+    with open(os.path.expanduser(f"~/.config/sxhkd/sxhkdrc")) as file:
         lines = file.read().splitlines()
 
     shortcuts = {}

@@ -531,7 +531,7 @@ pacman_install whois
 pacman_install bluez
 pacman_install bluez-utils
 pacman_install pulseaudio-bluetooth
-pacman_install blueman
+# pacman_install blueman
 systemctl_enable bluetooth
 # remote desktop
 pacman_install remmina
