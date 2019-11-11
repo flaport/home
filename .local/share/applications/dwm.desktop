@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=dwm
+Comment=Executes dwm
+Exec=/usr/local/bin/dwm
+Type=Application

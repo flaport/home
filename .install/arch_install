@@ -360,6 +360,13 @@ submodule_install dwm
 submodule_install dmenu
 # rofi (dmenu alternative)
 pacman_install rofi
+# display manager
+pacman_install lightdm
+# pacman_install lightdm-gtk-greeter
+yay_install lightdm-slick-greeter
+sudo cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
+systemctl_enable lightdm
+sudo cp -f $HOME/.extra/lightdm.conf /etc/lightdm/lightdm.conf
 
 # Web interfaces
 # syncthing: synchronization between devices

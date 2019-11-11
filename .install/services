@@ -57,19 +57,19 @@ with open("/etc/systemd/system/pacmanquery.service", "w") as file:
 # autologon getty service
 # -------------------------------------------------------- #
 
-filename = "/etc/systemd/system/getty@tty1.service.d/override.conf"
-if not os.path.isdir(os.path.dirname(filename)):
-    os.mkdir(os.path.dirname(filename))
-
-with open(filename, "w") as file:
-    file.write(
-        dedent(
-            """
-        [Service]
-        ExecStart=
-        ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin {username} --noclear %I $TERM
-        Type=simple
-        """
-        ).format(username=USER)
-    )
+# filename = "/etc/systemd/system/getty@tty1.service.d/override.conf"
+# if not os.path.isdir(os.path.dirname(filename)):
+#     os.mkdir(os.path.dirname(filename))
+# 
+# with open(filename, "w") as file:
+#     file.write(
+#         dedent(
+#             """
+#         [Service]
+#         ExecStart=
+#         ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin {username} --noclear %I $TERM
+#         Type=simple
+#         """
+#         ).format(username=USER)
+#     )
 
