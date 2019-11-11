@@ -38,6 +38,9 @@ xautolock -time 10 -locker validate_and_lock_screen &
 # make the mouse invisible after a brief period of not using it.
 unclutter &
 
+# conky dashboard
+conky &
+
 # set cursor speed
 # wrapped into loop, as sometimes this stops working
 while true; do
