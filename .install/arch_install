@@ -299,8 +299,9 @@ pacman_install conky
 # yay_install conky-lua-nv
 # reverse proxy
 pacman_install nginx
+sudo mkdir -p /var/www/html
 sudo cp $HOME/.extra/nginx.conf /etc/nginx/nginx.conf
-sudo cp $HOME/.extra/index.html /var/www/html/index.html
+[ -f /var/www/html/index.html ] || sudo cp $HOME/.extra/index.html /var/www/html/index.html
 systemctl_enable nginx
 
 ## Graphical server: xorg
@@ -366,6 +367,7 @@ pacman_install rofi
 pacman_install lightdm
 pacman_install lightdm-gtk-greeter
 yay_install lightdm-slick-greeter
+# mini greeter seems to not work properly without the above two greeters installed (?)
 yay_install lightdm-mini-greeter
 sudo rm -f /usr/share/xsessions/*
 cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?greeter-session=.*/greeter-session=lightdm-mini-greeter/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2> $ERR
@@ -621,7 +623,6 @@ pacman_install tk
 pacman_install python-pip
 pacman_install python2-pip
 pacman_install python-tqdm
-pacman_install python2-tqdm
 pacman_install python-numpy
 pacman_install python2-numpy
 pacman_install python-gobject
