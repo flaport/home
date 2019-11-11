@@ -350,23 +350,24 @@ pacman_install gtk3
 pacman_install arc-gtk-theme
 sudo rm -r /etc/gtk-2.0/*
 sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
-# it's nice to have the qt apps look similar as the gtk apps:
 # gtk look-and-feel for qt:
 pacman_install qt5ct
 pacman_install kvantum-qt5
 # my dwm fork
 submodule_install dwm
-# my dmenu fork (disabled in favor of rofi)
+# my dmenu fork
 submodule_install dmenu
 # rofi (dmenu alternative)
 pacman_install rofi
 # display manager
 pacman_install lightdm
 # pacman_install lightdm-gtk-greeter
-yay_install lightdm-slick-greeter
+# yay_install lightdm-slick-greeter
+yay_install lightdm-mini-greeter
+cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?greeter-session=.*/greeter-session=lightdm-mini-greeter/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2> $ERR
+cat /etc/lightdm/lightdm-mini-greeter.conf | sed "s/^user = CHANGE_ME$/user = $USER/g" | sed "s/F92672/2AA198/g" | sudo tee /etc/lightdm/lightdm-mini-greeter.conf > /dev/null 2> $ERR
 sudo cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
 systemctl_enable lightdm
-sudo cp -f $HOME/.extra/lightdm.conf /etc/lightdm/lightdm.conf
 
 # Web interfaces
 # syncthing: synchronization between devices
