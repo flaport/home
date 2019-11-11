@@ -71,6 +71,8 @@ alias :q=exit
 alias :x=exit
 alias :e=$EDITOR
 alias grep="grep --color=auto"
+alias base="conda activate base"
+alias system="conda deactivate && conda deactivate"
 
 
 ## Python
