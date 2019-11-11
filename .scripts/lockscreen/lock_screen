@@ -6,4 +6,4 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
 #
 xset dpms force off # turns off backlight
-dm-tool lock
+i3lock --color 444444 --ignore-empty-password --show-failed-attempts
