@@ -39,7 +39,6 @@ set -gx PYTHONPATH (tr '\n' ':' < $HOME/.pythonpath | head -c -1 | sed -e 's|~|'
 # enable anaconda python
 if test -e "$HOME/.anaconda/etc/fish/conf.d/conda.fish"
     source "$HOME/.anaconda/etc/fish/conf.d/conda.fish"
-    conda activate base
 end
 
 

@@ -17,11 +17,6 @@
 # current shell: zsh
 #
 
-## Anaconda python
-#-------------------------------------------------------------------------------
-# CONDA_INIT="$( $HOME/.anaconda/bin/conda shell.bash hook 2> /dev/null)"
-# [ $? = 0 ] && eval "$CONDA_INIT"
-
 ## Environment variables
 #-------------------------------------------------------------------------------
 export BROWSER="firefox"
@@ -34,7 +29,6 @@ export GTK_THEME="Arc"
 export GTK2_RC_FILES="/usr/share/themes/Arc/gtk-2.0/gtkrc"
 export HISTFILE="$HOME/.bash_history"
 export HISTSIZE=10000
-export HOST=$(hostname)
 export ICAROOT="$HOME/.ica"
 export PATH="$HOME/.local/bin:$PATH"
 export PYTHONSTARTUP="$HOME/.pythonstartup"
