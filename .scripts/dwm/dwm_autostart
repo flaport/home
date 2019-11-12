@@ -38,8 +38,10 @@ xautolock -time 10 -locker validate_and_lock_screen &
 # make the mouse invisible after a brief period of not using it.
 unclutter &
 
-# conky dashboard
-conky &
+# conky dashboards
+conky -c $HOME/.config/conky/conky.conf -x 60 &
+conky -c $HOME/.config/conky/conky.conf -x -1860 &
+conky -c $HOME/.config/conky/conky.conf -x -3780 &
 
 # set cursor speed
 # wrapped into loop, as sometimes this stops working
