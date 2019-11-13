@@ -269,6 +269,10 @@ pacman_install ack
 pacman_install fzf
 # multiple terminals in one
 pacman_install tmux
+# show manual for executable
+pacman_install man
+# show most common commands for executable
+pacman_install tldr
 # copying and pasting from the terminal
 pacman_install xclip
 # pdf previews
