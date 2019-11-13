@@ -151,4 +151,4 @@ let g:UltiSnipsJumpBackwardTrigger="<c-,>"
 let g:instant_markdown_port = 9876
 let g:instant_markdown_autostart = 0
 let g:instant_markdown_autoscroll = 1
-let g:instant_markdown_python = 1
+let g:instant_markdown_python = 0

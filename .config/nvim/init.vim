@@ -184,8 +184,6 @@ silent echo v:servername
 redir end
 autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markdown_image<CR>kddk
 autocmd FileType markdown vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
-autocmd BufWritePost *.md silent execute '!smdv 'expand('%:p')' -v "'.v:servername'"'
-autocmd FileType markdown nnoremap <Leader>d "ayi(:execute ":edit ".@a<CR>:silent !smdv --sync %<CR>
 
 
 "" Settings
