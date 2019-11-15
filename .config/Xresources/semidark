@@ -7,6 +7,9 @@ are more guidelines than strict rules.
 
 */
 
+*background: #282828
+*foreground: #ebdbb2
+*cursorColor: #add8e6
 
 !! backgroud
 *color0: #1b1918

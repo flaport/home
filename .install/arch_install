@@ -619,6 +619,10 @@ echo $password | sudo -S chmod a+w /sys/power/state
 # Klayout
 pacman_install klayout
 
+# Scientific computing octave (Matlab alternative)
+pacman_install octave
+
+
 ## Python
 #-------------------------------------------------------------------------------
 
@@ -635,8 +639,8 @@ pacman_install python-websockets
 pacman_install python-matplotlib
 pacman_install python2-matplotlib
 
-# Scientific computing octave (Matlab alternative)
-pacman_install octave
+# pywal: an xrdb wrapper library
+pip3_install pywal
 
 # install neovim integration for system python
 pip3_install neovim

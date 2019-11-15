@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/python3
 #    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
 #   |  __\| |   | / \||  \/|| / \||  \/|  / \
@@ -6,50 +6,152 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
-usage(){
-    >&2 echo "usage: xcs [ --alpha <value> ] <colorscheme>"
-}
+# imports
+import os
+import sys
+import glob
+import argparse
+import subprocess
 
-available_colorschemes(){
-    echo
-    echo
-    echo available colorschemes [in \~/.config/Xresources]:
-    cd ~/.config/Xresources
-    find . -executable | sed s/[.]//g | sed s/[/]//g | sed '/^[[:space:]]*$/d'
-}
+def parse_args(args):
+    parser = argparse.ArgumentParser(description="xcs: X color scheme")
+    parser.add_argument(
+        "name",
+        type=str,
+        nargs="?",
+        default="current",
+        help="xresources file to load (should be located in ~/.config/Xresources)",
+    )
+    parser.add_argument(
+        "-l",
+        "--list",
+        default=False,
+        action="store_true",
+        help="show available colorschemes",
+    )
+    parser.add_argument(
+        "-a",
+        "--alpha",
+        type=str,
+        default=None,
+        help="window transparency [known bug: transparency for currently open windows will be lost]",
+    )
+    parser.add_argument(
+        "-d",
+        "--dmenu",
+        default=False,
+        action="store_true",
+        help="use dmenu to select a colorscheme",
+    )
+    parsed_args = parser.parse_args(args=args)
+    if parsed_args.alpha is not None:
+        parsed_args.alpha = float(parsed_args.alpha)
+        if parsed_args.alpha > 1.0 or parsed_args.alpha < 0.0:
+            raise ValueError("alpha value should be between 0 and 1")
+    if parsed_args.dmenu and parsed_args.name != "current":
+        raise ValueError("when choosing a colorscheme with option `--dmenu`, the colorscheme name should be left blank.")
+    return parsed_args
 
-if [ -z "$1" ]; then
-    cd ~/.config/Xresources
-    cs=$(find . -executable | sed s/[.]//g | sed s/[/]//g | sed '/^[[:space:]]*$/d' | dmenu -p "select colorscheme" -i -l 20)
-fi
+def load_xresources(name = "gruvbox"):
+    """ load xresource file as dict.
+
+    Args:
+        name: name of the xresources file to load. This file should be
+            present in ~/.config/Xresources.
+    """
+    if name == "current":
+        filename = os.path.abspath(os.path.expanduser("~/.Xresources"))
+    else:
+        filename = os.path.abspath(os.path.expanduser(os.path.join("~/.config/Xresources/", name)))
+    with open(filename, "r") as file:
+        lines = file.read().replace("\t", " ").split("\n")
+    lines = [line.strip() for line in lines]
+    lines = [line for line in lines if line and not (line.startswith("!"))]
+    idxs = []
+    comment = False
+    for i, line in enumerate(lines):
+        if line.startswith("/*"):
+            comment = True
+        if comment:
+            idxs.append(i)
+        if line.endswith("*/"):
+            comment = False
+    for i in reversed(idxs):
+        del lines[i]
+    lines = [line if not line.startswith("*") else line[1:] for line in lines]
+    split_defined = [[word for word in line.split(" ") if word != "" and word != "#define"] for line in lines if "#define" in line]
+    defined_dict = {k.strip(): v.strip() for k, v in split_defined}
+    split_lines = [line.split(":") for line in lines if ":" in line]
+    xresources = {k.strip(): defined_dict.get(v.strip(), v.strip()).upper() for k, v in split_lines}
+    return xresources
+
+def set_terminal_colors(xresources):
+    """ set the colors of the currently open terminals given Xresources dictionary
+
+    Args:
+        xresources: dictionary containing the xresources parameters
+    """
+    colors = ['\x1b]4;0;#00000D\x1b\\', '\x1b]4;1;#AB345F\x1b\\', '\x1b]4;2;#F35D70\x1b\\', '\x1b]4;3;#3EBC75\x1b\\', '\x1b]4;4;#F2B670\x1b\\', '\x1b]4;5;#215C93\x1b\\', '\x1b]4;6;#E8678D\x1b\\', '\x1b]4;7;#91e1d1\x1b\\', '\x1b]4;8;#659d92\x1b\\', '\x1b]4;9;#AB345F\x1b\\', '\x1b]4;10;#F35D70\x1b\\', '\x1b]4;11;#3EBC75\x1b\\', '\x1b]4;12;#F2B670\x1b\\', '\x1b]4;13;#215C93\x1b\\', '\x1b]4;14;#E8678D\x1b\\', '\x1b]4;15;#91e1d1\x1b\\', '\x1b]10;#91e1d1\x1b\\', '\x1b]11;[200]#00000D\x1b\\', '\x1b]12;#91e1d1\x1b\\', '\x1b]13;#91e1d1\x1b\\', '\x1b]17;#91e1d1\x1b\\', '\x1b]19;#00000D\x1b\\', '\x1b]4;232;#00000D\x1b\\',
+    '\x1b]4;256;#91e1d1\x1b\\']
+    colors = [f"\033]4;{i};{xresources[f'color{i}']}\033\\" for i in range(16)]
+    colors.append(f"\033]10;{xresources['foreground']}\033\\")
+    colors.append(f"\033]11;[{int(float(xresources['alpha'])*255)}]{xresources['background']}\033\\")
+    colors.append(f"\033]12;{xresources['cursorColor']}\033\\")
+    colors.append(f"\033]13;{xresources['foreground']}\033\\")
+    colors.append(f"\033]17;{xresources['foreground']}\033\\")
+    colors.append(f"\033]19;{xresources['background']}\033\\")
+    colors.append(f"\033]4;232;{xresources['foreground']}\033\\")
+    colors.append(f"\033]4;256;{xresources['background']}\033\\")
+    colors.append(f"\033]708;[{int(float(xresources['alpha'])*255)}]{xresources['foreground']}\033\\")
+    for term in glob.glob("/dev/pts/[0-9]"):
+        with open(term, "w") as file:
+            file.write("".join(colors))
+
+def colorscheme_list():
+    """ get a list of available colorschemes """
+    return [name for name in os.listdir(os.path.expanduser("~/.config/Xresources")) if name != "readme.md"]
+
+def set_xresources(xresources):
+    with open(os.path.expanduser("~/.Xresources"), "w") as file:
+        for k, v in xresources.items():
+            file.write(f"*{k}: {v}\n")
+    with open(os.devnull, "w") as file:
+        subprocess.call(["xrdb", os.path.expanduser("~/.Xresources")], stdout=file, stderr=file)
+
+def dmenu(list_in, prompt):
+    dmenu_in = subprocess.Popen(
+        ["echo", "\n".join([str(s) for s in list_in])], stdout=subprocess.PIPE
+    ).stdout
+    try:
+        choice = subprocess.check_output(
+            ["dmenu", "-l", "15", "-p", prompt], stdin=dmenu_in
+        ).decode()[:-1]
+    except subprocess.CalledProcessError:
+        raise RuntimeError("no colorscheme selected")
+    return choice
+
+def update_dwm_status_bar():
+    with open(os.devnull, "w") as file:
+        subprocess.call(["dwm_status"], stdout=file, stderr=file)
 
 
-if [ "$1" = "-a" ] || [ "$1" = "--alpha" ]; then
-    shift
-    alpha=$1
-    shift
-fi
+if __name__ == "__main__":
+    try:
+        if not sys.argv[1:]:
+            sys.argv.append("--dmenu")
+        args = parse_args(sys.argv[1:])
+        if args.list:
+            print("\n".join(colorscheme_list()))
+            exit(0)
+        if args.dmenu:
+            args.name = dmenu(colorscheme_list(), "select colorscheme")
+        xresources = load_xresources(name=args.name)
+        if args.alpha is not None:
+            xresources["alpha"] = args.alpha
+        set_terminal_colors(xresources)
+        set_xresources(xresources)
+        update_dwm_status_bar()
+    except Exception as e:
+        print(str(e))
+        exit(1)
 
-if [ "$1" = "ls" ]; then
-    available_colorschemes
-    exit 0
-fi
-
-if [ -z "$cs" ]; then
-    if [ -z "$1" ]; then
-        usage
-        available_colorschemes
-        exit 1
-    fi
-    cs=$1
-fi
-
-rm -f ~/.Xresources
-cp ~/.config/Xresources/$cs ~/.Xresources
-
-if [ $alpha ]; then
-    echo *.alpha: $alpha >> ~/.Xresources
-fi
-
-xrdb ~/.Xresources 2> /dev/null
-dwm_status
