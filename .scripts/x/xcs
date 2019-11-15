@@ -152,6 +152,6 @@ if __name__ == "__main__":
         set_xresources(xresources)
         update_dwm_status_bar()
     except Exception as e:
-        print(str(e))
+        parse_args(("--help",))
         exit(1)
 
