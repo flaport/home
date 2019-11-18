@@ -8,7 +8,7 @@
 θ theta
 ι iota
 κ kappa
-λ gamma
+λ lambda
 μ mu
 ν nu
 ξ xi
@@ -33,7 +33,7 @@
 Θ Theta
 Ι Iota
 Κ Kappa
-Λ Gamma
+Λ Lambda
 Μ Mu
 Ν Nu
 Ξ Xi
