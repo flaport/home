@@ -45,11 +45,11 @@ Plug 'mileszs/ack.vim' " Ack code search (needs ack installed)
 Plug 'lilydjwg/colorizer' " Paint css colors with the real color
 Plug 'valloric/MatchTagAlways' " Highlight matching html tags
 Plug 'mattn/emmet-vim' " Generate html in a simple way
-Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
 Plug 'vim-scripts/YankRing.vim' " Yank history navigation
 Plug 'neomake/neomake' " Linters
 Plug 'sirver/ultisnips' " snippets
 Plug 'honza/vim-snippets' " snippets
+Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
 " Plug 'kien/rainbow_parentheses.vim' " different color paranthesis depending on nesting
 " Plug 'powerline/powerline'
 " Plug 'vim-airline/vim-airline'
@@ -138,9 +138,9 @@ let g:numbers_exclude = ["goyo"]
 " Goyo -----------------------------------
 " nnoremap <C-x> :Goyo!<cr>:set tw=0<cr>
 " nnoremap <CR> :Goyo<cr>:set tw=70<cr>
-let g:goyo_linenr = 0
-let g:goyo_height = "75%"
-let g:goyo_width = 80
+" let g:goyo_linenr = 0
+" let g:goyo_height = "75%"
+" let g:goyo_width = 80
 
 " Ultisnips ------------------------------
 let g:UltiSnipsExpandTrigger="<tab>"
