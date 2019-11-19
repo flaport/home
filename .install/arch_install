@@ -267,6 +267,8 @@ pacman_install grep
 pacman_install ack
 # fuzzy finder tool
 pacman_install fzf
+# extract urls from text
+yay_install xurls
 # multiple terminals in one
 pacman_install tmux
 # show manual for executable
