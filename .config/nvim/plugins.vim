@@ -37,7 +37,6 @@ Plug 'tpope/vim-repeat' " better repeating of last command
 Plug 'tpope/vim-surround' " Surround word with character
 Plug 'tpope/vim-markdown' " markdown syntax highlighting
 Plug 'junegunn/fzf.vim' " fuzzy file search (needs fzf installed)
-Plug 'junegunn/goyo.vim' " distraction free writing
 Plug 'Shougo/context_filetype.vim' " Completion from other opened files
 Plug 'Shougo/deoplete.nvim' " Async autocompletion
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
@@ -54,7 +53,8 @@ Plug 'honza/vim-snippets' " snippets
 " Plug 'kien/rainbow_parentheses.vim' " different color paranthesis depending on nesting
 " Plug 'powerline/powerline'
 " Plug 'vim-airline/vim-airline'
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+" Plug 'junegunn/goyo.vim' " distraction free writing
+" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 call plug#end() " stop loading plugins
 
 
@@ -136,8 +136,8 @@ let g:yankring_history_dir = '~/.config/nvim/'
 let g:numbers_exclude = ["goyo"]
 
 " Goyo -----------------------------------
-nnoremap <C-x> :Goyo!<cr>:set tw=0<cr>
-nnoremap <CR> :Goyo<cr>:set tw=70<cr>
+" nnoremap <C-x> :Goyo!<cr>:set tw=0<cr>
+" nnoremap <CR> :Goyo<cr>:set tw=70<cr>
 let g:goyo_linenr = 0
 let g:goyo_height = "75%"
 let g:goyo_width = 80

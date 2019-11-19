@@ -162,8 +162,8 @@ autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT ipython -i %<CR>G<
 
 " tex / latex / xelatex
 
-autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:Goyo!<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>:sleep 200m<cr>:Goyo<cr>
-autocmd FileType tex inoremap <F5> <Esc>:w<CR>:Goyo!<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<C-w>k:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>:sleep 200m<cr>:Goyo<cr>
+autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>
+autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<C-w>k:nnoremap j gj<cr>:nnoremap k gk<cr>:set wrap linebreak<cr>
 
 " <Leader>s  --> latex synctex tex->pdf
 function! SyncTex()
