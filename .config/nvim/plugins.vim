@@ -152,3 +152,8 @@ let g:instant_markdown_port = 9876
 let g:instant_markdown_autostart = 0
 let g:instant_markdown_autoscroll = 1
 let g:instant_markdown_python = 0
+
+" Vim signify ----------------------------
+nnoremap <leader>g :SignifyToggle<CR>
+let g:signify_disable_by_default = 1
+

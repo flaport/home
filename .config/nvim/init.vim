@@ -121,6 +121,9 @@ set hidden
 hi FoldColumn ctermbg=NONE
 set foldcolumn=2
 
+" lower updatetime (for vim signify)
+set updatetime=200
+
 
 "" Useful commands inherited from plugins (incomplete list)
 "-------------------------------------------------------------------------------
@@ -137,8 +140,8 @@ set foldcolumn=2
 " go to definition (python)
 " <Leader>d
 
-" open file browser
-" <Leader>t
+" toggle git diff symbols 
+" <Leader>g
 
 "" All mode shortcuts
 "-------------------------------------------------------------------------------
