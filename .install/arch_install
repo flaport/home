@@ -355,14 +355,6 @@ pacman_install sxhkd
 pacman_install xautolock
 # wallpapers
 pacman_install feh
-# simple theme to make gtk applications look better
-pacman_install gtk3
-pacman_install arc-gtk-theme
-sudo rm -r /etc/gtk-2.0/*
-sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
-# gtk look-and-feel for qt:
-pacman_install qt5ct
-pacman_install kvantum-qt5
 # my dwm fork
 submodule_install dwm
 # my dmenu fork
@@ -381,7 +373,23 @@ cat /etc/lightdm/lightdm-mini-greeter.conf | sed "s/^user = CHANGE_ME$/user = $U
 sudo cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
 systemctl_enable lightdm
 
-# Web interfaces
+## Themes 
+# gtk3
+pacman_install gtk3
+# adwaita
+pacman_install gnome-themes-standard # Adwaita theme
+# murrine
+pacman_install gtk-engine-murrine # Murrine theme
+# arc
+pacman_install arc-gtk-theme # Arc theme
+# set Arc as default gtk2 theme system-wide
+sudo rm -r /etc/gtk-2.0/*
+sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
+# gtk look-and-feel for qt:
+pacman_install qt5ct
+pacman_install kvantum-qt5
+
+## Web interfaces
 # syncthing: synchronization between devices
 pacman_install syncthing
 # jellyfin: media center
@@ -439,10 +447,14 @@ pacman_install zathura-djvu
 # etcher: GUI dd alternative
 # yay_install etcher-bin
 
-## Paint etc
+## Graphic programs
+# pinta: an improved ms paint clone
 pacman_install pinta
+# inkscape
 pacman_install inkscape
+# GIMP: the GNU Image Manipulation program, a photoshop alternative
 # pacman_install gimp
+# Krita: another photoshop alternative.
 # pacman_install krita
 
 ## Office
