@@ -68,7 +68,9 @@ super + H
 super + i
     # handled by dwm
 
+# make screenshot [requires imagemagick]
 super + I
+    xdotool mousemove_relative 1 1; import $HOME/screenshot.png && notify-send "screenshot" "saved at ~/screenshot.png"
 
 # focus on window higher on the stack
 super + j
@@ -370,6 +372,10 @@ super + F8
 super + F9
 
 super + F10
+
+# make screenshot [requires imagemagick]
+Print
+    xdotool mousemove_relative 1 1; import $HOME/screenshot.png && notify-send "screenshot" "saved at ~/screenshot.png"
 
 # decrease brightness
 super + F11
