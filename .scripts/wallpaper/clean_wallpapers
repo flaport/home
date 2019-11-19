@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+mv $HOME/.local/share/wallpapers/wallpapers.txt /tmp/wallpapers.txt
+rm $HOME/.local/share/wallpapers/*
+mv /tmp/wallpapers.txt $HOME/.local/share/wallpapers/
