@@ -285,6 +285,10 @@ pacman_install highlight
 pacman_install mediainfo
 # process information
 pacman_install htop
+# system information
+# pacman_install neofetch
+# lightweight system information
+# yay_install pfetch
 # terminal spreadsheets
 # yay_install sc-im
 # large ascii letters
@@ -379,12 +383,12 @@ systemctl_enable lightdm
 ## Themes 
 # gtk3
 pacman_install gtk3
-# adwaita
-pacman_install gnome-themes-standard # Adwaita theme
-# murrine
-pacman_install gtk-engine-murrine # Murrine theme
-# arc
-pacman_install arc-gtk-theme # Arc theme
+# adwaita [inkscape dependency]
+pacman_install gnome-themes-standard
+# murrine theme [inkscape dependency]
+pacman_install gtk-engine-murrine
+# arc theme
+pacman_install arc-gtk-theme
 # manjaro cursor theme
 # yay_install xcursor-menda-git
 # yay_install xcursor-maia-git
