@@ -384,13 +384,27 @@ pacman_install gtk-engine-murrine # Murrine theme
 # arc
 pacman_install arc-gtk-theme # Arc theme
 # manjaro cursor theme
-yay_install xcursor-menda-git
+# yay_install xcursor-menda-git
+# yay_install xcursor-maia-git
+# red-had cursor theme
+# pacman_install xcursor-bluecurve
+# comix cursor theme
+# pacman_install xcursor-comix
+# flatbed cursor theme
+# pacman_install xcursor-flatbed
+# neutral cursor theme
+# pacman_install xcursor-neutral
+# simple and soft cursor theme
+pacman_install xcursor-simpleandsoft
+
 # set Arc as default gtk2 theme system-wide
 sudo rm -r /etc/gtk-2.0/*
 sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
 # gtk look-and-feel for qt:
 pacman_install qt5ct
 pacman_install kvantum-qt5
+# lxappearnce: tool to choose gtk themes
+pacman_install lxappearnce
 
 ## Web interfaces
 # syncthing: synchronization between devices
