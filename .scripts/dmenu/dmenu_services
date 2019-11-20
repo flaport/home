@@ -8,7 +8,7 @@ message() {
     fi
 }
 
-service=$( ls /etc/systemd/system/ /usr/lib/systemd/system/ | dmenu -l 20 -p "select service" $@)
+service=$( ls /etc/systemd/system/ /usr/lib/systemd/system/ | dmenu -l 20 -p "toggle-service" $@)
 
 if [ ! $service ]; then
     notify-send "no service selected"

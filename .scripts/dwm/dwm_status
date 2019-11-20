@@ -119,7 +119,7 @@ hub(){ # jupyterhub status
 }
 hub1(){ # mouse-button 1 action for jupyterhub widget
     name=jupyterhub
-    notify-send "$(systemctl status $name | sed 1q)" "◻️ + shift + s: toggle a service on/off\n\n$(systemctl status $name | grep Active)"
+    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
 }
 
 # -----------
@@ -157,7 +157,7 @@ sshd(){ # ssh daemon
 }
 sshd1(){ # mouse-button 1 action for ssh daemon widget
     name=sshd
-    notify-send "$(systemctl status $name | sed 1q)" "◻️ + shift + s: toggle a service on/off\n\n$(systemctl status $name | grep Active)"
+    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
 }
 
 # -----------
@@ -173,7 +173,7 @@ ssht(){ # ssh tunnels
 }
 ssht1(){ # mouse-button 1 action for ssh tunnel widget
     name=sshtunnel
-    notify-send "$(systemctl status $name | sed 1q)" "◻️ + shift + s: toggle a service on/off\n\n$(systemctl status $name | grep Active)"
+    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
 }
 
 # -----------
@@ -216,7 +216,7 @@ vpn(){ # openvpn
 }
 vpn1(){ # mouse-button 1 action for openvpn widget
     name=openvpn
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)"
+    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
 }
 
 # -----------
