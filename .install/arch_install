@@ -300,6 +300,8 @@ pacman_install transmission-cli
 yay_install transmission-remote-cli-git
 # a more beautiful ls command
 pacman_install lsd
+# useless music visualizer:
+# yay_install cli-visualizer
 # conky: a system monitor
 pacman_install conky
 # yay_install conky-lua-nv

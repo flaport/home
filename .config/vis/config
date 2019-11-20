@@ -1,0 +1,8 @@
+audio.sources=pulse
+visualizer.spectrum.top.margin=0.30
+visualizer.spectrum.bottom.margin=0.10
+visualizer.spectrum.right.margin=0.10
+visualizer.spectrum.left.margin=0.10
+visualizer.sgs.smoothing.points=3
+visualizer.sgs.smoothing.passes=1
+colors.scheme=theme
