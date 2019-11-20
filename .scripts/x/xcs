@@ -130,6 +130,12 @@ def dmenu(list_in, prompt):
         raise RuntimeError("no colorscheme selected")
     return choice
 
+def set_zathura_recolor(xresources):
+    darkcolor = xresources["foreground"]
+    lightcolor = xresources["background"]
+    with open(os.path.expanduser("~/.config/zathura/recolor"), "w") as file:
+        file.write(f'set recolor-darkcolor "{darkcolor}"\nset recolor-lightcolor "{lightcolor}"')
+
 def update_dwm_status_bar():
     with open(os.devnull, "w") as file:
         subprocess.call(["dwm_status"], stdout=file, stderr=file)
@@ -150,6 +156,7 @@ if __name__ == "__main__":
             xresources["alpha"] = args.alpha
         set_terminal_colors(xresources)
         set_xresources(xresources)
+        set_zathura_recolor(xresources)
         update_dwm_status_bar()
     except Exception as e:
         parse_args(("--help",))
