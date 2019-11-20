@@ -231,8 +231,8 @@ wtr(){ # weather
 }
 wtr1(){ # mouse-button 1 action for weather widget
     # cat out the weather report, show only the first 7 lines and remove all colors
-    report=$(cat ~/.cache/weatherreport | sed 7q | sed 's/\x1b\[[0-9;]*m//g')
-    notify-send Weather "$report"
+    report=$(cat ~/.cache/weatherreport | head -n 7 | sed 's/\x1b\[[0-9;]*m//g' | tail -n 6 | sed 's/\\/\\\\/g' | sed 's/―/-/g')
+    notify-send "Weather" "$report"
 }
 
 
