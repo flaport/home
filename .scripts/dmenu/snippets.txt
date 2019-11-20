@@ -49,6 +49,14 @@
 \begin{align*}
 \end{align*}
 
+# matrix (matrix)
+\begin{matrix}
+\end{matrix}
+
+# matrix (pmatrix)
+\begin{pmatrix}
+\end{pmatrix}
+
 # list (itemize)
 \begin{itemize}
     \item 
