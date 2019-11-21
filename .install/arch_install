@@ -327,7 +327,8 @@ pacman_install xorg-xinit
 # tool for detecting window properties
 pacman_install xorg-xprop
 # for transparent windows etc.
-pacman_install xcompmgr
+# pacman_install xcompmgr
+pacman_isntall picom
 # get info on current active windows
 pacman_install xorg-xdpyinfo
 # virtual x server

@@ -13,9 +13,9 @@ super + control + a
 super + shift + a
     alpha set +10 && dwm_status
 
-# toggle window transparency (toggle xcompmgr)
+# toggle window transparency (toggle picom)
 super + a
-    pidof xcompmgr && killall xcompmgr || xcompmgr &; dwm_status
+    pidof picom && killall picom || picom -b -cCGfF -r 10 -o 0.7 --blur-background --backend glx &; dwm_status
 
 # connect to bluetooth device (devices should be paired using bluetoothctl)
 super + b

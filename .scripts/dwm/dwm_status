@@ -12,7 +12,7 @@
 # -----------
 
 alpha(){ # window transparency
-    pidof xcompmgr > /dev/null
+    pidof picom > /dev/null
     if [ $? -eq 0 ]; then
         alpha=0"$(cat ~/.Xresources | grep alpha | sed s/\*alpha\:\ // | sed s/\[.\]//)"
         echo -e α"$alpha"% | sed s/α00/α\ / | sed s/α0/α\ /
