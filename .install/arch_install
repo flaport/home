@@ -483,7 +483,7 @@ pacman_install inkscape
 
 ## Office
 # open-source office
-# pacman_install libreoffice
+pacman_install libreoffice-still
 # recommended font packages for compatibility with MS Office
 # yay_install ttf-ms-fonts
 # yay_install ttf-vista-fonts
