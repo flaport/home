@@ -17,7 +17,6 @@ except:
     pyautogui is None
 with open(os.devnull, "w") as out:
     has_xdotool = not call(["which", "xdotool"], stdout=out, stderr=out)
-has_xdotool = False
 
 # functions
 def dmenu(list_in, prompt):
@@ -53,7 +52,6 @@ def get_letters(filename="~/.scripts/dmenu/greek.txt"):
             letter = letter.strip()
             name = f"{name.strip()} ({letter})"
             letters[name] = letter
-
     return letters
 
 def get_current_window_name_and_position():
@@ -80,7 +78,7 @@ def paste_letter(letter):
         if not has_xdotool:
             notify(f"'{letter}' copied to clipboard.")
             exit(0)
-        middle_click()
+        middle_click() 
     elif pyautogui is not None:
         middle_click()
         pyautogui.press("apps")

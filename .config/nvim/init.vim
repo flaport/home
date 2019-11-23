@@ -15,7 +15,7 @@ let mapleader = " "
 source ~/.config/nvim/plugins.vim
 
 " load snippets
-source ~/.config/nvim/snippets.vim
+source ~/.config/nvim/snippets/snippets.vim
 
 
 "" Settings
@@ -303,9 +303,6 @@ nnoremap <leader>[ :bprevious<CR>
 " toggle git diff symbols  -- inherited from plugins
 " <Leader>g
 
-" insert snippet
-nnoremap <leader>i :silent !dmenu_snippets<cr>"+p
-
 " toggle relative line numbers
 function! RelativeNumberToggle()
   if(&rnu == 1)
@@ -315,7 +312,7 @@ function! RelativeNumberToggle()
     set relativenumber
   endif
 endfunc
-nnoremap <leader>n :call RelativeNumberToggle()<CR>
+nnoremap <leader>l :call RelativeNumberToggle()<CR>
 
 " paste from clipboard
 nnoremap <leader>p "+p
@@ -371,10 +368,6 @@ inoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
 " execute last command
 nnoremap <F4> <Esc>:<C-p><CR>
 inoremap <F4> <Esc>:<C-p><CR>
-
-" edit snippets
-nnoremap <F6> :e ~/.scripts/dmenu/snippets.txt<CR>
-inoremap <F6> <Esc>:e ~/.scripts/dmenu/snippets.txt<CR>
 
 " run file
 autocmd FileType python vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
