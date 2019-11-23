@@ -365,9 +365,9 @@ inoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
 " use ]s and [s to navigate between misspelled words
 " use z= to find a suggestion for the misspelled word
 
-" execute last command
-nnoremap <F4> <Esc>:<C-p><CR>
-inoremap <F4> <Esc>:<C-p><CR>
+" source init.vim again.
+nnoremap <F4> <Esc>:source ~/.config/nvim/init.vim<CR>
+inoremap <F4> <Esc>:source ~/.config/nvim/init.vim<CR>
 
 " run file
 autocmd FileType python vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>

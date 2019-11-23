@@ -1,6 +1,7 @@
 "" Latex
 "-------------------------------------------------------------------------------
 
+inoremap ;tex <Esc>:read ~/.config/nvim/snippets/tex.tex<CR>:source ~/.config/nvim/init.vim<CR>
 autocmd FileType tex inoremap ;fig <Esc>:read ~/.config/nvim/snippets/figure.tex<CR>jzOj$i
 autocmd FileType tex inoremap ;svg <Esc>:read ~/.config/nvim/snippets/svgfigure.tex<CR>jzOj$i
 autocmd FileType tex inoremap ;pgf <Esc>:read ~/.config/nvim/snippets/pgffigure.tex<CR>jzOj$i
