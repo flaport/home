@@ -136,7 +136,6 @@ autocmd FileType tex set foldcolumn=8
 autocmd FileType tex set colorcolumn=0
 
 
-
 "" Custom commands
 "-------------------------------------------------------------------------------
 

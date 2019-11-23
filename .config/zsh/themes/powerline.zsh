@@ -22,7 +22,6 @@ COLOR2=6  # second color
 COLORU=5  # urgent color
 COLORT=7  # text colors
 
-
 prompt_segment() {
     local bg fg colorbg
 
