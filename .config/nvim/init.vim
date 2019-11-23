@@ -4,7 +4,7 @@
 "   | |   | |_/\| |-|||  __/| \_/||    /  | |
 "   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 "
- 
+
 "" Plugins
 "-------------------------------------------------------------------------------
 
@@ -78,10 +78,10 @@ set splitbelow
 set encoding=utf-8
 
 " case insensitive search when searching with lower case characters
-:set ignorecase
+set ignorecase
 
 " case sensitive search when searching with upper case characters
-:set smartcase
+set smartcase
 
 " copy to star register by default (selection copy)
 set clipboard^=unnamed
@@ -124,55 +124,188 @@ set foldcolumn=2
 " lower updatetime (for vim signify)
 set updatetime=200
 
+" tex / latex / xelatex
+autocmd FileType tex set nonumber
+autocmd FileType tex set norelativenumber
+autocmd FileType tex set textwidth=70
+autocmd FileType tex set foldcolumn=8
+autocmd FileType tex set colorcolumn=0
 
-"" Useful commands inherited from plugins (incomplete list)
+
+
+"" Custom commands
 "-------------------------------------------------------------------------------
 
-" fuzzy open file
-" <Leader>e
+command! -nargs=* T term <args>
+command! -nargs=* HT split | resize 10 | terminal <args>
+command! -nargs=* VT vsplit | terminal <args>
 
-" fuzzy run vim command
-" <Leader>c
+" make tag (may need to install ctags first)
+command! MakeTags !ctags -R .
 
-" fuzzy find in file
-" <Leader>f
 
-" go to definition (python)
-" <Leader>d
-
-" toggle git diff symbols 
-" <Leader>g
-
-"" All mode shortcuts
+"" Special keyboard shortcuts
 "-------------------------------------------------------------------------------
 
-" sometimes, shortcuts here are twice defined, once as normal mode shortcut
-" and once as insert mode shortcut. This is on purpose, as defining it once
-" (with for example the `map` keyword) does not always have the intended
-" behavior
+" easier access to command mode
+nnoremap ; :
 
-" save buffer
-inoremap <C-s> <Esc>:w<CR>
-nnoremap <C-s> <Esc>:w<CR>
+" back to normal mode
+inoremap jj <Esc>
+
+" go to edit mode in terminal emulator:
+tnoremap <Esc> <C-\><C-n>
+
+" add a word to the dictionary (enable spell checker with F3)
+" zg " standard vim keybinding
+
+" remove word from dictionary (enable spell checker with F3)
+" zuw " standard vim keybinding
+
+" go to next misspelled word (enable spell checker with F3)
+" ]s " standard vim keybinding
+
+" go to previous misspelled word (enable spell checker with F3)
+" [s " standard vim keybinding
+
+" show suggestion for misspelled word (enable spell checker with F3)
+" z= " standard vim keybinding
+
+
+"" Ctrl based keyboard shortcuts
+"-------------------------------------------------------------------------------
+
+" make current split the only split
+nnoremap <C-a> :only<cr>
+tnoremap <C-a> <C-\><C-N>:only<cr>
+
+" close split Below
+nnoremap <C-b> <C-w>j:q!<CR>
 
 " exit current buffer without saving
 inoremap <C-c> <Esc>:bd!<CR>
 nnoremap <C-c> <Esc>:bd!<CR>
 
+" down half screen
+" <C-d> " standard vim keybinding
+
+" scroll text up with cursor staying where it is
+" <C-e> " standard vim keybinding
+
+" down full screen
+" <C-f> " standard vim keybinding
+
+" show status
+" <C-g> " standard vim keybinding
+
+" move to split left of current split
+nnoremap <C-h> <C-w>h
+tnoremap <C-h> <C-\><C-N><C-w>h " navigation out of terminal mode
+
+" jump to next position in text
+" <C-i> = TAB " standard vim keybinding
+autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markdown_image<CR>kddk
+
+" move to split below of current split
+nnoremap <C-j> <C-w>j<C-A>
+tnoremap <C-j> <C-\><C-N><C-w>j " navigation out of terminal mode
+
+" move to split above of current split
+nnoremap <C-k> <C-w>k
+tnoremap <C-k> <C-\><C-N><C-w>k " navigation out of terminal mode
+
+" move to split right of current split
+nnoremap <C-l> <C-w>l
+tnoremap <C-l> <C-\><C-N><C-w>l " navigation out of terminal mode
+
+" move to first non-whitespace of next line
+" <C-m> " standard vim keybinding
+
+" cycle yankring forward
+" <C-n> " inherited from yankring plugin
+
+" jump to previous position in text
+" <C-o> " standard vim keybinding
+
+" cycle yankring backward
+" <C-p> " inherited from yankring plugin
+
 " save and exit
 inoremap <C-q> <Esc>:wqa<CR>
 nnoremap <C-q> <Esc>:wqa<CR>
 
-" make current split the Only split
-nnoremap <C-o> :only<CR>
+" redo
+" <C-r> " standard vim keybinding
 
-" close split Below
-nnoremap <C-b> <C-w>j:q!<CR>
+" save buffer
+inoremap <C-s> <Esc>:w<CR>
+nnoremap <C-s> <Esc>:w<CR>
 
-" go to edit mode in terminal emulator:
-tnoremap <Esc> <C-\><C-n>
+" go one step back in tag stack
+" <C-t> " standard vim keybinding
 
-" toggle line numbers
+" up half screen
+" <C-u> " standard vim keybinding
+
+" visual block
+" <C-v> " standard vim keybinding
+
+" navigate between splits
+" <C-w> " standard vim keybinding
+
+" leader for autocomplete
+" <C-x> " standard vim keybinding
+
+" scroll text down with cursor staying where it is
+" <C-y> " standard vim keybinding
+
+" suspend (like any other terminal process)
+" <C-z> " standard shell keybinding
+
+" cancel / go to normal mode
+" <C-[> :bprevious<CR> " disabled as this is the Esc combination
+
+" use word under cursor to open next file with that tag
+" <C-]> " standard vim keybinding
+
+" go to last open buffer
+" <C-^> " standard vim keybinding 
+
+
+"" Leader based keyboard shortcuts
+"-------------------------------------------------------------------------------
+
+" turn of highlighting
+nnoremap <leader><leader> :noh<cr>
+
+" open next buffer
+nnoremap <leader>] :bnext<CR>
+
+" open previous buffer
+nnoremap <leader>[ :bprevious<CR>
+
+" fuzzy run vim command -- inherited from plugins
+" <Leader>c
+
+" go to definition (python only) -- inherited from plugins
+" <Leader>d
+
+" fuzzy open file -- inherited from plugins
+" <Leader>e
+
+" fuzzy find in file -- inherited from plugins
+" <Leader>f
+
+" toggle git diff symbols  -- inherited from plugins
+" <Leader>g
+
+" insert greek letter
+nnoremap <leader>g :silent !dmenu_greek<cr>"+p<Esc>
+
+" insert snippet
+nnoremap <leader>i :silent !dmenu_snippets<cr>"+p
+
+" toggle relative line numbers
 function! RelativeNumberToggle()
   if(&rnu == 1)
     set norelativenumber
@@ -183,59 +316,25 @@ function! RelativeNumberToggle()
 endfunc
 nnoremap <leader>n :call RelativeNumberToggle()<CR>
 
-" back to normal mode
-inoremap jj <Esc>
-
-" turn of code highlighting
-nnoremap <leader><leader> :noh<cr>
-
-" easier access to command mode
-nnoremap ; :
-
 " paste from clipboard
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 
-" insert snippet
-nnoremap <leader>i :silent !dmenu_snippets<cr>"+p
 
-" insert greek letter
-nnoremap <C-g> :silent !dmenu_greek<cr>"+p
-inoremap <C-g> <Esc>:silent !dmenu_greek<cr>"+p
-
-"" Custom commands
-"-------------------------------------------------------------------------------
-command! -nargs=* T term <args>
-command! -nargs=* HT split | resize 10 | terminal <args>
-command! -nargs=* VT vsplit | terminal <args>
-
-
-"" Navigation
-"-------------------------------------------------------------------------------
-
-" move to split below of current split
-nnoremap <C-j> <C-w>j<C-A>
-tnoremap <C-j> <C-\><C-N><C-w>j " navigation out of terminal mode
-
-" move to split above of current split
-nnoremap <C-k> <C-w>k
-tnoremap <C-k> <C-\><C-N><C-w>k " navigation out of terminal mode
-
-" move to split left of current split
-nnoremap <C-h> <C-w>h
-tnoremap <C-h> <C-\><C-N><C-w>h " navigation out of terminal mode
-
-" move to split right of current split
-nnoremap <C-l> <C-w>l
-tnoremap <C-l> <C-\><C-N><C-w>l " navigation out of terminal mode
-
-" make current split the only split
-nnoremap <C-o> :only<cr>
-tnoremap <C-o> <C-\><C-N>:only<cr>
+"<leader>s: latex synctex tex->pdf
+function! SyncTex()
+    " either do synctex on the pdf with basename [filename without extension] $TEXBASE,
+    " or do synctex on the pdf with the same base name as the current tex file if
+    " the environment variable $TEXBASE does not exist.
+    exec "silent !test -z $TEXBASE && TEXBASE=%:p:r; zathura --synctex-editor-command 'nvr --servername ".v:servername." +\\%{line} \\%{input}' --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf &"
+endfunction
+autocmd FileType tex nmap <Leader>s :call SyncTex()<CR>
+"FYI: Ctrl-Click  --> latex synctex zathura pdf->tex
 
 " swap splits (from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946)
-function! DoWindowSwap()
-    let g:markedWinNum = 0
+" note that this only works when NOT in the main split.
+function! Zoom()
+    let g:markedWinNum = 1
     "Mark destination
     let curNum = winnr()
     let curBuf = bufnr( "%" )
@@ -250,32 +349,15 @@ function! DoWindowSwap()
     exe 'hide buf' markedBuf 
 endfunction
 " zoom split:
-nnoremap <silent> <leader>z :call DoWindowSwap()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
-
-" move current split in small horizontal split and make split behind the main
-" one.
+nnoremap <leader>z :call Zoom()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
 
 
-" cycle through buffers
-nnoremap <C-]> :bnext<CR>
-tnoremap <C-]> <C-\><C-N>:bnext<cr>
-" nnoremap <C-[> :bprevious<CR> " disabled as this is the Esc combination
-
-" switch between last two buffers (FYI)
-" <C-^> 
-
-"" Run / compile / visualize
+"" Function key keyboard shortcuts
 "-------------------------------------------------------------------------------
-
-" inside vim
 
 " edit this configuration file (requires set hidden)
 nnoremap <F2> :e ~/.config/nvim/init.vim<CR>
 inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
-
-" edit snippets
-nnoremap <F6> :e ~/.scripts/dmenu/snippets.txt<CR>
-inoremap <F6> <Esc>:e ~/.scripts/dmenu/snippets.txt<CR>
 
 " enable spell checker:
 nnoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
@@ -289,45 +371,38 @@ inoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
 nnoremap <F4> <Esc>:<C-p><CR>
 inoremap <F4> <Esc>:<C-p><CR>
 
+" edit snippets
+nnoremap <F6> :e ~/.scripts/dmenu/snippets.txt<CR>
+inoremap <F6> <Esc>:e ~/.scripts/dmenu/snippets.txt<CR>
 
-
-" python
-
-autocmd FileType python nnoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
-autocmd FileType python inoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+" run file
 autocmd FileType python vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
-autocmd FileType python nnoremap <F5> <Esc>:w<CR>:only<CR>:HT ipython -i %<CR>G<C-w>k
-autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT ipython -i %<CR>G<C-w>k
-
-
-" tex / latex / xelatex
-
-autocmd FileType tex set nonumber
-autocmd FileType tex set norelativenumber
-autocmd FileType tex set textwidth=70
-autocmd FileType tex set foldcolumn=8
-autocmd FileType tex set colorcolumn=0
-
+autocmd FileType python nnoremap <F5> <Esc>:w<CR>:only<CR>:HT python -i %<CR>G<C-w>k
+autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT python -i %<CR>G<C-w>k
 autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
 autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
-
-" <Leader>s  --> latex synctex tex->pdf
-function! SyncTex()
-    " either do synctex on the pdf with basename [filename without extension] $TEXBASE,
-    " or do synctex on the pdf with the same base name as the current tex file if
-    " the environment variable $TEXBASE does not exist.
-    exec "silent !test -z $TEXBASE && TEXBASE=%:p:r; zathura --synctex-editor-command 'nvr --servername ".v:servername." +\\%{line} \\%{input}' --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf &"
-endfunction
-autocmd FileType tex nmap <Leader>s :call SyncTex()<CR>
-
-" Ctrl-Click  --> latex synctex zathura pdf->tex
-
-
-" markdown
-
-autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markdown_image<CR>kddk
 autocmd FileType markdown vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
 
+" python
+autocmd FileType python nnoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+autocmd FileType python inoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_run %<CR>
+
+
+"" Marks
+"-------------------------------------------------------------------------------
+" m{letter} " Set mark
+" `{letter} " jump to mark
+" '{letter} " jump to beginning of line at mark
+
+
+"" Searching
+"-------------------------------------------------------------------------------
+
+" /{pattern} " Search forward for {pattern}
+" /{pattern}/{offset} " Search forward for {pattern} and go {offset} lines up or down.
+" /<CR> 	Search forward for last used pattern
+" n 	Repeat the latest "/" or "?" [count] times.
+" N 	Repeat the latest "/" or "?" [count] times in opposite direction. 
 
 
 "" Theme / colorscheme

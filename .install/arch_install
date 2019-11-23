@@ -239,6 +239,8 @@ submodule_install st
 # vim / neovim
 pacman_install neovim
 link /usr/bin/nvim /usr/bin/vim
+# ctags: recommended nvim dependency
+pacman_install ctags
 # rsync: safe and secure copy & backup
 pacman_install rsync
 # atool gives information about archives
