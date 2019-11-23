@@ -330,7 +330,7 @@ pacman_install xorg-xinit
 pacman_install xorg-xprop
 # for transparent windows etc.
 # pacman_install xcompmgr
-pacman_isntall picom
+pacman_install picom
 # get info on current active windows
 pacman_install xorg-xdpyinfo
 # virtual x server
@@ -485,7 +485,7 @@ pacman_install inkscape
 
 ## Office
 # open-source office
-# pacman_install libreoffice
+pacman_install libreoffice-still
 # recommended font packages for compatibility with MS Office
 # yay_install ttf-ms-fonts
 # yay_install ttf-vista-fonts
@@ -728,8 +728,8 @@ systemctl_enable pacmanquery.service
 echo $password | sudo -S timedatectl set-local-rtc 1 >> $LOG 2>> $ERR
 # make sure everyone can mount in /mnt
 echo $password | sudo -S chmod a+rwx /mnt >> $LOG 2>> $ERR
-# link dark solarized theme to ~/.Xresources -> default color scheme
-ln -s ~/.config/Xresources/solarizeddark ~/.Xresources >> $LOG 2>> $ERR
+# copy dark solarized theme to ~/.Xresources -> default color scheme
+cp ~/.config/Xresources/solarizeddark ~/.Xresources >> $LOG 2>> $ERR
 
 
 ## Alternative shell
