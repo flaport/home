@@ -14,6 +14,10 @@ let mapleader = " "
 " loader plugins
 source ~/.config/nvim/plugins.vim
 
+" load snippets
+source ~/.config/nvim/snippets.vim
+
+
 "" Settings
 "-------------------------------------------------------------------------------
 
@@ -298,9 +302,6 @@ nnoremap <leader>[ :bprevious<CR>
 
 " toggle git diff symbols  -- inherited from plugins
 " <Leader>g
-
-" insert greek letter
-nnoremap <leader>g :silent !dmenu_greek<cr>"+p<Esc>
 
 " insert snippet
 nnoremap <leader>i :silent !dmenu_snippets<cr>"+p
