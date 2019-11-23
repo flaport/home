@@ -54,16 +54,16 @@
 *color12:               S_base2
 
 !! magenta dark/light
-*color5:                S_magenta
-*color13:               S_violet
+*color5:                S_violet
+*color13:               S_magenta
 
 !! cyan dark/light
 *color6:                S_cyan
 *color14:               S_base01
 
 !! light dark/light
-*color7:                S_base01
-*color15:               S_base02
+*color7:                S_base02
+*color15:               S_base03
 
 
 /* Transparency */

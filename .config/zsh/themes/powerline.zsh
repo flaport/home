@@ -20,7 +20,7 @@
 COLOR1=4  # first color
 COLOR2=6  # second color
 COLORU=5  # urgent color
-COLORT=15 # text colors
+COLORT=7  # text colors
 
 
 prompt_segment() {
