@@ -27,3 +27,7 @@ try:
     call([os.path.join(os.path.expanduser("~/.scripts/screenlayout"), command)])
 except CalledProcessError:
     pass
+
+# reset keystroke repeat rate
+Popen(["xset", "r", "rate", "200", "45"])
+
