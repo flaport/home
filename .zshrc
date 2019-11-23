@@ -31,25 +31,33 @@ bindkey -v
 export KEYTIMEOUT=1
 
 # change cursor shape for different vi modes.
+if [ -z $TMUX ]; then
+    BAR='\e[5 q'
+    BLOCK='\e[1 q'
+    UNDERSCORE='\e[4 q'
+else
+    BAR='\ePtmux;\e\e[5 q\e\\'
+    BLOCK='\ePtmux;\e\e[1 q\e\\'
+    UNDERSCORE='\ePtmux;\e\e[4 q\e\\'
+fi
 function zle-keymap-select {
   if [[ ${KEYMAP} == vicmd ]] ||
      [[ $1 = 'block' ]]; then
-    echo -ne '\033[1 q'
+    echo -ne $BLOCK
   elif [[ ${KEYMAP} == main ]] ||
        [[ ${KEYMAP} == viins ]] ||
        [[ ${KEYMAP} = '' ]] ||
        [[ $1 = 'beam' ]]; then
-    echo -ne '\033[4 q' # '\033[5 q'
+    echo -ne $UNDERSCORE
   fi
 }
 zle -N zle-keymap-select
 zle-line-init() {
-    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-    echo -ne '\033[4 q'
+    echo -ne $UNDERSCORE
 }
 zle -N zle-line-init
-echo -ne '\033[4 q' # Use beam shape cursor on startup.
-preexec() { echo -ne '\033[4 q' ;} # Use beam shape cursor for each new prompt.
+echo -ne $UNDERSCORE # at startup.
+preexec() { echo -ne $UNDERSCORE ;} # at new prompt.
 
 # colored zsh prompt
 setopt prompt_subst
