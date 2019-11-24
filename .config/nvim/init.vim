@@ -53,9 +53,6 @@ set undodir=$HOME/.local/share/nvim/undo
 " save as sudo (make sure SUDO_ASKPASS is set to a password asking program)
 ca w!! w !sudo -A tee '%' &> /dev/null
 
-" remove ugly vertical lines in split
-set fillchars+=vert:\
-
 " fix problems with uncommon shells (fish, zsh, xonsh, ...) and plugins
 " running shell commands (neomake, ...)
 set shell=/bin/bash
@@ -302,6 +299,25 @@ nnoremap <leader>[ :bprevious<CR>
 " toggle git diff symbols  -- inherited from plugins
 " <Leader>g
 
+"<leader>h: hide status bar
+let s:hidden_all = 0
+function! HideStatusBar()
+    if s:hidden_all  == 0
+        let s:hidden_all = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+    else
+        let s:hidden_all = 0
+        set showmode
+        set ruler
+        set laststatus=2
+        set showcmd
+    endif
+endfunction
+nnoremap <leader>h :call HideStatusBar()<CR>
+
 " toggle relative line numbers
 function! RelativeNumberToggle()
   if(&rnu == 1)
@@ -396,6 +412,17 @@ autocmd FileType python inoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_r
 " /<CR> 	Search forward for last used pattern
 " n 	Repeat the latest "/" or "?" [count] times.
 " N 	Repeat the latest "/" or "?" [count] times in opposite direction. 
+
+
+"" Tmux compatibility
+"-------------------------------------------------------------------------------
+
+if exists("$TMUX")
+    nnoremap <C-h> :TmuxNavigateLeft<CR>
+    nnoremap <C-j> :TmuxNavigateDown<CR>
+    nnoremap <C-k> :TmuxNavigateUp<CR>
+    nnoremap <C-l> :TmuxNavigateRight<CR>
+endif
 
 
 "" Theme / colorscheme

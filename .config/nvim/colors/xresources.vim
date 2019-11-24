@@ -25,7 +25,7 @@ hi LineNr	ctermfg=3
 hi Question	ctermfg=2
 hi StatusLine	cterm=bold,reverse
 hi StatusLineNC cterm=reverse
-hi VertSplit	cterm=reverse
+hi VertSplit	cterm=NONE ctermbg=NONE
 hi Title	ctermfg=5
 hi Visual	cterm=reverse
 hi WildMenu	ctermfg=0 ctermbg=3

@@ -32,6 +32,7 @@ endif
 " Run :PlugInstall to install extra packages after adding them to the list below
 " Run :UpdateRemotePlugins to update dependencies
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
+Plug 'christoomey/vim-tmux-navigator' " tmux navigation
 Plug 'tpope/vim-fugitive' " git support
 Plug 'tpope/vim-repeat' " better repeating of last command
 Plug 'tpope/vim-surround' " Surround word with character
