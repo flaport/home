@@ -32,8 +32,8 @@ def parse_args(args):
     parser.add_argument(
         "-a",
         "--alpha",
-        type=str,
-        default=None,
+        type=float,
+        default=0.9,
         help="window transparency [known bug: transparency for currently open windows will be lost]",
     )
     parser.add_argument(
@@ -44,10 +44,8 @@ def parse_args(args):
         help="use dmenu to select a colorscheme",
     )
     parsed_args = parser.parse_args(args=args)
-    if parsed_args.alpha is not None:
-        parsed_args.alpha = float(parsed_args.alpha)
-        if parsed_args.alpha > 1.0 or parsed_args.alpha < 0.0:
-            raise ValueError("alpha value should be between 0 and 1")
+    if parsed_args.alpha > 1.0 or parsed_args.alpha < 0.0:
+        raise ValueError("alpha value should be between 0 and 1")
     if parsed_args.dmenu and parsed_args.name != "current":
         raise ValueError("when choosing a colorscheme with option `--dmenu`, the colorscheme name should be left blank.")
     return parsed_args
@@ -91,18 +89,7 @@ def set_terminal_colors(xresources):
     Args:
         xresources: dictionary containing the xresources parameters
     """
-    colors = ['\x1b]4;0;#00000D\x1b\\', '\x1b]4;1;#AB345F\x1b\\', '\x1b]4;2;#F35D70\x1b\\', '\x1b]4;3;#3EBC75\x1b\\', '\x1b]4;4;#F2B670\x1b\\', '\x1b]4;5;#215C93\x1b\\', '\x1b]4;6;#E8678D\x1b\\', '\x1b]4;7;#91e1d1\x1b\\', '\x1b]4;8;#659d92\x1b\\', '\x1b]4;9;#AB345F\x1b\\', '\x1b]4;10;#F35D70\x1b\\', '\x1b]4;11;#3EBC75\x1b\\', '\x1b]4;12;#F2B670\x1b\\', '\x1b]4;13;#215C93\x1b\\', '\x1b]4;14;#E8678D\x1b\\', '\x1b]4;15;#91e1d1\x1b\\', '\x1b]10;#91e1d1\x1b\\', '\x1b]11;[200]#00000D\x1b\\', '\x1b]12;#91e1d1\x1b\\', '\x1b]13;#91e1d1\x1b\\', '\x1b]17;#91e1d1\x1b\\', '\x1b]19;#00000D\x1b\\', '\x1b]4;232;#00000D\x1b\\',
-    '\x1b]4;256;#91e1d1\x1b\\']
     colors = [f"\033]4;{i};{xresources[f'color{i}']}\033\\" for i in range(16)]
-    colors.append(f"\033]10;{xresources['foreground']}\033\\")
-    colors.append(f"\033]11;[{int(float(xresources['alpha'])*255)}]{xresources['background']}\033\\")
-    colors.append(f"\033]12;{xresources['cursorColor']}\033\\")
-    colors.append(f"\033]13;{xresources['foreground']}\033\\")
-    colors.append(f"\033]17;{xresources['foreground']}\033\\")
-    colors.append(f"\033]19;{xresources['background']}\033\\")
-    colors.append(f"\033]4;232;{xresources['foreground']}\033\\")
-    colors.append(f"\033]4;256;{xresources['background']}\033\\")
-    colors.append(f"\033]708;[{int(float(xresources['alpha'])*255)}]{xresources['foreground']}\033\\")
     for term in glob.glob("/dev/pts/[0-9]"):
         with open(term, "w") as file:
             file.write("".join(colors))
@@ -114,7 +101,10 @@ def colorscheme_list():
 def set_xresources(xresources):
     with open(os.path.expanduser("~/.Xresources"), "w") as file:
         for k, v in xresources.items():
-            file.write(f"*{k}: {v}\n")
+            if k == "alpha":
+                file.write(f"*{k}: {v:3.2f}\n")
+            else:
+                file.write(f"*{k}: {v}\n")
     with open(os.devnull, "w") as file:
         subprocess.call(["xrdb", os.path.expanduser("~/.Xresources")], stdout=file, stderr=file)
 
@@ -131,34 +121,30 @@ def dmenu(list_in, prompt):
     return choice
 
 def set_zathura_recolor(xresources):
-    darkcolor = xresources["foreground"]
-    lightcolor = xresources["background"]
+    darkcolor = xresources["color15"]
+    lightcolor = xresources["color0"]
     with open(os.path.expanduser("~/.config/zathura/recolor"), "w") as file:
         file.write(f'set recolor-darkcolor "{darkcolor}"\nset recolor-lightcolor "{lightcolor}"')
 
 def update_dwm_status_bar():
-    with open(os.devnull, "w") as file:
-        subprocess.call(["dwm_status"], stdout=file, stderr=file)
+    with open(os.path.expanduser("~/test"), "w") as file:
+        subprocess.Popen(["dwm_status"], stdout=file, stderr=file)
 
 
 if __name__ == "__main__":
-    try:
-        if not sys.argv[1:]:
-            sys.argv.append("--dmenu")
-        args = parse_args(sys.argv[1:])
-        if args.list:
-            print("\n".join(colorscheme_list()))
-            exit(0)
-        if args.dmenu:
-            args.name = dmenu(colorscheme_list(), "select colorscheme")
-        xresources = load_xresources(name=args.name)
-        if args.alpha is not None:
-            xresources["alpha"] = args.alpha
-        set_terminal_colors(xresources)
-        set_xresources(xresources)
-        set_zathura_recolor(xresources)
-        update_dwm_status_bar()
-    except Exception as e:
-        parse_args(("--help",))
-        exit(1)
+    if not sys.argv[1:]:
+        sys.argv.append("--dmenu")
+    args = parse_args(sys.argv[1:])
+    if args.list:
+        print("\n".join(colorscheme_list()))
+        exit(0)
+    if args.dmenu:
+        args.name = dmenu(colorscheme_list(), "select colorscheme")
+    xresources = load_xresources(name=args.name)
+    if args.alpha is not None:
+        xresources["alpha"] = args.alpha
+    set_terminal_colors(xresources)
+    set_xresources(xresources)
+    set_zathura_recolor(xresources)
+    update_dwm_status_bar()
 
