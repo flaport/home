@@ -20,7 +20,9 @@ def parse_args(args):
         type=str,
         nargs="?",
         default="current",
-        help="xresources file to load (should be located in ~/.config/Xresources)",
+        help=("xresources file to load (should be located in ~/.config/Xresources)."
+              "Special options:  - 'current' (don't change anything),\n"
+              "                  - 'generate' (use pywal to generate color scheme)."),    
     )
     parser.add_argument(
         "-l",
@@ -34,7 +36,7 @@ def parse_args(args):
         "--alpha",
         type=float,
         default=0.9,
-        help="window transparency [known bug: transparency for currently open windows will be lost]",
+        help="window transparency",
     )
     parser.add_argument(
         "-d",
@@ -96,7 +98,9 @@ def set_terminal_colors(xresources):
 
 def colorscheme_list():
     """ get a list of available colorschemes """
-    return [name for name in os.listdir(os.path.expanduser("~/.config/Xresources")) if name != "readme.md"]
+    lst = sorted([name for name in os.listdir(os.path.expanduser("~/.config/Xresources")) if name != "readme.md"])
+    lst.append("[generate from wallpaper (requires pywal)]")
+    return lst
 
 def set_xresources(xresources):
     with open(os.path.expanduser("~/.Xresources"), "w") as file:
@@ -140,6 +144,11 @@ if __name__ == "__main__":
         exit(0)
     if args.dmenu:
         args.name = dmenu(colorscheme_list(), "select colorscheme")
+    if args.name == "[generate from wallpaper (requires pywal)]" or args.name == "generate":
+        subprocess.call(["/usr/bin/wal", "-c"])
+        exitcode = subprocess.call(["/usr/bin/wal", "-i", os.path.expanduser("~/.local/share/wallpapers/current-wallpaper")])
+        subprocess.call([os.path.expanduser("~/.scripts/alpha/alpha"), "set", f"{100*args.alpha:.0f}"])
+        exit(exitcode)
     xresources = load_xresources(name=args.name)
     if args.alpha is not None:
         xresources["alpha"] = args.alpha

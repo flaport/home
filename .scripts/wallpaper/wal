@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ -z $1 ]; then
+    /usr/bin/wal -c
+    /usr/bin/wal -i $HOME/.local/share/wallpapers/current-wallpaper
+else
+    /usr/bin/wal $@
+fi
+
