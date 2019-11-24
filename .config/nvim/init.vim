@@ -5,8 +5,13 @@
 "   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 "
 
+
 "" Plugins
 "-------------------------------------------------------------------------------
+
+" enable different behavior for different filetypes:
+set nocompatible
+filetype plugin on
 
 " set leader key
 let mapleader = " "
@@ -21,12 +26,14 @@ source ~/.config/nvim/snippets/snippets.vim
 "" Settings
 "-------------------------------------------------------------------------------
 
-" enable different behavior for different filetypes:
-set nocompatible
-filetype plugin on
-
 " automatically cd into folder of current file
-autocmd BufEnter * silent! lcd %:p:h
+" autocmd BufEnter * silent! lcd %:p:h
+
+" when searching, search down into all subfolders
+set path+=**
+
+" for navigating buffers/files/etc 
+set wildmenu
 
 " underline current line if in insert mode
 autocmd InsertEnter * set cul
@@ -284,20 +291,8 @@ nnoremap <leader>] :bnext<CR>
 " open previous buffer
 nnoremap <leader>[ :bprevious<CR>
 
-" fuzzy run vim command -- inherited from plugins
-" <Leader>c
-
 " go to definition (python only) -- inherited from plugins
 " <Leader>d
-
-" fuzzy open file -- inherited from plugins
-" <Leader>e
-
-" fuzzy find in file -- inherited from plugins
-" <Leader>f
-
-" toggle git diff symbols  -- inherited from plugins
-" <Leader>g
 
 "<leader>h: hide status bar
 let s:hidden_all = 0
@@ -344,6 +339,9 @@ endfunction
 autocmd FileType tex nmap <Leader>s :call SyncTex()<CR>
 "FYI: Ctrl-Click  --> latex synctex zathura pdf->tex
 
+" cd into folder containing current file
+nnoremap <leader>t :lcd %:p:h<CR>
+
 " swap splits (from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946)
 " note that this only works when NOT in the main split.
 function! Zoom()
@@ -384,12 +382,13 @@ inoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
 nnoremap <F4> <Esc>:source ~/.config/nvim/init.vim<CR>
 inoremap <F4> <Esc>:source ~/.config/nvim/init.vim<CR>
 
-" run file
+" run/build/preview file
 autocmd FileType python vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
 autocmd FileType python nnoremap <F5> <Esc>:w<CR>:only<CR>:HT python -i %<CR>G<C-w>k
 autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT python -i %<CR>G<C-w>k
 autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
 autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
+autocmd FileType markdown nnoremap <F5> :InstantMarkdownPreview<CR>
 autocmd FileType markdown vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
 
 " python

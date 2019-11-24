@@ -236,9 +236,6 @@ yay_install passff-host  # host for the firefox extension
 ## Terminal
 # my st fork
 submodule_install st
-# vim / neovim
-pacman_install neovim
-link /usr/bin/nvim /usr/bin/vim
 # ctags: recommended nvim dependency
 pacman_install ctags
 # rsync: safe and secure copy & backup
@@ -310,6 +307,11 @@ pacman_install lsd
 # yay_install cli-visualizer
 # conky: a system monitor
 pacman_install conky
+# vim / neovim
+pacman_install neovim
+link /usr/bin/nvim /usr/bin/vim
+pacman_install npm
+sudo npm -g install instant-markdown-d > $LOG 2> $ERR
 # yay_install conky-lua-nv
 # reverse proxy
 pacman_install nginx

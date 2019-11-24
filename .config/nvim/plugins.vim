@@ -33,29 +33,17 @@ endif
 " Run :UpdateRemotePlugins to update dependencies
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'christoomey/vim-tmux-navigator' " tmux navigation
-Plug 'tpope/vim-fugitive' " git support
-Plug 'tpope/vim-repeat' " better repeating of last command
-Plug 'tpope/vim-surround' " Surround word with character
 Plug 'tpope/vim-markdown' " markdown syntax highlighting
-Plug 'junegunn/fzf.vim' " fuzzy file search (needs fzf installed)
-Plug 'Shougo/context_filetype.vim' " Completion from other opened files
-Plug 'Shougo/deoplete.nvim' " Async autocompletion
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
+Plug 'Shougo/deoplete.nvim' " Async autocompletion
 Plug 'zchee/deoplete-jedi'  " Python autocompletion
-Plug 'mileszs/ack.vim' " Ack code search (needs ack installed)
+Plug 'Shougo/context_filetype.vim' " Completion from other opened files
 Plug 'lilydjwg/colorizer' " Paint css colors with the real color
 Plug 'valloric/MatchTagAlways' " Highlight matching html tags
-Plug 'mattn/emmet-vim' " Generate html in a simple way
 Plug 'vim-scripts/YankRing.vim' " Yank history navigation
 Plug 'neomake/neomake' " Linters
-Plug 'sirver/ultisnips' " snippets
-Plug 'honza/vim-snippets' " snippets
 Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
-" Plug 'kien/rainbow_parentheses.vim' " different color paranthesis depending on nesting
-" Plug 'powerline/powerline'
-" Plug 'vim-airline/vim-airline'
-" Plug 'junegunn/goyo.vim' " distraction free writing
-" Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 call plug#end() " stop loading plugins
 
 
@@ -65,13 +53,22 @@ call plug#end() " stop loading plugins
 if vim_plug_just_installed
     echo "Installing Bundles, please ignore key map error messages"
     :PlugInstall
+    :UpdateRemotePlugins
 endif
 
 
 "" Plugin Settings
 "-------------------------------------------------------------------------------
 
-" Neomake ----------------------------------------------------------------------
+" Markdown -------------------------------
+" inline code highlighting
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+" conceal markdown syntax
+let g:markdown_syntax_conceal = 1
+" highlight 100 lines
+let g:markdown_minlines = 100
+
+" Neomake --------------------------------
 " run linter on write
 autocmd! BufWritePost * Neomake
 " check code as python3 by default
@@ -79,21 +76,7 @@ let g:neomake_python_python_maker = neomake#makers#ft#python#python()
 " use flake8 to check python code
 let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
 
-" Fzf --------------------------------------------------------------------------
-" general code finder in current file mapping
-nmap <Leader>f :BLines<CR>
-" general code finder in all files mapping
-nmap <Leader>F :Lines<CR>
-" file finder mapping
-nmap <Leader>e :Files<CR>
-" tags (symbols) in current file finder mapping
-nmap <Leader>g :BTag<CR>
-" tags (symbols) in all files finder mapping
-nmap <Leader>G :Tag<CR>
-" commands finder mapping
-nmap <Leader>c :Commands<CR>
-
-" Jedi-vim ---------------------------------------------------------------------
+" Jedi-vim -------------------------------
 " disable autocompletion (using deoplete instead)
 let g:jedi#completions_enabled = 0
 " all these mappings work only for python code:
@@ -104,7 +87,7 @@ let g:jedi#usages_command = '<Leader>o'
 " find assignments
 let g:jedi#goto_assignments_command = '<Leader>a'
 
-" Deoplete ---------------------------------------------------------------------
+" Deoplete -------------------------------
 " enable deoplete
 let g:deoplete#enable_at_startup = 1
 " ignore case when code completing with lower case letters
@@ -116,13 +99,13 @@ let g:context_filetype#same_filetypes = {}
 " set underscore
 let g:context_filetype#same_filetypes._ = '_'
 
-" Ack.vim ----------------------------------------------------------------------
+" Ack.vim --------------------------------
 " smart search and replace
 nmap <Leader>r :Ack 
 " smart word search and replace
 nmap <Leader>wr :Ack <cword><CR>
 
-" Autoclose --------------------------------------------------------------------
+" Autoclose ------------------------------
 " fix to let ESC work as espected with Autoclose plugin
 " (without this, when showing an autocompletion window, ESC won't leave insert mode)
 let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<Esc>"}
@@ -136,12 +119,8 @@ let g:yankring_history_dir = '~/.config/nvim/'
 " Relative numbers -----------------------
 let g:numbers_exclude = ["goyo"]
 
-" Goyo -----------------------------------
-" nnoremap <C-x> :Goyo!<cr>:set tw=0<cr>
-" nnoremap <CR> :Goyo<cr>:set tw=70<cr>
-" let g:goyo_linenr = 0
-" let g:goyo_height = "75%"
-" let g:goyo_width = 80
+" Colorizer ------------------------------
+let g:colorizer_maxlines = 1000
 
 " Ultisnips ------------------------------
 let g:UltiSnipsExpandTrigger="<tab>"
