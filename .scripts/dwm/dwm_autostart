@@ -13,7 +13,8 @@ sxhkd &> /dev/null &
 wallpaper current-wallpaper &
 
 # enable transparent windows
-picom -b -cCGfF -r 10 -o 0.7 --blur-background --backend glx --blur-kern 7x7box &
+[ -f $HOME/.picom-blur-kern ] && blurkern=$(cat $HOME/.picom-blur-kern) || blurkern=7x7box
+picom -b -cCGfF -r 10 -o 0.7 --blur-background --backend glx --blur-kern $blurkern &
 
 # update xrdb database
 if [ -f ~/.Xresources ]; then
