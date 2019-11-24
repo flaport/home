@@ -29,7 +29,7 @@ hi VertSplit	cterm=reverse
 hi Title	ctermfg=5
 hi Visual	cterm=reverse
 hi WildMenu	ctermfg=0 ctermbg=3
-hi Folded	ctermfg=8 ctermbg=15
+hi Folded	ctermfg=15 ctermbg=8
 hi FoldColumn	ctermfg=8 ctermbg=NONE
 hi SignColumn ctermbg=NONE
 hi ColorColumn ctermbg=4

@@ -6,16 +6,12 @@
 #
 
 # decrease alpha of windows
-super + control + a
+super + a
     alpha set -10 && dwm_status
 
 # increase alpha of windows
 super + shift + a
     alpha set +10 && dwm_status
-
-# toggle window transparency (toggle picom)
-super + a
-    pidof picom && killall picom || picom -b -cCGfF -r 10 -o 0.7 --blur-background --backend glx &; dwm_status
 
 # connect to bluetooth device (devices should be paired using bluetoothctl)
 super + b

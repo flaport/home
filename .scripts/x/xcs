@@ -127,7 +127,7 @@ def set_zathura_recolor(xresources):
         file.write(f'set recolor-darkcolor "{darkcolor}"\nset recolor-lightcolor "{lightcolor}"')
 
 def update_dwm_status_bar():
-    with open(os.path.expanduser("~/test"), "w") as file:
+    with open(os.devnull, "w") as file:
         subprocess.Popen(["dwm_status"], stdout=file, stderr=file)
 
 
