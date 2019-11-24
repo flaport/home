@@ -31,9 +31,9 @@ bindkey -v
 export KEYTIMEOUT=1
 
 # change cursor shape for different vi modes.
-BAR='\ePtmux;\e\e[5 q\e\\'
-BLOCK='\ePtmux;\e\e[1 q\e\\'
-UNDERSCORE='\ePtmux;\e\e[4 q\e\\'
+BAR='\e[5 q\e\\'
+BLOCK='\e[1 q\e\\'
+UNDERSCORE='\e[4 q\e\\'
 function zle-keymap-select {
   if [[ ${KEYMAP} == vicmd ]] ||
      [[ $1 = 'block' ]]; then
