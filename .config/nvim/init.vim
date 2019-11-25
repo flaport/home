@@ -348,6 +348,9 @@ nnoremap <leader>cs :e ~/.config/nvim/snippets/snippets.vim<CR>
 " go to definition (python only) -- inherited from plugins
 " <Leader>d
 
+" enable hard mode (for training purposes)
+nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+
 " toggle relative line numbers
 function! RelativeNumberToggle()
   if(&rnu == 1)

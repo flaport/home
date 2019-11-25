@@ -44,6 +44,7 @@ Plug 'valloric/MatchTagAlways' " Highlight matching html tags
 Plug 'vim-scripts/YankRing.vim' " Yank history navigation
 Plug 'neomake/neomake' " Linters
 Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
+Plug 'wikitopian/hardmode' " Vim hard mode (useful for training)
 call plug#end() " stop loading plugins
 
 
