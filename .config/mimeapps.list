@@ -1,6 +1,6 @@
 [Default Applications]
-application/x-ipynb+json=smdv.desktop
-text/markdown=smdv.desktop
+application/x-ipynb+json=jupyter.desktop
+text/markdown=nvim.desktop
 text/plain=nvim.desktop
 application/x-shellscript=nvim.desktop
 text/x-csrc=nvim.desktop
@@ -30,8 +30,8 @@ application/octet-stream=firefox.desktop
 application/x-dvi=zathura-dvi.desktop
 
 [Added Associations]
-application/x-ipynb+json=jupyter.desktop;smdv.desktop;
-text/markdown=smdv.desktop
+application/x-ipynb+json=jupyter.desktop
+text/markdown=smdv.desktop;nvim.desktop
 text/plain=nvim.desktop
 application/x-shellscript=nvim.desktop
 text/x-csrc=nvim.desktop
