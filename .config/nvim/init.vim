@@ -159,9 +159,6 @@ command! -nargs=* T term <args>
 command! -nargs=* HT split | resize 10 | terminal <args>
 command! -nargs=* VT vsplit | terminal <args>
 
-" make tag (may need to install ctags first)
-command! MakeTags !ctags -R .
-
 
 "" Special keyboard shortcuts
 "-------------------------------------------------------------------------------
@@ -322,6 +319,9 @@ nnoremap <leader>] :bnext<CR>
 " open previous buffer
 nnoremap <leader>[ :bprevious<CR>
 
+" fuzzy find in current file
+" <Leader>/ " from fzf plugin
+
 "<leader>b: toggle status bar
 function! ToggleStatusBar()
     if s:status_hidden  == 0
@@ -345,8 +345,17 @@ nnoremap <leader>cc :e ~/.config/nvim/init.vim<CR>
 nnoremap <leader>cp :e ~/.config/nvim/plugins.vim<CR>
 nnoremap <leader>cs :e ~/.config/nvim/snippets/snippets.vim<CR>
 
+" cd into folder containing current file
+nnoremap <leader>cd :lcd %:p:h<CR>
+
 " go to definition (python only) -- inherited from plugins
 " <Leader>d
+
+" fuzzy open file
+" <Leader>e " from fzf plugin
+
+" fuzzy find in all files in tree
+" <Leader>f " from fzf plugin
 
 " enable hard mode (for training purposes)
 nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
@@ -377,8 +386,11 @@ endfunction
 autocmd FileType tex nmap <Leader>s :call SyncTex()<CR>
 "FYI: Ctrl-Click  --> latex synctex zathura pdf->tex
 
-" cd into folder containing current file
-nnoremap <leader>t :lcd %:p:h<CR>
+" fuzzy find in tags
+" <Leader>t :Tag<CR>
+
+" make tags (may need to install ctags first)
+nnoremap <leader>T :!ctags -R .<CR>
 
 " swap splits (from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946)
 " note that this only works when NOT in the main split.
