@@ -44,6 +44,7 @@ Plug 'valloric/MatchTagAlways' " Highlight matching html tags
 Plug 'vim-scripts/YankRing.vim' " Yank history navigation
 Plug 'neomake/neomake' " Linters
 Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
+Plug 'kshenoy/vim-signature' " Show marks in margin
 Plug 'junegunn/fzf.vim' " Fuzzy file finder (needs system wide fzf install)
 Plug 'wikitopian/hardmode' " Vim hard mode (useful for training)
 call plug#end() " stop loading plugins
@@ -136,8 +137,11 @@ let g:instant_markdown_autoscroll = 1
 let g:instant_markdown_python = 0
 
 " Vim signify ----------------------------
-nnoremap <leader>g :SignifyToggle<CR>
 let g:signify_disable_by_default = 1
+nnoremap <leader>g :SignifyToggle<CR>
+
+" Vim signature --------------------------
+nnoremap <leader>m :SignatureToggleSigns<CR>
 
 " Fzf --------------------------------------------------------------------------
 " general code finder in current file mapping
@@ -150,4 +154,4 @@ nmap <Leader>f :Lines<CR>
 nmap <Leader>e :Files<CR>
 
 " tags (symbols) in all files finder mapping
-nmap <Leader>g :Tag<CR>
+nmap <Leader>t :Tag<CR>

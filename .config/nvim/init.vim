@@ -357,6 +357,9 @@ nnoremap <leader>cd :lcd %:p:h<CR>
 " fuzzy find in all files in tree
 " <Leader>f " from fzf plugin
 
+" Toggle (git) diff bar
+" <Leader>g " from signify plugin
+
 " enable hard mode (for training purposes)
 nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
 
@@ -371,10 +374,12 @@ function! RelativeNumberToggle()
 endfunc
 nnoremap <leader>l :call RelativeNumberToggle()<CR>
 
-" paste from clipboard
+" toggle visible marks
+" <leader>m
+
+" paste from clipboard in stead of selection
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
-
 
 "<leader>s: latex synctex tex->pdf
 function! SyncTex()
