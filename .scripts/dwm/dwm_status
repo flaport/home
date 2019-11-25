@@ -146,7 +146,7 @@ pcmn1(){ # pacman
 sshd(){ # ssh daemon
     if [ -f /usr/lib/systemd/system/sshd.service ]; then
         if [[ $(systemctl is-active sshd) == "active" ]]; then
-            echo -e ⛓️;
+            echo -e ⛓;
             return;
         fi
     fi
