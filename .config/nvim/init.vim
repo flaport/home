@@ -176,12 +176,6 @@ inoremap jj <Esc>
 " the backtick is there to not interfere with the <Esc> of the shell itself.
 tnoremap `<Esc> <C-\><C-n>
 
-" add a word to the dictionary (enable spell checker with F3)
-" zg " standard vim keybinding
-
-" remove word from dictionary (enable spell checker with F3)
-" zuw " standard vim keybinding
-
 " go to next misspelled word (enable spell checker with F3)
 " ]s " standard vim keybinding
 
@@ -190,6 +184,27 @@ tnoremap `<Esc> <C-\><C-n>
 
 " show suggestion for misspelled word (enable spell checker with F3)
 " z= " standard vim keybinding
+
+" add a word to the dictionary (enable spell checker with F3)
+" zg " standard vim keybinding
+
+" remove word from dictionary (enable spell checker with F3)
+" zuw " standard vim keybinding
+
+" fold all
+" zM " standard vim keybinding
+
+" unfold all
+" zR " standard vim keybinding
+
+" toggle fold
+" za " standard vim keybinding
+
+" unfold one
+" zv " standard vim keybinding
+
+" fold one
+" zc " standard vim keybinding
 
 
 "" Ctrl based keyboard shortcuts
@@ -304,6 +319,9 @@ nnoremap <leader><leader> :noh<cr>
 " open next buffer
 nnoremap <leader>] :bnext<CR>
 
+" open previous buffer
+nnoremap <leader>[ :bprevious<CR>
+
 "<leader>b: toggle status bar
 function! ToggleStatusBar()
     if s:status_hidden  == 0
@@ -322,8 +340,10 @@ function! ToggleStatusBar()
 endfunction
 nnoremap <leader>b :call ToggleStatusBar()<CR>
 
-" open previous buffer
-nnoremap <leader>[ :bprevious<CR>
+" edit this configuration files (requires set hidden)
+nnoremap <leader>cc :e ~/.config/nvim/init.vim<CR>
+nnoremap <leader>cp :e ~/.config/nvim/plugins.vim<CR>
+nnoremap <leader>cs :e ~/.config/nvim/snippets/snippets.vim<CR>
 
 " go to definition (python only) -- inherited from plugins
 " <Leader>d
@@ -381,9 +401,6 @@ nnoremap <leader>z :call Zoom()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
 "" Function key keyboard shortcuts
 "-------------------------------------------------------------------------------
 
-" edit this configuration file (requires set hidden)
-nnoremap <F2> :e ~/.config/nvim/init.vim<CR>
-inoremap <F2> <Esc>:e ~/.config/nvim/init.vim<CR>
 
 " enable spell checker:
 nnoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
@@ -458,13 +475,4 @@ endif
 
 " custom colorscheme using only colors from ~/.Xresources.
 colorscheme xresources
-
-" white colorscheme
-" colorscheme delek
-
-" dark colorscheme
-" colorscheme material
-
-" fisa colorscheme
-" colorscheme fisa
 

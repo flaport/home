@@ -1,7 +1,7 @@
 "" Latex
 "-------------------------------------------------------------------------------
 
-inoremap ;tex <Esc>:-1read ~/.config/nvim/snippets/tex.tex<CR>:set filetype=tex<CR>
+inoremap ;tex <Esc>:-1read ~/.config/nvim/snippets/tex.tex<CR>:set filetype=tex<CR>/TITLE<CR><Esc>ciw
 autocmd FileType tex inoremap ;fig <Esc>:-1read ~/.config/nvim/snippets/figure.tex<CR>jzOj$i
 autocmd FileType tex inoremap ;svg <Esc>:-1read ~/.config/nvim/snippets/svgfigure.tex<CR>jzOj$i
 autocmd FileType tex inoremap ;pgf <Esc>:-1read ~/.config/nvim/snippets/pgffigure.tex<CR>jzOj$i
@@ -14,6 +14,11 @@ autocmd FileType tex inoremap ;bma <Esc>:-1read ~/.config/nvim/snippets/bmatrix.
 autocmd FileType tex inoremap ;ite <Esc>:-1read ~/.config/nvim/snippets/itemize.tex<CR>j$a
 autocmd FileType tex inoremap ;enu <Esc>:-1read ~/.config/nvim/snippets/enumerate.tex<CR>j$a
 
+
+"" Html
+"-------------------------------------------------------------------------------
+
+inoremap ;html <Esc>:-1read ~/.config/nvim/snippets/html.html<CR>:set filetype=html<CR>zR/title<CR><Esc>cit
 
 
 "" Greek alphabet
