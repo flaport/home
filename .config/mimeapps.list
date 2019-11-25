@@ -28,6 +28,7 @@ text/x-matlab=nvim.desktop
 application/pkix-cert=nvim.desktop
 application/octet-stream=firefox.desktop
 application/x-dvi=zathura-dvi.desktop
+application/zip=unzip-here.desktop;
 
 [Added Associations]
 application/x-ipynb+json=jupyter.desktop
@@ -59,3 +60,4 @@ application/x-extension-xht=firefox.desktop;
 text/x-matlab=nvim.desktop;
 application/pkix-cert=nvim.desktop;
 application/x-dvi=zathura-dvi.desktop;
+application/zip=unzip-here.desktop;
