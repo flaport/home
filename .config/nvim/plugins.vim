@@ -118,6 +118,8 @@ nnoremap <leader>. :MtaJumpToOtherTag<cr>
 let g:yankring_enabled = 1
 " maximum history for yankring
 let g:yankring_max_history = 10
+" set history file
+let g:yankring_history_file = '.config/nvim/yankring'
 
 " Neomake --------------------------------
 " run linter on write
