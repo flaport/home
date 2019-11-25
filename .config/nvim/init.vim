@@ -62,7 +62,7 @@ ca w!! w !sudo -A tee '%' &> /dev/null
 
 " fix problems with uncommon shells (fish, zsh, xonsh, ...) and plugins
 " running shell commands (neomake, ...)
-set shell=/bin/bash
+set shell=/usr/bin/zsh
 
 " set a column at 90 characters
 set colorcolumn=90
@@ -132,12 +132,24 @@ set foldcolumn=2
 " lower updatetime (for vim signify)
 set updatetime=200
 
+" show status bar (variable is for toggle functionality <leader>b)
+let s:status_hidden = 0
+set showmode
+set ruler
+set laststatus=2
+set showcmd
+
 " tex / latex / xelatex
 autocmd FileType tex set nonumber
 autocmd FileType tex set norelativenumber
 autocmd FileType tex set textwidth=70
 autocmd FileType tex set foldcolumn=8
 autocmd FileType tex set colorcolumn=0
+autocmd FileType tex let s:status_hidden = 1
+autocmd FileType tex set noshowmode
+autocmd FileType tex set noruler
+autocmd FileType tex set laststatus=0
+autocmd FileType tex set noshowcmd
 
 
 "" Custom commands
@@ -161,7 +173,8 @@ nnoremap ; :
 inoremap jj <Esc>
 
 " go to edit mode in terminal emulator:
-tnoremap <Esc> <C-\><C-n>
+" the backtick is there to not interfere with the <Esc> of the shell itself.
+tnoremap `<Esc> <C-\><C-n>
 
 " add a word to the dictionary (enable spell checker with F3)
 " zg " standard vim keybinding
@@ -198,6 +211,9 @@ nnoremap <C-c> <Esc>:bd!<CR>
 
 " scroll text up with cursor staying where it is
 " <C-e> " standard vim keybinding
+
+" exit terminal mode (same as `<Esc>)
+tnoremap <C-e> <C-\><C-N>
 
 " down full screen
 " <C-f> " standard vim keybinding
@@ -288,30 +304,29 @@ nnoremap <leader><leader> :noh<cr>
 " open next buffer
 nnoremap <leader>] :bnext<CR>
 
-" open previous buffer
-nnoremap <leader>[ :bprevious<CR>
-
-" go to definition (python only) -- inherited from plugins
-" <Leader>d
-
-"<leader>h: hide status bar
-let s:hidden_all = 0
-function! HideStatusBar()
-    if s:hidden_all  == 0
-        let s:hidden_all = 1
+"<leader>b: toggle status bar
+function! ToggleStatusBar()
+    if s:status_hidden  == 0
+        let s:status_hidden = 1
         set noshowmode
         set noruler
         set laststatus=0
         set noshowcmd
     else
-        let s:hidden_all = 0
+        let s:status_hidden = 0
         set showmode
         set ruler
         set laststatus=2
         set showcmd
     endif
 endfunction
-nnoremap <leader>h :call HideStatusBar()<CR>
+nnoremap <leader>b :call ToggleStatusBar()<CR>
+
+" open previous buffer
+nnoremap <leader>[ :bprevious<CR>
+
+" go to definition (python only) -- inherited from plugins
+" <Leader>d
 
 " toggle relative line numbers
 function! RelativeNumberToggle()
@@ -411,6 +426,15 @@ autocmd FileType python inoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_r
 " /<CR> 	Search forward for last used pattern
 " n 	Repeat the latest "/" or "?" [count] times.
 " N 	Repeat the latest "/" or "?" [count] times in opposite direction. 
+
+"" Folder tree
+"-------------------------------------------------------------------------------
+
+" disable banner
+let g:netrw_banner=0
+
+" tree view
+let g:netrw_liststyle=3
 
 
 "" Tmux compatibility

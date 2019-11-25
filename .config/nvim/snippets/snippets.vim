@@ -1,18 +1,18 @@
 "" Latex
 "-------------------------------------------------------------------------------
 
-inoremap ;tex <Esc>:read ~/.config/nvim/snippets/tex.tex<CR>:source ~/.config/nvim/init.vim<CR>
-autocmd FileType tex inoremap ;fig <Esc>:read ~/.config/nvim/snippets/figure.tex<CR>jzOj$i
-autocmd FileType tex inoremap ;svg <Esc>:read ~/.config/nvim/snippets/svgfigure.tex<CR>jzOj$i
-autocmd FileType tex inoremap ;pgf <Esc>:read ~/.config/nvim/snippets/pgffigure.tex<CR>jzOj$i
-autocmd FileType tex inoremap ;pfg <Esc>:read ~/.config/nvim/snippets/pgffigure.tex<CR>jzOj$i
-autocmd FileType tex inoremap ;sub <Esc>:read ~/.config/nvim/snippets/subfigure.tex<CR>jzO3j$i
-autocmd FileType tex inoremap ;ali <Esc>:read ~/.config/nvim/snippets/align.tex<CR>j^i<Esc>i
-autocmd FileType tex inoremap ;mat <Esc>:read ~/.config/nvim/snippets/matrix.tex<CR>j$a
-autocmd FileType tex inoremap ;pma <Esc>:read ~/.config/nvim/snippets/pmatrix.tex<CR>j$a
-autocmd FileType tex inoremap ;bma <Esc>:read ~/.config/nvim/snippets/bmatrix.tex<CR>j$a
-autocmd FileType tex inoremap ;ite <Esc>:read ~/.config/nvim/snippets/itemize.tex<CR>j$a
-autocmd FileType tex inoremap ;enu <Esc>:read ~/.config/nvim/snippets/enumerate.tex<CR>j$a
+inoremap ;tex <Esc>:-1read ~/.config/nvim/snippets/tex.tex<CR>:set filetype=tex<CR>
+autocmd FileType tex inoremap ;fig <Esc>:-1read ~/.config/nvim/snippets/figure.tex<CR>jzOj$i
+autocmd FileType tex inoremap ;svg <Esc>:-1read ~/.config/nvim/snippets/svgfigure.tex<CR>jzOj$i
+autocmd FileType tex inoremap ;pgf <Esc>:-1read ~/.config/nvim/snippets/pgffigure.tex<CR>jzOj$i
+autocmd FileType tex inoremap ;pfg <Esc>:-1read ~/.config/nvim/snippets/pgffigure.tex<CR>jzOj$i
+autocmd FileType tex inoremap ;sub <Esc>:-1read ~/.config/nvim/snippets/subfigure.tex<CR>jzO3j$i
+autocmd FileType tex inoremap ;ali <Esc>:-1read ~/.config/nvim/snippets/align.tex<CR>j^i<Esc>i
+autocmd FileType tex inoremap ;mat <Esc>:-1read ~/.config/nvim/snippets/matrix.tex<CR>j$a
+autocmd FileType tex inoremap ;pma <Esc>:-1read ~/.config/nvim/snippets/pmatrix.tex<CR>j$a
+autocmd FileType tex inoremap ;bma <Esc>:-1read ~/.config/nvim/snippets/bmatrix.tex<CR>j$a
+autocmd FileType tex inoremap ;ite <Esc>:-1read ~/.config/nvim/snippets/itemize.tex<CR>j$a
+autocmd FileType tex inoremap ;enu <Esc>:-1read ~/.config/nvim/snippets/enumerate.tex<CR>j$a
 
 
 
