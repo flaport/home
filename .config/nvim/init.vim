@@ -322,6 +322,12 @@ nnoremap <leader>[ :bprevious<CR>
 " fuzzy find in current file
 " <Leader>/ " from fzf plugin
 
+" jump to other/closing tag
+" <leader>. " from MatchTagAlways plugin
+
+" find assignments (only for python)
+" <Leader>a " from jedi plugin
+
 "<leader>b: toggle status bar
 function! ToggleStatusBar()
     if s:status_hidden  == 0
@@ -360,8 +366,8 @@ nnoremap <leader>cd :lcd %:p:h<CR>
 " Toggle (git) diff bar
 " <Leader>g " from signify plugin
 
-" enable hard mode (for training purposes)
-nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+" enable hard mode (for practice purposes)
+" <leader>h " from hard mode plugin
 
 " toggle relative line numbers
 function! RelativeNumberToggle()
@@ -375,7 +381,10 @@ endfunc
 nnoremap <leader>l :call RelativeNumberToggle()<CR>
 
 " toggle visible marks
-" <leader>m
+" <leader>m " from vim-signature
+
+" find ocurrences (only for python)
+" <Leader>o " from jedi plugin
 
 " paste from clipboard in stead of selection
 nnoremap <leader>p "+p
