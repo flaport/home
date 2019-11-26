@@ -31,27 +31,29 @@ bindkey -v
 export KEYTIMEOUT=1
 
 # change cursor shape for different vi modes.
-BAR='\e[5 q\e\\'
-BLOCK='\e[1 q\e\\'
-UNDERSCORE='\e[4 q\e\\'
-function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] ||
-     [[ $1 = 'block' ]]; then
-    echo -ne $BLOCK
-  elif [[ ${KEYMAP} == main ]] ||
-       [[ ${KEYMAP} == viins ]] ||
-       [[ ${KEYMAP} = '' ]] ||
-       [[ $1 = 'beam' ]]; then
-    echo -ne $UNDERSCORE
-  fi
-}
-zle -N zle-keymap-select
-zle-line-init() {
-    echo -ne $UNDERSCORE
-}
-zle -N zle-line-init
-echo -ne $UNDERSCORE # at startup.
-preexec() { echo -ne $UNDERSCORE ;} # at new prompt.
+if [ -z $NVIM_LISTEN_ADDRESS ]; then
+    BAR='\e[5 q\e\\'
+    BLOCK='\e[1 q\e\\'
+    UNDERSCORE='\e[4 q\e\\'
+    function zle-keymap-select {
+      if [[ ${KEYMAP} == vicmd ]] ||
+         [[ $1 = 'block' ]]; then
+        echo -ne $BLOCK
+      elif [[ ${KEYMAP} == main ]] ||
+           [[ ${KEYMAP} == viins ]] ||
+           [[ ${KEYMAP} = '' ]] ||
+           [[ $1 = 'beam' ]]; then
+        echo -ne $UNDERSCORE
+      fi
+    }
+    zle -N zle-keymap-select
+    zle-line-init() {
+        echo -ne $UNDERSCORE
+    }
+    zle -N zle-line-init
+    echo -ne $UNDERSCORE # at startup.
+    preexec() { echo -ne $UNDERSCORE ;} # at new prompt.
+fi
 
 # colored zsh prompt
 setopt prompt_subst

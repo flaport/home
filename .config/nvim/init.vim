@@ -216,9 +216,6 @@ tnoremap `<Esc> <C-\><C-n>
 " increase number
 " <C-a> " standard vim keybinding
 
-" close split Below
-nnoremap <C-b> <C-w>j:q!<CR>
-
 " exit current buffer without saving
 inoremap <C-c> <Esc>:bd!<CR>
 nnoremap <C-c> <Esc>:bd!<CR>
@@ -391,6 +388,9 @@ nnoremap <leader>l :call RelativeNumberToggle()<CR>
 " find ocurrences (only for python)
 " <Leader>o " from jedi plugin
 
+" show only current buffer (overrides above)
+nnoremap <leader>o :only<CR>
+
 " paste from clipboard in stead of selection
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
@@ -492,7 +492,6 @@ let g:netrw_liststyle=3
 "-------------------------------------------------------------------------------
 
 if exists("$TMUX")
-    nnoremap <C-b> <Nop>
     nnoremap <C-h> :TmuxNavigateLeft<CR>
     nnoremap <C-j> :TmuxNavigateDown<CR>
     nnoremap <C-k> :TmuxNavigateUp<CR>
