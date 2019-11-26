@@ -45,7 +45,11 @@ printf "ARCH PACKAGE INSTALL\n\n\n" > $ERR
 # Ask for password, this will be used for all the sudo calls.:
 # and to change the shell later on.
 read -s -p "[sudo] password for $USER: " password
-echo
+echo $password | sudo -S echo '' 2>/dev/null
+if [ $? -ne 0 ]; then
+    printf "\nIncorrect sudo password. Script ended prematurely.\n\nPlease start over.\n"
+    exit 1
+fi
 
 
 ## Update
@@ -311,7 +315,7 @@ pacman_install conky
 pacman_install neovim
 link /usr/bin/nvim /usr/bin/vim
 pacman_install npm
-sudo npm -g install instant-markdown-d > $LOG 2> $ERR
+sudo npm -g install instant-markdown-d >> $LOG 2>> $ERR
 # yay_install conky-lua-nv
 # reverse proxy
 pacman_install nginx
@@ -380,8 +384,8 @@ yay_install lightdm-slick-greeter
 # mini greeter seems to not work properly without the above two greeters installed (?)
 yay_install lightdm-mini-greeter
 sudo rm -f /usr/share/xsessions/*
-cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?greeter-session=.*/greeter-session=lightdm-mini-greeter/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2> $ERR
-cat /etc/lightdm/lightdm-mini-greeter.conf | sed "s/^user = CHANGE_ME$/user = $USER/g" | sed "s/F92672/2AA198/g" | sudo tee /etc/lightdm/lightdm-mini-greeter.conf > /dev/null 2> $ERR
+cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?greeter-session=.*/greeter-session=lightdm-mini-greeter/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2>> $ERR
+cat /etc/lightdm/lightdm-mini-greeter.conf | sed "s/^user = CHANGE_ME$/user = $USER/g" | sed "s/F92672/2AA198/g" | sudo tee /etc/lightdm/lightdm-mini-greeter.conf > /dev/null 2>> $ERR
 sudo cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
 systemctl_enable lightdm
 
@@ -410,7 +414,7 @@ pacman_install xcursor-simpleandsoft
 
 # set Arc as default gtk2 theme system-wide
 sudo rm -r /etc/gtk-2.0/*
-sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
+sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ >> $LOG 2>> $ERR
 # gtk look-and-feel for qt:
 pacman_install qt5ct
 pacman_install kvantum-qt5
@@ -560,6 +564,12 @@ pacman_install ffmpeg
 # network manager
 pacman_install networkmanager
 systemctl_enable NetworkManager
+# create network group (this might fail if the group exists already, but who cares.)
+groupadd network >> $LOG 2>> $ERR
+# create policy kit rule (everyone in network group can connect to / change networks)
+printf "polkit.addRule(function(action, subject) {\nif (action.id.indexOf(\"org.freedesktop.NetworkManager.\") == 0 && subject.isInGroup(\"network\")) {\nreturn polkit.Result.YES;\n}\n});" > /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules 2>> $ERR
+# add current user to network group
+sudo usermod -a -G network $USER
 # applet in the corner of the screen
 pacman_install network-manager-applet
 # openvpn
