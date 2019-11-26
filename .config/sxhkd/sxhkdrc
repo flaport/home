@@ -102,7 +102,9 @@ super + M
 super + n
     nemo
 
+# open dmenu networkmanager
 super + N
+    dmenu_networkmanager
 
 # activate all tags to which current window belongs
 super + o
