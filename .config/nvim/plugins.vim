@@ -33,7 +33,11 @@ endif
 " Run :UpdateRemotePlugins to update dependencies
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'christoomey/vim-tmux-navigator' " tmux navigation
+Plug 'tpope/vim-commentary' " easy comment
+Plug 'tpope/vim-surround' " easily surround word with quotes or tags
+Plug 'tpope/vim-repeat' " easily repeat plugin commands with .
 Plug 'tpope/vim-markdown' " markdown syntax highlighting
+Plug 'tpope/vim-speeddating' " increase date with <C-A>
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
 Plug 'Shougo/deoplete.nvim' " Async autocompletion

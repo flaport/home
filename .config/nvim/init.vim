@@ -206,13 +206,15 @@ tnoremap `<Esc> <C-\><C-n>
 " fold one
 " zc " standard vim keybinding
 
+" toggle comments
+" gc " from vim-commentary plugin
+
 
 "" Ctrl based keyboard shortcuts
 "-------------------------------------------------------------------------------
 
-" make current split the only split
-nnoremap <C-a> :only<cr>
-tnoremap <C-a> <C-\><C-N>:only<cr>
+" increase number
+" <C-a> " standard vim keybinding
 
 " close split Below
 nnoremap <C-b> <C-w>j:q!<CR>
@@ -245,7 +247,7 @@ tnoremap <C-h> <C-\><C-N><C-w>h " navigation out of terminal mode
 autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markdown_image<CR>kddk
 
 " move to split below of current split
-nnoremap <C-j> <C-w>j<C-A>
+nnoremap <C-j> <C-w>j
 tnoremap <C-j> <C-\><C-N><C-w>j " navigation out of terminal mode
 
 " move to split above of current split
