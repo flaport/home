@@ -69,7 +69,14 @@ def set_terminal_alphas(xresources):
     Args:
         xresources: dictionary containing the xresources parameters
     """
+    # custom st build
     color = f"\033]4;0;{xresources['color0']};{xresources['alpha']}\033\\"
+    for term in glob.glob("/dev/pts/*"):
+        if term != "/dev/pts/ptmx":
+            with open(term, "w") as file:
+                file.write(color)
+    # urxvt
+    color = f"\033]11;[{xresources['alpha']}]{xresources['color0']}\033\\"
     for term in glob.glob("/dev/pts/*"):
         if term != "/dev/pts/ptmx":
             with open(term, "w") as file:
