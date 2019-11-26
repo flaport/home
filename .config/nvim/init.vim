@@ -492,6 +492,7 @@ let g:netrw_liststyle=3
 "-------------------------------------------------------------------------------
 
 if exists("$TMUX")
+    nnoremap <C-b> <Nop>
     nnoremap <C-h> :TmuxNavigateLeft<CR>
     nnoremap <C-j> :TmuxNavigateDown<CR>
     nnoremap <C-k> :TmuxNavigateUp<CR>
