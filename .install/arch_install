@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last full run: 2019.11.10
+# last full run: 2019.11.27
 
 ## Checks
 #-------------------------------------------------------------------------------
@@ -311,7 +311,7 @@ pacman_install conky
 pacman_install neovim
 link /usr/bin/nvim /usr/bin/vim
 pacman_install npm
-sudo npm -g install instant-markdown-d > $LOG 2> $ERR
+sudo npm -g install instant-markdown-d >> $LOG 2>> $ERR
 # yay_install conky-lua-nv
 # reverse proxy
 pacman_install nginx
@@ -379,9 +379,10 @@ pacman_install lightdm-gtk-greeter
 yay_install lightdm-slick-greeter
 # mini greeter seems to not work properly without the above two greeters installed (?)
 yay_install lightdm-mini-greeter
-sudo rm -f /usr/share/xsessions/*
-cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?greeter-session=.*/greeter-session=lightdm-mini-greeter/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2> $ERR
-cat /etc/lightdm/lightdm-mini-greeter.conf | sed "s/^user = CHANGE_ME$/user = $USER/g" | sed "s/F92672/2AA198/g" | sudo tee /etc/lightdm/lightdm-mini-greeter.conf > /dev/null 2> $ERR
+sudo mkdir -p /usr/share/xsessions
+cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?.*greeter-session.*=.*/greeter-session=lightdm-mini-greeter/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2>> $ERR
+cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?.*user-session.*=.*/user-session=dwm/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2>> $ERR
+cat /etc/lightdm/lightdm-mini-greeter.conf | sed "s/^user = CHANGE_ME$/user = $USER/g" | sed "s/F92672/2AA198/g" | sudo tee /etc/lightdm/lightdm-mini-greeter.conf > /dev/null 2>> $ERR
 sudo cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
 systemctl_enable lightdm
 
@@ -410,12 +411,12 @@ pacman_install xcursor-simpleandsoft
 
 # set Arc as default gtk2 theme system-wide
 sudo rm -r /etc/gtk-2.0/*
-sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ > $LOG 2> $ERR
+sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ >> $LOG 2>> $ERR
 # gtk look-and-feel for qt:
 pacman_install qt5ct
 pacman_install kvantum-qt5
-# lxappearnce: tool to choose gtk themes
-pacman_install lxappearnce
+# lxappearance: tool to choose gtk themes
+pacman_install lxappearance
 
 ## Web interfaces
 # syncthing: synchronization between devices
