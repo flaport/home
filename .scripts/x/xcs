@@ -10,6 +10,7 @@
 import os
 import sys
 import glob
+import shutil
 import argparse
 import subprocess
 
@@ -82,6 +83,7 @@ def load_xresources(name = "gruvbox"):
     split_defined = [[word for word in line.split(" ") if word != "" and word != "#define"] for line in lines if "#define" in line]
     defined_dict = {k.strip(): v.strip() for k, v in split_defined}
     split_lines = [line.split(":") for line in lines if ":" in line]
+    split_lines = [line for line in split_lines if len(line) == 2]
     xresources = {k.strip(): defined_dict.get(v.strip(), v.strip()).upper() for k, v in split_lines}
     return xresources
 
@@ -96,6 +98,25 @@ def set_terminal_colors(xresources):
         if term != "/dev/pts/ptmx":
             with open(term, "w") as file:
                 file.write("".join(colors))
+
+def set_terminal_alphas(xresources):
+    """ set the colors of the currently open terminals given Xresources dictionary
+
+    Args:
+        xresources: dictionary containing the xresources parameters
+    """
+    # custom st build
+    color = f"\033]4;0;{xresources['color0']};{xresources['alpha']}\033\\"
+    for term in glob.glob("/dev/pts/*"):
+        if term != "/dev/pts/ptmx":
+            with open(term, "w") as file:
+                file.write(color)
+    # urxvt
+    color = f"\033]11;[{xresources['alpha']}]{xresources['color0']}\033\\"
+    for term in glob.glob("/dev/pts/*"):
+        if term != "/dev/pts/ptmx":
+            with open(term, "w") as file:
+                file.write(color)
 
 def colorscheme_list():
     """ get a list of available colorschemes """
@@ -148,12 +169,13 @@ if __name__ == "__main__":
     if args.name == "[generate from wallpaper (requires pywal)]" or args.name == "generate":
         subprocess.call(["/usr/bin/wal", "-c"])
         exitcode = subprocess.call(["/usr/bin/wal", "-i", os.path.expanduser("~/.local/share/wallpapers/current-wallpaper")])
-        subprocess.call([os.path.expanduser("~/.scripts/alpha/alpha"), "set", f"{100*args.alpha:.0f}"])
-        exit(exitcode)
+        shutil.copy(os.path.expanduser("~/.cache/wal/colors.Xresources"), os.path.expanduser("~/.Xresources"))
+        args.name = "current"
     xresources = load_xresources(name=args.name)
     if args.alpha is not None:
         xresources["alpha"] = args.alpha
     set_terminal_colors(xresources)
+    set_terminal_alphas(xresources)
     set_xresources(xresources)
     set_zathura_recolor(xresources)
     update_dwm_status_bar()
