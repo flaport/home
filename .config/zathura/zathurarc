@@ -17,8 +17,8 @@ map d scroll half-down
 map D toggle_page_mode
 map r reload
 map R rotate
-map K zoom in
-map J zoom out
+map H zoom in
+map L zoom out
 map i recolor
 map p print
 map <A-Button1> zoom in
