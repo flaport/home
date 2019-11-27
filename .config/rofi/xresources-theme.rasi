@@ -2,13 +2,17 @@
  * Flaport color theme
 **/
 
-* {
+* { /* fallback colors */
     text: #fdf6e3;
     highlight: #2aa198;
     green: #00ff00;
     dark: #002b36dd;
     background-color:  #00000000;
 }
+
+/* colors written by xcs script: they override the above colors */
+@import "xresources-colors.rasi"
+
 #mainbox {
     spacing: 4;
     children: [ inputbar, message, listview ];

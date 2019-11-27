@@ -17,6 +17,12 @@
 # current shell: zsh
 #
 
+# Make sure the following files exist:
+#-------------------------------------------------------------------------------
+
+touch $HOME/.config/rofi/xresources-colors.rasi
+
+
 ## Environment variables
 #-------------------------------------------------------------------------------
 export BROWSER="firefox"

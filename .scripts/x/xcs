@@ -10,6 +10,7 @@
 import os
 import sys
 import glob
+import json
 import shutil
 import argparse
 import subprocess
@@ -156,6 +157,19 @@ def set_dwm_colors(xresources):
     # my dwm build listens to fsignal:1 to update colors
     subprocess.call(["xsetroot", "-name", "fsignal:1"])
 
+def set_rofi_colors(xresources):
+    # write some colors to ~/.config/rofi/xresources-colors to use in xresources-theme.rasi
+    alpha = hex(int(255*xresources["alpha"]))[2:]
+    colors = {
+        "text" : xresources["color15"],
+        "highlight": xresources["color6"],
+        "green": xresources["color2"],
+        "dark": xresources["color0"]+alpha,
+    }
+    content = "* " + json.dumps(colors).replace("{","{\n ").replace(",",";\n").replace("}",";\n}").replace('"', "")
+    with open(os.path.expanduser("~/.config/rofi/xresources-colors.rasi"), "w") as file:
+        file.write(content)
+
 def update_dwm_status_bar():
     with open(os.devnull, "w") as file:
         subprocess.Popen(["dwm_status"], stdout=file, stderr=file)
@@ -183,5 +197,6 @@ if __name__ == "__main__":
     set_xresources(xresources)
     set_zathura_recolor(xresources)
     set_dwm_colors(xresources)
+    set_rofi_colors(xresources)
     update_dwm_status_bar()
 
