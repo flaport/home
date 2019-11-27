@@ -1,6 +1,10 @@
 [Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+NoDisplay=true
 Exec=jupyterhubopen %f
 Name=Open in Jupyterhub
 Comment=Open in Jupyterhub
-Icon=/usr/local/share/icons/jupyter.ico # add this icon yourself
 MimeType=text/x-ipynb;application/x-ipynb+json;
+Icon=/usr/local/share/icons/jupyter.ico # add this icon yourself

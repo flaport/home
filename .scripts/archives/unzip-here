@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+unzip $1 -d $(echo $1 | sed 's/\.zip/-unzipped/')

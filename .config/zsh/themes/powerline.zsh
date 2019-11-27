@@ -53,6 +53,7 @@ prompt_end() {
   fi
   echo -n "%{%f%}"
   COLORBG=''
+  echo -n " "
 }
 
 # Context: user@hostname (who am I and where am I)
@@ -146,10 +147,16 @@ prompt_hg() {
   fi
 }
 
-# Dir: current working directory
+# Dir: full path of current working directory
 prompt_dir() {
   prompt_segment
   echo -n '%~'
+}
+
+# Dir: name of current working directory
+prompt_dir_short() {
+  prompt_segment
+  echo -n $(basename $PWD | sed s/$USER/~/)
 }
 
 # Virtualenv: current working virtualenv
@@ -191,9 +198,8 @@ prompt_battery(){
     [ ! -z $BATTERY ] && prompt_segment && echo -n "$BATTERY"
 }
 
-
 ## Main prompt
-build_prompt() {
+build_prompt_full() {
   RETVAL=$?
   prompt_status
   prompt_battery
@@ -203,4 +209,22 @@ build_prompt() {
   prompt_end
 }
 
-PROMPT='$(build_prompt) '
+build_prompt_short() {
+  prompt_virtualenv
+  prompt_dir_short
+  prompt_end
+}
+
+
+sp() { # short prompt
+    PROMPT='$(build_prompt_short)'
+    clear
+}
+
+fp() { # full prompt
+    PROMPT='$(build_prompt_full)'
+    clear
+}
+
+PROMPT='$(build_prompt_full)'
+

@@ -33,7 +33,11 @@ endif
 " Run :UpdateRemotePlugins to update dependencies
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'christoomey/vim-tmux-navigator' " tmux navigation
+Plug 'tpope/vim-commentary' " easy comment
+Plug 'tpope/vim-surround' " easily surround word with quotes or tags
+Plug 'tpope/vim-repeat' " easily repeat plugin commands with .
 Plug 'tpope/vim-markdown' " markdown syntax highlighting
+Plug 'tpope/vim-speeddating' " increase date with <C-A>
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
 Plug 'Shougo/deoplete.nvim' " Async autocompletion
@@ -44,6 +48,7 @@ Plug 'valloric/MatchTagAlways' " Highlight matching html tags
 Plug 'vim-scripts/YankRing.vim' " Yank history navigation
 Plug 'neomake/neomake' " Linters
 Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
+Plug 'kshenoy/vim-signature' " Show marks in margin
 Plug 'junegunn/fzf.vim' " Fuzzy file finder (needs system wide fzf install)
 Plug 'wikitopian/hardmode' " Vim hard mode (useful for training)
 call plug#end() " stop loading plugins
@@ -70,23 +75,24 @@ let g:markdown_syntax_conceal = 1
 " highlight 100 lines
 let g:markdown_minlines = 100
 
-" Neomake --------------------------------
-" run linter on write
-autocmd! BufWritePost * Neomake
-" check code as python3 by default
-let g:neomake_python_python_maker = neomake#makers#ft#python#python()
-" use flake8 to check python code
-let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
+" Instant markdown -----------------------
+" always run on port 9876
+let g:instant_markdown_port = 9876
+" do not start when opening markdown file
+let g:instant_markdown_autostart = 0
+" obviously, enable markdown autoscroll
+let g:instant_markdown_autoscroll = 1
+" don't use the python server (requires npm package: `npm -g install instant-markdown-d`)
+let g:instant_markdown_python = 0
 
 " Jedi-vim -------------------------------
 " disable autocompletion (using deoplete instead)
 let g:jedi#completions_enabled = 0
-" all these mappings work only for python code:
-" go to definition
+" go to definition (only for python)
 let g:jedi#goto_command = '<Leader>d'
-" find ocurrences
+" find ocurrences (only for python)
 let g:jedi#usages_command = '<Leader>o'
-" find assignments
+" find assignments (only for python)
 let g:jedi#goto_assignments_command = '<Leader>a'
 
 " Deoplete -------------------------------
@@ -96,50 +102,48 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_ignore_case = 1
 " do not ignore case when code completing with upper case letters
 let g:deoplete#enable_smart_case = 1
+
+" Context filetype -----------------------
 " complete with words from any opened file
 let g:context_filetype#same_filetypes = {}
 " set underscore
 let g:context_filetype#same_filetypes._ = '_'
 
-" Ack.vim --------------------------------
-" smart search and replace
-nmap <Leader>r :Ack 
-" smart word search and replace
-nmap <Leader>wr :Ack <cword><CR>
-
-" Autoclose ------------------------------
-" fix to let ESC work as espected with Autoclose plugin
-" (without this, when showing an autocompletion window, ESC won't leave insert mode)
-let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<Esc>"}
-
-" Yankring -------------------------------
-" fix for yankring and neovim problem when system has non-text copied in clipboard
-let g:yankring_clipboard_monitor = 0
-" set directory where yankring can be stored.
-let g:yankring_history_dir = '~/.config/nvim/'
-
-" Relative numbers -----------------------
-let g:numbers_exclude = ["goyo"]
-
 " Colorizer ------------------------------
+" do not color more than 1000 lines at once
 let g:colorizer_maxlines = 1000
 
-" Ultisnips ------------------------------
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-.>"
-let g:UltiSnipsJumpBackwardTrigger="<c-,>"
+" MatchTagAlways -------------------------
+" jump to other/closing tag
+nnoremap <leader>. :MtaJumpToOtherTag<cr>
 
-" Instant markdown -----------------------
-let g:instant_markdown_port = 9876
-let g:instant_markdown_autostart = 0
-let g:instant_markdown_autoscroll = 1
-let g:instant_markdown_python = 0
+" Yankring -------------------------------
+" enable yankring by default
+let g:yankring_enabled = 1
+" maximum history for yankring
+let g:yankring_max_history = 10
+" set history file
+let g:yankring_history_file = '.config/nvim/yankring'
+
+" Neomake --------------------------------
+" run linter on write
+autocmd! BufWritePost * Neomake
+" check code as python3 by default
+let g:neomake_python_python_maker = neomake#makers#ft#python#python()
+" use flake8 to check python code
+let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
 
 " Vim signify ----------------------------
-nnoremap <leader>g :SignifyToggle<CR>
+" disable vim signify by default...
 let g:signify_disable_by_default = 1
+" but make a keyboard shortcut to show it when interested
+nnoremap <leader>g :SignifyToggle<CR>
 
-" Fzf --------------------------------------------------------------------------
+" Vim signature --------------------------
+" add a way to disable this for less wide margins
+nnoremap <leader>m :SignatureToggleSigns<CR>
+
+" Fzf ------------------------------------
 " general code finder in current file mapping
 nmap <Leader>/ :BLines<CR>
 
@@ -150,4 +154,9 @@ nmap <Leader>f :Lines<CR>
 nmap <Leader>e :Files<CR>
 
 " tags (symbols) in all files finder mapping
-nmap <Leader>g :Tag<CR>
+nmap <Leader>t :Tag<CR>
+
+" Hard mode ------------------------------
+" enable hard mode (for practice purposes)
+nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+

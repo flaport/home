@@ -1,6 +1,6 @@
 [Default Applications]
-application/x-ipynb+json=smdv.desktop
-text/markdown=smdv.desktop
+application/x-ipynb+json=jupyter.desktop
+text/markdown=nvim.desktop
 text/plain=nvim.desktop
 application/x-shellscript=nvim.desktop
 text/x-csrc=nvim.desktop
@@ -28,10 +28,11 @@ text/x-matlab=nvim.desktop
 application/pkix-cert=nvim.desktop
 application/octet-stream=firefox.desktop
 application/x-dvi=zathura-dvi.desktop
+application/zip=unzip-here.desktop;
 
 [Added Associations]
-application/x-ipynb+json=jupyter.desktop;smdv.desktop;
-text/markdown=smdv.desktop
+application/x-ipynb+json=jupyter.desktop
+text/markdown=smdv.desktop;nvim.desktop
 text/plain=nvim.desktop
 application/x-shellscript=nvim.desktop
 text/x-csrc=nvim.desktop
@@ -41,7 +42,7 @@ image/png=sxiv.desktop
 image/svg+xml=inkscape.desktop;
 application/pdf=org.pwmt.zathura.desktop
 application/octet-stream=fdtd-solutions.desktop;klayout.desktop;firefox.desktop;
-inode/directory=code-oss.desktop;nemo.desktop;vifm.desktop
+inode/directory=jupyter.desktop;code-oss.desktop;nemo.desktop;vifm.desktop;
 x-scheme-handler/magnet=transmission.desktop
 application/x-bittorrent=transmission.desktop
 video/mp4=mpv.desktop;
@@ -59,3 +60,4 @@ application/x-extension-xht=firefox.desktop;
 text/x-matlab=nvim.desktop;
 application/pkix-cert=nvim.desktop;
 application/x-dvi=zathura-dvi.desktop;
+application/zip=unzip-here.desktop;

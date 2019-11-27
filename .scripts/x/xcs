@@ -92,9 +92,10 @@ def set_terminal_colors(xresources):
         xresources: dictionary containing the xresources parameters
     """
     colors = [f"\033]4;{i};{xresources[f'color{i}']}\033\\" for i in range(16)]
-    for term in glob.glob("/dev/pts/[0-9]"):
-        with open(term, "w") as file:
-            file.write("".join(colors))
+    for term in glob.glob("/dev/pts/*"):
+        if term != "/dev/pts/ptmx":
+            with open(term, "w") as file:
+                file.write("".join(colors))
 
 def colorscheme_list():
     """ get a list of available colorschemes """

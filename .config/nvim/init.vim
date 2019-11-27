@@ -35,6 +35,9 @@ set path+=**
 " for navigating buffers/files/etc 
 set wildmenu
 
+" use newline characters instead of cariage return
+set ff=unix
+
 " underline current line if in insert mode
 autocmd InsertEnter * set cul
 
@@ -203,16 +206,15 @@ tnoremap `<Esc> <C-\><C-n>
 " fold one
 " zc " standard vim keybinding
 
+" toggle comments
+" gc " from vim-commentary plugin
+
 
 "" Ctrl based keyboard shortcuts
 "-------------------------------------------------------------------------------
 
-" make current split the only split
-nnoremap <C-a> :only<cr>
-tnoremap <C-a> <C-\><C-N>:only<cr>
-
-" close split Below
-nnoremap <C-b> <C-w>j:q!<CR>
+" increase number
+" <C-a> " standard vim keybinding
 
 " exit current buffer without saving
 inoremap <C-c> <Esc>:bd!<CR>
@@ -242,7 +244,7 @@ tnoremap <C-h> <C-\><C-N><C-w>h " navigation out of terminal mode
 autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markdown_image<CR>kddk
 
 " move to split below of current split
-nnoremap <C-j> <C-w>j<C-A>
+nnoremap <C-j> <C-w>j
 tnoremap <C-j> <C-\><C-N><C-w>j " navigation out of terminal mode
 
 " move to split above of current split
@@ -322,6 +324,12 @@ nnoremap <leader>[ :bprevious<CR>
 " fuzzy find in current file
 " <Leader>/ " from fzf plugin
 
+" jump to other/closing tag
+" <leader>. " from MatchTagAlways plugin
+
+" find assignments (only for python)
+" <Leader>a " from jedi plugin
+
 "<leader>b: toggle status bar
 function! ToggleStatusBar()
     if s:status_hidden  == 0
@@ -357,8 +365,11 @@ nnoremap <leader>cd :lcd %:p:h<CR>
 " fuzzy find in all files in tree
 " <Leader>f " from fzf plugin
 
-" enable hard mode (for training purposes)
-nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+" Toggle (git) diff bar
+" <Leader>g " from signify plugin
+
+" enable hard mode (for practice purposes)
+" <leader>h " from hard mode plugin
 
 " toggle relative line numbers
 function! RelativeNumberToggle()
@@ -371,10 +382,18 @@ function! RelativeNumberToggle()
 endfunc
 nnoremap <leader>l :call RelativeNumberToggle()<CR>
 
-" paste from clipboard
+" toggle visible marks
+" <leader>m " from vim-signature
+
+" find ocurrences (only for python)
+" <Leader>o " from jedi plugin
+
+" show only current buffer (overrides above)
+nnoremap <leader>o :only<CR>
+
+" paste from clipboard in stead of selection
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
-
 
 "<leader>s: latex synctex tex->pdf
 function! SyncTex()

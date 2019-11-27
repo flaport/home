@@ -45,7 +45,11 @@ printf "ARCH PACKAGE INSTALL\n\n\n" > $ERR
 # Ask for password, this will be used for all the sudo calls.:
 # and to change the shell later on.
 read -s -p "[sudo] password for $USER: " password
-echo
+echo $password | sudo -S echo '' 2>/dev/null
+if [ $? -ne 0 ]; then
+    printf "\nIncorrect sudo password. Script ended prematurely.\n\nPlease start over.\n"
+    exit 1
+fi
 
 
 ## Update
@@ -561,6 +565,12 @@ pacman_install ffmpeg
 # network manager
 pacman_install networkmanager
 systemctl_enable NetworkManager
+# create network group (this might fail if the group exists already, but who cares.)
+groupadd network >> $LOG 2>> $ERR
+# create policy kit rule (everyone in network group can connect to / change networks)
+printf "polkit.addRule(function(action, subject) {\nif (action.id.indexOf(\"org.freedesktop.NetworkManager.\") == 0 && subject.isInGroup(\"network\")) {\nreturn polkit.Result.YES;\n}\n});" > /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules 2>> $ERR
+# add current user to network group
+sudo usermod -a -G network $USER
 # applet in the corner of the screen
 pacman_install network-manager-applet
 # openvpn
