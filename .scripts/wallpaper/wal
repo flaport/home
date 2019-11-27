@@ -3,7 +3,14 @@
 if [ -z $1 ]; then
     /usr/bin/wal -c
     /usr/bin/wal -i $HOME/.local/share/wallpapers/current-wallpaper
+    exitcode=$?
 else
     /usr/bin/wal $@
+    exitcode=$?
 fi
+
+# apply colors to dwm:
+xsetroot -name "fsignal:1" &> /dev/null
+
+exit $exitcode
 

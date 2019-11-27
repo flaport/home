@@ -152,6 +152,10 @@ def set_zathura_recolor(xresources):
     with open(os.path.expanduser("~/.config/zathura/recolor"), "w") as file:
         file.write(f'set recolor-darkcolor "{darkcolor}"\nset recolor-lightcolor "{lightcolor}"')
 
+def set_dwm_colors(xresources):
+    # my dwm build listens to fsignal:1 to update colors
+    subprocess.call(["xsetroot", "-name", "fsignal:1"])
+
 def update_dwm_status_bar():
     with open(os.devnull, "w") as file:
         subprocess.Popen(["dwm_status"], stdout=file, stderr=file)
@@ -178,5 +182,6 @@ if __name__ == "__main__":
     set_terminal_alphas(xresources)
     set_xresources(xresources)
     set_zathura_recolor(xresources)
+    set_dwm_colors(xresources)
     update_dwm_status_bar()
 

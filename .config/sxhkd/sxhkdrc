@@ -33,7 +33,9 @@ super + C
 super + d
     # handled by dwm
 
+# reload Xresources into dwm
 super + D
+    # handled by dwm
 
 # show a list of emojis
 super + e
