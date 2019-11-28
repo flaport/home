@@ -7,7 +7,7 @@
 
 
 # enable hotkeys
-sxhkd &> /dev/null &
+pidof sxhkd || sxhkd &> /dev/null &
 
 # set wallpaper
 wallpaper current-wallpaper &
@@ -21,27 +21,29 @@ if [ -f ~/.Xresources ]; then
 fi
 
 # start smdv (simple markdown viewer) in the background
-smdv --no-browser &
+pidof smdv || smdv --no-browser &
 
 # export your desired screenlayout with `arandr`
 default_screenlayout &
 
 # notifications
-dunst &
+pidof dunst || dunst &
 
 # network manager applet (in most right corner of the screen)
-nm-applet &
+pidof nm-applet || nm-applet &
 
 # automatically lock screen after 10 minutes
-xautolock -time 10 -locker validate_and_lock_screen &
+pidof xautolock || xautolock -time 10 -locker validate_and_lock_screen &
 
 # make the mouse invisible after a brief period of not using it.
-unclutter &
+pidof unclutter || unclutter &
 
 # conky dashboards
-conky -c $HOME/.config/conky/conky.conf -x 60 &
-conky -c $HOME/.config/conky/conky.conf -x -1860 &
-conky -c $HOME/.config/conky/conky.conf -x -3780 &
+if ! pidof conky; then
+    conky -c $HOME/.config/conky/conky.conf -x 60 &
+    conky -c $HOME/.config/conky/conky.conf -x -1860 &
+    conky -c $HOME/.config/conky/conky.conf -x -3780 &
+fi
 
 # set cursor speed
 # wrapped into loop, as sometimes this stops working
