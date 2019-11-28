@@ -8,15 +8,32 @@
 # Powerline theme - a fork of the agnoster theme.
 
 
+# important settings if UTF-8 is not enabled system-wide:
 LC_ALL="" 
 LC_CTYPE="en_US.UTF-8"
-PL_BRANCH_CHAR=''
-PL_SEGMENT_SEPARATOR=''
+
+# special characters. There are two ways to obtain special characters: 
+#   1. Use awesome terminal fonts + powerline-fonts
+#   2. Use a patched font such as nerd-fonts-inconsolataGo
+#   option 1 was chosen
+PL_BRANCH='' # <- powerline-fonts | awesome-terminal-fonts -> '  ' 
+PL_SEGMENT='' # <- powerline-fonts | awesome-terminal-fonts -> '' (too small)
+PL_FAILED='' # <- awesome-terminal-fonts | any monospace font -> '✘'
+PL_ROOT='' # <- awesome-terminal-fonts | any monospace font -> '⚡' 
+PL_MERGE='' # <- awesome-terminal-fonts
+PL_REBASE='' # <- awesome-terminal-fonts
+PL_LOG='' # <- awesome-terminal-fonts
+PL_BATTERY='' # <- awesome-terminal-fonts | any monospace font -> '🔋'
+PL_CHARGING='🔌' # <- any monospace font -> '🔌'
+PL_DIRTY='!' #' ' # <- any monospace font
+PL_STAGED='=' # ' ' # <- any monospace font
+
+# Xresources colors
 COLOR1=6  # first color
 COLOR2=4  # second color
 COLORD=5  # dirty color
 COLORU=1  # urgent color
-COLORT=7  # text colors
+COLORT=7  # text color
 
 prompt_segment() {
     local bg fg colorbg
@@ -26,7 +43,7 @@ prompt_segment() {
 
     # create the prompt background
     if [[ -n $COLORBG && $colorbg != $COLORBG ]]; then
-        echo -n " %{%K{$colorbg}%F{$COLORBG}%}$PL_SEGMENT_SEPARATOR%{%F{$COLORT}%} "
+        echo -n " %{%K{$colorbg}%F{$COLORBG}%}$PL_SEGMENT%{%F{$COLORT}%} "
     else
         echo -n "%{%K{$colorbg}%}%{%F{$COLORT}%} "
     fi
@@ -45,7 +62,7 @@ prompt_segment() {
 # End the prompt, closing any open segments
 prompt_end() {
   if [[ -n $COLORBG ]]; then
-    echo -n " %{%k%F{$COLORBG}%}$PL_SEGMENT_SEPARATOR"
+    echo -n " %{%k%F{$COLORBG}%}$PL_SEGMENT"
   else
     echo -n "%{%k%}"
   fi
@@ -83,11 +100,11 @@ prompt_git() {
     fi
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
-      mode=" <B>"
+      mode=" $PL_LOG"
     elif [[ -e "${repo_path}/MERGE_HEAD" ]]; then
-      mode=" >M<"
+      mode=" $PL_MERGE"
     elif [[ -e "${repo_path}/rebase" || -e "${repo_path}/rebase-apply" || -e "${repo_path}/rebase-merge" || -e "${repo_path}/../.dotest" ]]; then
-      mode=" >R>"
+      mode=" $PL_REBASE"
     fi
 
     setopt promptsubst
@@ -96,12 +113,13 @@ prompt_git() {
     zstyle ':vcs_info:*' enable git
     zstyle ':vcs_info:*' get-revision true
     zstyle ':vcs_info:*' check-for-changes true
-    zstyle ':vcs_info:*' stagedstr '+' #'✚'
-    zstyle ':vcs_info:*' unstagedstr '.' #'●'
+    zstyle ':vcs_info:*' stagedstr "$PL_STAGED" # '+' #'✚'
+    zstyle ':vcs_info:*' unstagedstr "$PL_DIRTY" #'.' #'●'
     zstyle ':vcs_info:*' formats ' %u%c'
     zstyle ':vcs_info:*' actionformats ' %u%c'
     vcs_info
-    echo -n "${ref/refs\/heads\//$PL_BRANCH_CHAR }${vcs_info_msg_0_%% }${mode}"
+    branch_name=$(echo ${ref/refs\/heads\//$PL_BRANCH } | sed s/\ master$//g)
+    echo -n "$branch_name${vcs_info_msg_0_%% }${mode}"
   fi
 }
 
@@ -177,8 +195,8 @@ prompt_virtualenv() {
 prompt_status() {
   local -a symbols
 
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{$COLORT}%}✘ ($RETVAL)"
-  [[ $UID -eq 0 ]] && symbols+="%{%F{$COLORT}%}⚡"
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{$COLORT}%}$PL_FAILED  - $RETVAL"
+  [[ $UID -eq 0 ]] && symbols+="%{%F{$COLORT}%}$PL_ROOT"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{$COLORT}%}$(echo $(jobs -l | grep -oE '\[[0-9]*\]'))"
 
   if [[ -n "$symbols" ]]; then
@@ -190,7 +208,7 @@ prompt_status() {
 prompt_battery(){
     BATTERY=$(acpi -b 2> /dev/null)
     BATTERY=$(echo $BATTERY | sed "s/^.*: //" | sed "s/^Full,.*$//")
-    BATTERY=$(echo $BATTERY | sed "s/^Discharging, /🔋/" | sed "s/^Unknown, /🔋/" | sed "s/^Charging, /🔌/" | sed "s/^\(.*\)%,.*/\1%%/")
+    BATTERY=$(echo $BATTERY | sed "s/^Discharging, /$PL_BATTERY  /" | sed "s/^Unknown, /$PL_BATTERY  /" | sed "s/^Charging, /$PL_CHARGING/" | sed "s/^\(.*\)%,.*/\1%%/")
     [ ! -z $BATTERY ] && prompt_segment && echo -n "$BATTERY"
 }
 

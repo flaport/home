@@ -444,16 +444,31 @@ pacman_install cups-pdf
 systemctl_enable org.cups.cupsd
 
 ## Fonts
-# best monospace font: inconsolata
-# pacman_install ttf-inconsolata
-# inconsolata on steroids: patched for powerline extensions (zsh/vim...)
-yay_install nerd-fonts-inconsolata-go
+# fontconfig should already be installed, but just to be sure:
+pacman_install fontconfig
 # best serif font. Maybe because it looks modern?
 pacman_install ttf-linux-libertine
-# sans-serif + chromium/firefox dependency
-pacman_install ttf-droid
-# symbols / emojis
+# best monospace font: inconsolata
+pacman_install ttf-inconsolata
+# inconsolata on steroids: patched for powerline extensions (zsh/vim...)
+# = best patched font, used for powerline theme (NOT compatible with awesome-terminal-fonts + powerline-font)
+# yay_install nerd-fonts-inconsolata-go
+# awesome terminal fonts: glyph dependencies (lsd and dwm (my build) dependency)
+pacman_install awesome-terminal-fonts
+# specific symbols for powerlines (optional dependency of my st build)
+pacman_install powerline-fonts
+# unicode symbols / emojis (these are standard unicode symbols, hence different than awesome terminal fonts!)
 yay_install ttf-symbola
+# adobe fonts (dependency of GNOME apps. Yes, you'll probably have a few of them...)
+# pacman_install adobe-source-code-pro-fonts
+# cantarell fonts (dependency of GNOME apps.  Yes, you'll probably have a few of them...)
+# pacman_install cantarell-fonts
+# gsfonts (dependency of GNOME apps.  Yes, you'll probably have a few of them...)
+# pacman_install gsfonts
+# sans-serif + chromium dependency
+# pacman_install ttf-droid
+# sans-serif + firefox & inkscape dependency
+# pacman_install ttf-dejavu
 # yay_install ttf-twemoji-color
 # yay_install ttf-pizzadude-bullets
 # yay_install otf-font-awesome-5-free

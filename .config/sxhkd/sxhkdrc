@@ -41,7 +41,9 @@ super + D
 super + e
     dmenu_emoji
 
+# show a list of font-awesome glyphs
 super + E
+    dmenu_awesome_terminal_fonts
 
 # full screen (monocle) layout
 super + f

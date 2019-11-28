@@ -1,0 +1,112 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import subprocess
+try:
+    import pyautogui
+except:
+    pyautogui is None
+with open(os.devnull, "w") as out:
+    has_xdotool = not subprocess.call(["which", "xdotool"], stdout=out, stderr=out)
+
+def notify(title, message=""):
+    if message:
+        subprocess.check_output(["notify-send", title, message])
+    else:
+        subprocess.check_output(["notify-send", title])
+
+def copy_to_clipboard(content):
+    xclip_in = subprocess.Popen(["echo", "-n", content], stdout=subprocess.PIPE).stdout
+    status = subprocess.call(["xclip", "-selection", "primary"], stdin=xclip_in)
+    xclip_in = subprocess.Popen(["echo", "-n", content], stdout=subprocess.PIPE).stdout
+    status = subprocess.call(["xclip", "-selection", "clipboard"], stdin=xclip_in)
+    return status
+
+def get_current_window_name_and_position():
+    if not has_xdotool:
+        return "", 0, 0
+    window_id = subprocess.check_output(["xdotool", "getactivewindow"]).strip().decode()
+    name = subprocess.check_output(["xdotool", "getwindowname", window_id]).strip().decode()
+    geometry = subprocess.check_output(["xdotool", "getwindowgeometry", window_id]).strip().decode()
+    x, y = geometry.split("Position: ")[1].split(" ")[0].split(",")
+    return name, x, y
+
+def move_mouse(x, y):
+    if not has_xdotool:
+        return 1
+    return subprocess.call(["xdotool", "mousemove", x, y])
+
+def middle_click():
+    if not has_xdotool:
+        return 1
+    return subprocess.call(["xdotool", "click", "2"])
+
+def paste_emoji(emoji):
+    if windowname in {"st", "xterm", "urxvt"}:
+        if not has_xdotool:
+            notify(f"'{emoji}' copied to clipboard.")
+            exit(0)
+        middle_click()
+    elif pyautogui is not None:
+        middle_click()
+        pyautogui.press("apps")
+        pyautogui.hotkey("ctrl", "v")
+    elif has_xdotool:
+        middle_click()
+    else:
+        notify(f"'{emoji}' copied to clipboard.")
+
+def dmenu(dict_in, prompt="codepoints"):
+    list_in = [f"{k}: {v}" for k, v in dict_in.items()]
+    try:
+        dmenu_in = subprocess.Popen(["echo", "\n".join(list_in)], stdout=subprocess.PIPE).stdout
+        choice = subprocess.check_output(
+            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+            ).decode().split(":")[0].strip()
+        return dict_in[choice]
+    except subprocess.CalledProcessError:
+        return ""
+
+
+if __name__ == "__main__":
+    codepoints = {}
+
+    with open("/usr/share/fonts/awesome-terminal-fonts/pomicons-regular.sh", "rb") as file:
+        for line in file:
+            if line.startswith(b"CODEPOINT_OF_POMICONS_"):
+                name, codepoint = line.split(b"=")
+                name = name.replace(b"CODEPOINT_OF_POMICONS_", b"").decode().lower().strip().replace("_", " ")
+                codepoint = codepoint.replace(b"'",b"").replace(b'"', b"").lower().strip()
+                codepoints[name] = (b"\u" + codepoint).decode("unicode-escape")
+    with open("/usr/share/fonts/awesome-terminal-fonts/fontawesome-regular.sh", "rb") as file:
+        for line in file:
+            if line.startswith(b"CODEPOINT_OF_AWESOME_"):
+                name, codepoint = line.split(b"=")
+                name = name.replace(b"CODEPOINT_OF_AWESOME_", b"").decode().lower().strip().replace("_", " ")
+                codepoint = codepoint.replace(b"'",b"").replace(b'"', b"").lower().strip()
+                codepoints[name] = (b"\u" + codepoint).decode("unicode-escape")
+    with open("/usr/share/fonts/awesome-terminal-fonts/octicons-regular.sh", "rb") as file:
+        for line in file:
+            if line.startswith(b"CODEPOINT_OF_OCTICONS_"):
+                name, codepoint = line.split(b"=")
+                name = name.replace(b"CODEPOINT_OF_OCTICONS_", b"").decode().lower().strip().replace("_", " ")
+                codepoint = codepoint.replace(b"'",b"").replace(b'"', b"").lower().strip()
+                codepoints[name] = (b"\u" + codepoint).decode("unicode-escape")
+    with open("/usr/share/fonts/awesome-terminal-fonts/devicons-regular.sh", "rb") as file:
+        for line in file:
+            if line.startswith(b"CODEPOINT_OF_DEVICONS_"):
+                name, codepoint = line.split(b"=")
+                name = name.replace(b"CODEPOINT_OF_DEVICONS_", b"").decode().lower().strip().replace("_", " ")
+                codepoint = codepoint.replace(b"'",b"").replace(b'"', b"").lower().strip()
+                codepoints[name] = (b"\u" + codepoint).decode("unicode-escape")
+
+    codepoints = {k: codepoints[k] for k in sorted(codepoints.keys())}
+
+    windowname, x, y = get_current_window_name_and_position()
+    codepoint = dmenu(codepoints)
+    if codepoint:
+        status = copy_to_clipboard(codepoint)
+        move_mouse(x, y)
+        paste_emoji(codepoint)
+
