@@ -188,16 +188,25 @@ prompt_virtualenv() {
   fi
 }
 
+# Jobs: are there any jobs open (ctrl-z)
+prompt_jobs() {
+  local -a symbols
+  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{$COLORT}%}$(jobs -l | grep -oE '\[[0-9]*\]' | sed 's/\]//g' | sed 's/\[//g' )"
+
+  if [[ -n "$symbols" ]]; then
+      prompt_segment
+      echo -n "$symbols"
+  fi
+}
+
 # Status:
 # - was there an error
 # - am I root
-# - are there background jobs?
 prompt_status() {
   local -a symbols
 
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{$COLORT}%}$PL_FAILED  - $RETVAL"
+  [[ $RETVAL != 0 && $RETVAL != 148 ]] && symbols+="%{%F{$COLORT}%}$PL_FAILED  $RETVAL"
   [[ $UID -eq 0 ]] && symbols+="%{%F{$COLORT}%}$PL_ROOT"
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{$COLORT}%}$(echo $(jobs -l | grep -oE '\[[0-9]*\]'))"
 
   if [[ -n "$symbols" ]]; then
       prompt_segment $COLORU
@@ -216,6 +225,7 @@ prompt_battery(){
 build_prompt_full() {
   RETVAL=$?
   prompt_status
+  prompt_jobs
   prompt_battery
   prompt_virtualenv
   prompt_dir
