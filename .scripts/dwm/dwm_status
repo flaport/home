@@ -67,7 +67,7 @@ bt(){ # bluetooth
     if [[ $device == bluetooth ]]; then
         echo -e ""
     else
-        echo -e 🦷
+        echo -e 
     fi
 }
 bt1(){ # mouse-button 1 action for bluetooth widget
@@ -97,7 +97,7 @@ cpu1(){ # mouse-button 1 action for cpu widget
 # -----------
 
 dte(){ # date
-    date +'📅 %Y-%m-%d'
+    date +' %Y-%m-%d' # 📅
 }
 dte1(){ # mouse-button 1 action for date widget
     notify-send "Today is $(date +'%A, %B %d')" "$(asciicalendar)"
@@ -108,7 +108,7 @@ dte1(){ # mouse-button 1 action for date widget
 hub(){ # jupyterhub status
     if [ -f /etc/systemd/system/jupyterhub.service ]; then
         if [[ $(systemctl is-active jupyterhub) == "active" ]]; then
-            echo -e 🪐
+            echo -e  #🪐
             return;
         fi
     fi
@@ -116,6 +116,38 @@ hub(){ # jupyterhub status
 }
 hub1(){ # mouse-button 1 action for jupyterhub widget
     name=jupyterhub
+    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
+}
+
+# -----------
+
+sync(){ # jupyterhub status
+    if [ -f /etc/systemd/system/syncthing.service ]; then
+        if [[ $(systemctl is-active syncthing) == "active" ]]; then
+            echo -e 
+            return;
+        fi
+    fi
+    echo -e ""
+}
+sync1(){ # mouse-button 1 action for jupyterhub widget
+    name=syncthing
+    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
+}
+
+# -----------
+
+jelly(){ # jupyterhub status
+    if [ -f /etc/systemd/system/jellyfin.service ]; then
+        if [[ $(systemctl is-active jellyfin) == "active" ]]; then
+            echo -e 
+            return;
+        fi
+    fi
+    echo -e ""
+}
+jelly1(){ # mouse-button 1 action for jupyterhub widget
+    name=jellyfin
     notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
 }
 
@@ -134,7 +166,7 @@ mem1() { # mouse-button 1 action for memory widget
 
 pcmn(){ # pacman
     num=$(pacman -Qu | wc -l)
-    echo -e 📦 $num
+    [[ $num > 0 ]] && echo -e  $num || echo -e ""
 }
 pcmn1(){ # pacman
     num=$(pacman -Qu | wc -l)
@@ -162,11 +194,11 @@ sshd1(){ # mouse-button 1 action for ssh daemon widget
 ssht(){ # ssh tunnels
     if [ -f /etc/systemd/system/sshtunnel.service ]; then
         if [[ $(systemctl is-active sshtunnel) == "active" ]]; then
-            echo -e 🔗;
+            echo -e ;
             return;
         fi
     fi
-    echo -e ""
+    echo -e ""
 }
 ssht1(){ # mouse-button 1 action for ssh tunnel widget
     name=sshtunnel
@@ -176,7 +208,7 @@ ssht1(){ # mouse-button 1 action for ssh tunnel widget
 # -----------
 
 tme(){ # time
-    date +'🕒 %H:%M'
+    date +' %H:%M' # 🕒
 }
 tme1(){ # mouse-button 1 action for time widget
     notify-send "Date: $(date)"
@@ -205,11 +237,11 @@ vol1(){ # mouse-button 1 action for volume widget
 vpn(){ # openvpn
     if [ -f /etc/systemd/system/openvpn.service ]; then
         if [[ $(systemctl is-active openvpn) == "active" ]]; then
-            echo -e 🔒;
+            echo -e ;
             return;
         fi
     fi
-    echo -e ""
+    echo -e ""
 }
 vpn1(){ # mouse-button 1 action for openvpn widget
     name=openvpn
@@ -290,5 +322,5 @@ status(){
 
 
 # Set the status bar #-------------------------------------------------------------------------------- 
-status bt vpn hub ssht sshd pcmn vol brt bat alpha wtr dte tme
+status   bt vpn hub sync jelly ssht sshd pcmn vol brt bat wtr dte tme
 
