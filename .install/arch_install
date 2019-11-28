@@ -446,8 +446,10 @@ systemctl_enable org.cups.cupsd
 ## Fonts
 # fontconfig should already be installed, but just to be sure:
 pacman_install fontconfig
-# best serif font. Maybe because it looks modern?
+# my preferred serif font.
 pacman_install ttf-linux-libertine
+# my preferred sans-serif (+ chromium dependency)
+pacman_install ttf-droid
 # best monospace font: inconsolata
 pacman_install ttf-inconsolata
 # inconsolata on steroids: patched for powerline extensions (zsh/vim...)
@@ -465,8 +467,6 @@ yay_install ttf-symbola
 # pacman_install cantarell-fonts
 # gsfonts (dependency of GNOME apps.  Yes, you'll probably have a few of them...)
 # pacman_install gsfonts
-# sans-serif + chromium dependency
-# pacman_install ttf-droid
 # sans-serif + firefox & inkscape dependency
 # pacman_install ttf-dejavu
 # yay_install ttf-twemoji-color
