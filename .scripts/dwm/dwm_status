@@ -40,13 +40,13 @@ BUTTON=$2
 
 status(){
     s=""
-    delim="|"
+    delim=$(printf "\x$(printf %x 31)") # 31: invisible ascii character; 124: |
     i=0
     for func in $@
     do
         out=$($func)
         if [ "$out" ]; then
-            s=$s" "$out" "$delim
+            s=$s" "$out$delim
             if [[ $WIDGET == $i && $BUTTON ]]; then
                 $($func$BUTTON)
             fi
@@ -58,7 +58,7 @@ status(){
 
 # define the list of active widgets here
 set-status(){
-    status serv bt vpn hub sync jelly ssht sshd pcmn vol brt bat wtr dte tme
+    status serv bt vpn hub sync jelly cups ssht sshd pcmn vol brt bat wtr dte tme
 }
 
 # Helper functions
@@ -153,8 +153,12 @@ bt1(){ # mouse-button 1 action for bluetooth widget
     if [[ $device == bluetooth ]]; then
         notify-send Bluetooth disconnected.
     else
-        notify-send Bluetooth "connected to $device\n◻️ + b to disconnect"
+        notify-send Bluetooth "\nconnected to $device\n\nmiddle click / ◻️ + b to disconnect"
     fi
+}
+bt2(){ # mouse-button 1 action for bluetooth widget
+    dmenu_bluetooth
+    sleep 2 && dwm_status &
 }
 
 # -----------
@@ -170,6 +174,24 @@ cpu(){ # cpu
 }
 cpu1(){ # mouse-button 1 action for cpu widget
     notify-send "cpu"
+}
+
+# -----------
+
+cups(){ # jupyterhub status
+    if [ -f /usr/lib/systemd/system/org.cups.cupsd.service ]; then
+        if [[ $(systemctl is-active org.cups.cupsd) == "active" ]]; then
+            echo -e ""
+            return;
+        fi
+    fi
+    echo -e ""
+}
+cups1(){ # mouse-button 1 action for jupyterhub widget
+    notifyservice org.cups.cupsd
+}
+cups2(){
+    toggleservice org.cups.cupsd
 }
 
 # -----------
