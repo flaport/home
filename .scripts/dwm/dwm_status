@@ -58,7 +58,7 @@ status(){
 
 # define the list of active widgets here
 set-status(){
-    status serv bt vpn hub sync jelly cups ssht sshd pcmn vol brt bat wtr dte tme
+    status serv bt vpn hub sync jelly cups ssht sshd pcmn alpha vol brt bat wtr dte tme
 }
 
 # Helper functions
@@ -99,7 +99,13 @@ alpha(){ # window transparency
     fi
 }
 alpha1(){ # mouse-button 1 action for alpha widget
-    notify-send "Window transparency" "◻️ + a: decrease alpha\n◻️ + shift + a: increase alpha"
+    notify-send "Window transparency" "\nscroll to adjust\n\n◻️ + a: decrease transparency\n◻️ + shift + a: increase transparency"
+}
+alpha4(){
+    $HOME/.scripts/x/alpha set +5 && dwm_status
+}
+alpha5(){
+    $HOME/.scripts/x/alpha set -5 && dwm_status &
 }
 
 # -----------
