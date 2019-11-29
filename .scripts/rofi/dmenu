@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-rofi -dmenu $@
+[ -z $DMENU] && DMENU="/usr/local/bin/dmenu -l 20 -p dmenu"
+$DMENU $@
