@@ -6,7 +6,85 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
 
-# Status bar widgets
+# Parse arguments
+#--------------------------------------------------------------------------------
+# the first argument to this script (if given) should equal the index of the widget
+# clicked.
+
+if [[ $1 == "-h" || $1 == "--help" ]]; then
+    echo "usage: dwm_status [widget-index] [mouse-button 1|2|3|4|5]"
+    exit 0
+fi
+
+WIDGET=""
+if [[ $1 ]]; then
+    WIDGET=$1
+fi
+
+# the second argument to this script (if given) should equal the mouse-button that was
+# used to click the widget.
+
+BUTTON=$2
+[[ $BUTTON -lt 1 || $BUTTON -gt 5 ]] && BUTTON=""
+
+# if no arguments are given then the status bar will be updated.
+
+
+# Status Command
+#--------------------------------------------------------------------------------
+
+# this is the command that pastes the widgets (defined below) together into the
+# status bar of dwm (by using xsetroot). The delimiter cannot be changed for
+# now, as (my fork of) dwm uses the same delimiter to figure out which widget
+# was clicked.
+
+status(){
+    s=""
+    delim="|"
+    i=0
+    for func in $@
+    do
+        out=$($func)
+        if [ "$out" ]; then
+            s=$s" "$out" "$delim
+            if [[ $WIDGET == $i && $BUTTON ]]; then
+                $($func$BUTTON)
+            fi
+            i=$((i+1))
+        fi
+    done
+    xsetroot -name "$s"
+}
+
+# define the list of active widgets here
+set-status(){
+    status serv bt vpn hub sync jelly ssht sshd pcmn vol brt bat wtr dte tme
+}
+
+# Helper functions
+#--------------------------------------------------------------------------------
+
+notifyservice(){
+    name=$1
+    if [[ $(systemctl is-active $name) == "active" ]]; then
+        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/(active)//g')\n\nmiddle click to stop\n\n[ ◻️ + shift + s: toggle any service ]"
+    else
+        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/(dead)//g')\n\nmiddle click to start\n\n[ ◻️ + shift + s: toggle any service ]"
+    fi
+}
+
+toggleservice(){ 
+    name=$1
+    if [[ $(systemctl is-active $name) == "active" ]]; then
+        sudo -A -p "[sudo] password to stop $name.service" systemctl stop $name
+    else
+        sudo -A -p "[sudo] password to restart $name.service" systemctl start $name
+    fi
+    sleep 2 && dwm_status &
+}
+
+
+# Widgets
 #--------------------------------------------------------------------------------
 
 # -----------
@@ -115,40 +193,28 @@ hub(){ # jupyterhub status
     echo -e ""
 }
 hub1(){ # mouse-button 1 action for jupyterhub widget
-    name=jupyterhub
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
+    notifyservice jupyterhub
 }
-
-# -----------
-
-sync(){ # jupyterhub status
-    if [ -f /etc/systemd/system/syncthing.service ]; then
-        if [[ $(systemctl is-active syncthing) == "active" ]]; then
-            echo -e 
-            return;
-        fi
-    fi
-    echo -e ""
-}
-sync1(){ # mouse-button 1 action for jupyterhub widget
-    name=syncthing
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
+hub2(){
+    toggleservice jupyterhub
 }
 
 # -----------
 
 jelly(){ # jupyterhub status
-    if [ -f /etc/systemd/system/jellyfin.service ]; then
+    if [ -f /usr/lib/systemd/system/jellyfin.service ]; then
         if [[ $(systemctl is-active jellyfin) == "active" ]]; then
-            echo -e 
+            echo -e ""
             return;
         fi
     fi
     echo -e ""
 }
 jelly1(){ # mouse-button 1 action for jupyterhub widget
-    name=jellyfin
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
+    notifyservice jellyfin
+}
+jelly2(){
+    toggleservice jellyfin
 }
 
 # -----------
@@ -170,8 +236,22 @@ pcmn(){ # pacman
 }
 pcmn1(){ # pacman
     num=$(pacman -Qu | wc -l)
-    notify-send "Pacman ($num)" "$num packages can be upgraded"
+    notify-send "Pacman ($num)" "$num packages can be upgraded\n\nmiddle click to update [pacman -Syu]"
 }
+pcmn2(){ # update packages
+    sudo -A -p "[sudo] password for 'pacman -Syu'" st -e pacman -Syu
+    sleep 2 && dwm_status &
+}
+
+# -----------
+
+serv(){ # toggle a service
+    echo -e 
+}
+serv1(){ # pacman
+    dmenu_services
+}
+
 
 # -----------
 
@@ -185,8 +265,10 @@ sshd(){ # ssh daemon
     echo -e ""
 }
 sshd1(){ # mouse-button 1 action for ssh daemon widget
-    name=sshd
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
+    notifyservice sshd
+}
+sshd2(){
+    toggleservice sshd
 }
 
 # -----------
@@ -201,8 +283,28 @@ ssht(){ # ssh tunnels
     echo -e ""
 }
 ssht1(){ # mouse-button 1 action for ssh tunnel widget
-    name=sshtunnel
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
+    notifyservice sshtunnel
+}
+ssht2(){
+    toggleservice sshtunnel
+}
+
+# -----------
+
+sync(){ # jupyterhub status
+    if [ -f /etc/systemd/system/syncthing.service ]; then
+        if [[ $(systemctl is-active syncthing) == "active" ]]; then
+            echo -e 
+            return;
+        fi
+    fi
+    echo -e ""
+}
+sync1(){ # mouse-button 1 action for jupyterhub widget
+    notifyservice syncthing
+}
+sync2(){
+    toggleservice syncthing
 }
 
 # -----------
@@ -217,8 +319,7 @@ tme1(){ # mouse-button 1 action for time widget
 # -----------
 
 vol(){ # volume
-    sc=$(soundcard)
-    string=$(amixer -c $sc get Master)
+    string=$(amixer -D pulse get Master)
     if [[ $string == *"[on]"* ]]; then
         percentage=$(echo $string | cut -d "[" -f2 | cut -d "]" -f1)
         echo -e "🔊 $percentage"
@@ -227,9 +328,15 @@ vol(){ # volume
     fi
 }
 vol1(){ # mouse-button 1 action for volume widget
-    sc=$(soundcard)
-    string=$(amixer -c $sc get Master)
-    notify-send "Volume" "◻️ + plus: increase volume\n◻️ + minus: decrease volume\n◻️ + shift + minus: mute\n\n$string"
+    string=$(amixer -D pulse get Master)
+    percentage=$(echo $string | cut -d "[" -f2 | cut -d "]" -f1)
+    notify-send "Volume $percentage" "\nscroll to adjust\n\n◻️ + plus: increase volume\n◻️ + minus: decrease volume\n◻️ + shift + minus: mute"
+}
+vol4(){
+    amixer -D pulse set Master 5%+ && dwm_status &
+}
+vol5(){
+    amixer -D pulse set Master 5%- && dwm_status &
 }
 
 # -----------
@@ -244,8 +351,10 @@ vpn(){ # openvpn
     echo -e ""
 }
 vpn1(){ # mouse-button 1 action for openvpn widget
-    name=openvpn
-    notify-send "$(systemctl status $name | sed 1q)" "$(systemctl status $name | grep Active)\n\n◻️ + shift + s: toggle a service"
+    notifyservice openvpn
+}
+vpn2(){ # mouse-button 2 action for openvpn widget
+    toggleservice openvpn
 }
 
 # -----------
@@ -265,62 +374,7 @@ wtr1(){ # mouse-button 1 action for weather widget
 }
 
 
-# Which widget was clicked
-#--------------------------------------------------------------------------------
-
-# the first argument to this script should equal the index of the widget
-# clicked.
-
-WIDGET=""
-if [[ $1 ]]; then
-    WIDGET=$1
-fi
-
-
-# Which button was clicked
-#--------------------------------------------------------------------------------
-
-# the second argument to this script should equal the mouse-button that was
-# used to click the widget.
-
-BUTTON=""
-if [[ $2 == 1 ]]; then
-    BUTTON=1
-fi
-if [[ $2 == 2 ]]; then
-    BUTTON=2
-fi
-if [[ $2 == 3 ]]; then
-    BUTTON=3
-fi
-
 
 # Status Command
 #--------------------------------------------------------------------------------
-
-# this is the command that pastes the widgets together into the status bar of
-# dwm (by using xsetroot). The delimiter cannot be changed for now, as (my fork
-# of) dwm uses the same delimiter to figure out which widget was clicked.
-
-status(){
-    s=""
-    delim="|"
-    i=0
-    for func in $@
-    do
-        out=$($func)
-        if [ "$out" ]; then
-            s=$s" "$out" "$delim
-            if [[ $WIDGET == $i && $BUTTON ]]; then
-                $($func$BUTTON)
-            fi
-            i=$((i+1))
-        fi
-    done
-    xsetroot -name "$s"
-}
-
-
-# Set the status bar #-------------------------------------------------------------------------------- 
-status   bt vpn hub sync jelly ssht sshd pcmn vol brt bat wtr dte tme
-
+set-status
