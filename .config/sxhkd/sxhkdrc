@@ -51,6 +51,7 @@ super + f
 
 # floating layout
 super + F
+    # handled by dwm
 
 # greek letters menu
 super + g
@@ -136,9 +137,11 @@ super + Q
 
 # start an ipython repl
 super + r
-    cd ~; $TERMINAL -e ipython
+    cd ~; $TERMINAL -e $HOME/.anaconda/bin/ipython
 
+# dmenu file manager
 super + R
+    dmenufm
 
 # run a program
 super + s
@@ -257,9 +260,13 @@ super + slash
 
 super + apostrophe
 
+# focus on next monitor
 super + comma
+    # handled by dwm
 
+# focus on previous monitor
 super + period
+    # handled by dwm
 
 super + shift + comma
 
