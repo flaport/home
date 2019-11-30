@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-unzip $1 -d $(echo $1 | sed 's/\.zip/-unzipped/')
+cd $(dirname $1)
+unzip $1 -d $(echo $1 | sed 's/\.zip//g') & disown;
