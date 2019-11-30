@@ -286,12 +286,16 @@ pacman_install poppler
 pacman_install highlight
 # mediainfo: show audio and video information in terminal
 pacman_install mediainfo
+# trans: command line translation engine
+pacman_install translate-shell
 # process information
 pacman_install htop
 # system information
 # pacman_install neofetch
 # lightweight system information
 # yay_install pfetch
+# some more eye-candy
+yay_install cli-visualizer
 # terminal spreadsheets
 # yay_install sc-im
 # large ascii letters
