@@ -399,6 +399,8 @@ pacman_install gnome-themes-standard
 pacman_install gtk-engine-murrine
 # arc theme
 pacman_install arc-gtk-theme
+# dark gruvbox-inspired arc theme (default theme for now)
+yay_install gtk-theme-arc-gruvbox-git
 # manjaro cursor theme
 # yay_install xcursor-menda-git
 # yay_install xcursor-maia-git
@@ -417,8 +419,9 @@ pacman_install xcursor-simpleandsoft
 sudo rm -r /etc/gtk-2.0/*
 sudo rsync -a /usr/share/themes/Arc/gtk-2.0/ /etc/gtk-2.0/ >> $LOG 2>> $ERR
 # gtk look-and-feel for qt:
-pacman_install qt5ct
 pacman_install kvantum-qt5
+# dependency for kvantum:
+pacman_install qt5ct
 # lxappearance: tool to choose gtk themes
 pacman_install lxappearance
 
@@ -757,7 +760,7 @@ echo $password | sudo -S timedatectl set-local-rtc 1 >> $LOG 2>> $ERR
 # make sure everyone can mount in /mnt
 echo $password | sudo -S chmod a+rwx /mnt >> $LOG 2>> $ERR
 # copy dark solarized theme to ~/.Xresources -> default color scheme
-cp ~/.config/Xresources/solarizeddark ~/.Xresources >> $LOG 2>> $ERR
+cp ~/.config/Xresources/gruvbox-dark ~/.Xresources >> $LOG 2>> $ERR
 
 
 ## Alternative shell
