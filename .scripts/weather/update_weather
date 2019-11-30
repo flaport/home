@@ -6,3 +6,7 @@ sed '13q;d' ~/.cache/weatherreport | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm
 dwm_status
 cat ~/.cache/weatherreportshort
 cat ~/.cache/weatherreport
+
+if [[ $1 == "--block" ]]; then
+    read
+fi

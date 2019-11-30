@@ -56,9 +56,9 @@ status(){
     xsetroot -name "$s"
 }
 
-# define the list of active widgets here
+# define the list of active widgets here (widgets defined below)
 set-status(){
-    status serv bt vpn hub sync jelly cups ssht sshd pcmn alpha vol brt bat wtr dte tme
+    status serv hub sync jelly cups sshd ssht vpn bt pcmn alpha vol brt bat wtr dte tme
 }
 
 # Helper functions
@@ -67,9 +67,9 @@ set-status(){
 notifyservice(){
     name=$1
     if [[ $(systemctl is-active $name) == "active" ]]; then
-        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/(active)//g')\n\nmiddle click to stop\n\n[ ◻️ + shift + s: toggle any service ]"
+        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/(active)//g')\n\nmiddle click to stop\n\n[  +  + s: toggle any service ]"
     else
-        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/(dead)//g')\n\nmiddle click to start\n\n[ ◻️ + shift + s: toggle any service ]"
+        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/(dead)//g')\n\nmiddle click to start\n\n[  +  + s: toggle any service ]"
     fi
 }
 
@@ -99,7 +99,7 @@ alpha(){ # window transparency
     fi
 }
 alpha1(){ # mouse-button 1 action for alpha widget
-    notify-send "Window transparency" "\nscroll to adjust\n\n◻️ + a: decrease transparency\n◻️ + shift + a: increase transparency"
+    notify-send "Window transparency" "\nscroll to adjust\n\n + a: decrease transparency\n +  + a: increase transparency"
 }
 alpha4(){
     $HOME/.scripts/x/alpha set +5 && dwm_status
@@ -137,7 +137,7 @@ brt1(){ # mouse-button 1 action for brightness widget
     max_brightness=$(cat $dir/max_brightness)
     brightness=$(cat $dir/brightness)
     brightness=$(python -c "print('%.0f'%(100*$brightness/$max_brightness)+'%')")
-    notify-send "Screen brightness [$brightness]" "◻️ + F11: decrease brightness\n◻️ + F12: increase brightness"
+    notify-send "Screen brightness [$brightness]" " + F11: decrease brightness\n + F12: increase brightness"
 }
 
 # -----------
@@ -149,17 +149,17 @@ bt(){ # bluetooth
     fi
     device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]" | sed "s/.*\[\(.*\)\].*/\1/g")
     if [[ $device == bluetooth ]]; then
-        echo -e ""
+        echo -e ""
     else
-        echo -e 
+        printf ""
     fi
 }
 bt1(){ # mouse-button 1 action for bluetooth widget
     device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]" | sed "s/.*\[\(.*\)\].*/\1/g")
     if [[ $device == bluetooth ]]; then
-        notify-send Bluetooth disconnected.
+        notify-send Bluetooth "\ndisconnected\n\nmiddle click /  + b to connect"
     else
-        notify-send Bluetooth "\nconnected to $device\n\nmiddle click / ◻️ + b to disconnect"
+        notify-send Bluetooth "\nconnected to $device\n\nmiddle click /  + b to disconnect"
     fi
 }
 bt2(){ # mouse-button 1 action for bluetooth widget
@@ -267,7 +267,7 @@ pcmn1(){ # pacman
     notify-send "Pacman ($num)" "$num packages can be upgraded\n\nmiddle click to update [pacman -Syu]"
 }
 pcmn2(){ # update packages
-    sudo -A -p "[sudo] password for 'pacman -Syu'" st -e pacman -Syu
+    sudo -A -p "[sudo] password for 'pacman -Syu'" st -n float -e pacman -Syu
     sleep 2 && dwm_status &
 }
 
@@ -358,7 +358,7 @@ vol(){ # volume
 vol1(){ # mouse-button 1 action for volume widget
     string=$(amixer -D pulse get Master)
     percentage=$(echo $string | cut -d "[" -f2 | cut -d "]" -f1)
-    notify-send "Volume $percentage" "\nscroll to adjust\n\n◻️ + plus: increase volume\n◻️ + minus: decrease volume\n◻️ + shift + minus: mute"
+    notify-send "Volume $percentage" "\nscroll to adjust\n\n + : volume up\n + : volume down\n +  + : mute"
 }
 vol4(){
     amixer -D pulse set Master 5%+ && dwm_status &
@@ -398,7 +398,10 @@ wtr(){ # weather
 wtr1(){ # mouse-button 1 action for weather widget
     # cat out the weather report, show only the first 7 lines and remove all colors
     report=$(cat ~/.cache/weatherreport | head -n 7 | sed 's/\x1b\[[0-9;]*m//g' | tail -n 6 | sed 's/\\/\\\\/g' | sed 's/―/-/g')
-    notify-send "Weather" "$report"
+    notify-send "Weather" "$report\n\nmiddle click for full report"
+}
+wtr2(){
+    st -n float -f mono:12 -g 130x40+1130 -e update_weather --block
 }
 
 
