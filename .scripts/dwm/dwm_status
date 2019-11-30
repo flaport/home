@@ -59,6 +59,7 @@ status(){
 # define the list of active widgets here (widgets defined below)
 set-status(){
     status serv hub sync jelly cups sshd ssht vpn bt pcmn alpha vol brt bat wtr dte tme
+    #status cups vpn alpha vol brt bat wtr dte tme
 }
 
 # Helper functions
@@ -66,16 +67,16 @@ set-status(){
 
 notifyservice(){
     name=$1
-    if [[ $(systemctl is-active $name) == "active" ]]; then
-        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/(active)//g')\n\nmiddle click to stop\n\n[  +  + s: toggle any service ]"
+    if systemctl is-active $name &> /dev/null; then
+        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/\ (running)//g')\n\nmiddle click to stop\n\n[  +  + s: toggle any service ]"
     else
-        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/(dead)//g')\n\nmiddle click to start\n\n[  +  + s: toggle any service ]"
+        notify-send "$name service" "\n$(systemctl status $name | grep Active | sed 's/^.*Active://g' | sed 's/\ (dead)//g')\n\nmiddle click to start\n\n[  +  + s: toggle any service ]"
     fi
 }
 
 toggleservice(){ 
     name=$1
-    if [[ $(systemctl is-active $name) == "active" ]]; then
+    if systemctl is-active $name &> /dev/null; then
         sudo -A -p "[sudo] password to stop $name.service" systemctl stop $name
     else
         sudo -A -p "[sudo] password to restart $name.service" systemctl start $name
@@ -92,8 +93,8 @@ toggleservice(){
 alpha(){ # window transparency
     pidof picom > /dev/null
     if [ $? -eq 0 ]; then
-        alpha=0"$(cat ~/.Xresources | grep alpha | sed s/\*alpha\:\ // | sed s/\[.\]//)"
-        echo -e α"$alpha"% | sed s/α00/α\ / | sed s/α0/α\ /
+        alpha=$(python -c "print(int(100*$(xrdb -query | grep alpha | cut -f 2)))")
+        echo -e α $alpha%
     else
         echo -e α -
     fi
@@ -102,7 +103,7 @@ alpha1(){ # mouse-button 1 action for alpha widget
     notify-send "Window transparency" "\nscroll to adjust\n\n + a: decrease transparency\n +  + a: increase transparency"
 }
 alpha4(){
-    $HOME/.scripts/x/alpha set +5 && dwm_status
+    $HOME/.scripts/x/alpha set +5 && dwm_status &
 }
 alpha5(){
     $HOME/.scripts/x/alpha set -5 && dwm_status &
@@ -185,13 +186,7 @@ cpu1(){ # mouse-button 1 action for cpu widget
 # -----------
 
 cups(){ # jupyterhub status
-    if [ -f /usr/lib/systemd/system/org.cups.cupsd.service ]; then
-        if [[ $(systemctl is-active org.cups.cupsd) == "active" ]]; then
-            echo -e ""
-            return;
-        fi
-    fi
-    echo -e ""
+    systemctl is-active org.cups.cupsd &> /dev/null && echo -e 
 }
 cups1(){ # mouse-button 1 action for jupyterhub widget
     notifyservice org.cups.cupsd
@@ -212,13 +207,7 @@ dte1(){ # mouse-button 1 action for date widget
 # -----------
 
 hub(){ # jupyterhub status
-    if [ -f /etc/systemd/system/jupyterhub.service ]; then
-        if [[ $(systemctl is-active jupyterhub) == "active" ]]; then
-            echo -e  #🪐
-            return;
-        fi
-    fi
-    echo -e ""
+    systemctl is-active jupyterhub &> /dev/null && echo -e   #🪐
 }
 hub1(){ # mouse-button 1 action for jupyterhub widget
     notifyservice jupyterhub
@@ -230,13 +219,7 @@ hub2(){
 # -----------
 
 jelly(){ # jupyterhub status
-    if [ -f /usr/lib/systemd/system/jellyfin.service ]; then
-        if [[ $(systemctl is-active jellyfin) == "active" ]]; then
-            echo -e ""
-            return;
-        fi
-    fi
-    echo -e ""
+    systemctl is-active jellyfin &> /dev/null && echo -e 
 }
 jelly1(){ # mouse-button 1 action for jupyterhub widget
     notifyservice jellyfin
@@ -264,7 +247,7 @@ pcmn(){ # pacman
 }
 pcmn1(){ # pacman
     num=$(pacman -Qu | wc -l)
-    notify-send "Pacman ($num)" "$num packages can be upgraded\n\nmiddle click to update [pacman -Syu]"
+    notify-send "Pacman ($num)" "$num packages can be updated\n\nmiddle click to update [pacman -Syu]"
 }
 pcmn2(){ # update packages
     sudo -A -p "[sudo] password for 'pacman -Syu'" st -n float -e pacman -Syu
@@ -284,13 +267,7 @@ serv1(){ # pacman
 # -----------
 
 sshd(){ # ssh daemon
-    if [ -f /usr/lib/systemd/system/sshd.service ]; then
-        if [[ $(systemctl is-active sshd) == "active" ]]; then
-            echo -e ⛓;
-            return;
-        fi
-    fi
-    echo -e ""
+    systemctl is-active sshd &> /dev/null && echo -e ⛓
 }
 sshd1(){ # mouse-button 1 action for ssh daemon widget
     notifyservice sshd
@@ -302,13 +279,7 @@ sshd2(){
 # -----------
 
 ssht(){ # ssh tunnels
-    if [ -f /etc/systemd/system/sshtunnel.service ]; then
-        if [[ $(systemctl is-active sshtunnel) == "active" ]]; then
-            echo -e ;
-            return;
-        fi
-    fi
-    echo -e ""
+    systemctl is-active sshtunnel &> /dev/null && echo -e  || echo -e 
 }
 ssht1(){ # mouse-button 1 action for ssh tunnel widget
     notifyservice sshtunnel
@@ -320,13 +291,7 @@ ssht2(){
 # -----------
 
 sync(){ # jupyterhub status
-    if [ -f /etc/systemd/system/syncthing.service ]; then
-        if [[ $(systemctl is-active syncthing) == "active" ]]; then
-            echo -e 
-            return;
-        fi
-    fi
-    echo -e ""
+    systemctl is-active sshtunnel &> /dev/null && echo -e 
 }
 sync1(){ # mouse-button 1 action for jupyterhub widget
     notifyservice syncthing
@@ -370,13 +335,7 @@ vol5(){
 # -----------
 
 vpn(){ # openvpn
-    if [ -f /etc/systemd/system/openvpn.service ]; then
-        if [[ $(systemctl is-active openvpn) == "active" ]]; then
-            echo -e ;
-            return;
-        fi
-    fi
-    echo -e ""
+    systemctl is-active openvpn &> /dev/null && echo -e   || echo -e ""
 }
 vpn1(){ # mouse-button 1 action for openvpn widget
     notifyservice openvpn
@@ -388,12 +347,7 @@ vpn2(){ # mouse-button 2 action for openvpn widget
 # -----------
 
 wtr(){ # weather
-    s=$(cat ~/.cache/weatherreportshort)
-    if [ -n "$s" ]; then
-        echo -e "$s"
-    else
-        echo -e ""
-    fi
+    test -f ~/.cache/weatherreportshort && cat ~/.cache/weatherreportshort || echo -e ""
 }
 wtr1(){ # mouse-button 1 action for weather widget
     # cat out the weather report, show only the first 7 lines and remove all colors
