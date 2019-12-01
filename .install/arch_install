@@ -156,7 +156,7 @@ git_install(){ # will only install the first argument!
     printf "rm -rf /tmp/gitpkg\n" >> $LOG
     printf "rm -rf /tmp/gitpkg\n" >> $ERR
     rm -rf /tmp/gitpkg >> $LOG 2>> $ERR
-    
+
 }
 
 submodule_install(){ # will only install the first argument!
@@ -260,6 +260,8 @@ pacman_install pv
 pacman_install acpi
 # vifm: terminal file browser
 pacman_install vifm
+# dos2unix: tool to change carriage return (^M | \r) into nomal return (\n)
+pacman_install dos2unix
 # terminal internet search: google
 # yay_install googler
 # terminal internet search: duckduckgo
@@ -396,7 +398,7 @@ cat /etc/lightdm/lightdm-mini-greeter.conf | sed "s/^user = CHANGE_ME$/user = $U
 sudo cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
 systemctl_enable lightdm
 
-## Themes 
+## Themes
 # gtk3
 pacman_install gtk3
 # adwaita [inkscape dependency]
@@ -627,9 +629,9 @@ pacman_install alsa-utils
 pacman_install alsa-plugins
 pacman_install pulseaudio
 # media control
-pacman_install mpc 
+pacman_install mpc
 # media daemon
-pacman_install mpd 
+pacman_install mpd
 systemctl_enable mpd
 
 ## Latex
