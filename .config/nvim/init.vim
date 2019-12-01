@@ -327,23 +327,9 @@ nnoremap <leader>[ :bprevious<CR>
 " jump to other/closing tag
 " <leader>. " from MatchTagAlways plugin
 
-"<leader>b: toggle status bar
-function! ToggleStatusBar()
-    if s:status_hidden  == 0
-        let s:status_hidden = 1
-        set noshowmode
-        set noruler
-        set laststatus=0
-        set noshowcmd
-    else
-        let s:status_hidden = 0
-        set showmode
-        set ruler
-        set laststatus=2
-        set showcmd
-    endif
-endfunction
-nnoremap <leader>b :call ToggleStatusBar()<CR>
+" black python formatting
+nnoremap <leader>b :Black<CR>
+vnoremap <leader>b :!black - 2>/dev/null<CR>
 
 " edit this configuration files (requires set hidden)
 nnoremap <leader>cc :e ~/.config/nvim/init.vim<CR>
@@ -367,6 +353,24 @@ nnoremap <leader>cd :lcd %:p:h<CR>
 
 " enable hard mode (for practice purposes)
 " <leader>h " from hard mode plugin
+
+"<leader>i: more information (toggle status bar)
+function! ToggleStatusBar()
+    if s:status_hidden  == 0
+        let s:status_hidden = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+    else
+        let s:status_hidden = 0
+        set showmode
+        set ruler
+        set laststatus=2
+        set showcmd
+    endif
+endfunction
+nnoremap <leader>i :call ToggleStatusBar()<CR>
 
 " toggle relative line numbers
 function! RelativeNumberToggle()

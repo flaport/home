@@ -39,6 +39,7 @@ Plug 'kshenoy/vim-signature' " Show marks in margin
 Plug 'lilydjwg/colorizer' " Paint css colors with the real color
 Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
 Plug 'neomake/neomake' " Linters
+Plug 'psf/black' " black python plugin
 Plug 'Shougo/context_filetype.vim' " Completion from other opened files
 Plug 'Shougo/deoplete.nvim' " Async autocompletion
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
@@ -118,6 +119,9 @@ autocmd! BufWritePost * Neomake
 let g:neomake_python_python_maker = neomake#makers#ft#python#python()
 " use flake8 to check python code
 let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
+
+" psf/black --------------------------------------
+
 
 " Shougo/context_filetype.vim --------------------
 " complete with words from any opened file
