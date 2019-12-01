@@ -327,9 +327,6 @@ nnoremap <leader>[ :bprevious<CR>
 " jump to other/closing tag
 " <leader>. " from MatchTagAlways plugin
 
-" find assignments (only for python)
-" <Leader>a " from jedi plugin
-
 "<leader>b: toggle status bar
 function! ToggleStatusBar()
     if s:status_hidden  == 0
@@ -394,6 +391,9 @@ nnoremap <leader>o :only<CR>
 " paste from clipboard in stead of selection
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
+
+" rename variable (only for python)
+" <Leader>r " from jedi plugin
 
 "<leader>s: latex synctex tex->pdf
 function! SyncTex()

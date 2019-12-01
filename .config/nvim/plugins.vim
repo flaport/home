@@ -33,24 +33,24 @@ endif
 " Run :UpdateRemotePlugins to update dependencies
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'christoomey/vim-tmux-navigator' " tmux navigation
-Plug 'tpope/vim-commentary' " easy comment
-Plug 'tpope/vim-surround' " easily surround word with quotes or tags
-Plug 'tpope/vim-repeat' " easily repeat plugin commands with .
-Plug 'tpope/vim-markdown' " markdown syntax highlighting
-Plug 'tpope/vim-speeddating' " increase date with <C-A>
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
+Plug 'junegunn/fzf.vim' " Fuzzy file finder (needs system wide fzf install)
+Plug 'kshenoy/vim-signature' " Show marks in margin
 Plug 'lilydjwg/colorizer' " Paint css colors with the real color
+Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
+Plug 'neomake/neomake' " Linters
+Plug 'Shougo/context_filetype.vim' " Completion from other opened files
+Plug 'Shougo/deoplete.nvim' " Async autocompletion
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'tpope/vim-commentary' " easy comment
+Plug 'tpope/vim-markdown' " markdown syntax highlighting
+Plug 'tpope/vim-repeat' " easily repeat plugin commands with .
+Plug 'tpope/vim-speeddating' " increase date with <C-A>
+Plug 'tpope/vim-surround' " easily surround word with quotes or tags
 Plug 'valloric/MatchTagAlways' " Highlight matching html tags
 Plug 'vim-scripts/YankRing.vim' " Yank history navigation
-Plug 'neomake/neomake' " Linters
-Plug 'mhinz/vim-signify' " Git/mercurial/others diff icons on the side of the file lines
-Plug 'kshenoy/vim-signature' " Show marks in margin
-Plug 'junegunn/fzf.vim' " Fuzzy file finder (needs system wide fzf install)
-" Plug 'Shougo/deoplete.nvim' " Async autocompletion
-" Plug 'Shougo/context_filetype.vim' " Completion from other opened files
-" Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
-" Plug 'zchee/deoplete-jedi'  " Python autocompletion
 Plug 'wikitopian/hardmode' " Vim hard mode (useful for training)
+Plug 'zchee/deoplete-jedi'  " Python autocompletion
 call plug#end() " stop loading plugins
 
 
@@ -67,15 +67,73 @@ endif
 "" Plugin Settings
 "-------------------------------------------------------------------------------
 
-" Markdown -------------------------------
-" inline code highlighting
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
-" conceal markdown syntax
-let g:markdown_syntax_conceal = 1
-" highlight 100 lines
-let g:markdown_minlines = 100
+" davidhalter/jedi-vim ---------------------------
+" default configuration of jedi-vim kinda sucks. A lot of settings mess with
+" the default vim completion and make it work not like expected. The
+" configuration below tries to disable those insensible defaults.
+let g:jedi#auto_initialization = 1 " initialize normally
+let g:jedi#completions_command = '' " just default omicompletion: <C-x><C-o>
+let g:jedi#smart_auto_mappings = 0 " this is incredibly annoying hence disabled
+let g:jedi#auto_vim_configuration = 0 " don't let the plugin mess with the default completion settings
+let g:jedi#popup_select_first = 0 " don't let the plugin mess with the default completion settings
+let g:jedi#show_call_signatures = 1 " show call signatures inline
+let g:jedi#squelch_py_warning = 1 " no warning when python not available
+let g:jedi#completions_enabled = 0 " use deoplete instead of jedi for completion
+let g:jedi#goto_command = '<Leader>d' " goto python definition
+let g:jedi#usages_command = '<Leader>o' " find ocurrences
+let g:jedi#rename_command = '<Leader>r' " rename python variable
+let g:jedi#documentation_command = 'K' " show python docstring
+let g:jedi#popup_on_dot = 0 " only after first letter
+let g:jedi#goto_assignments_command = '' " not used (partially covered by goto_command)
+let g:jedi#goto_definitions_command = '' " not used (partially covered by goto_command)
 
-" Instant markdown -----------------------
+" junegunn/fzf.vim -------------------------------
+" general code finder in current file mapping
+nmap <Leader>/ :BLines<CR>
+" general code finder in all files mapping
+nmap <Leader>f :Lines<CR>
+" file finder mapping
+nmap <Leader>e :Files<CR>
+" tags (symbols) in all files finder mapping
+nmap <Leader>t :Tag<CR>
+
+" kshenoy/vim-signature --------------------------
+" add a way to disable this for less wide margins
+nnoremap <leader>m :SignatureToggleSigns<CR>
+
+" lilydjwg/colorizer -----------------------------
+" do not color more than 1000 lines at once
+let g:colorizer_maxlines = 1000
+
+" mhinz/vim-signify ------------------------------
+" disable vim signify by default...
+let g:signify_disable_by_default = 1
+" but make a keyboard shortcut to show it when interested
+nnoremap <leader>g :SignifyToggle<CR>
+
+" neomake/neomake --------------------------------
+" run linter on write
+autocmd! BufWritePost * Neomake
+" check code as python3 by default
+let g:neomake_python_python_maker = neomake#makers#ft#python#python()
+" use flake8 to check python code
+let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
+
+" Shougo/context_filetype.vim --------------------
+" complete with words from any opened file
+let g:context_filetype#same_filetypes = {}
+" set underscore
+let g:context_filetype#same_filetypes._ = '_'
+
+" Shougo/deoplete.nvim ---------------------------
+" enable deoplete
+let g:deoplete#enable_at_startup = 1
+" ignore case when code completing with lower case letters
+let g:deoplete#enable_ignore_case = 1
+" do not ignore case when code completing with upper case letters
+let g:deoplete#enable_smart_case = 1
+
+" suan/vim-instant-markdown ----------------------
 " always run on port 9876
 let g:instant_markdown_port = 9876
 " do not start when opening markdown file
@@ -85,15 +143,19 @@ let g:instant_markdown_autoscroll = 1
 " don't use the python server (requires npm package: `npm -g install instant-markdown-d`)
 let g:instant_markdown_python = 0
 
-" Colorizer ------------------------------
-" do not color more than 1000 lines at once
-let g:colorizer_maxlines = 1000
+" tpope/vim-markdown -----------------------------
+" inline code highlighting
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+" conceal markdown syntax
+let g:markdown_syntax_conceal = 1
+" highlight 100 lines
+let g:markdown_minlines = 100
 
-" MatchTagAlways -------------------------
+" valloric/MatchTagAlways ------------------------
 " jump to other/closing tag
 nnoremap <leader>. :MtaJumpToOtherTag<cr>
 
-" Yankring -------------------------------
+" vim-scripts/YankRing.vim -----------------------
 " enable yankring by default
 let g:yankring_enabled = 1
 " maximum history for yankring
@@ -101,65 +163,6 @@ let g:yankring_max_history = 10
 " set history file
 let g:yankring_history_file = '.config/nvim/yankring'
 
-" Neomake --------------------------------
-" run linter on write
-autocmd! BufWritePost * Neomake
-" check code as python3 by default
-let g:neomake_python_python_maker = neomake#makers#ft#python#python()
-" use flake8 to check python code
-let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
-
-" Vim signify ----------------------------
-" disable vim signify by default...
-let g:signify_disable_by_default = 1
-" but make a keyboard shortcut to show it when interested
-nnoremap <leader>g :SignifyToggle<CR>
-
-" Vim signature --------------------------
-" add a way to disable this for less wide margins
-nnoremap <leader>m :SignatureToggleSigns<CR>
-
-" Fzf ------------------------------------
-" general code finder in current file mapping
-nmap <Leader>/ :BLines<CR>
-
-" general code finder in all files mapping
-nmap <Leader>f :Lines<CR>
-
-" file finder mapping
-nmap <Leader>e :Files<CR>
-
-" tags (symbols) in all files finder mapping
-nmap <Leader>t :Tag<CR>
-
-" Deoplete -------------------------------
-" enable deoplete
-let g:deoplete#enable_at_startup = 1
-" ignore case when code completing with lower case letters
-let g:deoplete#enable_ignore_case = 1
-" do not ignore case when code completing with upper case letters
-let g:deoplete#enable_smart_case = 1
-
-" Context filetype -----------------------
-" complete with words from any opened file
-let g:context_filetype#same_filetypes = {}
-" set underscore
-let g:context_filetype#same_filetypes._ = '_'
-
-" Jedi-vim -------------------------------
-" disable autocompletion (using deoplete instead)
-let g:jedi#completions_enabled = 0
-let g:jedi#popup_select_first = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#auto_close_doc = 0
-let g:jedi#smart_auto_mappings = 0
-" go to definition (only for python)
-let g:jedi#goto_command = '<Leader>d'
-" find ocurrences (only for python)
-let g:jedi#usages_command = '<Leader>o'
-" find assignments (only for python)
-let g:jedi#goto_assignments_command = '<Leader>a'
-
-" Hard mode ------------------------------
+" wikitopian/hardmode ----------------------------
 " enable hard mode (for practice purposes)
 nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
