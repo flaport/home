@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+[ "$1" ] && cd $1
+cmd=$(xclip -o)
+if ! echo $cmd | grep -E "^rsync|^cp|^mv" &> /dev/null; then
+    exit 1
+fi
+eval $cmd

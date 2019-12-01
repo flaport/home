@@ -1,0 +1,21 @@
+# Standard tokens that can be used in the Name, Comment (tooltip) and Exec fields:
+#
+# %U - insert URI list of selection
+# %F - insert path list of selection
+# %P - insert path of parent (current) directory
+# %f or %N (deprecated) - insert display name of first selected file
+# %p - insert display name of parent directory
+# %D - insert device path of file (i.e. /dev/sdb1)
+
+[Nemo Action]
+Active=true
+Name=Paste with rsync
+Comment=Paste %N with rsync to a new location
+Exec=pst %F
+Icon-Name=folder
+Stock-Id=gtk-cdrom
+Selection=none
+Extensions=any
+EscapeSpaces=true
+Terminal=true
+

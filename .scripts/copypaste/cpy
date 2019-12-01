@@ -12,6 +12,7 @@ Optional Arguments [should come first(!)]:
     -R, -r, --recursive:  copy directories recursively.
     -a, --append:         append to clipboard (useful if you want to copy content from
                           different directories to another (single) directory)
+    -s, --rsync:          use `rsync -av` in stead of cp
 
 Requirements:
     Python3.6+, xclip
@@ -33,6 +34,9 @@ if sys.argv[1] == "-h" or sys.argv[1] == "--help":
 
 # recursive copy
 if sys.argv[1] == "-R" or sys.argv[1] == "-r" or sys.argv[1] == "--recursive":
+    R = sys.argv.pop(1)
+
+if sys.argv[1] == "-s" or sys.argv[1] == "--rsync":
     R = sys.argv.pop(1)
 
 # append to clipboard
@@ -62,7 +66,11 @@ for path in paths:
         exit(1)
 
 # make new copy commands out of them
-new_commands = "\n" + "\n".join([f"cp -i {R} \"{path}\" ./" for path in paths])
+print(R)
+if R == "--rsync" or R == "-s":
+    new_commands = "\n" + "\n".join([f"rsync -av \"{path}\" ./" for path in paths])
+else:
+    new_commands = "\n" + "\n".join([f"cp -i {R} \"{path}\" ./" for path in paths])
 if not commands:
     print(f"the following copy commands were generated:\n\n{new_commands}\n")
     commands = "\n" + new_commands
@@ -79,4 +87,3 @@ if status != 0:
     print("Failed to save copy commands to clipboard. Is 'xclip' installed?")
     exit(1)
 print("copy commands saved to clipboard! Now go paste them somewhere.")
-
