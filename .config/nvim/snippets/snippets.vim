@@ -19,6 +19,51 @@ autocmd FileType tex inoremap ;enu <Esc>:-1read ~/.config/nvim/snippets/enumerat
 "-------------------------------------------------------------------------------
 
 inoremap ;html <Esc>:-1read ~/.config/nvim/snippets/html.html<CR>:set filetype=html<CR>zR/title<CR><Esc>cit
+autocmd FileType html inoremap ;'a &aacute;
+autocmd FileType html inoremap ;'e &eacute;
+autocmd FileType html inoremap ;'i &iacute;
+autocmd FileType html inoremap ;'o &oacute;
+autocmd FileType html inoremap ;'u &uacute;
+autocmd FileType html inoremap ;:a &auml;
+autocmd FileType html inoremap ;:e &euml;
+autocmd FileType html inoremap ;:i &iuml;
+autocmd FileType html inoremap ;:o &ouml;
+autocmd FileType html inoremap ;:u &uuml;
+autocmd FileType html inoremap ;~a &atilde;
+autocmd FileType html inoremap ;~e &etilde;
+autocmd FileType html inoremap ;~i &itilde;
+autocmd FileType html inoremap ;~o &otilde;
+autocmd FileType html inoremap ;~u &utilde;
+autocmd FileType html inoremap ;~h &ntilde;
+autocmd FileType html inoremap ;`a &agrave;
+autocmd FileType html inoremap ;`e &egrave;
+autocmd FileType html inoremap ;`i &igrave;
+autocmd FileType html inoremap ;`o &ograve;
+autocmd FileType html inoremap ;`u &ugrave;
+
+"" Special letters
+"-------------------------------------------------------------------------------
+inoremap ;'a á
+inoremap ;'e é
+inoremap ;'i í
+inoremap ;'o ó
+inoremap ;'u ú
+inoremap ;:a ä
+inoremap ;:e ë
+inoremap ;:i ï
+inoremap ;:o ö
+inoremap ;:u ü
+inoremap ;~a ã
+inoremap ;~e ẽ
+inoremap ;~i ĩ
+inoremap ;~o õ
+inoremap ;~u ũ
+inoremap ;~h ñ
+inoremap ;`a à
+inoremap ;`e è
+inoremap ;`i ì
+inoremap ;`o ò
+inoremap ;`u ù
 
 
 "" Greek alphabet

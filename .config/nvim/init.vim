@@ -45,7 +45,7 @@ autocmd InsertEnter * set cul
 autocmd InsertLeave * set nocul
 
 " clear trailing spaces in python files at saving
-autocmd BufWritePre *.py %s/\s\+$//e
+autocmd BufWritePre * %s/\s\+$//e
 
 " save on focus lost
 au FocusLost * :wa
