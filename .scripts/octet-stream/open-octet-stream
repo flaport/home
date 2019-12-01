@@ -1,0 +1,16 @@
+#!/usr/bin/python3
+import os
+import sys
+import subprocess
+
+try:
+    filename = os.path.abspath(os.path.expanduser(sys.argv[1]))
+except IndexError:
+    exit(1)
+
+
+if filename.endswith(".fsp"):
+    exit(subprocess.call(["fdtd-solutions", filename]))
+
+if filename.endswith(".gds"):
+    exit(subprocess.call(["klayout", "-e", filename]))

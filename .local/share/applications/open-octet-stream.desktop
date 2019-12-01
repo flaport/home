@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+NoDisplay=true
+Exec=open-octet-stream %f
+Name=open-octet-stream
+Comment=Open binary file with custom script that uses the extension of the file to determine how to open it.
