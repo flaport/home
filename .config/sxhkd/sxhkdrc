@@ -1,8 +1,8 @@
-#    _____ _     ____  ____  ____  ____  _____ 
+#    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
-#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
-#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
-#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
 # decrease alpha of windows
@@ -57,7 +57,9 @@ super + F
 super + g
     dmenu_greek
 
+# latex synctex zathura-> vim (TODO: make this a zathura keyboard shortcut)
 super + G
+    ctrl-click
 
 # decrease master window size
 super + h
@@ -97,11 +99,11 @@ super + L
 
 # dmenu mount drive menu
 super + m
-    dmenu_mount mount -i 
+    dmenu_mount mount -i
 
 # dmenu unmount drive menu
 super + M
-    dmenu_mount unmount -i 
+    dmenu_mount unmount -i
 
 # open nemo file browser
 super + n
@@ -121,7 +123,7 @@ super + O
 
 # dmenu choose screen layout
 super + p
-    dmenu_screenlayout -i -l 10 -p "screen layout" 
+    dmenu_screenlayout -i -l 10 -p "screen layout"
 
 # default screen layout
 super + P
@@ -137,7 +139,7 @@ super + Q
 
 # start an ipython repl
 super + r
-    cd ~; $TERMINAL -e $HOME/.anaconda/bin/ipython
+    cd ~; $TERMINAL -n float -e $HOME/.anaconda/bin/ipython
 
 # dmenu file manager
 super + R
@@ -145,11 +147,11 @@ super + R
 
 # run a program
 super + s
-    dmenu_run -i -l 15 
+    dmenu_run -i -l 15
 
 # start/stop a service
 super + S
-    dmenu_services -i 
+    dmenu_services -i
 
 # toggle between last two layouts
 super + t
@@ -181,7 +183,7 @@ super + w
 
 # search the web
 super + W
-    ~/.scripts/search --dmenuargs -i 
+    ~/.scripts/search --dmenuargs -i
 
 # shift focus to monitor X
 super + x
@@ -189,6 +191,7 @@ super + x
 
 # move active window to monitor X
 super + X
+    # handled by dwm
 
 # change color scheme
 super + y
@@ -239,7 +242,7 @@ super + space
 # promote monitor to master monitor
 super + control + space
     # handled by dwm
-    
+
 # toggle floating for current window
 super + shift + space
     # handled by dwm
@@ -362,7 +365,7 @@ super + shift + 9
 
 # select keyboard shortcut
 super + F1
-    dmenu_keyboard_shortcuts -i 
+    dmenu_keyboard_shortcuts -i
 
 super + F2
 

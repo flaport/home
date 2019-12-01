@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# useful for latex synctex
+# TODO: find a way to include this in zathurarc if possible
+window=$(xdotool getwindowfocus)
+x=$(xdotool getwindowgeometry $window | grep Position | sed 's/^.*: \([0-9]*\),.*$/\1/g')
+y=$(xdotool getwindowgeometry $window | grep Position | sed 's/^.*,\([0-9]*\).*$/\1/g')
+w=$(xdotool getwindowgeometry $window | grep Geometry | sed 's/^.*: \([0-9]*\)x.*$/\1/g')
+h=$(xdotool getwindowgeometry $window | grep Geometry | sed 's/^.*x\([0-9]*\).*$/\1/g')
+x=$(($w/2+x))
+y=$(($h/2+y))
+xdotool mousemove --sync $x $y
+xdotool keydown ctrl
+xdotool click 1
+xdotool keyup ctrl
+xdotool mousemove_relative --sync 1 1
