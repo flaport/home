@@ -282,6 +282,8 @@ pacman_install tldr
 pacman_install xclip
 # pdf previews
 pacman_install poppler
+# check if bash script is posix complient (requires haskell > 250mb -> disables by default)
+# pacman_install shellcheck
 # highlight: to highlight code in the terminal (nice `cat` alternative)
 pacman_install highlight
 # mediainfo: show audio and video information in terminal
