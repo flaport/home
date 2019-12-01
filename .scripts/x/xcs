@@ -37,7 +37,7 @@ def parse_args(args):
         "-a",
         "--alpha",
         type=float,
-        default=0.9,
+        default=None,
         help="window transparency",
     )
     parser.add_argument(
@@ -48,6 +48,12 @@ def parse_args(args):
         help="use dmenu to select a colorscheme",
     )
     parsed_args = parser.parse_args(args=args)
+    if parsed_args.alpha is None:
+        with open(os.path.expanduser("~/.Xresources"), "r") as file:
+            for line in file:
+                if "alpha" in line:
+                    break
+        parsed_args.alpha = float(line.split(":")[1].strip().split(" ")[0])
     if parsed_args.alpha > 1.0 or parsed_args.alpha < 0.0:
         raise ValueError("alpha value should be between 0 and 1")
     if parsed_args.dmenu and parsed_args.name != "current":
@@ -176,27 +182,33 @@ def update_dwm_status_bar():
 
 
 if __name__ == "__main__":
-    if not sys.argv[1:]:
-        sys.argv.append("--dmenu")
-    args = parse_args(sys.argv[1:])
-    if args.list:
-        print("\n".join(colorscheme_list()))
-        exit(0)
-    if args.dmenu:
-        args.name = dmenu(colorscheme_list(), "select colorscheme")
-    if args.name == "[generate from wallpaper (requires pywal)]" or args.name == "generate":
-        subprocess.call(["/usr/bin/wal", "-c"])
-        exitcode = subprocess.call(["/usr/bin/wal", "-i", os.path.expanduser("~/.local/share/wallpapers/current-wallpaper")])
-        shutil.copy(os.path.expanduser("~/.cache/wal/colors.Xresources"), os.path.expanduser("~/.Xresources"))
-        args.name = "current"
-    xresources = load_xresources(name=args.name)
-    if args.alpha is not None:
-        xresources["alpha"] = args.alpha
-    set_terminal_colors(xresources)
-    set_terminal_alphas(xresources)
-    set_xresources(xresources)
-    set_zathura_recolor(xresources)
-    set_dwm_colors(xresources)
-    set_rofi_colors(xresources)
-    update_dwm_status_bar()
+    try:
+        if not sys.argv[1:]:
+            sys.argv.append("--dmenu")
+        args = parse_args(sys.argv[1:])
+        if args.list:
+            print("\n".join(colorscheme_list()))
+            exit(0)
+        if args.dmenu:
+            args.name = dmenu(colorscheme_list(), "select colorscheme")
+        if not args.name.strip():
+            raise RuntimeError("No colorscheme selected")
+        if args.name == "[generate from wallpaper (requires pywal)]" or args.name == "generate":
+            subprocess.call(["/usr/bin/wal", "-c"])
+            exitcode = subprocess.call(["/usr/bin/wal", "-i", os.path.expanduser("~/.local/share/wallpapers/current-wallpaper")])
+            shutil.copy(os.path.expanduser("~/.cache/wal/colors.Xresources"), os.path.expanduser("~/.Xresources"))
+            args.name = "current"
+        xresources = load_xresources(name=args.name)
+        if args.alpha is not None:
+            xresources["alpha"] = args.alpha
+        set_terminal_colors(xresources)
+        set_terminal_alphas(xresources)
+        set_xresources(xresources)
+        set_zathura_recolor(xresources)
+        set_dwm_colors(xresources)
+        set_rofi_colors(xresources)
+        update_dwm_status_bar()
+    except Exception as e:
+        print(e)
+        exit(1)
 
