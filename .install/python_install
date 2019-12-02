@@ -63,7 +63,7 @@ PIP="$HOME/.anaconda/bin/pip"
 NPM="$HOME/.anaconda/bin/npm"
 
 # packages in order of importance (conda-forge channel, default channel fails resolving)
-echo "installing jupyter stack..." 
+echo "installing jupyter stack..."
 $CONDA install -y -S -c conda-forge tornado=5 nodejs=8 jupyter ipykernel jupyterlab jupyterhub matplotlib >> $LOG 2>> $ERR
 
 echo "installing scientific stack... [takes long]"
@@ -114,6 +114,13 @@ echo "installing neovim support for environment: base"
 $PIP install neovim >> $LOG 2>> $ERR
 $NPM install -g neovim >> $LOG 2>> $ERR
 
+echo "installing linters and formatters for environment: base"
+$PIP install pep8 >> $LOG 2>> $ERR
+$PIP install flake8 >> $LOG 2>> $ERR
+$PIP install pyflakes >> $LOG 2>> $ERR
+$PIP install isort >> $LOG 2>> $ERR
+$PIP install yapf >> $LOG 2>> $ERR
+$PIP install black >> $LOG 2>> $ERR
 
 ## Python 2 environment
 #-------------------------------------------------------------------------------
@@ -121,32 +128,40 @@ $NPM install -g neovim >> $LOG 2>> $ERR
 PIP="$HOME/.anaconda/envs/py2/bin/pip"
 
 if [ ! -d "$HOME/.anaconda/envs/py2" ]; then
-    echo "creating python 2 environment... [py2]"
+    echo "creating python 2 environment... py2"
     $CONDA create -y -n py2 -c conda-forge python=2.7 tornado=5 ipykernel matplotlib >> $LOG 2>> $ERR
 else
-    echo "updating python 2 environment... [py2]"
+    echo "updating python 2 environment... py2"
     $CONDA install -y -S -n py2 -c conda-forge tornado=5 ipykernel matplotlib >> $LOG 2>> $ERR
 fi
 
-echo "installing jupyter stack... [py2]"
+echo "installing jupyter stack... py2"
 $HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name py2 --display-name "Python 2"
 mv $HOME/.local/share/jupyter/kernels/py2 $HOME/.anaconda/share/jupyter/kernels/
 
-echo "installing scientific stack... [py2]"
+echo "installing scientific stack... py2"
 $CONDA install -y -S numpy pandas ipympl widgetsnbextension cython pillow scikit-learn h5py tensorflow keras >> $LOG 2>> $ERR
 
-echo "installing machine learning stack... [py2]"
+echo "installing machine learning stack... py2"
 $CONDA install -y -S tensorflow keras >> $LOG 2>> $ERR
 $CONDA install -y -S -n py2 pytorch -c pytorch >> $LOG 2>> $ERR
 
-echo "installing other tools... [py2]"
+echo "installing other tools... py2"
 $CONDA install -y -S pandoc pylint pydocstyle mypy line_profiler ipywidgets tqdm >> $LOG 2>> $ERR
 
-echo "installing altair for environment: [py2]"
+echo "installing altair for environment: py2"
 $CONDA install -y -S -n py2 -c conda-forge altair vega >> $LOG 2>> $ERR
 
-echo "installing neovim support for environment: [py2]"
+echo "installing neovim support for environment: py2"
 $PIP install neovim >> $LOG 2>> $ERR
+
+echo "installing linters and formatters for environment: py2"
+$PIP install pep8 >> $LOG 2>> $ERR
+$PIP install flake8 >> $LOG 2>> $ERR
+$PIP install pyflakes >> $LOG 2>> $ERR
+$PIP install isort >> $LOG 2>> $ERR
+$PIP install yapf >> $LOG 2>> $ERR
+$PIP install black >> $LOG 2>> $ERR
 
 
 ## R environment

@@ -718,6 +718,21 @@ pacman_install python-websockets
 pacman_install python-matplotlib
 pacman_install python2-matplotlib
 
+# linters & formatters
+pip3_install pylint
+pip3_install pep8
+pip3_install flake8
+pip3_install pyflakes
+pip3_install isort
+pip3_install yapf
+pip3_install black
+pip2_install pylint
+pip2_install pep8
+pip2_install flake8
+pip2_install pyflakes
+pip2_install isort
+pip2_install yapf
+
 # pywal: an xrdb wrapper library
 pip3_install pywal
 
