@@ -45,7 +45,14 @@ autocmd InsertEnter * set cul
 autocmd InsertLeave * set nocul
 
 " clear trailing spaces in python files at saving
-autocmd BufWritePre * %s/\s\+$//e
+function! DoOnSave()
+    " set a mark to return to original position after removing trailing spaces
+    normal mm
+    exec '%s/\s\+$//e'
+    normal `m
+    normal mm
+endfunction
+autocmd BufWritePre * call DoOnSave()
 
 " save on focus lost
 au FocusLost * :wa
