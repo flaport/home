@@ -24,7 +24,7 @@ def parse_args(args):
         default="current",
         help=("xresources file to load (should be located in ~/.config/Xresources)."
               "Special options:  - 'current' (don't change anything),\n"
-              "                  - 'generate' (use pywal to generate color scheme)."),    
+              "                  - 'generate' (use pywal to generate color scheme)."),
     )
     parser.add_argument(
         "-l",
@@ -53,6 +53,8 @@ def parse_args(args):
             for line in file:
                 if "alpha" in line:
                     break
+            else:
+                line=f":{0.9}"
         parsed_args.alpha = float(line.split(":")[1].strip().split(" ")[0])
     if parsed_args.alpha > 1.0 or parsed_args.alpha < 0.0:
         raise ValueError("alpha value should be between 0 and 1")
