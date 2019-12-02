@@ -351,6 +351,8 @@ pacman_install xorg-xdpyinfo
 pacman_install xorg-server-xvfb
 # hide an inactive mouse
 pacman_install unclutter
+# remap escape key:
+# yay_install xcape-git
 # yay_install unclutter-xfixes-git
 # viewer with synctex support, and some custom plugins
 pacman_install xdotool
