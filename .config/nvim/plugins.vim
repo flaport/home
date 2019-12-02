@@ -50,7 +50,6 @@ Plug 'tpope/vim-speeddating' " increase date with <C-A>
 Plug 'tpope/vim-surround' " easily surround word with quotes or tags
 Plug 'valloric/MatchTagAlways' " Highlight matching html tags
 Plug 'vim-airline/vim-airline' " Better status bar
-Plug 'vim-scripts/YankRing.vim' " Yank history navigation
 Plug 'wikitopian/hardmode' " Vim hard mode (useful for training)
 Plug 'zchee/deoplete-jedi'  " Python autocompletion
 call plug#end() " stop loading plugins
@@ -165,16 +164,6 @@ nnoremap <leader>. :MtaJumpToOtherTag<cr>
 let g:airline_powerline_fonts = 1
 " let g:airline_theme="base16_gruvbox_dark_hard"
 let g:airline_theme="xresources_airline"
-
-" vim-scripts/YankRing.vim -----------------------
-" enable yankring by default
-let g:yankring_enabled = 1
-" maximum history for yankring
-let g:yankring_max_history = 100
-" disable annoying warning message:
-let g:yankring_clipboard_monitor = 0
-" set history file
-let g:yankring_history_file = '.config/nvim/yankring'
 
 " wikitopian/hardmode ----------------------------
 " enable hard mode (for practice purposes)
