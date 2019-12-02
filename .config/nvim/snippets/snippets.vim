@@ -1,6 +1,7 @@
 "" Latex
 "-------------------------------------------------------------------------------
 
+"insert mode
 inoremap ;tex <Esc>:-1read ~/.config/nvim/snippets/tex.tex<CR>:set filetype=tex<CR>/TITLE<CR><Esc>ciw
 autocmd FileType tex inoremap ;fig <Esc>:-1read ~/.config/nvim/snippets/figure.tex<CR>jzOj$i
 autocmd FileType tex inoremap ;svg <Esc>:-1read ~/.config/nvim/snippets/svgfigure.tex<CR>jzOj$i
@@ -14,6 +15,10 @@ autocmd FileType tex inoremap ;bma <Esc>:-1read ~/.config/nvim/snippets/bmatrix.
 autocmd FileType tex inoremap ;ite <Esc>:-1read ~/.config/nvim/snippets/itemize.tex<CR>j$a
 autocmd FileType tex inoremap ;enu <Esc>:-1read ~/.config/nvim/snippets/enumerate.tex<CR>j$a
 
+" normal mode
+nnoremap ;tex :-1read ~/.config/nvim/snippets/tex.tex<CR>:set filetype=tex<CR>/TITLE<CR><Esc>ciw
+autocmd FileType tex nnoremap ;ite {j<C-V>}kI\item <Esc>dipO\begin{itemize}<CR>\end{itemize}<Esc>P
+autocmd FileType tex nnoremap ;enu {j<C-V>}kI\item <Esc>dipO\begin{enumerate}<CR>\end{enumerate}<Esc>P
 
 "" Html
 "-------------------------------------------------------------------------------

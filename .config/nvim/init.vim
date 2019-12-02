@@ -32,7 +32,7 @@ source ~/.config/nvim/snippets/snippets.vim
 " when searching, search down into all subfolders
 set path+=**
 
-" for navigating buffers/files/etc 
+" for navigating buffers/files/etc
 set wildmenu
 
 " use newline characters instead of cariage return
@@ -306,7 +306,7 @@ nnoremap <C-s> <Esc>:w<CR>
 " <C-]> " standard vim keybinding
 
 " go to last open buffer
-" <C-^> " standard vim keybinding 
+" <C-^> " standard vim keybinding
 
 
 "" Leader based keyboard shortcuts
@@ -430,7 +430,7 @@ function! Zoom()
     "Switch to dest and shuffle source->dest
     exe curNum . "wincmd w"
     "Hide and open so that we aren't prompted and keep history
-    exe 'hide buf' markedBuf 
+    exe 'hide buf' markedBuf
 endfunction
 " zoom split:
 nnoremap <leader>z :call Zoom()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
@@ -482,7 +482,7 @@ autocmd FileType python inoremap <F6> <Esc>:w<CR>:silent !~/.scripts/nvim/nvim_r
 " /{pattern}/{offset} " Search forward for {pattern} and go {offset} lines up or down.
 " /<CR> 	Search forward for last used pattern
 " n 	Repeat the latest "/" or "?" [count] times.
-" N 	Repeat the latest "/" or "?" [count] times in opposite direction. 
+" N 	Repeat the latest "/" or "?" [count] times in opposite direction.
 
 "" Folder tree
 "-------------------------------------------------------------------------------
