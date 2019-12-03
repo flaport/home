@@ -213,9 +213,9 @@ super + Z
 super + Return
     cd $HOME; $TERMINAL
 
-# new non-transparent terminal
+# new floating terminal
 super + shift + Return
-    cd $HOME; $TERMINAL
+    cd $HOME; $TERMINAL -n float
 
 # toggle pause / play
 super + shift + equal
