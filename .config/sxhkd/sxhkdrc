@@ -10,7 +10,7 @@ super + a
     alpha set -10 && dwm_status
 
 # increase alpha of windows
-super + shift + a
+super + A
     alpha set +10 && dwm_status
 
 # connect to bluetooth device (devices should be paired using bluetoothctl)
@@ -139,7 +139,7 @@ super + Q
 
 # start an ipython repl
 super + r
-    cd ~; $TERMINAL -n float -e $HOME/.anaconda/bin/ipython
+    cd $HOME; $TERMINAL -n float -e $HOME/.anaconda/bin/ipython
 
 # dmenu file manager
 super + R
@@ -183,7 +183,7 @@ super + w
 
 # search the web
 super + W
-    ~/.scripts/search --dmenuargs -i
+    $HOME/.scripts/search --dmenuargs -i
 
 # shift focus to monitor X
 super + x
@@ -211,11 +211,11 @@ super + Z
 
 # new terminal
 super + Return
-    cd ~; $TERMINAL
+    cd $HOME; $TERMINAL
 
 # new non-transparent terminal
 super + shift + Return
-    cd ~; $TERMINAL
+    cd $HOME; $TERMINAL
 
 # toggle pause / play
 super + shift + equal
