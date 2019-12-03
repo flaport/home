@@ -11,11 +11,11 @@
 Active=true
 Name=Paste with rsync
 Comment=Paste %N with rsync to a new location
-Exec=pst %F
+Exec=st -n float -e pst %F
 Icon-Name=folder
 Stock-Id=gtk-cdrom
 Selection=none
 Extensions=any
 EscapeSpaces=true
-Terminal=true
+Terminal=false
 
