@@ -17,6 +17,12 @@ autocmd FileType tex inoremap ;enu <Esc>:-1read ~/.config/nvim/snippets/enumerat
 
 " normal mode
 nnoremap ;tex :-1read ~/.config/nvim/snippets/tex.tex<CR>:set filetype=tex<CR>/TITLE<CR><Esc>ciw
+autocmd FileType tex nnoremap ca$ F$df$i
+autocmd FileType tex nnoremap ci$ T$dt$i
+autocmd FileType tex nnoremap da$ F$df$
+autocmd FileType tex nnoremap di$ T$dt$
+autocmd FileType tex nnoremap ya$ mmF$yf$`mmm
+autocmd FileType tex nnoremap yi$ mmT$yt$`mmm
 autocmd FileType tex nnoremap ;ite {j<C-V>}kI\item <Esc>dipO\begin{itemize}<CR>\end{itemize}<Esc>P
 autocmd FileType tex nnoremap ;enu {j<C-V>}kI\item <Esc>dipO\begin{enumerate}<CR>\end{enumerate}<Esc>P
 
