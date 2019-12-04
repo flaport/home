@@ -117,9 +117,7 @@ super + N
 super + o
     # handled by dwm
 
-# enable all tags
 super + O
-    # handled by dwm
 
 # dmenu choose screen layout
 super + p
