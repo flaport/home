@@ -13,7 +13,11 @@ pidof sxhkd || sxhkd &> /dev/null &
 wallpaper current-wallpaper &
 
 # enable transparent windows
-[ -f $HOME/.config/picom/blur-kern ] && picom --blur-kern=$(cat $HOME/.config/picom/blur-kern) || picom &
+if [ -f "$HOME/.config/picom/blur-kern" ]; then
+    picom --blur-kern=$(cat $HOME/.config/picom/blur-kern) &
+else
+    picom &
+fi
 
 # update xrdb database
 if [ -f ~/.Xresources ]; then
