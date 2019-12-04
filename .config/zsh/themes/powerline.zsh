@@ -186,21 +186,18 @@ prompt_virtualenv() {
   if [[ -n $CONDA_DEFAULT_ENV ]]; then
       env=$CONDA_DEFAULT_ENV
   fi
-  if [[ -n $env ]]; then
-    prompt_segment
-    echo -n $env
-  fi
+  [ -z "$env" ] && return
+  prompt_segment
+  echo -n $env
 }
 
 # Jobs: are there any jobs open (ctrl-z)
 prompt_jobs() {
   local -a symbols
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{$COLORT}%}$(jobs -l | grep -oE '\[[0-9]*\]' | sed 's/\]//g' | sed 's/\[//g' )"
-
-  if [[ -n "$symbols" ]]; then
-      prompt_segment
-      echo -n "$symbols"
-  fi
+  [ -z "$symbols" ] && return
+  prompt_segment
+  echo -n "$symbols"
 }
 
 # Status:
@@ -212,27 +209,22 @@ prompt_status() {
   [[ $RETVAL != 0 && $RETVAL != 148 ]] && symbols+="%{%F{$COLORT}%}$PL_FAILED  $RETVAL"
   [[ $UID -eq 0 ]] && symbols+="%{%F{$COLORT}%}$PL_ROOT"
 
-  if [[ -n "$symbols" ]]; then
-      prompt_segment $COLORU
-      echo -n "$symbols"
-  fi
+  [ -z "$symbols" ] && return
+  prompt_segment $COLORU
+  echo -n "$symbols"
 }
 
 prompt_battery(){
     battery=$(acpi -b 2> /dev/null)
+    percentage=$(echo $battery |  sed 's/^.*, \([0-9]*\)%.*$/\1/g')
+    [ -z $percentage ] && return
+    bgcolor=$COLOR1
     icon=$PL_CHARGING
     if echo $battery | grep "Charging" &> /dev/null; then
        prompt_segment
-       echo -n $PL_CHARGING
+       echo -n $icon
        return
     fi
-    percentage=$(echo $battery |  sed 's/^.*, \([0-9]*\)%.*$/\1/g')
-    if [ -z $percentage ]; then
-       prompt_segment
-       echo -n ""
-       return
-    fi
-    color=$COLOR1
     if [[ $percentage > 90 ]]; then
         icon=$PL_BATTERY1
     elif [[ $percentage > 60 ]]; then
@@ -245,7 +237,7 @@ prompt_battery(){
         color=$COLORU
         icon=$PL_BATTERY5
     fi
-    prompt_segment $color
+    prompt_segment $bgcolor
     echo -n $icon" "
 }
 
