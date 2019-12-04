@@ -194,7 +194,7 @@ prompt_virtualenv() {
 # Jobs: are there any jobs open (ctrl-z)
 prompt_jobs() {
   local -a symbols
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{$COLORT}%}$(jobs -l | grep -oE '\[[0-9]*\]' | sed 's/\]//g' | sed 's/\[//g' )"
+  [[ $(jobs -l | wc -l 2> /dev/null) -gt 0 ]] && symbols+="%{%F{$COLORT}%}$(echo $(jobs -l | grep -oE '\[[0-9]*\]' | sed 's/\]//g' | sed 's/\[//g' ))"
   [ -z "$symbols" ] && return
   prompt_segment
   echo -n "$symbols"
