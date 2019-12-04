@@ -55,6 +55,10 @@ if [ -z $NVIM_LISTEN_ADDRESS ]; then
     preexec() { echo -ne $UNDERSCORE ;} # at new prompt.
 fi
 
+# go backward and forward in history (equivalent to up/down arrow)
+bindkey "^[h" up-line-or-history # alt + h
+bindkey "^[l" down-line-or-history # alt + l
+
 # colored zsh prompt
 setopt prompt_subst
 if [[ $(tty) == /dev/tty* ]]; then

@@ -17,14 +17,16 @@ map d scroll half-down
 map D toggle_page_mode
 map r reload
 map R rotate
+map J zoom in
 map H zoom in
+map K zoom out
 map L zoom out
 map i recolor
 map p print
 map <A-Button1> zoom in
 map <A-Button3> zoom out
 
-# settings 
+# settings
 set statusbar-h-padding 0
 set statusbar-v-padding 0
 set page-padding 1
