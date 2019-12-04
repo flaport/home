@@ -234,7 +234,7 @@ prompt_battery(){
     elif [[ $percentage > 5 ]]; then
         icon=$PL_BATTERY4
     else
-        color=$COLORU
+        bgcolor=$COLORU
         icon=$PL_BATTERY5
     fi
     prompt_segment $bgcolor
