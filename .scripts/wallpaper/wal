@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
 if [ -z $1 ]; then
+    # if called without arguments, create colorscheme according to
+    # currently set wallpaper and save colorscheme to ~/.Xresources
     /usr/bin/wal -c
-    /usr/bin/wal -i $HOME/.local/share/wallpapers/current-wallpaper
+    a=$(python3 -c "print(f'{0.01*$(alpha get):.2f}')") # yes, quite hacky...
+    /usr/bin/wal -a $a -i $HOME/.local/share/wallpapers/current-wallpaper
+    cp $HOME/.cache/wal/colors.Xresources $HOME/.Xresources
+    xcs current -a $a
     exitcode=$?
 else
     /usr/bin/wal $@

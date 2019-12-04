@@ -700,6 +700,10 @@ pacman_install klayout
 # Scientific computing octave (Matlab alternative)
 pacman_install octave
 
+## Resources
+# a collection of very nice wallpapers:
+# [ -d "$HOME/.wallpapers" ] || git clone https://gitlab.com/dwt1/wallpapers $HOME/.wallpapers >> $LOG 2>> $ERR
+
 
 ## Python
 #-------------------------------------------------------------------------------

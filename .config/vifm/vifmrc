@@ -118,6 +118,7 @@ command! mkcd :mkdir %a | cd %a
 command! vgrep vim "+grep %a"
 command! reload :write | restart
 command! nemo nemo %d
+command! wal wallpaper %f && wal &
 
 
 " ------------------------------------------------------------------------------
@@ -132,7 +133,9 @@ set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
 
 " ------------------------------------------------------------------------------
 
-" Sample mappings
+" Mappings
+
+nnoremap W :wal<cr>
 
 " edit (overrides preview; use w instead)
 nnoremap e :edit<cr>
@@ -147,7 +150,7 @@ nnoremap S :sort<cr>
 nnoremap w :view<cr>
 vnoremap w :view<cr>gv
 
-" Open 
+" Open
 nnoremap o <cr>
 
 " Open directory in other pane
@@ -181,7 +184,7 @@ filetype .bash*,*.bib,*.c,*.conf,*.css,.flaskenv,.gitconfig,.gitignore,.gitmodul
         \ {Open in vim}
         \ vim %f,
 " " purposely not included above: *.html, *.html
- 
+
 filetype *.csv,*.ipynb,*.json,
         \ {Open in jupyterhub}
         \ jupyterhubopen %f,
@@ -228,8 +231,8 @@ fileviewer *.pdf
 fileviewer *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
           \*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,
           \*.as[fx]
-        \ vifmimg videopreview %px %py %pw %ph %c 
-        \ %pc 
+        \ vifmimg videopreview %px %py %pw %ph %c
+        \ %pc
         \ vifmimg clear
         " \ ffprobe -pretty %c 2>&1
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
