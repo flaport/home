@@ -9,21 +9,25 @@
 
 
 # important settings if UTF-8 is not enabled system-wide:
-LC_ALL="" 
+LC_ALL=""
 LC_CTYPE="en_US.UTF-8"
 
-# special characters. There are two ways to obtain special characters: 
+# special characters. There are two ways to obtain special characters:
 #   1. Use awesome terminal fonts + powerline-fonts
 #   2. Use a patched font such as nerd-fonts-inconsolataGo
 #   option 1 was chosen
-PL_BRANCH='' # <- powerline-fonts | awesome-terminal-fonts -> '  ' 
+PL_BRANCH='' # <- powerline-fonts | awesome-terminal-fonts -> '  '
 PL_SEGMENT='' # <- powerline-fonts | awesome-terminal-fonts -> '' (too small)
 PL_FAILED='' # <- awesome-terminal-fonts | any monospace font -> '✘'
-PL_ROOT='' # <- awesome-terminal-fonts | any monospace font -> '⚡' 
+PL_ROOT='' # <- awesome-terminal-fonts | any monospace font -> '⚡'
 PL_MERGE='' # <- awesome-terminal-fonts
 PL_REBASE='' # <- awesome-terminal-fonts
 PL_LOG='' # <- awesome-terminal-fonts
-PL_BATTERY='' # <- awesome-terminal-fonts | any monospace font -> '🔋'
+PL_BATTERY1='' # <- awesome-terminal-fonts | any monospace font -> '🔋'
+PL_BATTERY2='' # <- awesome-terminal-fonts | any monospace font -> '🔋'
+PL_BATTERY3='' # <- awesome-terminal-fonts | any monospace font -> '🔋'
+PL_BATTERY4='' # <- awesome-terminal-fonts | any monospace font -> '🔋'
+PL_BATTERY5='' # <- awesome-terminal-fonts | any monospace font -> '🔋'
 PL_CHARGING='🔌' # <- any monospace font -> '🔌'
 PL_DIRTY='!' #' ' # <- any monospace font
 PL_STAGED='=' # ' ' # <- any monospace font
@@ -215,10 +219,34 @@ prompt_status() {
 }
 
 prompt_battery(){
-    BATTERY=$(acpi -b 2> /dev/null)
-    BATTERY=$(echo $BATTERY | sed "s/^.*: //" | sed "s/^Full,.*$//")
-    BATTERY=$(echo $BATTERY | sed "s/^Discharging, /$PL_BATTERY  /" | sed "s/^Unknown, /$PL_BATTERY  /" | sed "s/^Charging, /$PL_CHARGING/" | sed "s/^\(.*\)%,.*/\1%%/")
-    [ ! -z $BATTERY ] && prompt_segment && echo -n "$BATTERY"
+    battery=$(acpi -b 2> /dev/null)
+    icon=$PL_CHARGING
+    if echo $battery | grep "Charging" &> /dev/null; then
+       prompt_segment
+       echo -n $PL_CHARGING
+       return
+    fi
+    percentage=$(echo $battery |  sed 's/^.*, \([0-9]*\)%.*$/\1/g')
+    if [ -z $percentage ]; then
+       prompt_segment
+       echo -n ""
+       return
+    fi
+    color=$COLOR1
+    if [[ $percentage > 90 ]]; then
+        icon=$PL_BATTERY1
+    elif [[ $percentage > 60 ]]; then
+        icon=$PL_BATTERY2
+    elif [[ $percentage > 30 ]]; then
+        icon=$PL_BATTERY3
+    elif [[ $percentage > 5 ]]; then
+        icon=$PL_BATTERY4
+    else
+        color=$COLORU
+        icon=$PL_BATTERY5
+    fi
+    prompt_segment $color
+    echo -n $icon" "
 }
 
 ## Main prompt

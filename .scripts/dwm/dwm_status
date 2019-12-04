@@ -74,7 +74,7 @@ notifyservice(){
     fi
 }
 
-toggleservice(){ 
+toggleservice(){
     name=$1
     if systemctl is-active $name &> /dev/null; then
         sudo -A -p "[sudo] password to stop $name.service" systemctl stop $name
@@ -112,10 +112,30 @@ alpha5(){
 # -----------
 
 bat(){ # battery
-    BATTERY=$(acpi -b 2> /dev/null)
-    BATTERY=$(echo $BATTERY | sed "s/^.*: //" | sed "s/^Full,.*$//")
-    BATTERY=$(echo $BATTERY | sed "s/^Discharging,/🔋/" | sed "s/^Charging,/🔌/" | sed "s/^\(.*%\),.*/\1/")
-    echo -e $BATTERY
+    battery=$(acpi -b 2> /dev/null)
+    percentage=$(echo $battery |  sed 's/^.*, \([0-9]*\)%.*$/\1/g')
+    if [ -z $percentage ]; then
+        echo -e ""
+        return
+    fi
+    prompt_segment
+    if echo $battery | grep "Charging" &> /dev/null; then
+       echo -e 🔌" "$percentage%
+       return
+    fi
+    if echo $battery > grep Disharging &> /dev/null; then
+        if [[ $percentage > 90 ]]; then
+            echo -e " "$percentage%
+        elif [[ $percentage > 60 ]]; then
+            echo -e " "$percentage%
+        elif [[ $percentage > 30 ]]; then
+            echo -e " "$percentage%
+        elif [[ $percentage > 5 ]]; then
+            echo -e " "$percentage%
+        else
+            echo -e " "$percentage%
+        fi
+    fi
 }
 bat1(){ # mouse-button 1 action for battery widget
     notify-send "$(acpi -b)"
@@ -279,7 +299,7 @@ sshd2(){
 # -----------
 
 ssht(){ # ssh tunnels
-    systemctl is-active sshtunnel &> /dev/null && echo -e  || echo -e 
+    systemctl is-active sshtunnel &> /dev/null && echo -e  || echo -e ""
 }
 ssht1(){ # mouse-button 1 action for ssh tunnel widget
     notifyservice sshtunnel
