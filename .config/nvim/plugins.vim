@@ -113,8 +113,8 @@ let g:signify_disable_by_default = 1
 nnoremap <leader>g :SignifyToggle<CR>
 
 " neomake/neomake --------------------------------
-" run linter on write
-autocmd! BufWritePost * Neomake
+" run python linter on write
+autocmd! BufWritePost *.py Neomake
 " check code as python3 by default
 let g:neomake_python_python_maker = neomake#makers#ft#python#python()
 " use flake8 to check python code
