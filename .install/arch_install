@@ -542,7 +542,11 @@ pacman_install awesome-terminal-fonts
 # specific symbols for powerlines (recommended dependency for my st build)
 pacman_install powerline-fonts
 # unicode symbols / emojis (these are standard unicode symbols, hence different than awesome terminal fonts!)
-yay_install ttf-symbola
+# yay_install ttf-symbola
+# pacman_install ttf-joypixels
+# yay_install ttf-twemoji-color
+pacman_install noto-fonts-emoji
+# yay_install ttf-twemoji-color
 # adobe fonts (dependency of GNOME apps. Yes, you'll probably have a few of them...)
 # pacman_install adobe-source-code-pro-fonts
 # cantarell fonts (dependency of GNOME apps.  Yes, you'll probably have a few of them...)
