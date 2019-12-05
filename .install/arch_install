@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last full run: 2019.11.27
+# last full run: 2019.12.05
 
 ## Checks
 #-------------------------------------------------------------------------------
@@ -241,10 +241,6 @@ yay_install passff-host  # host for the firefox extension
 
 
 ## Terminal
-# my st fork
-submodule_install st
-# dependency for my st fork to find urls in terminal:
-yay_install xurls
 # search tool
 pacman_install grep
 # alternative search tool
@@ -367,6 +363,8 @@ pacman_install picom
 # pacman_install xorg-server-xvfb
 # hide an inactive mouse
 pacman_install unclutter
+# dependency for my st fork to find urls in terminal:
+yay_install xurls
 # remap escape key:
 # yay_install xcape-git
 # yay_install unclutter-xfixes-git
@@ -394,10 +392,6 @@ pacman_install sxhkd
 pacman_install xautolock
 # wallpapers
 pacman_install feh
-# my dwm fork
-submodule_install dwm
-# my dmenu fork
-submodule_install dmenu
 # rofi (dmenu alternative)
 pacman_install rofi
 # conky: a system monitor
@@ -699,6 +693,15 @@ pacman_install lynx
 # [ -d "$HOME/.wallpapers" ] || git clone https://gitlab.com/dwt1/wallpapers $HOME/.wallpapers >> $LOG 2>> $ERR
 
 
+## Personal forks (placed at the end so all dependencies are already installed)
+# my st fork [terminal]
+submodule_install st
+# my dwm fork [window manager]
+submodule_install dwm
+# my dmenu fork [menu]
+submodule_install dmenu
+
+
 ## Python
 # simple guis
 pacman_install tk
@@ -718,9 +721,9 @@ pacman_install python2-matplotlib
 # linters & formatters (recommended for vim)
 pacman_install python-pylint
 pacman_install python2-pylint
-pacman_install python-autopep8
+pacman_install autopep8
 pacman_install python2-autopep8
-pacman_install python-flake8
+pacman_install flake8
 pacman_install python2-flake8
 pacman_install python-pyflakes
 pacman_install python2-pyflakes
@@ -733,8 +736,8 @@ pacman_install python-pywal
 # sockets
 # pacman_install python-websockets
 # neovim integration
-python-pynvim
 pip3_install neovim-remote
+pip2_install neovim-remote
 # image previews in terminal
 pip3_install ueberzug
 # automate GUI tasks with pyautogui
