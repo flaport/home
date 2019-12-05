@@ -226,26 +226,35 @@ link() {
 
 ## build tools
 pacman_install git
-pacman_install man
 pacman_install make
+pacman_install cmake
+
 
 ## AUR package manager
 git_install https://aur.archlinux.org/yay.git
+
 
 ## Security
 pacman_install gnupg # gpg --full-gen-key (generate gpg key)
 pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
 yay_install passff-host  # host for the firefox extension
 
+
 ## Terminal
 # my st fork
 submodule_install st
-# ctags: recommended nvim dependency
-pacman_install ctags
+# dependency for my st fork to find urls in terminal:
+yay_install xurls
+# search tool
+pacman_install grep
+# alternative search tool
+# pacman_install ack
+# fuzzy finder tool
+pacman_install fzf
 # rsync: safe and secure copy & backup
 pacman_install rsync
 # atool gives information about archives
-pacman_install atool
+# pacman_install atool
 # zip
 pacman_install zip
 # unzip
@@ -253,92 +262,99 @@ pacman_install unzip
 # unrar
 pacman_install unrar
 # rpm extraction shell script
-yay_install rpmextract
+# yay_install rpmextract
 # pv: progress bars on stdout
-pacman_install pv
+# pacman_install pv
 # battery information
 pacman_install acpi
+# battery daemon (sleep on low power):
+pacman_install acpid
+systemctl_enable acpid
 # vifm: terminal file browser
 pacman_install vifm
 # dos2unix: tool to change carriage return (^M | \r) into nomal return (\n)
-pacman_install dos2unix
-# terminal internet search: google
-# yay_install googler
-# terminal internet search: duckduckgo
-# yay_install ddgr
-# search tool
-pacman_install grep
-# search tool (grep alternative, necessary for some vim extensions)
-pacman_install ack
-# fuzzy finder tool
-pacman_install fzf
-# extract urls from text
-yay_install xurls
-# multiple terminals in one
+# pacman_install dos2unix
+# terminal multiplexer:
 pacman_install tmux
 # show manual for executable
 pacman_install man
-# show most common commands for executable
+# show most common commands for executable (I use this one more often than man)
 pacman_install tldr
 # copying and pasting from the terminal
 pacman_install xclip
-# pdf previews
+# pdf conversion
 pacman_install poppler
-# check if bash script is posix complient (requires haskell > 250mb -> disables by default)
+# check if bash script is posix complient (needs haskell -> 250mb -> disables by default)
 # pacman_install shellcheck
 # highlight: to highlight code in the terminal (nice `cat` alternative)
 pacman_install highlight
 # mediainfo: show audio and video information in terminal
 pacman_install mediainfo
-# trans: command line translation engine
-pacman_install translate-shell
 # process information
 pacman_install htop
 # system information
 # pacman_install neofetch
 # lightweight system information
 # yay_install pfetch
-# some more eye-candy
-yay_install cli-visualizer
-# terminal spreadsheets
-# yay_install sc-im
+# some more eye-candy (useless music visualizer):
+# yay_install cli-visualizer
 # large ascii letters
-pacman_install figlet
-# build from source
-pacman_install cmake
+# pacman_install figlet
 # netcat: for socket communication
 # pacman_install gnu-netcat
-# sockets (needed for mpvcontrol)
+# sockets (needed for custom mpvcontrol script)
 pacman_install socat
 # torrents: transmission
 pacman_install transmission-cli
 yay_install transmission-remote-cli-git
-# a more beautiful ls command
+# a more beautiful ls command (I have ls remapped to lsd when no arguments given)
 pacman_install lsd
-# useless music visualizer:
-# yay_install cli-visualizer
-# conky: a system monitor
-pacman_install conky
-# vim / neovim
+# yay_install conky-lua-nv
+# vim / neovim: terminal text editor
 pacman_install neovim
 link /usr/bin/nvim /usr/bin/vim
 pacman_install npm
 sudo npm -g install instant-markdown-d >> $LOG 2>> $ERR
-# yay_install conky-lua-nv
-# reverse proxy
-pacman_install nginx
-sudo mkdir -p /var/www/html
-sudo cp $HOME/.extra/nginx.conf /etc/nginx/nginx.conf
-[ -f /var/www/html/index.html ] || sudo cp $HOME/.extra/index.html /var/www/html/index.html
-systemctl_enable nginx
+# ctags: recommended vim dependency for jump-to-tag functionality
+pacman_install ctags
+# scim: terminal spreadsheet viewer/editor
+# yay_install sc-im
+# terminal internet search: google
+# yay_install googler
+# terminal internet search: duckduckgo
+# yay_install ddgr
+# trans: command line translation engine
+# pacman_install translate-shell
+
+
+## Drive and file system drivers
+# mount cifs parititions
+pacman_install cifs-utils
+# dosfstools: support for dos (windows) - like filesystems
+pacman_install dosfstools
+# exfat-utils: access fat-drives
+pacman_install exfat-utils
+# ntfs-3g: access NTFS network drives
+pacman_install ntfs-3g
+# samba shares = network volumes
+pacman_install samba
+# access media on external device (phone, ...)
+pacman_install libmtp
+pacman_install fuse
+pacman_install android-file-transfer # android access
+# access ssh file system
+pacman_install sshfs
+# install scripts for bootstrapping new arch installation
+# pacman_install arch-install-scripts
+
 
 ## Graphical server: xorg
 # the graphical server
 # pacman_install xorg
 pacman_install xorg-server
 # querying window information
-pacman_install xorg-xwininfo
-# initializing
+# pacman_install xorg-xwininfo
+# initializing (for starting the window manager without display manager)
 pacman_install xorg-xinit
 # tool for detecting window properties
 pacman_install xorg-xprop
@@ -346,9 +362,9 @@ pacman_install xorg-xprop
 # pacman_install xcompmgr
 pacman_install picom
 # get info on current active windows
-pacman_install xorg-xdpyinfo
+# pacman_install xorg-xdpyinfo
 # virtual x server
-pacman_install xorg-server-xvfb
+# pacman_install xorg-server-xvfb
 # hide an inactive mouse
 pacman_install unclutter
 # remap escape key:
@@ -366,12 +382,9 @@ if [ -d /sys/class/backlight/intel_backlight ] && [ $already_configured -ne 0 ];
     printf "\nSection \"Device\"\n    Identifier \"Intel Graphics\"\n    Driver \"intel\"\n    Option \"Backlight\" \"intel_backlight\"\nEndSection\n" | sudo tee -a /etc/X11/xorg.conf &> /dev/null
 fi
 
+
 ## Desktop Environment / Window Manager
-# i3-gaps: allow gaps between windows
-# pacman_install i3-gaps
-# i3-blocks: status bar for i3
-# pacman_install i3-blocks
-# i3lock: screen lock for i3 and other window managers.
+# i3lock: screen lock for i3 and other window managers like in this case dwm.
 pacman_install i3lock
 # xsetroot: for status bar in dwm
 pacman_install xorg-xsetroot
@@ -387,11 +400,12 @@ submodule_install dwm
 submodule_install dmenu
 # rofi (dmenu alternative)
 pacman_install rofi
+# conky: a system monitor
+pacman_install conky
 # display manager
 pacman_install lightdm
-pacman_install lightdm-gtk-greeter
-yay_install lightdm-slick-greeter
-# mini greeter seems to not work properly without the above two greeters installed (?)
+#pacman_install lightdm-gtk-greeter
+#yay_install lightdm-slick-greeter
 yay_install lightdm-mini-greeter
 sudo mkdir -p /usr/share/xsessions
 cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?.*greeter-session.*=.*/greeter-session=lightdm-mini-greeter/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2>> $ERR
@@ -399,6 +413,63 @@ cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?.*user-session.*=.*/user-session=d
 cat /etc/lightdm/lightdm-mini-greeter.conf | sed "s/^user = CHANGE_ME$/user = $USER/g" | sed "s/F92672/2AA198/g" | sudo tee /etc/lightdm/lightdm-mini-greeter.conf > /dev/null 2>> $ERR
 sudo cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
 systemctl_enable lightdm
+
+
+## Desktop notifications
+# libnotify allows desktop notifications
+pacman_install libnotify
+# dunst creates desktop notifications
+pacman_install dunst
+
+
+## Sound
+# alsamixer
+pacman_install alsa-utils
+pacman_install alsa-plugins
+pacman_install pulseaudio
+# media control
+pacman_install mpc
+# media daemon
+pacman_install mpd
+systemctl_enable mpd
+
+
+## Connectivity & network tools
+# network manager
+pacman_install networkmanager
+systemctl_enable NetworkManager
+# create network group (this might fail if the group exists already, but who cares.)
+groupadd network >> $LOG 2>> $ERR
+# create policy kit rule (everyone in network group can connect to / change networks)
+printf "polkit.addRule(function(action, subject) {\nif (action.id.indexOf(\"org.freedesktop.NetworkManager.\") == 0 && subject.isInGroup(\"network\")) {\nreturn polkit.Result.YES;\n}\n});" > /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules 2>> $ERR
+# add current user to network group
+sudo usermod -a -G network $USER
+# applet in the corner of the screen
+pacman_install network-manager-applet
+# openvpn
+pacman_install openvpn
+# ssh (client and server)
+pacman_install openssh
+systemctl_enable sshd
+# autossh (for ssh daemons)
+pacman_install autossh
+# whois information
+# pacman_install whois
+# access to google servers
+# yay_install google-cloud-sdk
+# bluetooth
+pacman_install bluez
+pacman_install bluez-utils
+pacman_install pulseaudio-bluetooth
+# pacman_install blueman
+systemctl_enable bluetooth
+# remote desktop
+pacman_install remmina
+pacman_install freerdp
+# barrier: seemless mouse and keyboard sharing between computers
+yay_install barrier
+yay_install barrier-headless
+
 
 ## Themes
 # gtk3
@@ -434,10 +505,19 @@ pacman_install xcursor-simpleandsoft
 
 ## Web interfaces
 # syncthing: synchronization between devices
-pacman_install syncthing
+# pacman_install syncthing
 # jellyfin: media center
 # pacman_install jellyfin
 # systemctl_enable jellyfin
+# nextcloud: your own dropbox at home :-)
+# pacman_install nextcloud
+# reverse proxy
+# pacman_install nginx
+# sudo mkdir -p /var/www/html
+# sudo cp $HOME/.extra/nginx.conf /etc/nginx/nginx.conf
+# [ -f /var/www/html/index.html ] || sudo cp $HOME/.extra/index.html /var/www/html/index.html
+# systemctl_enable nginx
+
 
 ## Printers
 # printer system (cups @ localhost:631)
@@ -453,6 +533,7 @@ pacman_install cups-pdf
 # enable cups service
 systemctl_enable org.cups.cupsd
 
+
 ## Fonts
 # fontconfig should already be installed, but just to be sure:
 pacman_install fontconfig
@@ -462,12 +543,9 @@ pacman_install ttf-linux-libertine
 pacman_install ttf-droid
 # best monospace font: inconsolata
 pacman_install ttf-inconsolata
-# inconsolata on steroids: patched for powerline extensions (zsh/vim...)
-# = best patched font, used for powerline theme (NOT compatible with awesome-terminal-fonts + powerline-font)
-# yay_install nerd-fonts-inconsolata-go
-# awesome terminal fonts: glyph dependencies (lsd and dwm (my build) dependency)
+# awesome terminal fonts: glyph dependencies (lsd and dwm [my build] dependency)
 pacman_install awesome-terminal-fonts
-# specific symbols for powerlines (optional dependency of my st build)
+# specific symbols for powerlines (recommended dependency for my st build)
 pacman_install powerline-fonts
 # unicode symbols / emojis (these are standard unicode symbols, hence different than awesome terminal fonts!)
 yay_install ttf-symbola
@@ -491,6 +569,7 @@ link /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
 # enable LCD-filtering
 link /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
 
+
 ## GUIs
 # nemo: sometimes a non-terminal file browser can be useful
 pacman_install nemo
@@ -505,7 +584,8 @@ pacman_install zathura-djvu
 # etcher: GUI dd alternative
 # yay_install etcher-bin
 
-## Graphic programs
+
+## Images, video and media
 # pinta: an improved ms paint clone
 pacman_install pinta
 # inkscape
@@ -514,17 +594,44 @@ pacman_install inkscape
 # pacman_install gimp
 # Krita: another photoshop alternative.
 # pacman_install krita
+# image viewer
+pacman_install sxiv
+# imagemagick: for images
+pacman_install imagemagick
+# youtube-dl: download YouTube videos
+# pacman_install youtube-dl
+# YouTube-viewer
+# pacman_install youtube-viewer
+# vlc media player
+# pacman_install vlc
+# mpv media player
+pacman_install mpv
+# ffmpeg command line tool
+# pacman_install ffmpeg
+# spotify
+# yay_install spotify
+# GDS viewer and editor
+pacman_install klayout
+
 
 ## Office
 # open-source office
-pacman_install libreoffice-still
+pacman_install libreoffice-fresh
+# pacman_install libreoffice-still
 # recommended font packages for compatibility with MS Office
-# yay_install ttf-ms-fonts
-# yay_install ttf-vista-fonts
-# open-source office MS Office look-and-feel.
+yay_install ttf-ms-fonts
+yay_install ttf-vista-fonts
+# open-source office with MS Office look-and-feel:
 # yay_install onlyoffice-bin
 # sqlite database browser
 # pacman_install sqlitebrowser
+# tex-live (disabled by default bc heavy package)
+# pacman_install texlive-most
+# bibliographies
+pacman_install biber
+# convert document types into each other
+pacman_install pandoc
+
 
 ## Programming
 # code OSS (open source build of vscode)
@@ -541,127 +648,25 @@ if [ ?$ == 0 ]; then
     code --install-extension richie5um2.vscode-sort-json >> $LOG 2>> $ERR
     code --install-extension pkief.material-icon-theme >> $LOG 2>> $ERR
 fi
-
-## Drive and file system access
-# mount cifs parititions
-pacman_install cifs-utils
-# dosfstools: support for dos (windows) - like filesystems
-pacman_install dosfstools
-# exfat-utils: access fat-drives
-pacman_install exfat-utils
-# ntfs-3g: access NTFS network drives
-pacman_install ntfs-3g
-# samba shares = network volumes
-pacman_install samba
-# access media on external device (phone, ...)
-pacman_install libmtp
-pacman_install fuse
-pacman_install android-file-transfer # android access
-# access ssh file system
-pacman_install sshfs
-# install scripts for bootstrapping new arch installation
-# pacman_install arch-install-scripts
-
-## Desktop notifications
-# libnotify allows desktop notifications
-pacman_install libnotify
-# dunst creates desktop notifications
-pacman_install dunst
-
-## image and video tools
-# image viewer
-pacman_install sxiv
-# imagemagick: for images
-pacman_install imagemagick
-# youtube-dl: download YouTube videos
-pacman_install youtube-dl
-# YouTube-viewer
-pacman_install youtube-viewer
-# vlc media player
-# pacman_install vlc
-# mpv media player
-pacman_install mpv
-# ffmpeg command line tool
-pacman_install ffmpeg
-# spotify
-# yay_install spotify
-
-## Connectivity & network tools
-# network manager
-pacman_install networkmanager
-systemctl_enable NetworkManager
-# create network group (this might fail if the group exists already, but who cares.)
-groupadd network >> $LOG 2>> $ERR
-# create policy kit rule (everyone in network group can connect to / change networks)
-printf "polkit.addRule(function(action, subject) {\nif (action.id.indexOf(\"org.freedesktop.NetworkManager.\") == 0 && subject.isInGroup(\"network\")) {\nreturn polkit.Result.YES;\n}\n});" > /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules 2>> $ERR
-# add current user to network group
-sudo usermod -a -G network $USER
-# applet in the corner of the screen
-pacman_install network-manager-applet
-# openvpn
-pacman_install openvpn
-# ssh (client and server)
-pacman_install openssh
-systemctl_enable sshd
-# autossh (for ssh daemons)
-pacman_install autossh
-# whois information
-pacman_install whois
-# access to google servers
-# yay_install google-cloud-sdk
-# bluetooth
-pacman_install bluez
-pacman_install bluez-utils
-pacman_install pulseaudio-bluetooth
-# pacman_install blueman
-systemctl_enable bluetooth
-# remote desktop
-pacman_install remmina
-pacman_install freerdp
-# barrier: seemless mouse and keyboard sharing between computers
-yay_install barrier
-yay_install barrier-headless
-
-## Sound
-# alsamixer
-pacman_install alsa-utils
-pacman_install alsa-plugins
-pacman_install pulseaudio
-# media control
-pacman_install mpc
-# media daemon
-pacman_install mpd
-systemctl_enable mpd
-
-## Latex
-# tex-live (diabled by default bc heavy package)
-# pacman_install texlive-most
-# bibliographies
-pacman_install biber
+# Scientific computing octave (Matlab alternative)
+pacman_install octave
 
 
 ## Browsers
-
-# firefox
+# firefox (basically the only browser you'll ever need)
 pacman_install firefox
 # patch firefox to work with some legacy extensions (like vimfx)
 submodule_install legacyfox
-
 # chromium
 # pacman_install chromium
 # yay_install ungoogled-chromium
-# yay_install ungoogled-chromium-archlinux  # preferred
-# yay_install ungoogled-chromium-bin
-
 # qutebrowser
 # pacman_install qutebrowser
-
 # surf
 # pacman_install webkit2gtk # surf build dependency
 # pacman_install gcr # surf build dependency
 # pacman_install xorg-xprop # surf build dependency
 # pacman_install surf
-
 # brave
 # yay_install brave-bin
 
@@ -682,23 +687,12 @@ pacman_install lynx
 # mutt wizard (disabled; manual configuration preferred)
 # yay_install mutt-wizard
 
-## Power & sleep
-# sleep on low power
-pacman_install acpid
-systemctl_enable acpid
-echo $password | sudo -S chmod a+w /sys/power/state
 
-## nvidia graphics card:
+## nvidia drivers:
 # this is disabled by default, as it gives troubles on devices without nvidia GPU
 # pacman_install nvidia
 # pacman_install cuda-toolkit
 
-## GDS Layouts
-# Klayout
-pacman_install klayout
-
-# Scientific computing octave (Matlab alternative)
-pacman_install octave
 
 ## Resources
 # a collection of very nice wallpapers:
@@ -706,64 +700,52 @@ pacman_install octave
 
 
 ## Python
-#-------------------------------------------------------------------------------
-
-# system python packages
+# simple guis
 pacman_install tk
+# python style guide checker
+pacman_install yapf
+# python package manager
 pacman_install python-pip
 pacman_install python2-pip
+# progress bars
 pacman_install python-tqdm
+# numerical calculations
 pacman_install python-numpy
 pacman_install python2-numpy
-pacman_install python-gobject
-pacman_install python-powerline
-pacman_install python-websockets
+# plotting
 pacman_install python-matplotlib
 pacman_install python2-matplotlib
-
-# linters & formatters
-pip3_install pylint
-pip3_install pep8
-pip3_install flake8
-pip3_install pyflakes
-pip3_install isort
-pip3_install yapf
-pip3_install black
-pip2_install pylint
-pip2_install pep8
-pip2_install flake8
-pip2_install pyflakes
-pip2_install isort
-pip2_install yapf
-
-# pywal: an xrdb wrapper library
-pip3_install pywal
-
-# install neovim integration for system python
-pip3_install neovim
-pip2_install neovim
+# linters & formatters (recommended for vim)
+pacman_install python-pylint
+pacman_install python2-pylint
+pacman_install python-autopep8
+pacman_install python2-autopep8
+pacman_install python-flake8
+pacman_install python2-flake8
+pacman_install python-pyflakes
+pacman_install python2-pyflakes
+pacman_install python-isort
+pacman_install python2-isort
+pacman_install python-black
+pacman_install python-pywal
+# image processing in python
+# pacman_install python-pillow
+# sockets
+# pacman_install python-websockets
+# neovim integration
+python-pynvim
 pip3_install neovim-remote
-
-# image previews in vifm
+# image previews in terminal
 pip3_install ueberzug
-
 # automate GUI tasks with pyautogui
 pip3_install pyautogui
-
-# to enable wordcloud background
-pip3_install pillow
-pip3_install wordcloud
-
-# document portability
-pip3_install pandoc
-pip2_install pandoc
-pip3_install google-api-python-client
-pip3_install google-auth-httplib2
-pip3_install google-auth-oauthlib
-pip2_install google-api-python-client
-pip2_install google-auth-httplib2
-pip2_install google-auth-oauthlib
-
+# google cloud apis
+# pip3_install google-api-python-client
+# pip3_install google-auth-httplib2
+# pip3_install google-auth-oauthlib
+# pip2_install google-api-python-client
+# pip2_install google-auth-httplib2
+# pip2_install google-auth-oauthlib
 # smdv: simple markdown viewer
 # pip3_install smdv
 
@@ -785,8 +767,12 @@ systemctl_enable pacmanquery.service
 echo $password | sudo -S timedatectl set-local-rtc 1 >> $LOG 2>> $ERR
 # make sure everyone can mount in /mnt
 echo $password | sudo -S chmod a+rwx /mnt >> $LOG 2>> $ERR
-# copy dark solarized theme to ~/.Xresources -> default color scheme
-cp ~/.config/Xresources/gruvbox-dark ~/.Xresources >> $LOG 2>> $ERR
+# copy preferred theme to ~/.Xresources -> default color scheme
+cp $HOME/.config/Xresources/gruvbox-dark $HOME/.Xresources >> $LOG 2>> $ERR
+# enable colorscheme
+xrdb $HOME/.Xresources >> $LOG 2>> $ERR
+# if the custom `xcs` script is in the path, enable it for currently open windows:
+xcs current
 
 
 ## Alternative shell
@@ -800,16 +786,28 @@ link /usr/bin/dash /bin/sh
 # pacman_install fish
 # echo $password | chsh -s /usr/bin/fish
 
-# zsh: another alternative shell. In contrast to fish, it *is* posix complient.
+# zsh: another alternative shell. In contrast to fish, it is posix complient + extras
 # it's my preferred shell.
 pacman_install zsh
-# zsh-extensions:
+# autojump extensionfor zsh, I could not live without it:
 yay_install autojump-git
+# same fo the autosuggestions, simply ctrl+p [at least for my .zshrc] to accept suggestion. Priceless.
 pacman_install zsh-autosuggestions
+# syntax highlighting is also useful for zsh:
 pacman_install zsh-syntax-highlighting
-
-# optional: make customizing zsh easy:
+# optional: make customizing zsh easier (it's actually not so difficult to begin with):
 # yay_install oh-my-zsh-git
-# we'll make zsh our main shell
-echo $password | chsh -s /usr/bin/zsh
+# make zsh the default shell:
+echo "changing shell to zsh..."
+echo $password | chsh -s /usr/bin/zsh >> $LOG 2>> $ERR
+echo "done."
+
+
+## Finished
+#-------------------------------------------------------------------------------
+
+printf "\n\n\n\n\n"
+echo "###############"
+echo "## finished! ##"
+echo "###############"
 
