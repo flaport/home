@@ -1,0 +1,19 @@
+# NOTE: DO NOT EDIT THE FIRST 6 LINES OF THIS FILE
+#
+# this service can be (re-)installed by enabling it in the
+# arch install script and running the script (again).
+#
+# TARGET: /etc/systemd/system/pacmanquery.service
+
+[Unit]
+Description=Query the packages that can be updated
+After=network-online.target
+
+[Service]
+User=root
+ExecStart=/usr/bin/pacman -Syup
+Restart=always
+RestartSec=3600
+
+[Install]
+WantedBy=multi-user.target

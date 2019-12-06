@@ -1,0 +1,19 @@
+# NOTE: DO NOT EDIT THE FIRST 6 LINES OF THIS FILE
+#
+# this service can be (re-)installed by enabling it in the
+# arch install script and running the script (again).
+#
+# TARGET: /etc/systemd/system/jupyterhub.service
+
+[Unit]
+Description=Jupyterhub
+After=syslog.target network.target
+
+[Service]
+User=root
+WorkingDirectory=/root
+Environment="PATH={HOME}/.anaconda/bin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+ExecStart={HOME}/.anaconda/bin/jupyterhub -f {HOME}/.jupyter/jupyterhub_config.py
+
+[Install]
+WantedBy=multi-user.target

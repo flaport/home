@@ -1,11 +1,1 @@
-[Unit]
-Description=OpenVPN
-After=syslog.target network.target
-
-[Service]
-User=root
-WorkingDirectory={home}/.config/openvpn
-ExecStart=/usr/bin/openvpn {home}/.config/openvpn/profile.ovpn
-
-[Install]
-WantedBy=multi-user.target
+../../.install/services/openvpn.service

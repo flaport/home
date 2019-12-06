@@ -1,0 +1,12 @@
+# NOTE: DO NOT EDIT THE FIRST 6 LINES OF THIS FILE
+#
+# this service can be (re-)installed by enabling it in the
+# arch install script and running the script (again).
+#
+# TARGET: /etc/systemd/system/getty@tty1.service.override.conf
+
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin {USER} --noclear %I $TERM
+Type=simple
+

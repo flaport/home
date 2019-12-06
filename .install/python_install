@@ -9,6 +9,11 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
+# Note: this script can be run as often as you like. After the first time,
+#       running this script should be quite fast, making it a good way to
+#       install additional packages by adding them to the list below.
+
+
 # last full run: 2019.11.27
 
 ## Checks

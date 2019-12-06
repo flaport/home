@@ -1,0 +1,18 @@
+# NOTE: DO NOT EDIT THE FIRST 6 LINES OF THIS FILE
+#
+# this service can be (re-)installed by enabling it in the
+# arch install script and running the script (again).
+#
+# TARGET: /etc/systemd/system/openvpn.service
+
+[Unit]
+Description=OpenVPN
+After=syslog.target network.target
+
+[Service]
+User=root
+WorkingDirectory={HOME}/.config/openvpn
+ExecStart=/usr/bin/openvpn {HOME}/.config/openvpn/profile.ovpn
+
+[Install]
+WantedBy=multi-user.target

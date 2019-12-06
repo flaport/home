@@ -1,0 +1,18 @@
+# NOTE: DO NOT EDIT THE FIRST 6 LINES OF THIS FILE
+#
+# this service can be (re-)installed by enabling it in the
+# arch install script and running the script (again).
+#
+# TARGET: /etc/systemd/system/syncthing.service
+
+[Unit]
+Description=Syncthing
+After=syslog.target network.target
+
+[Service]
+User={user}
+WorkingDirectory={HOME}
+ExecStart=/usr/bin/syncthing --no-browser
+
+[Install]
+WantedBy=multi-user.target
