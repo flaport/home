@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last full run: 2019.12.05
+# last full run: 2019.12.07
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -572,7 +572,7 @@ pacman_install awesome-terminal-fonts
 # specific symbols for powerlines (recommended dependency for my st build)
 pacman_install powerline-fonts
 # unicode symbols / emojis (these are standard unicode symbols, hence different than awesome terminal fonts!)
-# yay_install ttf-symbola
+yay_install ttf-symbola
 # pacman_install ttf-joypixels
 # yay_install ttf-twemoji-color
 pacman_install noto-fonts-emoji
@@ -812,7 +812,7 @@ cp $HOME/.config/Xresources/gruvbox-dark $HOME/.Xresources >> $LOG 2>> $ERR
 # enable colorscheme
 xrdb $HOME/.Xresources >> $LOG 2>> $ERR
 # if the custom `xcs` script is in the path, enable it for currently open windows:
-xcs current
+xcs current >> $LOG 2>> $ERR
 
 
 ## Alternative shell
