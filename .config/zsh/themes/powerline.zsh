@@ -226,7 +226,7 @@ prompt_battery(){
        return
     fi
     if [[ $percentage -gt 90 ]]; then
-        icon=$PL_BATTERY1
+        return
     elif [[ $percentage -gt 60 ]]; then
         icon=$PL_BATTERY2
     elif [[ $percentage -gt 30 ]]; then
