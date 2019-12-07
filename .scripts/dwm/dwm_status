@@ -123,14 +123,14 @@ bat(){ # battery
        echo -e 🔌" "$percentage%
        return
     fi
-    if echo $battery > grep Disharging &> /dev/null; then
-        if [[ $percentage > 90 ]]; then
+    if echo $battery > grep "Discharging" &> /dev/null; then
+        if [[ $percentage -gt 90 ]]; then
             echo -e " "$percentage%
-        elif [[ $percentage > 60 ]]; then
+        elif [[ $percentage -gt 60 ]]; then
             echo -e " "$percentage%
-        elif [[ $percentage > 30 ]]; then
+        elif [[ $percentage -gt 30 ]]; then
             echo -e " "$percentage%
-        elif [[ $percentage > 5 ]]; then
+        elif [[ $percentage -gt 5 ]]; then
             echo -e " "$percentage%
         else
             echo -e " "$percentage%
