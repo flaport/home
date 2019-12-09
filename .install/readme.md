@@ -1,10 +1,15 @@
 # First Installation of Arch Linux
 
-***Note:*** These installation instructions were last checked by me on 2019.12.05.
+***Note:*** These installation instructions were last checked by me on
+2019.12.07.
 
-***Note:*** These installation worked definitely for **UEFI** boot mode and should normally also work for **BIOS** boot mode, although I have not performed the latter myself.
+***Note:*** These installation worked definitely for **UEFI** boot mode and
+should normally also work for **BIOS** boot mode, although I have not performed
+the latter myself.
 
-***Note:*** Although I do my best to keep those instructions up to date, the most up to date instructions will always be found on the arch wiki [installation guide](https://wiki.archlinux.org/index.php/Installation_guide).
+***Note:*** Although I do my best to keep those instructions up to date, the
+most up to date instructions will always be found on the arch wiki
+[installation guide](https://wiki.archlinux.org/index.php/Installation_guide).
 
 ## First Installation with bootable USB
 * Download **the most recent** Arch Linux ISO [http://archlinux.org/download](http://archlinux.org/download) from a mirror **near you**, and create a USB flash drive.
@@ -74,26 +79,23 @@
     * `pacman -S grub`
     * `grub-install --target=i386-pc /dev/sda
     * Generate config file for bootloader: `grub-mkconfig -o /boot/grub/grub.cfg`
-
+* **Optional**: hide GRUB during boot (useful for single OS installations):
+    * Update `/etc/default/grub` by setting:
+        * `GRUB_TIMEOUT=0`
+    * Regenerate the grub config: `sudo grub-mkconfig -o /boot/grub/grub.cfg`
 * Create a root password: `passwd`
-* Shutdown:
-    * `exit`
-    * `umount -R /mnt`
-    * `shutdown now`
-* Boot up into the newly setup root account
-
-## Post Installation
-The first thing to do after booting up into the root account is to make a new user and install the necessary packages:
-
-* Create a new user: `useradd -m flaport`. The `-m` flag makes sure a home directory is created. If you are *reinstalling* the root partition, you should leave this out.
+* Create new user: `useradd -m flaport`. The `-m` flag makes sure a home directory is created. If you are *reinstalling* the root partition, you should leave this out.
 * Create a password for the new user: `passwd flaport`
 * Add `flaport` to the sudoers:
     * edit the sudoers file `export EDITOR=nvim; visudo`
     * add the line `flaport ALL=(ALL) ALL`
-* **Optional**: hide GRUB during boot (for single OS installations):
-    * Update `/etc/default/grub` by setting:
-        * `GRUB_TIMEOUT=0`
-    * Regenerate the grub config: `sudo grub-mkconfig -o /boot/grub/grub.cfg`
+* Shutdown:
+    * `exit`
+    * `umount -R /mnt`
+    * `shutdown now`
+* Remove the USB Drive, boot up the computer and log into the newly setup user account.
+
+## Post Installation
 * Reboot and login as the newly created user
 * Install git: `sudo pacman -S git`
 * Download and install `arch_home`:

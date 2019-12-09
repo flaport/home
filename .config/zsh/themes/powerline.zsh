@@ -225,13 +225,13 @@ prompt_battery(){
        echo -n $icon
        return
     fi
-    if [[ $percentage > 90 ]]; then
-        icon=$PL_BATTERY1
-    elif [[ $percentage > 60 ]]; then
+    if [[ $percentage -gt 90 ]]; then
+        return
+    elif [[ $percentage -gt 60 ]]; then
         icon=$PL_BATTERY2
-    elif [[ $percentage > 30 ]]; then
+    elif [[ $percentage -gt 30 ]]; then
         icon=$PL_BATTERY3
-    elif [[ $percentage > 5 ]]; then
+    elif [[ $percentage -gt 5 ]]; then
         icon=$PL_BATTERY4
     else
         bgcolor=$COLORU
