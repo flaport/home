@@ -383,9 +383,9 @@ super + F9
 
 super + F10
 
-# make screenshot [requires imagemagick]
+# make screenshot
 Print
-    xdotool mousemove_relative 1 1; import $HOME/screenshot.png && notify-send "screenshot" "saved at ~/screenshot.png"
+    flameshot gui
 
 # decrease brightness
 super + F11

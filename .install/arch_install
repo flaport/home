@@ -624,8 +624,12 @@ pacman_install inkscape
 # pacman_install krita
 # image viewer
 pacman_install sxiv
-# imagemagick: for images
+# imagemagick: for images, screenshots
 pacman_install imagemagick
+# scrot: alternative screenshot program [requires imagemagick]
+# pacman_install scrot
+# flameshot: arguably the best screenshot program
+pacman_install flameshot
 # youtube-dl: download YouTube videos
 # pacman_install youtube-dl
 # YouTube-viewer
