@@ -795,6 +795,17 @@ pip3_install pyautogui
 # run jupyterlab as a systemd service:
 systemctl_create jupyterhub
 systemctl_enable jupyterhub
+# castero: podcast client (dependencies installed first)
+# pacman_install flake8
+# pacman_install python-requests
+# pacman_install python-pytest
+# pacman_install python-cjkwrap
+# pacman_install python-coverage
+# pacman_install python-beautifulsoup4
+# yay_install python-mpv
+# yay_install python-vlc
+# yay_insall castero
+
 
 
 ## Services
