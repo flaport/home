@@ -111,7 +111,7 @@ super + n
 
 # open dmenu networkmanager
 super + N
-    dmenu_networkmanager
+    st -e vifm
 
 # activate all tags to which current window belongs
 super + o
