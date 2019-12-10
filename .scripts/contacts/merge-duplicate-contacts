@@ -1,0 +1,44 @@
+#!/usr/bin/python
+import sys
+
+def usage():
+    print("merge-duplicate-contacts [contacts-file.vcf]")
+    exit(1)
+
+def keyval(line):
+    splitted_line = line.split(":")
+    key = splitted_line[0]
+    value = ":".join(splitted_line[1:]).strip()
+    return key, value
+
+
+if len(sys.argv) != 2:
+    usage()
+
+if not sys.argv[1].endswith(".vcf"):
+    usage()
+
+vcards = {}
+contacts_file = sys.argv[1]
+
+with open(contacts_file, "r") as file:
+    for line in file:
+        key, value = keyval(line)
+        if key == "BEGIN":
+            vcard = {}
+            name = ""
+        elif key == "N":
+            name = value
+        elif key == "EMAIL" and not name:
+            name = value.split("@")[0]
+            vcard["N"] = name
+        elif key == "END" and name:
+            if name in vcards:
+                vcard = {**vcards[name], **vcard}
+            vcards[name] = vcard
+        vcard[key] = value
+
+for vcard in vcards.values():
+    for key, value in vcard.items():
+        print(f"{key}:{value}")
+
