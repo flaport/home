@@ -179,6 +179,7 @@ submodule_install(){ # will only install the first argument!
 
     printf "sudo make clean install\n" >> $LOG
     printf "sudo make clean install\n" >> $ERR
+    echo $password | sudo -S rm config.h >> $LOG 2>> $ERR
     echo $password | sudo -S make clean >> $LOG 2>> $ERR
     echo $password | sudo -S make all >> $LOG 2>> $ERR
     echo $password | sudo -S make install >> $LOG 2>> $ERR
