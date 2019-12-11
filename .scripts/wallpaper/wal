@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
 
+# a simple wrapper script around pywal
+
+# if called without arguments, create colorscheme according to
+# currently set wallpaper and save colorscheme to ~/.Xresources
 if [ -z $1 ]; then
-    # if called without arguments, create colorscheme according to
-    # currently set wallpaper and save colorscheme to ~/.Xresources
+    # first clean cache
     /usr/bin/wal -c
-    a=$(python3 -c "print(f'{0.01*$(alpha get):.2f}')") # yes, quite hacky...
-    /usr/bin/wal -a $a -i $HOME/.local/share/wallpapers/current-wallpaper
+    # get current alpha value from Xresources (quite hacky, I know...)
+    a=$(printf "%.2f\n" $(grep alpha ~/.Xresources | tail -1 | sed 's/^.*://'))
+    /usr/bin/wal -a $a -i $HOME/.cache/current-wallpaper
     cp $HOME/.cache/wal/colors.Xresources $HOME/.Xresources
     xcs current -a $a
     exitcode=$?

@@ -733,7 +733,10 @@ pacman_install lynx
 
 ## Resources
 # a collection of very nice wallpapers:
-# [ -d "$HOME/.wallpapers" ] || git clone https://gitlab.com/dwt1/wallpapers $HOME/.wallpapers >> $LOG 2>> $ERR
+if [ ! -d "$HOME/.local/share/wallpapers" ]; then
+    echo "cloning a full repo of very nice wallpapers..."
+    git clone https://gitlab.com/dwt1/wallpapers $HOME/.local/share/wallpapers >> $LOG 2>> $ERR
+fi
 
 ## Other Services
 # run a service in the background that checks how many packages can be updated
@@ -818,7 +821,7 @@ systemctl_enable jupyterhub
 echo $password | sudo -S timedatectl set-local-rtc 1 >> $LOG 2>> $ERR
 # make sure everyone can mount in /mnt
 echo $password | sudo -S chmod a+rwx /mnt >> $LOG 2>> $ERR
-if [ ! -f $HOME/.Xresources]; then
+if [ ! -f $HOME/.Xresources ]; then
     # copy preferred theme to ~/.Xresources -> default color scheme
     cp $HOME/.config/Xresources/gruvbox-dark $HOME/.Xresources >> $LOG 2>> $ERR
     # enable colorscheme

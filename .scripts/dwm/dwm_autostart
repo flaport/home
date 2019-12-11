@@ -10,7 +10,7 @@
 pidof sxhkd || sxhkd &> /dev/null &
 
 # set wallpaper
-wallpaper current-wallpaper &
+wallpaper current &
 
 # enable transparent windows
 if [ -f "$HOME/.config/picom/blur-kern" ]; then

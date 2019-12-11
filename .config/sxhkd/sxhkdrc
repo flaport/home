@@ -197,7 +197,11 @@ super + y
 
 # change wallpaper
 super + Y
-    $TERMINAL -n float -e wallpaper
+    wallpaper next && wal
+
+# change wallpaper
+super + control + y
+    wallpaper previous && wal
 
 # shift focus to monitor Z
 super + z
