@@ -56,10 +56,20 @@ while true; do
     sleep 60
 done &
 
-# update dwm status bar
+# update dwm status bar every 10 seconds
 while true; do
     dwm_status &> /dev/null
     sleep 10s
+done &
+
+# check battery status every 10 minutes
+while true; do
+    battery=$(acpi -b 2> /dev/null)
+    percentage=$(echo $battery |  sed 's/^.*, \([0-9]*\)%.*$/\1/g')
+    if [[ $battery = *Discharging* && $percentage -lt 5 ]]; then
+        notify-send --urgency=CRITICAL "battery low" "   $percentage%"
+    fi
+    sleep 600s
 done &
 
 # update weather report every hour
