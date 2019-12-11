@@ -9,11 +9,12 @@
 import os
 import sys
 import shutil
+import random
 import subprocess
 import urllib.request
 
 def usage():
-    print("wallpaper [current|next|previous|[idx]|[path]|[url]]")
+    print("wallpaper [current|next|previous|random|[idx]|[path]|[url]]")
     exit(1)
 
 def set_current_wallpaper():
@@ -31,10 +32,15 @@ def download_wallpaper(url):
     path = os.path.join(os.path.expanduser("~/.cache/downloaded-wallpapers"), url.split("/")[-1])
     if not os.path.exists(path):
         urllib.request.urlretrieve(url, filename=path)
-    shutil.copy(path, CURRENT_WALLPAPER)
-    save_current_wallpaper_path(url)
+    if os.path.isfile(path) and path != CURRENT_WALLPAPER:
+        shutil.copy(path, CURRENT_WALLPAPER)
+        save_current_wallpaper_path(url)
 
 def copy_wallpaper(path):
+    try:
+        os.makedirs(os.path.expanduser("~/.cache"))
+    except FileExistsError:
+        pass
     if os.path.isfile(path) and path != CURRENT_WALLPAPER:
         shutil.copy(path, CURRENT_WALLPAPER)
         save_current_wallpaper_path(path)
@@ -42,9 +48,10 @@ def copy_wallpaper(path):
 CURRENT_WALLPAPER = os.path.expanduser("~/.cache/current-wallpaper")
 try:
     CURRENT_WALLPAPER_PATH = open(os.path.expanduser("~/.cache/current-wallpaper-path")).read().split("\n")[0]
+    WALLPAPERS = [CURRENT_WALLPAPER_PATH]
 except FileNotFoundError:
     CURRENT_WALLPAPER_PATH = ""
-WALLPAPERS = [CURRENT_WALLPAPER_PATH]
+    WALLPAPERS = []
 WALLPAPERS += [l for l in open(os.path.expanduser("~/.scripts/wallpaper/wallpapers.txt")).read().split("\n") if l]
 WALLPAPERS += [os.path.expanduser("~/.local/share/wallpapers/") + name  for name in os.listdir(os.path.expanduser("~/.local/share/wallpapers")) if name.endswith(".jpg") or name.endswith(".png")]
 WALLPAPERS = sorted(set(WALLPAPERS), key=lambda x: x.split("/")[-1])
@@ -75,11 +82,13 @@ elif arg == "next":
     path = WALLPAPERS[(CURRENT_WALLPAPER_IDX+1)%len(WALLPAPERS)]
 elif arg == "previous":
     path = WALLPAPERS[(CURRENT_WALLPAPER_IDX-1)%len(WALLPAPERS)]
+elif arg == "random":
+    path = random.choice(WALLPAPERS)
 else:
     path = arg
 
 if not path:
-    usage()
+    path = random.choice(WALLPAPERS)
 
 if path.startswith("http://") or path.startswith("https://"):
     download_wallpaper(path)
@@ -87,5 +96,4 @@ else:
     path = os.path.abspath(os.path.expanduser(path))
     copy_wallpaper(path)
 
-print(path)
 exit(set_current_wallpaper())
