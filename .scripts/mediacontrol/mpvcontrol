@@ -21,7 +21,7 @@ if [[ $1 == "pause" ]]; then
             rm $i
         fi
         # save current state to /tmp/mpvstate
-        echo "paused" > ~/.cache/mpvstate
+        echo "paused" > $HOME/.cache/mpvstate
     done
 fi
 
@@ -34,12 +34,12 @@ if [[ $1 == "play" ]]; then
             rm $i
         fi
         # save current state to /tmp/mpvstate
-        echo "playing" > ~/.cache/mpvstate
+        echo "playing" > $HOME/.cache/mpvstate
     done
 fi
 
 if [[ $1 == "togglepause" || $1 == "toggleplay" ]]; then
-    state=$(cat /tmp/mpvstate)
+    state=$(cat $HOME/.cache/mpvstate)
     [[ $state == "paused" ]] && mpvcontrol play || mpvcontrol pause
     exit $?
 fi

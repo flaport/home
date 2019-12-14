@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+windows=$(xdotool search --name "YouTube" 2> /dev/null)
+for window in $windows
+do
+    # only for firefox + vimfx so far...
+    if xdotool getwindowname $window | grep Firefox &> /dev/null; then
+        xdotool getwindowname $window
+        xdotool key --window $window "Shift+Escape"
+        xdotool key --window $window i
+        xdotool key --window $window space
+        xdotool key --window $window "Shift+Escape"
+    fi
+done

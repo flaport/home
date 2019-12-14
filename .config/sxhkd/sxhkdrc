@@ -223,7 +223,7 @@ super + shift + Return
 
 # toggle pause / play
 super + shift + equal
-    notify-send "toggle pause / play"; browsercontrol togglepause; mpvcontrol togglepause
+    notify-send "toggle pause / play"; ff-toggle-pause; mpvcontrol togglepause
 
 # raise volume
 super + equal
@@ -429,11 +429,11 @@ XF86AudioPrev
 
 # toggle pause / play
 XF86AudioPause
-    notify-send "toggle pause / play"; browsercontrol togglepause; mpvcontrol togglepause
+    notify-send "toggle pause / play"; ff-toggle-pause; mpvcontrol togglepause
 
 # toggle pause / play
 XF86AudioPlay
-    notify-send "toggle pause / play"; mpvcontrol togglepause; browsercontrol togglepause
+    notify-send "toggle pause / play"; ff-toggle-pause; mpvcontrol togglepause
 
 XF86AudioStop
     notify-send XF86AudioStop "not implemented"
