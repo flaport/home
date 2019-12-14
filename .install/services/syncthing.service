@@ -10,7 +10,7 @@ Description=Syncthing
 After=syslog.target network.target
 
 [Service]
-User={user}
+User={USER}
 WorkingDirectory={HOME}
 ExecStart=/usr/bin/syncthing --no-browser
 

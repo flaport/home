@@ -118,7 +118,6 @@ bat(){ # battery
         echo -e ""
         return
     fi
-    prompt_segment
     if echo $battery | grep "Charging" &> /dev/null; then
        echo -e 🔌" "$percentage%
        return
@@ -311,7 +310,7 @@ ssht2(){
 # -----------
 
 sync(){ # jupyterhub status
-    systemctl is-active sshtunnel &> /dev/null && echo -e 
+    systemctl is-active syncthing &> /dev/null && echo -e 
 }
 sync1(){ # mouse-button 1 action for jupyterhub widget
     notifyservice syncthing
