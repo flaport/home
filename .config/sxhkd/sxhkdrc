@@ -79,7 +79,9 @@ super + I
 super + j
     # handled by dwm
 
+# open current url in mpv (firefox only)
 super + J
+    ff-open-in-mpv
 
 # focus on window lower on the stack
 super + k
