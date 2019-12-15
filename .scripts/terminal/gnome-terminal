@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-$TERMINAL $@
+$TERMINAL -t st-nemo -n nemo $@

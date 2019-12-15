@@ -109,7 +109,7 @@ super + M
 
 # open nemo file browser
 super + n
-    nemo
+    switch-nemo-st
 
 # open dmenu networkmanager
 super + N
