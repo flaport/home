@@ -109,11 +109,15 @@ super + M
 
 # open nemo file browser
 super + n
-    switch-nemo-st
+    nemo
 
 # open dmenu networkmanager
 super + N
     st -e vifm
+
+# switch between nemo and st
+super + control + n
+    switch-nemo-st
 
 # activate all tags to which current window belongs
 super + o

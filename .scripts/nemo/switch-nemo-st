@@ -6,7 +6,7 @@
 # option 3: any other case: open nemo.
 
 # this script is supposed to be mapped to super+n in sxhkdrc:
-keymap="super+n"
+keymap="super+Control_L+n"
 
 # get window information
 window=$(xdotool getactivewindow)
