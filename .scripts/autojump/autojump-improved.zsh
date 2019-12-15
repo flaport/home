@@ -51,3 +51,15 @@ fc () {
     fi
 }
 
+# an autojump-like method for "jumping" into a directory based on fzf:
+# advantage: see where you are going to jump before actually jumping
+ff () {
+    output=$(dirname $(fzf))
+    if [[ -d "${output}" ]]; then
+        echo -e "\\033[31m${output}\\033[0m"
+        cd "${output}"
+    else
+        echo -e "\\033[31m.\\033[0m"
+    fi
+}
+
