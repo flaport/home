@@ -607,6 +607,11 @@ link /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
 ## GUIs
 # nemo: sometimes a non-terminal file browser can be useful
 pacman_install nemo
+# nemo settings: set default terminal to st:
+gsettings set org.cinnamon.desktop.default-applications.terminal exec st
+gsettings set org.cinnamon.desktop.default-applications.terminal exec-arg -e
+# nemo-terminal: show a small terminal window on top of the nemo windo
+pacman_install nemo-terminal
 # screen settings: arandr (xrandr included)
 pacman_install arandr
 # best pdf reader: general document reader with vim bindings
