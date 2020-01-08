@@ -611,7 +611,7 @@ pacman_install nemo
 gsettings set org.cinnamon.desktop.default-applications.terminal exec st
 gsettings set org.cinnamon.desktop.default-applications.terminal exec-arg -e
 # nemo-terminal: show a small terminal window on top of the nemo windo
-pacman_install nemo-terminal
+# pacman_install nemo-terminal
 # screen settings: arandr (xrandr included)
 pacman_install arandr
 # best pdf reader: general document reader with vim bindings
