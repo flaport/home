@@ -118,7 +118,7 @@ def find_devices_to_mount():
         device = {**dic1, **dic2}
         name = device["name"] = "/dev/" + device["name"]
         fstype = device["fstype"]
-        if "loop" not in name and fstype not in [None, "swap"] and not device["mountpoint"]:
+        if "loop" not in name and fstype not in [None, "swap"] and not device["mountpoint"] and not device["type"] == "disk":
             device = Device(**device)
             devices[str(device)] = device
     return devices
@@ -238,19 +238,25 @@ def mountpoint_options(device):
     options = []
     if device.label:
         options.append(f"/mnt/{device.label}")
+        options.append(f"~/{device.label}")
     if "/" in device.name:
         options.append(f"/mnt/{device.name.split('/')[-1]}")
+        options.append(f"~/{device.name.split('/')[-1]}")
     if ":" in device.name:
         options.append(f"/mnt/{device.name.split(':')[0]}")
+        options.append(f"~/{device.name.split(':')[0]}")
     if hasattr(device, "uuid") and device.uuid:
         if "-" in device.uuid:
             options.append(f"/mnt/{device.uuid.split('-')[0]}")
+            options.append(f"~/{device.uuid.split('-')[0]}")
         else:
             options.append(f"/mnt/{device.uuid}")
+            options.append(f"~/{device.uuid}")
     options.append(f"/mnt")
     max_length = max(len(opt) for opt in options)
     max_length = max(max_length, 100)
-    options = [opt+" "*(max_length-len(opt)) for opt in options]
+    options = sorted([opt+" "*(max_length-len(opt)) for opt in options])
+    options = ["~/usb"] + [opt for opt in options if opt.startswith("~")] + [opt for opt in options if not opt.startswith("~")]
     return options
 
 
@@ -273,7 +279,7 @@ if __name__ == "__main__":
         print("no device chosen")
         exit(1)
     if mode == "mount":
-        chosen_directory = dmenu(mountpoint_options(chosen_device), "mount in").strip()
+        chosen_directory = os.path.abspath(os.path.expanduser(dmenu(mountpoint_options(chosen_device), "mount in").strip()))
         msg = mount(chosen_device, chosen_directory)
     if mode == "unmount":
         msg = unmount(chosen_device)
