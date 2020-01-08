@@ -126,6 +126,7 @@ def find_devices_to_mount():
 def find_devices_to_unmount():
     parents = json.loads(subprocess.check_output(["findmnt", "--real", "-J"]).decode())["filesystems"]
     mounted_devices = [dev for dev in parents if dev["target"] == "/"][0]["children"]
+    mounted_devices += [dev for dev in mounted_devices if dev["target"] == "/home"][0].pop("children", [])
     devices = {}
     for dic in mounted_devices:
         device = Device(mountpoint=dic["target"], name=dic["source"], fstype=dic["fstype"])
@@ -288,19 +289,4 @@ if __name__ == "__main__":
     print(f"{mode} success!")
     if msg:
         print(str(msg))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
