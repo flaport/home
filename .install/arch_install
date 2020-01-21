@@ -787,6 +787,8 @@ pacman_install python-isort
 pacman_install python2-isort
 pacman_install python-black
 pacman_install python-pywal
+# connectivity (requirement for calcurse-caldav synchronization)
+pacman_install httplib2
 # image processing in python
 # pacman_install python-pillow
 # sockets
