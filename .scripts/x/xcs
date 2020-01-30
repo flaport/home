@@ -49,6 +49,8 @@ def parse_args(args):
     )
     parsed_args = parser.parse_args(args=args)
     if parsed_args.alpha is None:
+        with open(os.path.expanduser("~/.Xresources"), "a") as file:
+            pass
         with open(os.path.expanduser("~/.Xresources"), "r") as file:
             for line in file:
                 if "alpha" in line:
