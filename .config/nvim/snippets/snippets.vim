@@ -26,6 +26,11 @@ autocmd FileType tex nnoremap yi$ mmT$yt$`mmm
 autocmd FileType tex nnoremap ;ite {j<C-V>}kI\item <Esc>dipO\begin{itemize}<CR>\end{itemize}<Esc>P
 autocmd FileType tex nnoremap ;enu {j<C-V>}kI\item <Esc>dipO\begin{enumerate}<CR>\end{enumerate}<Esc>P
 
+"" Markdown
+"-------------------------------------------------------------------------------
+autocmd FileType markdown nnoremap <leader>` 0f*wDa~~<Esc>pa~~<Esc>
+
+
 "" Html
 "-------------------------------------------------------------------------------
 
