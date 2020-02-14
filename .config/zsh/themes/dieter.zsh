@@ -8,9 +8,6 @@ time=$time_enabled
 # user part, color coded by privileges
 local user="%(!.%{$fg[blue]%}.%{$fg[blue]%})%n%{$reset_color%}"
 
-# if not found, regular hostname in default color
-local host="@${[$HOST]:-$HOST}%{$reset_color%}"
-
 # Compacted $PWD
 local pwd="%{$fg[blue]%}%c%{$reset_color%}"
 
