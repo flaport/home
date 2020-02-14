@@ -674,6 +674,8 @@ yay_install ttf-vista-fonts
 pacman_install biber
 # convert document types into each other
 pacman_install pandoc
+# open-source note taking app
+# yay_install joplin
 
 
 ## Programming
