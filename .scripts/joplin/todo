@@ -1,0 +1,20 @@
+#!/usr/bin/python3
+
+import os
+import sqlite3
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("command", choices=["show"], help="command")
+parser.add_argument("-t", "--notetitle", default="Todo", help="todo note title (default 'Todo')")
+parser.add_argument("-n", "--notebook", default="notes", help="notebook containing todo note (default 'notes')")
+parser.add_argument("-p", "--database-path", default=os.path.expanduser("~/.config/joplin-desktop/database.sqlite"), help="path of the joplin database (default '~/.config/joplin-desktop/database.sqlite3')")
+args = parser.parse_args()
+
+
+if args.command == "show":
+    connection = sqlite3.connect(args.database_path)
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT * FROM {args.notebook} WHERE title = '{args.notetitle}'")
+    print(cursor.fetchone()[3])
+
