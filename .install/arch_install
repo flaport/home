@@ -676,6 +676,8 @@ pacman_install biber
 pacman_install pandoc
 # open-source note taking app
 # yay_install joplin
+# make joplin-desktop and joplin [terminal] share the same database:
+# cd ~ && ln -srf .config/joplin-desktop/database.sqlite .config/joplin/database.sqlite
 
 
 ## Programming
