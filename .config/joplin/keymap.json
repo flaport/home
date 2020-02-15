@@ -1,6 +1,7 @@
 [
     { "keys": [" "], "command": "todo toggle $n" },
     { "keys": ["q"], "type": "exec", "command": "exit" },
+    { "keys": ["s"], "type": "exec", "command": "sync" },
     { "keys": [":"], "type": "function", "command": "enter_command_line_mode" },
     { "keys": ["l", "RIGHT", "TAB"], "type": "function", "command": "focus_next" },
     { "keys": ["h", "LEFT", "SHIFT_TAB"], "type": "function", "command": "focus_previous" },
