@@ -343,6 +343,8 @@ sudo npm -g install instant-markdown-d >> $LOG 2>> $ERR
 pacman_install ctags
 # scim: terminal spreadsheet viewer/editor
 # yay_install sc-im
+# wordgrinder: terminal word processor
+# yay_install wordgrinder
 # terminal internet search: google
 # yay_install googler
 # terminal internet search: duckduckgo
