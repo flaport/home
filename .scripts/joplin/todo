@@ -15,6 +15,7 @@ args = parser.parse_args()
 if args.command == "show":
     connection = sqlite3.connect(args.database_path)
     cursor = connection.cursor()
-    cursor.execute(f"SELECT * FROM {args.notebook} WHERE title = '{args.notetitle}'")
-    print(cursor.fetchone()[3])
+    cursor.execute(f"SELECT body FROM {args.notebook} WHERE title = '{args.notetitle}'")
+    todo = "\n".join([line for line in sorted(cursor.fetchone()[0].split("\n")) if line.replace(" ","")])
+    print(todo)
 
