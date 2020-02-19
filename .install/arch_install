@@ -862,6 +862,8 @@ link /usr/bin/dash /bin/sh
 pacman_install zsh
 # autojump extensionfor zsh, I could not live without it:
 yay_install autojump-git
+# stderred: show stderr messages in red:
+yay_install stderred
 # patch autojump to only work with system python (acts weirdly when in a virtual env / conda env)
 sed 's|#!/usr/bin/env python|#!/usr/bin/python|' $(which autojump) | sudo tee $(which autojump) > /dev/null 2>> $ERR
 # same fo the autosuggestions, simply ctrl+p [at least for my .zshrc] to accept suggestion. Priceless.
