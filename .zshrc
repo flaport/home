@@ -99,6 +99,9 @@ source /usr/share/autojump/autojump.zsh
 # my custom autojump commands (slightly different from default behavior):
 source $HOME/.scripts/autojump/autojump-improved.zsh
 
+# broot (fuzzy file finder/jumper/...)
+source /home/flaport/.config/broot/launcher/bash/br
+
 # zsh autosuggestions (like in the fish shell)
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^p' autosuggest-accept #-execute
