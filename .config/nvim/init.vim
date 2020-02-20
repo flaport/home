@@ -422,8 +422,8 @@ autocmd FileType tex nmap <Leader>s :call SyncTex()<CR>
 " make tags (may need to install ctags first)
 nnoremap <leader>T :!ctags -R .<CR>
 
-" swap splits (from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946)
-" note that this only works when NOT in the main split.
+" swap splits. Note that this only works when NOT in the main split.
+" from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946
 function! Zoom()
     let g:markedWinNum = 1
     "Mark destination
@@ -439,7 +439,7 @@ function! Zoom()
     "Hide and open so that we aren't prompted and keep history
     exe 'hide buf' markedBuf
 endfunction
-" zoom split:
+" zoom split and go to main split (should eventually get rid of this hacky line...):
 nnoremap <leader>z :call Zoom()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
 
 
