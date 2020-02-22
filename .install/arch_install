@@ -585,6 +585,8 @@ yay_install ttf-symbola
 # yay_install ttf-twemoji-color
 pacman_install noto-fonts-emoji
 # yay_install ttf-twemoji-color
+# monospace font with ligatures:
+# pacman_install ttf-fira-code
 # adobe fonts (dependency of GNOME apps. Yes, you'll probably have a few of them...)
 # pacman_install adobe-source-code-pro-fonts
 # cantarell fonts (dependency of GNOME apps.  Yes, you'll probably have a few of them...)
