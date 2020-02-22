@@ -577,6 +577,8 @@ pacman_install ttf-droid
 pacman_install ttf-inconsolata
 # awesome terminal fonts: glyph dependencies (lsd and dwm [my build] dependency)
 pacman_install awesome-terminal-fonts
+# hack nerd font (requirement for lsd)
+yay_install nerd-fonts-hack
 # specific symbols for powerlines (recommended dependency for my st build)
 pacman_install powerline-fonts
 # unicode symbols / emojis (these are standard unicode symbols, hence different than awesome terminal fonts!)
@@ -796,7 +798,7 @@ pacman_install python2-isort
 pacman_install python-black
 pacman_install python-pywal
 # connectivity (requirement for calcurse-caldav synchronization)
-pacman_install httplib2
+pacman_install python-httplib2
 # image processing in python
 # pacman_install python-pillow
 # sockets
