@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-echo n | sudo /usr/bin/pacman -Syu 2> /dev/null | /usr/bin/grep "Total Download Size:" | /usr/bin/sed "s/Total Download Size://g" | /usr/bin/xargs
