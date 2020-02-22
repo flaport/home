@@ -1,3 +1,4 @@
-# Neovim Undo Directory
+# nvim undo
 
-In this directory, all undo history for open neovim files will be stored.
+In this directory, you're undo history will be saved. This readme file is
+merely a placeholder to check this folder into source control.

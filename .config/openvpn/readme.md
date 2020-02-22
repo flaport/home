@@ -1,4 +1,4 @@
-# OpenVPN folder
+# openvpn
 
 ## OpenVPN profile
 

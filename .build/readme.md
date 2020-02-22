@@ -1,4 +1,4 @@
-# Custom builds and patches
+# .build
 
 ## Build
 
@@ -6,7 +6,7 @@ To build all custom builds:
 ```
     sudo make all
 ```
-Note that all submodules will be automatically built by the [arch install script](../.install/arch_install)
+Note that all submodules will be automatically built and installed by the [arch install script](../.install/arch_install)
 
 ## Submodules
 

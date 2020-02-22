@@ -1,3 +1,3 @@
-# Zsh Custom Folder
+# zsh
 
-Folder for custom zsh scripts.
+this folder contains commonly used themes for zsh.

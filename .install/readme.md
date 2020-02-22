@@ -1,4 +1,4 @@
-# First Installation of Arch Linux
+# Clean Arch Linux Installation.
 
 ***Note:*** These installation instructions were last checked by me on
 2019.12.07.

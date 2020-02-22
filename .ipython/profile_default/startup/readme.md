@@ -13,3 +13,9 @@ with a prefix, e.g.::
     50-middle.py
     99-last.ipy
 ```
+
+
+## Files in this folder:
+
+* [00_path.py](00_path.py): reads `~/.pythonpath` and prepends it to `sys.path`.
+* [01_imports.py](00_imports.py): import numpy and matplotlib.
