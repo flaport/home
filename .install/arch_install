@@ -409,7 +409,11 @@ if [ -d /sys/class/backlight/intel_backlight ] && [ $already_configured -ne 0 ];
     pacman_install xf86-video-intel
     printf "\nSection \"Device\"\n    Identifier \"Intel Graphics\"\n    Driver \"intel\"\n    Option \"Backlight\" \"intel_backlight\"\nEndSection\n" | sudo tee -a /etc/X11/xorg.conf &> /dev/null
 fi
-
+# libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
+# the reason it is installed this way is because this library replaces libxft
+# requiring you to answer yes on a [y/N] question...
+echo $password | sudo -S pacman -Q libxft-bgra >> $LOG 2>> $ERR
+[ $? = 0 ] || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra >> $LOG 2>> $ERR
 
 ## Desktop Environment / Window Manager
 # i3lock: screen lock for i3 and other window managers like in this case dwm.
@@ -582,10 +586,11 @@ yay_install nerd-fonts-hack
 # specific symbols for powerlines (recommended dependency for my st build)
 pacman_install powerline-fonts
 # unicode symbols / emojis (these are standard unicode symbols, hence different than awesome terminal fonts!)
-yay_install ttf-symbola
+# yay_install ttf-symbola
 # pacman_install ttf-joypixels
 # yay_install ttf-twemoji-color
-pacman_install noto-fonts-emoji
+# pacman_install noto-fonts-emoji
+pacman_install ttf-joypixels
 # yay_install ttf-twemoji-color
 # monospace font with ligatures:
 # pacman_install ttf-fira-code
