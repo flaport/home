@@ -1,110 +1,52 @@
 # Arch Home
 
-This is a backup of my home folder on Arch Linux. By default nothing is added
-to this folder because the `.gitignore` contains a single `*`: by default it
-will ignore all new files added added to the home folder. Only while explicitly
-adding (with the `-f` flag) and commiting a file to the repository, it will be
-tracked.
+a.k.a my dotfiles.
 
-## Installation instructions
 
-Please follow the steps outlined in the [first install readme](../.install/readme.md). **Please follow these steps carefully to make sure all programs are
-correctly installed.**
+## How does this work?
 
-## Folders
+By default nothing is added to this folder because the `.gitignore` contains a
+single `*`: by default it will ignore all new files added added to the home
+folder. Only while explicitly adding (with the `-f` flag) and commiting a file
+to the repository, it will be tracked.
 
-### [.config](../.config)
+## Installation instructions:
 
-All my personal configuration files for most installed programs.
+Initialize an empty home folder as a git repository (complete instructions
+[here](../.install/readme.md)):
+```
+git init .
+```
+add this git repository (or your fork) as origin:
+```
+git remote add origin http://github.com/flaport/arch_home
+```
+pull the repository:
+```
+git pull origin master
+```
+set up the master branch to track the master brach at origin
+```
+git branch --set-upstream-to=origin/master master
+```
+pull in all git submodules for custom builds
+```
+git submodule update --init --recursive
+```
+install programs (please edit the file to your liking first):
+```
+bash ~/.install/arch_install
+```
+[optional] create anaconda environment:
+```
+bash ~/.install/python_install
+```
 
-### [.extra](../.extra)
+## Other relevant stuff:
+* [My st fork](https://github.com/flaport/st)
+* [My dwm fork](https://github.com/flaport/dwm)
+* [My dmenu fork](https://github.com/flaport/dmenu)
 
-All kind of useful files and file templates that are not supposed to be stored
-in the home directory (like systemd services, fstab files, ...)
+## License
+© flaport 2020 - GPLv3
 
-### [.install](../.install)
-
-Contains a readme file [`readme.md`](.install/readme.md) containing all
-the manual installation steps needed to be taken to make a proper Arch Linux
-installation.
-
-It also contains an installation bash script
-[`arch_install`](../.install/arch_install) which installs the
-essential programs for the new installation automatically.
-
-It also contains an installation bash script for python installation and
-configuration (using anaconda python)
-[`python_install`](../.install/python_install).
-
-### [.github](../.github)
-
-A folder where I can store this readme file. This way I don't have to store the
-readme.md file in the root of this repository (and thus I do not have to store
-it in the root of my home folder)
-
-### [.ipython/profile_default/startup](../.ipython/profile_default/startup)
-
-Simple files that have to be run before running ipython.
-
-### [.jupyter](../.jupyter)
-
-My jupyter configuration files
-
-### [.scripts](../.scripts)
-
-Custom scripts that are useful in the terminal
-
-### [.ssh](../.ssh)
-
-SSH configuration and explanation
-
-### [.webapps](../.webapps)
-
-Webapps (like gmail, youtube, maps, ...) are opened with chromium as an app
-(without search bar).
-
-## Files
-
-### [.Xresources](../.Xresources)
-
-Color settings for apps
-
-### [.bash_logout](../.bash_logout)
-
-Commands to run at logout
-
-### [.bash_profile](../.bash_profile)
-
-Commands to run at login
-
-### [.bashrc](../.bashrc)
-
-Commands to run when opening a new terminal
-
-### [.gitconfig](../.gitconfig)
-
-Git settings and configuration
-
-### [.gitignore](../.gitignore)
-
-Gitignore file for this repository. Is set to ignore every file by default,
-except the files it is already tracking. New files can be tracked with the `-f`
-flag.
-
-### [.inputrc](../.inputrc)
-
-Terminal settings
-
-### [.pythonstartup](../.pythonstartup)
-
-Commands to run at every new python session. This is enforced by the
-$PYTHONSTARTUP environment variable (and the IPython startup scripts for
-IPython).
-
-### [.tmux.conf](../.tmux.conf)
-
-Tmux configuration file
-
-### [.xinitrc](../.xinitrc)
-
-X-server initialization settings.
