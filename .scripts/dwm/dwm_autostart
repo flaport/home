@@ -14,9 +14,9 @@ wallpaper current &
 
 # enable transparent windows
 if [ -f "$HOME/.config/picom/blur-kern" ]; then
-    picom --blur-kern=$(cat $HOME/.config/picom/blur-kern) &
+    picom --no-fading-openclose --blur-kern=$(cat $HOME/.config/picom/blur-kern) &
 else
-    picom &
+    picom --no-fading-openclose &
 fi
 
 # update xrdb database
