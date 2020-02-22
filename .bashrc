@@ -48,3 +48,9 @@ source "$HOME/.anaconda/etc/profile.d/conda.sh"
 # autojump
 source /usr/share/autojump/autojump.bash
 
+# broot (fuzzy file finder/jumper/...)
+source /home/flaport/.config/broot/launcher/bash/br
+
+# stderr in red:
+[ -f /usr/lib/libstderred.so ] && export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
+
