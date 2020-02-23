@@ -149,17 +149,17 @@ set ruler
 set laststatus=2
 set showcmd
 
-" tex / latex / xelatex
-autocmd FileType tex set nonumber
-autocmd FileType tex set norelativenumber
-autocmd FileType tex set textwidth=70
-autocmd FileType tex set foldcolumn=8
-autocmd FileType tex set colorcolumn=0
-autocmd FileType tex let s:status_hidden = 1
-autocmd FileType tex set noshowmode
-autocmd FileType tex set noruler
-autocmd FileType tex set laststatus=0
-autocmd FileType tex set noshowcmd
+" tex / latex / xelatex / markdown
+autocmd FileType tex,markdown set nonumber
+autocmd FileType tex,markdown set norelativenumber
+autocmd FileType tex,markdown set textwidth=70
+autocmd FileType tex,markdown set foldcolumn=8
+autocmd FileType tex,markdown set colorcolumn=0
+autocmd FileType tex,markdown let s:status_hidden = 1
+autocmd FileType tex,markdown set noshowmode
+autocmd FileType tex,markdown set noruler
+autocmd FileType tex,markdown set laststatus=0
+autocmd FileType tex,markdown set noshowcmd
 
 
 "" Custom commands
