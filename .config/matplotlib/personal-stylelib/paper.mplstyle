@@ -1,0 +1,4 @@
+figure.figsize : 3.375,2.386
+font.size : 9
+lines.linewidth : 1
+mathtext.fontset : dejavuserif

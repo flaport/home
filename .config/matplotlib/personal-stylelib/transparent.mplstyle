@@ -1,0 +1,21 @@
+
+lines.color: grey
+patch.edgecolor: grey
+
+text.color: grey
+
+axes.facecolor: ffffff00
+axes.edgecolor: grey
+axes.labelcolor: grey
+
+xtick.color: grey
+ytick.color: grey
+
+grid.color: grey
+
+#figure.facecolor: ffffff00
+#figure.edgecolor: ffffff00
+
+#savefig.facecolor: ffffff00
+#savefig.edgecolor: ffffff00
+
