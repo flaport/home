@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+NoDisplay=true
+Exec=/opt/lumerical/2019b/bin/interconnect-app %f
+Name=interconnect
+Comment=interconnect
+Icon=/opt/lumerical/2019b/share/interconnect.png

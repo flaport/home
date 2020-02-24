@@ -5,5 +5,5 @@ Type=Application
 NoDisplay=true
 Exec=/opt/lumerical/2019b/bin/fdtd-solutions %f
 Name=fdtd-solutions
-Comment=Custom definition for fdtd-solutions
+Comment=fdtd-solutions
 Icon=/opt/lumerical/2019b/share/fdtd.png
