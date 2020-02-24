@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
-mkdir -p ~/.cache
-curl -s wttr.in > ~/.cache/weatherreport
+mkdir -p $HOME/.cache
+curl -s wttr.in > /tmp/weatherreport
 
-if grep Sorry ~/.cache/weatherreport &> /dev/null; then
-    echo "" > ~/.cache/weatherreport
-    echo "" > ~/.cache/weatherreportshort
+if grep Sorry /tmp/weatherreport &> /dev/null; then
+    >&2 echo "couldn't update weatherreport"
     exit 1
 fi
 
-printf "%s" "$(sed '16q;d' ~/.cache/weatherreport | grep -wo "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/☔ /g" | tr -d '\n')" > ~/.cache/weatherreportshort
-sed '13q;d' ~/.cache/weatherreport | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print "  ",$1 "°","",$2 "°"}' | sed s/☔//g >> ~/.cache/weatherreportshort
+mv /tmp/weatherreport $HOME/.cache/weatherreport
+printf "%s" "$(sed '16q;d' $HOME/.cache/weatherreport | grep -wo "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/☔ /g" | tr -d '\n')" > $HOME/.cache/weatherreportshort
+sed '13q;d' $HOME/.cache/weatherreport | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print "  ",$1 "°","",$2 "°"}' | sed s/☔//g >> $HOME/.cache/weatherreportshort
 dwm_status
-cat ~/.cache/weatherreportshort
-cat ~/.cache/weatherreport
+cat $HOME/.cache/weatherreportshort
+cat $HOME/.cache/weatherreport
 
 if [[ $1 == "--block" ]]; then
     read
 fi
+
