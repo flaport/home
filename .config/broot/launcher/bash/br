@@ -2,7 +2,7 @@ function br {
     f=$(mktemp)
     (
 	set +e
-	broot --outcmd "$f" "$@"
+	LD_PRELOAD="" && broot --outcmd "$f" "$@"
 	code=$?
 	if [ "$code" != 0 ]; then
 	    rm -f "$f"
