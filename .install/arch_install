@@ -261,13 +261,6 @@ pacman_install cmake
 ## AUR package manager
 git_install https://aur.archlinux.org/yay.git
 
-
-## Security
-pacman_install gnupg # gpg --full-gen-key (generate gpg key)
-pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
-yay_install passff-host  # host for the firefox extension
-
-
 ## Terminal
 # search tool
 pacman_install grep
@@ -853,6 +846,15 @@ if [ ! -f $HOME/.Xresources ]; then
     # run it to apply colorscheme to currently open windows:
     xcs current >> $LOG 2>> $ERR
 fi
+
+## Password manager
+#-------------------------------------------------------------------------------
+pacman_install gnupg # gpg --full-gen-key (generate gpg key)
+pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
+# yay_install passff-host  # host for the pass "passFF" firefox extension
+pacman_install browserpass # host for the pass "browserpass" chromium/firefox extension
+pacman_install browserpass-chromium # host for the pass "browserpass" chromium extension
+pacman_install browserpass-firefox # host for the pass "browserpass" firefox extension
 
 
 ## Alternative shell
