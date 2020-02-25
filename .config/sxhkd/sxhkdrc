@@ -187,7 +187,7 @@ super + w
 
 # search the web
 super + W
-    $HOME/.scripts/search --dmenuargs -i
+    chromium
 
 # shift focus to monitor X
 super + x
