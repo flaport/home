@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-echo git filter-branch --force --index-filter \'git rm -rf --cached --ignore-unmatch $@\' --prune-empty --tag-name-filter cat -- --all
+export FILTER_BRANCH_SQUELCH_WARNING=1
+command=$(echo git filter-branch --force --index-filter \'git rm -rf --cached --ignore-unmatch $@\' --prune-empty --tag-name-filter cat -- --all)
+echo $command
+echo
+eval $command
