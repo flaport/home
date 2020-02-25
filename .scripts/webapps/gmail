@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 [[ -z $1 ]] && USER=0 || USER=$1
-wa mail.google.com/mail/u/$USER/
+webapp mail.google.com/mail/u/$USER/
