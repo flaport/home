@@ -8,7 +8,7 @@ from subprocess import Popen, call, check_output, PIPE, CalledProcessError
 try:
     import pyautogui
 except:
-    pyautogui is None
+    pyautogui = None
 with open(os.devnull, "w") as out:
     has_xdotool = not call(["which", "xdotool"], stdout=out, stderr=out)
 
@@ -59,6 +59,8 @@ def get_current_window_name_and_position():
     return name, x, y
 
 def move_mouse(x, y):
+    if pyautogui is not None:
+        pyautogui.keyUp("apps")
     if not has_xdotool:
         return 1
     return call(["xdotool", "mousemove", x, y])
@@ -87,7 +89,15 @@ def paste_emoji(emoji):
 if __name__ == "__main__":
     emojis = get_emojis()
     windowname, x, y = get_current_window_name_and_position()
-    name = dmenu(emojis.keys(), "")
+    if len(sys.argv) == 1: # no arguments
+        name = dmenu(emojis.keys(), "")
+    else:
+        related_name = " ".join(sys.argv[1:]).strip()
+        for name in emojis.keys():
+            if related_name in name:
+                break
+        else:
+            exit(1)
     emoji = emojis.get(name, "")
     if emoji:
         status = copy_to_clipboard(emoji)
