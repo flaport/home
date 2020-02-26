@@ -62,11 +62,13 @@ bindkey "^y" "" # noop
 
 # colored zsh prompt
 setopt prompt_subst
-if [[ $(tty) == /dev/tty* ]]; then
-    source $HOME/.config/zsh/themes/dieter.zsh
-else
-    source ~/.config/zsh/themes/powerline.zsh
-fi
+# if [[ $(tty) == /dev/tty* ]]; then
+#     source $HOME/.config/zsh/themes/dieter.zsh
+# else
+#     source $HOME/.config/zsh/themes/powerline.zsh
+# fi
+# source /usr/lib/spaceship-prompt/spaceship.zsh
+source $HOME/.config/zsh/themes/spaceship.zsh
 
 ## Aliases
 #-------------------------------------------------------------------------------

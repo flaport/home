@@ -871,6 +871,8 @@ link /usr/bin/dash /bin/sh
 # zsh: another alternative shell. In contrast to fish, it is posix complient + extras
 # it's my preferred shell.
 pacman_install zsh
+# spaceship theme for zsh (my preferred zsh theme):
+yay_install spaceship-prompt-git
 # autojump extensionfor zsh, I could not live without it:
 yay_install autojump-git
 # stderred: show stderr messages in red:
