@@ -10,7 +10,10 @@ except IndexError:
 
 
 if filename.endswith(".fsp"):
-    exit(subprocess.call(["fdtd-solutions", filename]))
+    exit(subprocess.call(["/opt/lumerical/2019b/bin/fdtd-solutions", filename]))
 
 if filename.endswith(".gds"):
-    exit(subprocess.call(["klayout", "-e", filename]))
+    exit(subprocess.call(["/usr/bin/klayout", "-e", filename]))
+
+if filename.endswith(".icp"):
+    exit(subprocess.call(["/opt/lumerical/2019b/bin/interconnect-app", "-e", filename]))
