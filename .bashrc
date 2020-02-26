@@ -9,6 +9,11 @@
 #-------------------------------------------------------------------------------
 # I switched to zsh, so this file will not run except when running bash explicitly
 
+# source function (ignore file if file does not exist)
+function sourcefile {
+    [[ -f $1 ]] && source $1
+}
+
 
 ## General settings
 #-------------------------------------------------------------------------------
@@ -39,18 +44,18 @@ touch $HOME/.pythonstartup
 # set python path from "~/.pythonpath" file
 export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1 | sed 's|~|'$HOME'|g')"
 # enable conda commands
-source "$HOME/.anaconda/etc/profile.d/conda.sh"
+sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
 
 
 ## Extensions
 #-------------------------------------------------------------------------------
 
 # autojump
-source /usr/share/autojump/autojump.bash
+sourcefile /usr/share/autojump/autojump.bash
 
 # stderr in red:
 [ -f /usr/lib/libstderred.so ] && export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
 
 # broot (fuzzy file finder/jumper/...)
-source /home/flaport/.config/broot/launcher/bash/br
+sourcefile $HOME/.config/broot/launcher/bash/br
 

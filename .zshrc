@@ -9,6 +9,11 @@
 ## General settings
 #-------------------------------------------------------------------------------
 
+# source function (ignore file if file does not exist)
+function sourcefile {
+    [[ -f $1 ]] && source $1
+}
+
 # enable colors
 autoload -U colors && colors
 
@@ -62,13 +67,9 @@ bindkey "^y" "" # noop
 
 # colored zsh prompt
 setopt prompt_subst
-# if [[ $(tty) == /dev/tty* ]]; then
-#     source $HOME/.config/zsh/themes/dieter.zsh
-# else
-#     source $HOME/.config/zsh/themes/powerline.zsh
-# fi
-# source /usr/lib/spaceship-prompt/spaceship.zsh
-source $HOME/.config/zsh/themes/spaceship.zsh
+
+# PROMPT THEME
+sourcefile $HOME/.config/zsh/themes/spaceship.zsh
 
 ## Aliases
 #-------------------------------------------------------------------------------
@@ -90,22 +91,22 @@ touch $HOME/.pythonstartup
 # set python path from "~/.pythonpath" file
 export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1 | sed 's|~|'$HOME'|g')"
 # enable conda commands but do not activate conda
-[ -f $HOME/.anaconda/etc/profile.d/conda.sh ] && source "$HOME/.anaconda/etc/profile.d/conda.sh"
+sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
 
 
 ## Extensions
 #-------------------------------------------------------------------------------
 
 # autojump
-source /usr/share/autojump/autojump.zsh
+sourcefile /usr/share/autojump/autojump.zsh
 # my custom autojump commands (slightly different from default behavior):
-source $HOME/.scripts/autojump/autojump-improved.zsh
+sourcefile $HOME/.scripts/autojump/autojump-improved.zsh
 
 # broot (fuzzy file finder/jumper/...)
-source /home/flaport/.config/broot/launcher/bash/br
+sourcefile $HOME/.config/broot/launcher/bash/br
 
 # zsh autosuggestions (like in the fish shell)
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+sourcefile /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^p' autosuggest-accept #-execute
 bindkey '^n' autosuggest-accept #-execute
 
@@ -113,5 +114,5 @@ bindkey '^n' autosuggest-accept #-execute
 [ -f /usr/lib/libstderred.so ] && export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
 
 # Load zsh-syntax-highlighting; should be last.
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+sourcefile /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
