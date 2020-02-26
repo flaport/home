@@ -1,6 +1,52 @@
-#!/usr/bin/env bash
-# open Web App [webapp|wa]:
+#!/usr/bin/python3
+""" Open as webapp """
 
-# firefox --new-window "$1" &>/dev/null & disown
+# imports
+import os
+import sys
+import argparse
+import subprocess
 
-chromium --app="http://$1" &> /dev/null & disown
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("address", help="web adress to open as webapp")
+    args = parser.parse_args()
+    return args
+
+def exists(browser):
+    if not browser:
+        return False
+    with open(os.devnull, "w") as out:
+        browser_exists = not subprocess.call(["which", browser], stdout=out, stderr=out)
+    return browser_exists
+
+def parse_address(address):
+    if not address.startswith("http://") and not address.startswith("https://"):
+        while "//" in address:
+            address = address.replace("//","/")
+        address = f"http://{address}"
+    while "///" in address:
+        address = address.replace("///","//")
+    return address
+
+def run_and_exit(command):
+    print(" ".join(command))
+    with open(os.devnull, "w") as out:
+        subprocess.Popen(command, stdout=out, stderr=out)
+    exit()
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    address = parse_address(args.address)
+
+    if exists("chromium"):
+        run_and_exit(["chromium", f"--app={address}"])
+
+    if exists("firefox"):
+        run_and_exit(["firefox", f"--new-window", address])
+
+    browser = os.environ.get("BROWSER")
+    if exists(browser):
+        run_and_exit([browser, address])
+
