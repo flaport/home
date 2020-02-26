@@ -74,7 +74,13 @@ done &
 
 # update weather report every hour
 while true; do
-    update_weather &> /dev/null &
+    update_weather &> /dev/null  &
+    sleep 3600s
+done &
+
+# sync joplin notes every hour
+while true; do
+    joplin sync &> /dev/null &
     sleep 3600s
 done &
 

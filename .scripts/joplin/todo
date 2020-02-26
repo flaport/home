@@ -4,6 +4,7 @@ import os
 import sys
 import sqlite3
 import argparse
+import subprocess
 from datetime import datetime, timedelta
 
 def eprint(*args, **kwargs):
@@ -12,11 +13,11 @@ def eprint(*args, **kwargs):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["show", "apts", "show_legacy"], help="show: show joplin todo list; apts: show calcurse appointments")
+    parser.add_argument("command", choices=["show", "apts", "sync", "show_legacy"], help="show: show joplin todo list; apts: show calcurse appointments")
     parser.add_argument("-t", "--notetitle", default="Todo", help="todo note title (default 'Todo')")
     parser.add_argument("-n", "--notebook", default="notes", help="notebook containing todo note (default 'notes')")
     parser.add_argument("-c", "--calcurse-path", default="~/.calcurse", help="path of the calcurse config folder (default '~/.calcurse')")
-    parser.add_argument("-p", "--database-path", default="~/.config/joplin-desktop/database.sqlite", help="path of the joplin database (default '~/.config/joplin-desktop/database.sqlite3')")
+    parser.add_argument("-p", "--database-path", default="~/.config/joplin/database.sqlite", help="path of the joplin database (default '~/.config/joplin/database.sqlite3')")
     parser.add_argument("-l", "--legacy-path", default="~/Notes/todo.md", help="legacy path, fallback for when joplin database is not available.")
     parser.add_argument("-S", "--suppress-errors", action="store_true", help="suppress error messages")
     ARGS = parser.parse_args()
@@ -53,6 +54,10 @@ def apts():
     content = "\n".join(lines[:5]).replace("|", " | ")
     print(content)
 
+def sync():
+    with open(os.devnull, "w") as file:
+        subprocess.call(["joplin", "sync"], stdout=file, stderr=file)
+
 
 if __name__ == "__main__":
     ARGS = parse_args()
@@ -62,4 +67,6 @@ if __name__ == "__main__":
         show()
     if ARGS.command == "show_legacy":
         show_legacy()
+    if ARGS.command == "sync":
+        sync()
 
