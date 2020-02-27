@@ -35,7 +35,7 @@ bindkey -v '^?' backward-delete-char
 bindkey -v
 export KEYTIMEOUT=1
 
-# change cursor shape for different vi modes.
+# change cursor shape for different vi modes. █ = normal; _ = insert
 if [ -z $NVIM_LISTEN_ADDRESS ]; then
     BAR='\e[5 q\e\\'
     BLOCK='\e[1 q\e\\'
@@ -59,6 +59,17 @@ if [ -z $NVIM_LISTEN_ADDRESS ]; then
     echo -ne $UNDERSCORE # at startup.
     preexec() { echo -ne $UNDERSCORE ;} # at new prompt.
 fi
+
+# colored man pages:
+man() {
+    LESS_TERMCAP_md=$'\e[01;31m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[01;44;33m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[01;32m' \
+    command man "$@"
+}
 
 # go backward and forward in history (equivalent to up/down arrow)
 bindkey "^[h" up-line-or-history # alt + h

@@ -25,8 +25,17 @@ fish_vi_key_bindings
 
 ## Environment variables
 #-------------------------------------------------------------------------------
-# some magic to source the variables defined in .bash_profile.
+
+# some fish magic to source the variables defined in .bash_profile.
 sed -n '/^export/p' $HOME/.bash_profile | sed -e 's/export/set\ -gx/g' | sed -e 's/=/\ /g' | source
+
+# colored man pages
+set -xU LESS_TERMCAP_md (printf "\e[01;31m")
+set -xU LESS_TERMCAP_me (printf "\e[0m")
+set -xU LESS_TERMCAP_se (printf "\e[0m")
+set -xU LESS_TERMCAP_so (printf "\e[01;44;33m")
+set -xU LESS_TERMCAP_ue (printf "\e[0m")
+set -xU LESS_TERMCAP_us (printf "\e[01;32m")
 
 ## Python
 #-------------------------------------------------------------------------------
