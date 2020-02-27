@@ -5,9 +5,12 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
+""" git-status | gits:
 
-# git-status or gits: small fzf-based CLI utility for easy git-status, git-add, 
-# git-commit, git-reset, git-restore and git-checkout
+small fzf-based CLI utility for easy
+
+'git status', 'git add', 'git commit', 'git reset', 'git restore' and 'git checkout'
+"""
 
 import os
 import sys
@@ -24,7 +27,7 @@ def fzf(list_in, prompt):
                 "--layout=reverse",
                 "--height=60%",
                 f"--header={prompt}",
-                "--bind=ctrl-l:preview-down,ctrl-h:preview-up",
+                "--bind=j:down,k:up,l:toggle,h:toggle,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up",
                 "--preview-window=right:wrap",
                 '--preview=git-status preview "{}"',
             ],

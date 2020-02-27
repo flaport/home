@@ -5,8 +5,11 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
+""" git-reset | gitr:
 
-# git-reset or gitr: small fzf-based CLI utility for easy git-reset
+small fzf-based CLI utility for easy 'git-reset'
+
+"""
 
 import os
 import sys
@@ -22,7 +25,7 @@ def fzf(list_in, prompt):
                 "--layout=reverse",
                 "--height=60%",
                 f"--header={prompt}",
-                "--bind=ctrl-l:preview-down,ctrl-h:preview-up",
+                "--bind=j:down,k:up,l:toggle,h:toggle,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up",
                 "--preview-window=right:wrap",
                 '--preview=git show --color=always $(echo {} | sed "s/ .*//")',
             ],
@@ -51,5 +54,3 @@ if __name__ == "__main__":
         flags += ["--hard"]
     status = call(["git", "reset", value.split(" ")[0]]+flags)
     exit(status)
-
-
