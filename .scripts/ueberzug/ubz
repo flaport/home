@@ -8,10 +8,43 @@
 
 # Imports
 import os
+import sys
+import tty
 import time
-import sys, tty, termios
-import ueberzug.lib.v0 as ueberzug
+import termios
+import contextlib
 import subprocess
+
+import ueberzug.lib.v0 as ueberzug
+
+# Constants
+EXTS = {".png", ".jpg", ".jpeg", ".svg", ".JPG", ".JPEG", ".PNG"}
+
+# Functions
+def usage(stdout=sys.stderr, exitcode=1):
+    print("\nubz img1 [img2 img3 img4 ... ] [X Y] [W H]\n", file=stdout)
+    if exitcode is not None:
+        exit(exitcode)
+
+def help():
+    usage(stdout=sys.stdout, exitcode=None)
+    print("\nwhile browsing:\n\tj: next image\n\tk: previous image\n\tq: quit\n")
+    print("\nexample:\n\t$ ubz *.png 0 0 100 100\n")
+    exit(0)
+
+def parse_args(tup=None):
+    if tup is None:
+        tup = sys.argv[1:]
+    if "-h" in tup or "--help" in tup:
+        return help()
+    imgs = tuple(arg for arg in tup if not is_int(arg) and os.path.splitext(arg)[1] in EXTS)
+    if not imgs:
+        usage()
+    xy = tuple(int(arg) for arg in tup[-4:2] if is_int(arg))
+    wh = tuple(int(arg) for arg in tup[-2:] if is_int(arg))
+    if len(xy) != 2: xy = (0, 0)
+    if len(wh) != 2: wh = (100, 50)
+    return imgs, xy+wh
 
 def is_int(x):
     try:
@@ -20,28 +53,6 @@ def is_int(x):
     except:
         return False
 
-
-EXTS = {".png", ".jpg", ".svg", ".JPG", ".PNG"}
-ARGS = [arg for arg in sys.argv[1:] if not is_int(arg) and os.path.splitext(arg)[1] in EXTS]
-XYWH = [int(arg) for arg in sys.argv[1:] if is_int(arg)]
-
-X = 0
-if len(XYWH) > 0:
-    X = int(XYWH[0])
-
-Y = 0
-if len(XYWH) > 1:
-    Y = int(XYWH[1])
-
-WX=100
-if len(XYWH) > 2:
-    WX = int(XYWH[2])
-
-WY=WX//2
-if len(XYWH) > 3:
-    WY = int(XYWH[3])
-
-# Functions
 def wait_for_any_input():
     """ from https://stackoverflow.com/questions/510357/python-read-a-single-character-from-the-user"""
     fd = sys.stdin.fileno()
@@ -53,29 +64,32 @@ def wait_for_any_input():
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
     return ch
 
-def draw(path):
+def draw(path, xywh=None):
     if path.endswith(".svg"):
-        return show_svg(path)
+        return show_svg(path, xywh=xywh)
+    if not xywh or len(xywh) != 4:
+        xywh = (0, 0, 100, 50)
+
+    x, y, w, h = xywh
     with ueberzug.Canvas() as c:
-        demo = c.create_placement('ueberzug', x=X, y=Y, width=WX, height=WY, scaler="contain")
+        demo = c.create_placement('ueberzug', x=x, y=y, width=w, height=h, scaler="contain")
         demo.path = path
         demo.visibility = ueberzug.Visibility.VISIBLE
         return wait_for_any_input()
 
-def show_svg(path):
+def show_svg(path, xywh=None):
     with open(os.devnull, "w") as devnull:
         subprocess.call(["inkscape", path, "-e", "/tmp/ubz.png"], stdout=devnull, stderr=devnull)
-    return draw("/tmp/ubz.png")
+    return draw("/tmp/ubz.png", xywh=xywh)
 
 
 if __name__ == "__main__":
-    key = ""
-    idx = 0
+    imgs, xywh = parse_args()
+    key, idx = "", 0
     while key != "q" and key != "\x1b": # Esc
         if key in {"j"}:
-            idx = (idx + 1)%len(ARGS)
+            idx = (idx + 1)%len(imgs)
         elif key in {"k"}:
-            idx = (idx - 1)%len(ARGS)
-        key = draw(ARGS[idx])
-    print(repr(key))
+            idx = (idx - 1)%len(imgs)
+        key = draw(imgs[idx])
 
