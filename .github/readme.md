@@ -2,6 +2,9 @@
 
 a.k.a my dotfiles.
 
+#### arch + dwm + many customizations:
+![arch + dwm](dwm.gif)
+
 
 ## How does this work?
 
