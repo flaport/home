@@ -22,7 +22,6 @@
 #-------------------------------------------------------------------------------
 
 touch $HOME/.pythonpath
-touch $HOME/.pythonstartup
 touch $HOME/.config/rofi/xresources-colors.rasi
 
 

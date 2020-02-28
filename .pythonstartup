@@ -1,0 +1,53 @@
+# standard library
+
+import os
+import sys
+import shutil
+import warnings
+import contextlib
+from shutil import move, move as mv, copy, copy as cp
+
+@contextlib.contextmanager
+def nostdout():
+    oldstdout, oldstderr = sys.stdout, sys.stderr
+    file = open(os.devnull, "w")
+    try:
+        sys.stdout, sys.stderr = file, file
+        yield
+    finally:
+        sys.stdout, sys.stderr = oldstdout, oldstderr
+        file.close()
+
+# often-used libraries
+with nostdout(): # don't show mpl warning for python2
+    try:
+        from pylab import *
+    except ImportError:
+        try:
+            from numpy import *
+        except ImportError:
+            pass
+        try:
+            from matplotlib.pyplot import *
+        except ImportError:
+            pass
+
+# wrap not-so often used libraries or libraries that take time to import so
+# it's easy to import them on the fly if necessary.
+
+def t():
+    global t
+    try:
+        import torch as t
+    except ImportError:
+        del t
+        pass
+
+def torch():
+    global torch
+    try:
+        import torch
+    except ImportError:
+        del t
+        pass
+
