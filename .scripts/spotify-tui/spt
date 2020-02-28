@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+which spotifyd &> /dev/null
+if [ $? -ne 0 ]; then
+    >&2 echo "cannot start spotify-tui. spotifyd is not installed."
+    exit 1
+fi
+
+pidof spotifyd &> /dev/null
+if [ $? -ne 0 ]; then
+    spotifyd &
+    sleep 0.1
+fi
+
+/usr/bin/spt $@
+

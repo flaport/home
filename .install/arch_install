@@ -346,6 +346,8 @@ pacman_install ctags
 # pacman_install translate-shell
 # ncmpcpp: terminal music client
 # pacman_install ncmpcpp
+# spotify daemon (dependency for spotify-tui)
+# yay_install spotifyd-full
 # spotify-tui: terminal client for spotify
 # yay_install spotify-tui
 
