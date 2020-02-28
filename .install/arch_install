@@ -344,6 +344,10 @@ pacman_install ctags
 # yay_install ddgr
 # trans: command line translation engine
 # pacman_install translate-shell
+# ncmpcpp: terminal music client
+# pacman_install ncmpcpp
+# spotify-tui: terminal client for spotify
+# yay_install spotify-tui
 
 
 ## Drive and file system drivers
