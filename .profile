@@ -11,8 +11,9 @@
 # if default shell is bash or zsh, this file will be sourced at login.
 #
 # if default shell is fish, this file will be parsed in such a way that the
-# lines starting with export - the environment variables - will be translated
-# into fish environment variables. The rest of the file will then be ignored.
+# lines starting with the word 'export' - the environment variables - will be
+# translated into fish environment variables. The rest of the file will then be
+# ignored.
 #
 # current shell: zsh
 #
@@ -20,6 +21,8 @@
 # Make sure the following files exist:
 #-------------------------------------------------------------------------------
 
+touch $HOME/.pythonpath
+touch $HOME/.pythonstartup
 touch $HOME/.config/rofi/xresources-colors.rasi
 
 
@@ -43,4 +46,11 @@ export SAVEHIST=10000
 export SUDO_ASKPASS="$HOME/.local/bin/askpass"
 export SUDO_ASKUSERPASS="$HOME/.local/bin/askuserpass"
 export TERMINAL="st"
+
+# Python
+#-------------------------------------------------------------------------------
+
+# python path from ~/.pythonpath file
+# (start line with space to prevent fish config from parsing this line.)
+ export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1 | sed 's|~|'$HOME'|g')"
 

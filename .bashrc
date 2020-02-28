@@ -47,13 +47,8 @@ alias system="conda deactivate && conda deactivate"
 
 ## Python
 #-------------------------------------------------------------------------------
-# create python startup file if it does not exist
-touch $HOME/.pythonpath
-# create python path file if it does not exist
-touch $HOME/.pythonstartup
-# set python path from "~/.pythonpath" file
-export PYTHONPATH="$(tr '\n' ':' < ~/.pythonpath | head -c -1 | sed 's|~|'$HOME'|g')"
-# enable conda commands
+
+# enable conda commands but do not activate conda
 sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
 
 
