@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+[ -z $DMENU ] && DMENU=dmenu
+
+if [ $DMENU == rofi ] && [ -x /usr/bin/rofi ]; then
+    cmd="$HOME/.local/bin/rofi" # improved rofi wrapper script
+    [ -x "$cmd" ] || cmd="/usr/bin/rofi"
+    $cmd -dmenu $@
+    exit $!
+elif [ $DMENU == dmenu ] && [ -x /usr/local/bin/dmenu ]; then
+    cmd="/usr/local/bin/dmenu"
+    nb=$(grep color0 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
+    nf=$(grep color15 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
+    sb=$(grep color6 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
+    sf=$(grep color15 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
+    hnb=$(grep color0 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
+    hnf=$(grep color3 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
+    hsb=$(grep color4 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
+    hsf=$(grep color3 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
+    $cmd -c -bw 1 -nb $nb -nf $nf -sb $sb -sf $sf -hnb $hnb -hnf $hnf -hsb $hsb -hsf $hsf $@
+    exit $!
+fi
+
+# should not get here
+>&2 echo no dmenu program set or found.
+>&2 echo Please install either \'dmenu\' or \'rofi\'
+>&2 echo and set the environment variable $DMENU to either of them.
+
+exit 1
