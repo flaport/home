@@ -57,12 +57,13 @@ def paste_emoji(emoji):
     else:
         notify(f"'{emoji}' copied to clipboard.")
 
-def dmenu(dict_in, prompt="codepoints"):
+def dmenu(dict_in, prompt=""):
     list_in = [f"{k}: {v}" for k, v in dict_in.items()]
+    prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
     try:
         dmenu_in = subprocess.Popen(["echo", "\n".join(list_in)], stdout=subprocess.PIPE).stdout
         choice = subprocess.check_output(
-            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+            ["dmenu", "-l", "20"] + prompt + sys.argv[2:], stdin=dmenu_in
             ).decode().split(":")[0].strip()
         return dict_in[choice]
     except subprocess.CalledProcessError:

@@ -26,11 +26,12 @@ DESKTOP_FILE_PATHS = [
 ]
 
 # functions
-def dmenu(list_in, prompt):
+def dmenu(list_in, prompt=""):
     dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+    prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
     try:
         choice = check_output(
-            ["dmenu", "-l", "20", "-p", prompt] + sys.argv[2:], stdin=dmenu_in
+            ["dmenu", "-l", "20"] + prompt + sys.argv[2:], stdin=dmenu_in
         ).decode()[:-1]
         return choice
     except CalledProcessError:

@@ -7,12 +7,12 @@
 #
 
 # rofi uses the mouse location to detect the currently active
-# monitor. This is annoying for tiling window managers, as 
+# monitor. This is annoying for tiling window managers, as
 # the active monitor might be different from the monitor where the
 # mouse is.
 
 # This script moves the mouse to the currently active monitor
-# before invoking `rofi -dmenu`. This way, rofi will open on the 
+# before invoking `rofi -dmenu`. This way, rofi will open on the
 # requested monitor
 
 import os
@@ -28,7 +28,10 @@ def move_mouse(x, y):
         return subprocess.call(["xdotool", "mousemove", x, y])
 
 def dmenu(args):
-    return subprocess.Popen(["/usr/bin/rofi", "-dmenu"] + args)
+    try:
+        return subprocess.check_output(["/usr/bin/rofi", "-dmenu"] + args).decode()[:-1]
+    except subprocess.CalledProcessError:
+        exit(1)
 
 def get_current_mouse_location():
     if not has_xdotool:
@@ -56,9 +59,10 @@ if __name__ == "__main__":
     if name:
         status = move_mouse(x, y)
 
-    status = dmenu(sys.argv[1:])
+    choice = dmenu(sys.argv[1:])
 
     if name:
         time.sleep(0.05)
         move_mouse(x0, y0)
 
+    exit(print(choice))

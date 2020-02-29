@@ -145,13 +145,14 @@ def set_xresources(xresources):
     with open(os.devnull, "w") as file:
         subprocess.call(["xrdb", os.path.expanduser("~/.Xresources")], stdout=file, stderr=file)
 
-def dmenu(list_in, prompt):
+def dmenu(list_in, prompt=""):
     dmenu_in = subprocess.Popen(
         ["echo", "\n".join([str(s) for s in list_in])], stdout=subprocess.PIPE
     ).stdout
+    prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
     try:
         choice = subprocess.check_output(
-            ["dmenu", "-l", "15", "-p", prompt], stdin=dmenu_in
+            ["dmenu", "-l", "15"] + prompt, stdin=dmenu_in
         ).decode()[:-1]
     except subprocess.CalledProcessError:
         raise RuntimeError("no colorscheme selected")

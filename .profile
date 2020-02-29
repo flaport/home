@@ -30,7 +30,7 @@ touch $HOME/.config/rofi/xresources-colors.rasi
 export BROWSER="firefox"
 export CC="gcc"
 export CXX="g++"
-export DMENU="$HOME/.local/bin/rofi -dmenu"
+export DMENU="dmenu" # rofi
 export EDITOR="vim"
 export FM="vifm"
 export FZF_DEFAULT_OPTS="--layout=reverse --height=60% --multi --bind=ctrl-n:down,ctrl-p:up,ctrl-l:preview-down,ctrl-h:preview-up,ctrl-a:select-all --preview-window=right:wrap --preview='fzf_preview {} $LINES'"

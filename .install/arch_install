@@ -586,7 +586,6 @@ yay_install nerd-fonts-hack
 pacman_install powerline-fonts
 # unicode symbols / emojis (these are standard unicode symbols, hence different than awesome terminal fonts!)
 # yay_install ttf-symbola
-# pacman_install ttf-joypixels
 # yay_install ttf-twemoji-color
 # pacman_install noto-fonts-emoji
 pacman_install ttf-joypixels

@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-[ -z "$DMENU" ] && DMENU="/usr/local/bin/dmenu -l 20 -p dmenu"
-$DMENU $@
