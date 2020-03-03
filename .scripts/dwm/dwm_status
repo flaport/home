@@ -94,7 +94,7 @@ alpha(){ # window transparency
     pidof picom > /dev/null
     if [ $? -eq 0 ]; then
         alpha=$(python -c "print(int(100*$(xrdb -query | grep alpha | cut -f 2)))")
-        echo -e α $alpha%
+        echo -e α $alpha% # 👓
     else
         echo -e α -
     fi
@@ -124,7 +124,7 @@ bat(){ # battery
     fi
     if echo $battery > grep "Discharging" &> /dev/null; then
         if [[ $percentage -gt 90 ]]; then
-            echo -e " "$percentage%
+            echo -e " "$percentage% # 🔋
         elif [[ $percentage -gt 60 ]]; then
             echo -e " "$percentage%
         elif [[ $percentage -gt 30 ]]; then
@@ -150,7 +150,7 @@ brt(){ # screen brightness
     fi
     max_brightness=$(cat $dir/max_brightness)
     brightness=$(cat $dir/brightness)
-    python -c "print('☀️ %.0f'%(100*$brightness/$max_brightness)+'%')"
+    python -c "print(' %.0f'%(100*$brightness/$max_brightness)+'%')" # ☀️
 }
 brt1(){ # mouse-button 1 action for brightness widget
     dir=/sys/class/backlight/intel_backlight
@@ -169,7 +169,7 @@ bt(){ # bluetooth
     fi
     device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]" | sed "s/.*\[\(.*\)\].*/\1/g")
     if [[ $device == bluetooth ]]; then
-        echo -e ""
+        echo -e "" #
     else
         printf ""
     fi
@@ -196,7 +196,7 @@ cpu(){ # cpu
     read cpu a b c idle rest < /proc/stat
     total=$((a+b+c+idle))
     cpu=$((100*( (total-prevtotal) - (idle-previdle) ) / (total-prevtotal) ))
-    echo -e "💻 $cpu% cpu"
+    echo -e " $cpu% cpu" # 💻
 }
 cpu1(){ # mouse-button 1 action for cpu widget
     notify-send "cpu"
@@ -217,10 +217,10 @@ cups2(){
 # -----------
 
 dte(){ # date
-    date +' %Y-%m-%d' # 📅
+    date +'  %Y-%m-%d' # 📅
 }
 dte1(){ # mouse-button 1 action for date widget
-    notify-send "Today is $(date +'%A, %B %d')" "$(asciicalendar)"
+    notify-send "$(date +'%A, %B %d')" "\n$(cal | sed "s/\<$(date +%-d)\>//g")"
 }
 
 # -----------
@@ -238,7 +238,7 @@ hub2(){
 # -----------
 
 jelly(){ # jupyterhub status
-    systemctl is-active jellyfin &> /dev/null && echo -e 
+    systemctl is-active jellyfin &> /dev/null && echo -e  # 📺
 }
 jelly1(){ # mouse-button 1 action for jupyterhub widget
     notifyservice jellyfin
@@ -251,7 +251,7 @@ jelly2(){
 
 mem(){ # memory
     mem=`free | awk '/Mem/ {printf "%d MiB/%d MiB\n", $3 / 1024.0, $2 / 1024.0 }'`
-    echo -e "💾 $mem"
+    echo -e " $mem" # 💾
 }
 mem1() { # mouse-button 1 action for memory widget
     mem=`free | awk '/Mem/ {printf "%d MiB/%d MiB\n", $3 / 1024.0, $2 / 1024.0 }'`
@@ -262,7 +262,7 @@ mem1() { # mouse-button 1 action for memory widget
 
 pcmn(){ # pacman
     num=$(pacman -Qu | wc -l)
-    [[ $num > 0 ]] && echo -e  $num || echo -e ""
+    [[ $num > 0 ]] && echo -e  $num || echo -e "" # 📦
 }
 pcmn1(){ # pacman
     num=$(pacman -Qu | wc -l)
@@ -276,7 +276,7 @@ pcmn2(){ # update packages
 # -----------
 
 serv(){ # toggle a service
-    echo -e 
+    echo -e  # 🔖
 }
 serv1(){ # pacman
     dmenu_services
@@ -286,7 +286,7 @@ serv1(){ # pacman
 # -----------
 
 sshd(){ # ssh daemon
-    systemctl is-active sshd &> /dev/null && echo -e ⛓
+    systemctl is-active sshd &> /dev/null && echo -e  # ⛓
 }
 sshd1(){ # mouse-button 1 action for ssh daemon widget
     notifyservice sshd
@@ -298,7 +298,7 @@ sshd2(){
 # -----------
 
 ssht(){ # ssh tunnels
-    systemctl is-active sshtunnel &> /dev/null && echo -e  || echo -e ""
+    systemctl is-active sshtunnel &> /dev/null && echo -e  || echo -e "" # ⛓
 }
 ssht1(){ # mouse-button 1 action for ssh tunnel widget
     notifyservice sshtunnel
@@ -310,7 +310,7 @@ ssht2(){
 # -----------
 
 sync(){ # jupyterhub status
-    systemctl is-active syncthing &> /dev/null && echo -e 
+    systemctl is-active syncthing &> /dev/null && echo -e  # ⭕
 }
 sync1(){ # mouse-button 1 action for jupyterhub widget
     notifyservice syncthing
@@ -334,7 +334,7 @@ vol(){ # volume
     string=$(amixer -D pulse get Master)
     if [[ $string == *"[on]"* ]]; then
         percentage=$(echo $string | cut -d "[" -f2 | cut -d "]" -f1)
-        echo -e "🔊 $percentage"
+        echo -e "🔊 $percentage" # 🔊
     else
       echo -e 🔇
     fi
