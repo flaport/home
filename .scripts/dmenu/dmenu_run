@@ -78,7 +78,7 @@ if __name__ == "__main__":
             + ["[clear history]"]
     )})
 
-    choice = dmenu(dmenu_commands, "open")
+    choice = dmenu(dmenu_commands)
 
     if not choice:
         exit(0)
