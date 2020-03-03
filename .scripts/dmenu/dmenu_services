@@ -18,7 +18,7 @@ services(){
     find /usr/lib/systemd/system -maxdepth 1 -type f -iname "*.service" | grep cupsd.service | sed 's/@\.service//g' | sed 's/\.service//g' | sed 's|/usr/lib/systemd/system/||g'
 }
 
-service=$(services | sort | dmenu -l 20 -p "toggle-service" $@)
+service=$(services | sort | dmenu -p "toggle-service" $@)
 
 if [ ! $service ]; then
     notify-send "no service selected"

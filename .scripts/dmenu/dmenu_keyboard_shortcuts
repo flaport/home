@@ -28,12 +28,12 @@ except:
 max_key_length = 0
 
 
-def dmenu(list_in, prompt=""):
+def dmenu(list_in, prompt="⌨"):
     dmenu_in = Popen(["echo", "\n".join(str(x) for x in list_in)], stdout=PIPE).stdout
     prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
     try:
         choice = check_output(
-            ["dmenu", "-i", "-l", "20"] + prompt + sys.argv[2:], stdin=dmenu_in
+            ["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in
         ).decode()[:-1]
         return choice
     except CalledProcessError:

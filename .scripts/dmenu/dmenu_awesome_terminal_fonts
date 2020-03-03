@@ -63,7 +63,7 @@ def dmenu(dict_in, prompt=""):
     try:
         dmenu_in = subprocess.Popen(["echo", "\n".join(list_in)], stdout=subprocess.PIPE).stdout
         choice = subprocess.check_output(
-            ["dmenu", "-l", "20"] + prompt + sys.argv[2:], stdin=dmenu_in
+            ["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in
             ).decode().split(":")[0].strip()
         return dict_in[choice]
     except subprocess.CalledProcessError:

@@ -17,7 +17,7 @@ elif [ $DMENU == dmenu ] && [ -x /usr/local/bin/dmenu ]; then
     hnf=$(grep color3 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
     hsb=$(grep color4 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
     hsf=$(grep color3 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
-    $cmd -c -bw 1 -nb $nb -nf $nf -sb $sb -sf $sf -hnb $hnb -hnf $hnf -hsb $hsb -hsf $hsf $@
+    $cmd -i -l 10 -c -bw 1 -nb $nb -nf $nf -sb $sb -sf $sf -hnb $hnb -hnf $hnf -hsb $hsb -hsf $hsf $@
     exit $!
 fi
 

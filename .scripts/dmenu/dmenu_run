@@ -31,7 +31,7 @@ def dmenu(list_in, prompt=""):
     prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
     try:
         choice = check_output(
-            ["dmenu", "-l", "20"] + prompt + sys.argv[2:], stdin=dmenu_in
+            ["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in
         ).decode()[:-1]
         return choice
     except CalledProcessError:

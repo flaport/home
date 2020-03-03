@@ -15,7 +15,7 @@ device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]" | sed "s/.*\[\(.*\)\
 if [[ $device == bluetooth ]]; then # no connection -> try to connect
     devices=$(bluetoothctl -- paired-devices)
     numdevices=$(echo $devices | wc -l)
-    [ $numdevices -eq 1 ] && device=$devices || device=$(echo $devices | dmenu -p "connect to bluetooth device" -l 10 $@)
+    device=$(echo $devices | dmenu -p . $@)
     mac=$(echo $device | grep -o "..:..:..:..:..:..")
     [ -z $mac ] && exit 0
     message=$(bluetoothctl -- connect $mac | grep 'successful\|Failed')

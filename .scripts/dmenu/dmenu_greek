@@ -25,7 +25,7 @@ def dmenu(list_in, prompt=""):
     try:
         dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
         choice = check_output(
-            ["dmenu", "-l", "20"] + prompt + sys.argv[2:], stdin=dmenu_in
+            ["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in
         ).decode().strip()
         return choice
     except CalledProcessError:
@@ -93,7 +93,7 @@ def paste_letter(letter):
 if __name__ == "__main__":
     letters = get_letters()
     windowname, x, y = get_current_window_name_and_position()
-    name = dmenu(letters.keys(), "")
+    name = dmenu(letters.keys())
     letter = letters.get(name, "")
     if letter:
         status = copy_to_clipboard(letter)
