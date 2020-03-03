@@ -119,7 +119,7 @@ bat(){ # battery
         return
     fi
     if echo $battery | grep "Charging" &> /dev/null; then
-       echo -e 🔌" "$percentage%
+       echo -e " "$percentage%
        return
     fi
     if echo $battery > grep "Discharging" &> /dev/null; then
