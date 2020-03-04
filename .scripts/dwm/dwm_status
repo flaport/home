@@ -124,15 +124,15 @@ bat(){ # battery
     fi
     if echo $battery > grep "Discharging" &> /dev/null; then
         if [[ $percentage -gt 90 ]]; then
-            echo -e " "$percentage% # 🔋
+            echo -e "  "$percentage% # 🔋
         elif [[ $percentage -gt 60 ]]; then
-            echo -e " "$percentage%
+            echo -e "  "$percentage%
         elif [[ $percentage -gt 30 ]]; then
-            echo -e " "$percentage%
+            echo -e "  "$percentage%
         elif [[ $percentage -gt 5 ]]; then
-            echo -e " "$percentage%
+            echo -e "  "$percentage%
         else
-            echo -e " "$percentage%
+            echo -e "  "$percentage%
         fi
     fi
 }
@@ -286,7 +286,7 @@ serv1(){ # pacman
 # -----------
 
 sshd(){ # ssh daemon
-    systemctl is-active sshd &> /dev/null && echo -e  # ⛓
+    systemctl is-active sshd &> /dev/null && echo -e  # ⛓
 }
 sshd1(){ # mouse-button 1 action for ssh daemon widget
     notifyservice sshd
