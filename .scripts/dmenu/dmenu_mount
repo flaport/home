@@ -282,7 +282,7 @@ if __name__ == "__main__":
             print("no device chosen")
             exit(1)
         if mode == "mount":
-            chosen_directory = os.path.abspath(os.path.expanduser(dmenu(mountpoint_options(chosen_device), "mount in").strip()))
+            chosen_directory = os.path.abspath(os.path.expanduser(dmenu(mountpoint_options(chosen_device), "mount-in").strip()))
             msg = mount(chosen_device, chosen_directory)
         if mode == "unmount":
             msg = unmount(chosen_device)
