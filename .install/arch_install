@@ -184,6 +184,8 @@ submodule_install(){ # will only install the first argument!
     echo $password | sudo -S make all >> $LOG 2>> $ERR
     echo $password | sudo -S make install >> $LOG 2>> $ERR
     echo_success $?
+    echo $password | sudo -S make clean >> $LOG 2>> $ERR
+    echo $password | rm -f config.h >> $LOG 2>> $ERR
 
     printf "cd $HOME\n" >> $LOG
     printf "cd $HOME\n" >> $ERR
