@@ -463,10 +463,10 @@ inoremap <F4> <Esc>:source ~/.config/nvim/init.vim<CR>
 autocmd FileType python vnoremap <F5> "py<Esc>:let @p = substitute(@p, '^', 'if 1: # selected text below:\r ', 'g')<CR>:let @p = substitute(@p, '\n', '\r ', 'g')<CR><C-w>b<C-\><C-n>"ppa<CR><CR>
 autocmd FileType python nnoremap <F5> <Esc>:w<CR>:only<CR>:HT python -i %<CR>G<C-w>k
 autocmd FileType python inoremap <F5> <Esc>:w<CR>:only<CR>:HT python -i %<CR>G<C-w>k
-autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
-autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
-autocmd FileType tex nnoremap <F5><F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
-autocmd FileType tex inoremap <F5><F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
+autocmd FileType tex nnoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -shell-escape<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
+autocmd FileType tex inoremap <F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -shell-escape<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
+autocmd FileType tex nnoremap <F5><F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
+autocmd FileType tex inoremap <F5><F5> <Esc>:w<CR>:only<CR>:HT [ -f $TEXBASE.tex ] && latexmk -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape $TEXBASE \|\| latexmk -f -xelatex -cd -synctex=1 -interaction=nonstopmode -shell-escape<CR>:sleep 100m<cr>G:sleep 100m<cr><C-w>k
 autocmd FileType markdown nnoremap <F5> :InstantMarkdownPreview<CR>
 autocmd FileType markdown vnoremap <F5> "+y:silent !~/.scripts/nvim/nvim_run % SELECTION<CR>
 
