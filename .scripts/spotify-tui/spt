@@ -12,6 +12,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+if [ ! -f /usr/bin/spt ]; then
+    >&2 echo "cannot start spotify-tui as it is not installed."
+    exit 1
+fi
+
 pidof spotifyd &> /dev/null
 if [ $? -ne 0 ]; then
     spotifyd &
