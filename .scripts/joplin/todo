@@ -13,12 +13,13 @@ def eprint(*args, **kwargs):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["show", "apts", "sync", "show_legacy"], help="show: show joplin todo list; apts: show calcurse appointments")
-    parser.add_argument("-t", "--notetitle", default="Todo", help="todo note title (default 'Todo')")
-    parser.add_argument("-n", "--notebook", default="notes", help="notebook containing todo note (default 'notes')")
+    parser.add_argument("command", choices=["show", "apts", "sync", "showlegacy"], help="show: show joplin todo list; apts: show calcurse appointments")
+    parser.add_argument("-t", "--title", default="Todo", help="todo note title (default 'Todo')")
     parser.add_argument("-c", "--calcurse-path", default="~/.calcurse", help="path of the calcurse config folder (default '~/.calcurse')")
     parser.add_argument("-p", "--database-path", default="~/.config/joplin/database.sqlite", help="path of the joplin database (default '~/.config/joplin/database.sqlite3')")
-    parser.add_argument("-l", "--legacy-path", default="~/Notes/todo.md", help="legacy path, fallback for when joplin database is not available.")
+    parser.add_argument("-l", "--line-length", default=100, type=int, help="maximum line length (characters)")
+    parser.add_argument("-n", "--num-lines", default=10, type=int, help="maximum number of lines")
+    parser.add_argument("-L", "--legacy-path", default="~/Notes/todo.md", help="legacy path, fallback for when joplin database is not available.")
     parser.add_argument("-S", "--suppress-errors", action="store_true", help="suppress error messages")
     ARGS = parser.parse_args()
     return ARGS
@@ -27,8 +28,12 @@ def show():
     try:
         connection = sqlite3.connect(os.path.expanduser(ARGS.database_path))
         cursor = connection.cursor()
-        cursor.execute(f"SELECT body FROM {ARGS.notebook} WHERE title = '{ARGS.notetitle}'")
-        todo = "\n".join([line for line in sorted(cursor.fetchone()[0].split("\n")) if line.replace(" ","")])
+        cursor.execute(f"SELECT body FROM notes WHERE title = '{ARGS.title}'")
+        lines = [line for line in cursor.fetchone()[0].split("\n") if line.replace(" ", "")]
+        lines = [line.replace(" [ ]", "") for line in lines if not "[x]" in line]
+        lines = [line[:ARGS.line_length] for line in lines]
+        lines = lines[:ARGS.num_lines]
+        todo = "\n".join(lines)
         print(todo)
     except Exception as e: # Legacy option
         eprint(f"failed to open database at {ARGS.database_path}\n"
@@ -38,7 +43,10 @@ def show():
 def show_legacy():
     try:
         with open(os.path.expanduser(ARGS.legacy_path), "r") as file:
-            print(file.read())
+            lines = file.read().split("\n")
+        lines = [line[:ARGS.line_length] for line in lines]
+        lines = lines[:ARGS.num_lines]
+        print("\n".join(lines))
     except Exception as e:
         eprint(f"failed to open legacy todo file at {ARGS.legacy_path}\n"
                 "nothing to show")
@@ -65,7 +73,7 @@ if __name__ == "__main__":
         apts()
     if ARGS.command == "show":
         show()
-    if ARGS.command == "show_legacy":
+    if ARGS.command == "showlegacy":
         show_legacy()
     if ARGS.command == "sync":
         sync()
