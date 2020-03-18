@@ -441,9 +441,10 @@ pacman_install lightdm
 #yay_install lightdm-slick-greeter
 yay_install lightdm-mini-greeter
 sudo mkdir -p /usr/share/xsessions
-cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?.*greeter-session.*=.*/greeter-session=lightdm-mini-greeter/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2>> $ERR
-cat /etc/lightdm/lightdm.conf | sed "s/\(#\)\?.*user-session.*=.*/user-session=dwm/g" | sudo tee /etc/lightdm/lightdm.conf > /dev/null 2>> $ERR
-cat /etc/lightdm/lightdm-mini-greeter.conf | sed "s/^user = CHANGE_ME$/user = $USER/g" | sed "s/F92672/2AA198/g" | sudo tee /etc/lightdm/lightdm-mini-greeter.conf > /dev/null 2>> $ERR
+echo $password | sudo -S sed -i "s/\(#\)\?.*greeter-session.*=.*/greeter-session=lightdm-mini-greeter/g" /etc/lightdm/lightdm.conf > $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s/\(#\)\?.*user-session.*=.*/user-session=dwm/g" /etc/lightdm/lightdm.conf > $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s/^user = CHANGE_ME$/user = $USER/g" /etc/lightdm/lightdm-mini-greeter.conf > $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s/F92672/2AA198/g" /etc/lightdm/lightdm-mini-greeter.conf > $LOG 2>> $ERR
 sudo cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
 systemctl_enable lightdm
 # maybe you just want autologin instead of a display manager:
@@ -889,7 +890,7 @@ yay_install autojump-git
 # stderred: show stderr messages in red:
 yay_install stderred
 # patch autojump to only work with system python (acts weirdly when in a virtual env / conda env)
-sed 's|#!/usr/bin/env python|#!/usr/bin/python|' $(which autojump) | sudo tee $(which autojump) > /dev/null 2>> $ERR
+echo $password | sudo -S sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $(which autojump) > $LOG 2>> $ERR
 # same fo the autosuggestions, simply ctrl+p [at least for my .zshrc] to accept suggestion. Priceless.
 pacman_install zsh-autosuggestions
 # syntax highlighting is also useful for zsh:
