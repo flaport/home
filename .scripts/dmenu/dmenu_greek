@@ -14,7 +14,7 @@ from subprocess import Popen, call, check_output, PIPE, CalledProcessError
 try:
     import pyautogui
 except:
-    pyautogui is None
+    pyautogui = None
 with open(os.devnull, "w") as out:
     has_xdotool = not call(["which", "xdotool"], stdout=out, stderr=out)
 

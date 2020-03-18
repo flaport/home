@@ -163,9 +163,10 @@ super + t
 super + T
     # handled by dwm
 
-# start transmission-cli
+# insert accented character
 super + u
-    transmission --new-terminal
+    dmenu_accents
+
 
 # stop transmission-cli
 super + U
