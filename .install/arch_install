@@ -385,6 +385,8 @@ pacman_install xorg-server
 pacman_install xorg-xinit
 # tool for detecting window properties
 pacman_install xorg-xprop
+# tool for showing x event names
+# pacman_install xorg-xev
 # for transparent windows etc.
 # pacman_install xcompmgr
 pacman_install picom
