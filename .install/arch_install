@@ -354,6 +354,8 @@ pacman_install ctags
 # yay_install spotifyd-full
 # spotify-tui: terminal client for spotify
 # yay_install spotify-tui
+# patch pacman to enable Color and ILoveCandy
+sudo sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf > $LOG 2>> $ERR
 
 
 ## Drive and file system drivers
@@ -456,6 +458,18 @@ systemctl_enable lightdm
 pacman_install libnotify
 # dunst creates desktop notifications
 pacman_install dunst
+
+## Windows compatibility & Gaming
+# patch pacman settings to include multilib
+# sudo sed -i 's|^#\[multilib\]|[multilib]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf > $LOG 2>> $ERR
+# wine:
+# pacman_install wine
+# pacman_install wine-gecko
+# pacman_install wine-mono
+# pacman_install lutris
+# pacman_install playonlinux
+# pacman_install steam
+# pacman_install vulkan-intel
 
 
 ## Sound
