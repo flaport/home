@@ -280,6 +280,8 @@ pacman_install zip
 pacman_install unzip
 # unrar
 pacman_install unrar
+# universal unarchiver (executable: unar)
+pacman_install unarchiver
 # rpm extraction shell script
 # yay_install rpmextract
 # pv: progress bars on stdout
