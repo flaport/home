@@ -335,7 +335,7 @@ pacman_install lsd
 pacman_install neovim
 link /usr/bin/nvim /usr/bin/vim
 pacman_install npm
-sudo npm -g install instant-markdown-d >> $LOG 2>> $ERR
+echo $password | sudo -S npm -g install instant-markdown-d >> $LOG 2>> $ERR
 # ctags: recommended vim dependency for jump-to-tag functionality
 pacman_install ctags
 # scim: terminal spreadsheet viewer/editor
@@ -355,7 +355,7 @@ pacman_install ctags
 # spotify-tui: terminal client for spotify
 # yay_install spotify-tui
 # patch pacman to enable Color and ILoveCandy
-sudo sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf > $LOG 2>> $ERR
+echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf > $LOG 2>> $ERR
 
 
 ## Drive and file system drivers
@@ -442,12 +442,12 @@ pacman_install lightdm
 #pacman_install lightdm-gtk-greeter
 #yay_install lightdm-slick-greeter
 yay_install lightdm-mini-greeter
-sudo mkdir -p /usr/share/xsessions
+echo $password | sudo -S mkdir -p /usr/share/xsessions
 echo $password | sudo -S sed -i "s/\(#\)\?.*greeter-session.*=.*/greeter-session=lightdm-mini-greeter/g" /etc/lightdm/lightdm.conf > $LOG 2>> $ERR
 echo $password | sudo -S sed -i "s/\(#\)\?.*user-session.*=.*/user-session=dwm/g" /etc/lightdm/lightdm.conf > $LOG 2>> $ERR
 echo $password | sudo -S sed -i "s/^user = CHANGE_ME$/user = $USER/g" /etc/lightdm/lightdm-mini-greeter.conf > $LOG 2>> $ERR
 echo $password | sudo -S sed -i "s/F92672/2AA198/g" /etc/lightdm/lightdm-mini-greeter.conf > $LOG 2>> $ERR
-sudo cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
+echo $password | sudo -S cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
 systemctl_enable lightdm
 # maybe you just want autologin instead of a display manager:
 # systemctl_create getty-auto-login
@@ -491,9 +491,9 @@ systemctl_enable NetworkManager
 # create network group (this might fail if the group exists already, but who cares.)
 groupadd network >> $LOG 2>> $ERR
 # create policy kit rule (everyone in network group can connect to / change networks)
-printf "polkit.addRule(function(action, subject) {\nif (action.id.indexOf(\"org.freedesktop.NetworkManager.\") == 0 && subject.isInGroup(\"network\")) {\nreturn polkit.Result.YES;\n}\n});" | sudo tee /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules > /dev/null 2>> $ERR
+printf "polkit.addRule(function(action, subject) {\n  if (action.id.indexOf(\"org.freedesktop.NetworkManager.\") == 0 && subject.isInGroup(\"network\")) {\n    return polkit.Result.YES;\n  }\n});" | sudo tee /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules > /dev/null 2>> $ERR
 # add current user to network group
-sudo usermod -a -G network $USER
+echo $password | sudo -S usermod -a -G network $USER
 # applet in the corner of the screen
 pacman_install network-manager-applet
 # openvpn
@@ -558,21 +558,30 @@ pacman_install xcursor-simpleandsoft
 
 ## Web interfaces
 # syncthing: synchronization between devices
-# pacman_install syncthing
+pacman_install syncthing
 # run syncthing as a systemd service
-# systemctl_create syncthing
+systemctl_create syncthing
 # systemctl_enable syncthing
 # jellyfin: media center
 # yay_install jellyfin
 # systemctl_enable jellyfin
 # nextcloud: your own dropbox at home :-)
 # pacman_install nextcloud
-# reverse proxy
-# pacman_install nginx
-# sudo mkdir -p /var/www/html
-# sudo cp $HOME/.extra/nginx.conf /etc/nginx/nginx.conf
-# [ -f /var/www/html/index.html ] || sudo cp $HOME/.extra/index.html /var/www/html/index.html
-# systemctl_enable nginx
+# nginx: reverse proxy
+pacman_install nginx
+echo $password | sudo -S mkdir -p /var/www/html
+# patch nginx to increase types hash
+grep types_hash_max_size /etc/nginx/nginx.conf &> /dev/null
+[ $? -ne 0 ] && echo $password | sudo -S sed -i 's|http {.*|http {types_hash_max_size 4096;|g' /etc/nginx/nginx.conf
+# patch nginx to look into /var/www/html by default
+echo $password | sudo -S sed -i 's|root.*/usr/share/nginx/html;|root /var/www/html;|g' /etc/nginx/nginx.conf
+echo $password | sudo -S cp /usr/share/nginx/html/50x.html /var/www/html/
+if [ -f "$HOME/.extra/index.html" ]; then
+    [ -f /var/www/html/index.html ] || echo $password | sudo -S cp $HOME/.extra/index.html /var/www/html/index.html
+else
+    [ -f /var/www/html/index.html ] || echo $password | sudo -S cp /usr/share/nginx/html/index.html /var/www/html/
+fi
+systemctl_enable nginx
 
 
 ## Printers
