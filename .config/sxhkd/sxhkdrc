@@ -57,9 +57,7 @@ super + F
 super + g
     dmenu_greek
 
-# latex synctex zathura-> vim (TODO: make this a zathura keyboard shortcut)
 super + G
-    ctrl-click
 
 # decrease master window size
 super + h

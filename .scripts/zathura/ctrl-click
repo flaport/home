@@ -6,8 +6,8 @@ x=$(xdotool getwindowgeometry $window | grep Position | sed 's/^.*: \([0-9]*\),.
 y=$(xdotool getwindowgeometry $window | grep Position | sed 's/^.*,\([0-9]*\).*$/\1/g')
 w=$(xdotool getwindowgeometry $window | grep Geometry | sed 's/^.*: \([0-9]*\)x.*$/\1/g')
 h=$(xdotool getwindowgeometry $window | grep Geometry | sed 's/^.*x\([0-9]*\).*$/\1/g')
-x=$(($w/2+x))
-y=$(($h/2+y))
+x=$(($x+$w/2))
+y=$(($y+$h/2))
 xdotool mousemove --sync $x $y
 xdotool keydown ctrl
 xdotool click 1
