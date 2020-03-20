@@ -12,6 +12,11 @@ if grep Internal /tmp/weatherreport &> /dev/null; then
     exit 1
 fi
 
+if grep Time-out /tmp/weatherreport &> /dev/null; then
+    >&2 echo "couldn't update weatherreport"
+    exit 1
+fi
+
 mv /tmp/weatherreport $HOME/.cache/weatherreport
 printf "%s" "$(sed '16q;d' $HOME/.cache/weatherreport | grep -wo "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/☔ /g" | tr -d '\n')" | sed 's|☔||g' > $HOME/.cache/weatherreportshort
 sed '13q;d' $HOME/.cache/weatherreport | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print "  ",$1 "°","",$2 "°"}' >> $HOME/.cache/weatherreportshort
