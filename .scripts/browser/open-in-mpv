@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+keymap="super+Shift+h" # this script is supposed to be mapped to super+shift+h
+window=$(xdotool getactivewindow)
+windowname=$(xdotool getwindowname $window)
+
+notify-send "opening in mpv..." "$windowname"
+xdotool keyup $keymap
+
+if echo "$windowname" | grep Firefox &> /dev/null; then # VimFX compatibility
+    xdotool key --window $window "Shift+Escape"
+    sleep 0.1
+fi
+xdotool key --window $window space
+xdotool key --window $window F6
+sleep 0.1
+xdotool key --window $window ctrl+c
+if echo "$windowname" | grep Chromium &> /dev/null; then
+    xdotool key --window $window F6
+    xdotool key --window $window F6
+elif echo "$windowname" | grep Firefox &> /dev/null; then # VimFX compatibility
+    xdotool key --window $window Escape
+fi
+mpv $(xclip -o -sel clip) &> /dev/null
+

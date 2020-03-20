@@ -1,4 +1,4 @@
 [Desktop Entry]
-Exec=webapp youtube.com
+Exec=chromium youtube.com
 Name=YouTube
 Icon=/usr/local/share/icons/youtube.png # add this icon yourself.
