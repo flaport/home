@@ -607,7 +607,9 @@ pacman_install ttf-linux-libertine
 # my preferred sans-serif (+ chromium dependency)
 pacman_install ttf-droid
 # best monospace font: inconsolata
-pacman_install ttf-inconsolata
+# pacman_install ttf-inconsolata
+# alternative best monospace font: inconsolata-g
+yay_install ttf-inconsolata\-g
 # awesome terminal fonts: glyph dependencies (lsd and dwm [my build] dependency)
 pacman_install awesome-terminal-fonts
 # hack nerd font (requirement for lsd)
