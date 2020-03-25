@@ -150,6 +150,9 @@ set laststatus=2
 set showcmd
 
 " tex / latex / xelatex / markdown
+autocmd BufNewFile,BufRead *.tex set filetype=tex
+autocmd BufRead,BufNewFile *.md,/tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
+autocmd FileType tex,markdown setlocal spell spelllang=en_us
 autocmd FileType tex,markdown set nonumber
 autocmd FileType tex,markdown set norelativenumber
 autocmd FileType tex,markdown set textwidth=70
@@ -448,8 +451,10 @@ nnoremap <leader>z :call Zoom()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
 
 
 " enable spell checker:
-nnoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
-inoremap <F3> <Esc>:setlocal spell! spelllang=en_us<CR>
+nnoremap <F3> <Esc>:setlocal spell!<CR>
+inoremap <F3> <Esc>:setlocal spell!<CR>
+nnoremap <F3><F3> <Esc>:setlocal spell spelllang=
+inoremap <F3><F3> <Esc>:setlocal spell spelllang=
 " use zg to add a word to the dictionary
 " use zuw to remove word from dictionary
 " use ]s and [s to navigate between misspelled words
