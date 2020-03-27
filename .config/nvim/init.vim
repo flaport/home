@@ -332,7 +332,7 @@ nnoremap <leader>] :bnext<CR>
 nnoremap <leader>[ :bprevious<CR>
 
 " fuzzy find in current file
-" <Leader>/ " from fzf plugin
+" <leader>/ " from fzf plugin
 
 " jump to other/closing tag
 " <leader>. " from MatchTagAlways plugin
@@ -350,16 +350,16 @@ nnoremap <leader>cs :e ~/.config/nvim/snippets/snippets.vim<CR>
 nnoremap <leader>cd :lcd %:p:h<CR>
 
 " go to definition (python only) -- inherited from plugins
-" <Leader>d
+" <leader>d
 
 " fuzzy open file
-" <Leader>e " from fzf plugin
+" <leader>e " from fzf plugin
 
 " fuzzy find in all files in tree
-" <Leader>f " from fzf plugin
+" <leader>f " from fzf plugin
 
 " Toggle (git) diff bar
-" <Leader>g " from signify plugin
+" <leader>g " from signify plugin
 
 " enable hard mode (for practice purposes)
 " <leader>h " from hard mode plugin
@@ -397,7 +397,7 @@ nnoremap <leader>l :call RelativeNumberToggle()<CR>
 " <leader>m " from vim-signature
 
 " find ocurrences (only for python)
-" <Leader>o " from jedi plugin
+" <leader>o " from jedi plugin
 
 " show only current buffer (overrides above)
 nnoremap <leader>o :only<CR>
@@ -407,7 +407,10 @@ nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 
 " rename variable (only for python)
-" <Leader>r " from jedi plugin
+" <leader>r " from jedi plugin
+
+"<leader>S: open current file as sudo (requires xdotool)
+nnoremap <leader>S ggVG"+ygg<CR>:!nvim_close_and_open_as_sudo '%' & disown
 
 "<leader>s: latex synctex tex->pdf
 function! SyncTex()
@@ -416,11 +419,11 @@ function! SyncTex()
     " the environment variable $TEXBASE does not exist.
     exec "silent !test -z $TEXBASE && TEXBASE=%:p:r; zathura --synctex-editor-command 'nvr --servername ".v:servername." +\\%{line} \\%{input}' --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf &"
 endfunction
-autocmd FileType tex nmap <Leader>s :call SyncTex()<CR>
+autocmd FileType tex nmap <leader>s :call SyncTex()<CR>
 "FYI: Ctrl-Click  --> latex synctex zathura pdf->tex
 
 " fuzzy find in tags
-" <Leader>t :Tag<CR>
+" <leader>t :Tag<CR>
 
 " make tags (may need to install ctags first)
 nnoremap <leader>T :!ctags -R .<CR>
