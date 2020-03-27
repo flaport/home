@@ -206,6 +206,10 @@ super + Y
 super + control + y
     wallpaper previous && wal
 
+# change wallpaper to random one.
+super + control + Y
+    wallpaper previous && wal
+
 # shift focus to monitor Z
 super + z
     # handled by dwm
