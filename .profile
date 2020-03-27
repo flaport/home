@@ -21,8 +21,10 @@
 # Make sure the following files exist:
 #-------------------------------------------------------------------------------
 
-touch $HOME/.pythonpath
-touch $HOME/.config/rofi/xresources-colors.rasi
+[ -f $HOME/.pythonpath ] || touch $HOME/.pythonpath &> /dev/null
+[ -f $HOME/.config/rofi/xresources-colors.rasi ] || touch $HOME/.config/rofi/xresources-colors.rasi &> /dev/null
+[ -f $HOME/.Xresources ] || cp $HOME/.config/Xresources/gruvbox-dark $HOME/.Xresources &> /dev/null
+
 
 
 ## Environment variables
