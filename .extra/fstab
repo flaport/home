@@ -25,8 +25,8 @@
 
 ## dump / pass
 # general guideline:
-#   root partition "/" :  dump=0; pass=1 
-#   other partitions   :  dump=0; pass=2 
+#   root partition "/" :  dump=0; pass=1
+#   other partitions   :  dump=0; pass=2
 
 
 ## <file system>                    <dir>               <type>      <options> <dump> <pass>
@@ -34,7 +34,7 @@
 ## linux filesystems
 # root
 UUID=<root-uuid>                    /                   ext4        rw,relatime 0 1
-# home                              
+# home
 UUID=<home-uuid>                    /home               ext3        rw,relatime 0 2
 
 ## shared filesystems
@@ -45,6 +45,6 @@ UUID=<ntfs-uuid>                    /drives/<name>      ntfs-3g     defaults,nof
 # fat partitions (usbs)
 UUID=<fat-uuid>                     /drives/<name>      vfat        defaults,nofail,x-systemd.device-timeout=1s,uid=root,gid=mount_access,dmask=003,umask=003 0 2
 
-## network filesystems
+## network filesystems (use \040 to add spaces in path)
 //<domain>/location/sublocation     /network/<name>     cifs        defaults,nofail,x-systemd.device-timeout=1s,credentials=/home/flaport/.smbcredentials,uid=root,gid=mount_access,dir_mode=0774,file_mode=0774 0 2
 
