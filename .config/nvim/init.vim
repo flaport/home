@@ -410,7 +410,7 @@ nnoremap <leader>P "+P
 " <leader>r " from jedi plugin
 
 "<leader>S: open current file as sudo (requires xdotool)
-nnoremap <leader>S ggVG"+ygg<CR>:!nvim_close_and_open_as_sudo '%' & disown
+nnoremap <leader>S ggVG"+ygg<CR>:!nvim_close_and_open_as_sudo '%' & disown<CR>
 
 "<leader>s: latex synctex tex->pdf
 function! SyncTex()
