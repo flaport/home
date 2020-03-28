@@ -1,42 +1,69 @@
-# synctex with neovim
-set synctex true
-# the following setting will be overridden when zathura is launched from within neovim:
-set synctex-editor-command 'st -e nvr --servername 127.0.0.1:9999 +%{line} %{input}'
-# it's usually preferred to launch zathura from within vim when working with Latex files.
-# To launch zathura from within vim, add the following lines to your init.vim:
-# (note that it requires neovim-remove (nvr) to be installed)
-# function! SyncTex()
-#     exec "silent test -z $TEXBASE || TEXBASE=%:p:r; zathura --synctex-editor-command 'nvr --servername ".v:servername." +\\%{line} \\%{input}' --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf &"
-# endfunction
-# nmap <Leader>s :call SyncTex()<CR>
-# then, use the synctex keyboard shortcut <leader>+s to launch zathura from within vim.
-
-# run external script that simulates a ctrl-click (for reverse synctex without using the mouse)
-map S feedkeys ":exec ctrl-click<Return>"
-
-# vim-like key-bindings
-map u scroll half-up
-map d scroll half-down
-map D toggle_page_mode
-map r reload
-map R rotate
-map J zoom in
-map H zoom in
-map K zoom out
-map L zoom out
-map i recolor
-map p print
-map <A-Button1> zoom in
-map <A-Button3> zoom out
-
 # settings
 set statusbar-h-padding 0
 set statusbar-v-padding 0
 set page-padding 1
 
+# navigation
+map k scroll up
+map <A-k> scroll up
+map j scroll down
+map <A-j> scroll up
+map u scroll half-up
+map <A-u> scroll up
+map d scroll half-down
+map <A-d> scroll up
+
+# zoom in/out
+# <C-scroll>: zoom in/out
+# s: fit width
+map i zoom in
+map <A-i> zoom in
+map o zoom out
+map <A-o> zoom out
+map <A-Button1> zoom in
+map <A-Button3> zoom out
+
+# open file
+map <C-o> feedkeys ":open <Tab>"
+map O feedkeys ":open <Tab>"
+
+# rotate
+map R rotate
+
+# dark mode
+map D recolor
+
+# reload
+map r reload
+
 # recolor settings
 set recolor-darkcolor "#dcdcdc"
 set recolor-lightcolor "#1f1f1f"
 
-# override recolor settings with theme colors
+# synctex with neovim
+set synctex true
+# To perform reverse synctex from within zathura, use ctrl-click or shift+s:
+# <C-click>: reverse synctex
+map S feedkeys ":exec ctrl-click<Return>"
+# The shift+s combo calls an external script (requires xdotool) called
+# 'ctrl-click' that emulates a ctrl-click
+
+# Let zathura listen to port 9999 for synctex operability with neovim.
+# Note that reverse synctex with neovim requires 'neovim-remote' (nvr)
+set synctex-editor-command 'st -e nvr --servername 127.0.0.1:9999 +%{line} %{input}'
+
+# HOWEVER:
+# When neovim-zathura synctex is desired, it is preferred to launch zathura
+# from within neovim. To do this correctly, add the following lines to your
+# init.vim to perform synctex and launch zathura with the correct settings:
+# function! SyncTex()
+#     exec "silent test -z $TEXBASE || TEXBASE=%:p:r; zathura --synctex-editor-command 'nvr --servername ".v:servername." +\\%{line} \\%{input}' --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf &"
+# endfunction
+# nmap <Leader>s :call SyncTex()<CR>
+# <Leader s> will now perform forward synctex from within neovim AND make sure zathura
+# is configured correctly to use the proper neovim socket for backward synctex.
+
+# Override recolor settings with theme colors
+# This setting should come last as if the recolor file does not exist, it
+# errors out and the rest of the zathura config file would not be loaded.
 include recolor
