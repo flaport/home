@@ -1,0 +1,58 @@
+#!/bin/sh
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+# usage of this script:
+usage(){
+    >&2 echo
+    >&2 echo "usage: pdfgray [output] [pdf1 pdf2 pdf3 ...]"
+    >&2 echo
+    >&2 echo "  * only a single input pdf -> output = pdf in same folder"
+    >&2 echo "  * multiple input pdfs -> output = dir containing output pdfs"
+    >&2 echo
+}
+
+# convert single pdf to grayscale with ghostscript
+gsgray(){
+    echo "\"$2\" -> \"$1\": "
+    gs \
+     -sOutputFile="$1" \
+     -sDEVICE=pdfwrite \
+     -sColorConversionStrategy=Gray \
+     -dProcessColorModel=/DeviceGray \
+     -dCompatibilityLevel=1.4 \
+     -dNOPAUSE \
+     -dBATCH \
+     -dAutoRotatePages=/None \
+     "$2" | grep Page
+   success=$?
+   [ $success -eq 0 ] && echo success! || echo failed.
+   echo
+   return $success
+}
+
+# handle output argument
+[ -z "$1" ] && usage && exit 1 || output=$(echo $1 | sed 's/^\(.*\).pdf/\1/g')
+shift 1
+
+# no input -> usage
+[ -z "$1" ] && usage && exit 1
+
+# only a single input -> gray output pdf in same folder
+if [ -z "$2" ]; then
+   input=$(echo $1 | sed 's/^\(.*\).pdf/\1/g')
+   gsgray "$output.pdf" "$input.pdf"
+   exit $?
+fi
+
+# multiple inputs -> output dir with gray pdfs
+mkdir -p $output
+for var in $@; do
+   input=$(echo $var | sed 's/^\(.*\).pdf/\1/g')
+   gsgray "$output/$input.pdf" "$input.pdf"
+done
+
