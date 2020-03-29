@@ -35,30 +35,23 @@ bindkey -v '^?' backward-delete-char
 bindkey -v
 export KEYTIMEOUT=1
 
-# change cursor shape for different vi modes. █ = normal; _ = insert
-if [ -z $NVIM_LISTEN_ADDRESS ]; then
-    BAR='\e[5 q\e\\'
-    BLOCK='\e[1 q\e\\'
-    UNDERSCORE='\e[4 q\e\\'
-    function zle-keymap-select {
-      if [[ ${KEYMAP} == vicmd ]] ||
-         [[ $1 = 'block' ]]; then
-        echo -ne $BLOCK
-      elif [[ ${KEYMAP} == main ]] ||
-           [[ ${KEYMAP} == viins ]] ||
-           [[ ${KEYMAP} = '' ]] ||
-           [[ $1 = 'beam' ]]; then
-        echo -ne $UNDERSCORE
-      fi
-    }
-    zle -N zle-keymap-select
-    zle-line-init() {
-        echo -ne $UNDERSCORE
-    }
-    zle -N zle-line-init
-    echo -ne $UNDERSCORE # at startup.
-    preexec() { echo -ne $UNDERSCORE ;} # at new prompt.
-fi
+# change cursor shape for different vi modes.  = NORMAL; _ = insert
+NORMAL='\e[1 q\e\\' # █
+INSERT='\e[4 q\e\\' # _   - INSERT='\e[5 q\e\\' # |
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+    echo -ne $NORMAL
+  elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
+    echo -ne $INSERT
+  fi
+}
+zle -N zle-keymap-select
+zle-line-init() {
+    echo -ne $INSERT
+}
+zle -N zle-line-init
+echo -ne $INSERT # at startup.
+preexec() { echo -ne $INSERT ;} # at new prompt.
 
 # colored man pages:
 man() {
