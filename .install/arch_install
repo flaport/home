@@ -327,6 +327,8 @@ yay_install alsaplayer-git
 # yay_install cli-visualizer
 # large ascii letters
 # pacman_install figlet
+# task spooler: queue tasks
+# pacman_install task-spooler
 # netcat: for socket communication
 # pacman_install gnu-netcat
 # sockets (needed for custom mpvcontrol script)
