@@ -496,7 +496,9 @@ printf "polkit.addRule(function(action, subject) {\n  if (action.id.indexOf(\"or
 echo $password | sudo -S usermod -a -G network $USER
 # applet in the corner of the screen
 pacman_install network-manager-applet
-# openvpn
+# vpn: openconnect (cisco anyconnect)
+pacman_install openconnect
+# vpn: openvpn
 pacman_install openvpn
 # openvpn service that can be run in the background
 systemctl_create openvpn

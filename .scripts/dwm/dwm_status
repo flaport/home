@@ -58,7 +58,7 @@ status(){
 
 # define the list of active widgets here (widgets defined below)
 set-status(){
-    status serv hub sync jelly cups sshd ssht vpn bt pcmn alpha vol brt bat wtr dte tme
+    status serv hub sync jelly cups sshd ssht vpn ocn bt pcmn alpha vol brt bat wtr dte tme
     #status cups vpn alpha vol brt bat wtr dte tme
 }
 
@@ -354,13 +354,25 @@ vol5(){
 # -----------
 
 vpn(){ # openvpn
-    systemctl is-active openvpn &> /dev/null && echo -e   || echo -e ""
+    systemctl is-active openvpn &> /dev/null && echo -e   #|| echo -e ""
 }
 vpn1(){ # mouse-button 1 action for openvpn widget
     notifyservice openvpn
 }
 vpn2(){ # mouse-button 2 action for openvpn widget
     toggleservice openvpn
+}
+
+# -----------
+
+ocn(){ # openconnect
+    pidof openconnect &> /dev/null && echo -e   #|| echo -e ""
+}
+ocn1(){ # mouse-button 1 action for openconnect widget
+    pidof openconnect &> /dev/null && notify-send "openconnect" "running.\n\n[middle click to stop]" || notify-send "openconnect" "stopped."
+}
+ocn2(){ # mouse-button 1 action for openconnect widget
+    pidof openconnect &> /dev/null && sudo -A killall openconnect; dwm_status
 }
 
 # -----------
