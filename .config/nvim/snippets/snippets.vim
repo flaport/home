@@ -56,6 +56,27 @@ autocmd FileType html inoremap ;`e &egrave;
 autocmd FileType html inoremap ;`i &igrave;
 autocmd FileType html inoremap ;`o &ograve;
 autocmd FileType html inoremap ;`u &ugrave;
+autocmd FileType html inoremap ;'A &Aacute;
+autocmd FileType html inoremap ;'E &Eacute;
+autocmd FileType html inoremap ;'I &Iacute;
+autocmd FileType html inoremap ;'O &Oacute;
+autocmd FileType html inoremap ;'U &Uacute;
+autocmd FileType html inoremap ;:A &Auml;
+autocmd FileType html inoremap ;:E &Euml;
+autocmd FileType html inoremap ;:I &Iuml;
+autocmd FileType html inoremap ;:O &Ouml;
+autocmd FileType html inoremap ;:U &Uuml;
+autocmd FileType html inoremap ;~A &Atilde;
+autocmd FileType html inoremap ;~E &Etilde;
+autocmd FileType html inoremap ;~I &Itilde;
+autocmd FileType html inoremap ;~O &Otilde;
+autocmd FileType html inoremap ;~U &Utilde;
+autocmd FileType html inoremap ;~H &Ntilde;
+autocmd FileType html inoremap ;`A &Agrave;
+autocmd FileType html inoremap ;`E &Egrave;
+autocmd FileType html inoremap ;`I &Igrave;
+autocmd FileType html inoremap ;`O &Ograve;
+autocmd FileType html inoremap ;`U &Ugrave;
 
 "" Special letters
 "-------------------------------------------------------------------------------
@@ -80,6 +101,27 @@ inoremap ;`e è
 inoremap ;`i ì
 inoremap ;`o ò
 inoremap ;`u ù
+inoremap ;'A Á
+inoremap ;'E É
+inoremap ;'I Í
+inoremap ;'O Ó
+inoremap ;'U Ú
+inoremap ;:A Ä
+inoremap ;:E Ë
+inoremap ;:I Ï
+inoremap ;:O Ö
+inoremap ;:U Ü
+inoremap ;~A Ã
+inoremap ;~E Ẽ
+inoremap ;~I Ĩ
+inoremap ;~O Õ
+inoremap ;~U Ũ
+inoremap ;~H Ñ
+inoremap ;`A À
+inoremap ;`E È
+inoremap ;`I Ì
+inoremap ;`O Ò
+inoremap ;`U Ù
 
 
 "" Greek alphabet
