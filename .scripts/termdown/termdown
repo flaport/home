@@ -1,0 +1,77 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+# this is a python script bc of a bug in termdown
+# --exec-cmd not accepting spaces in the argument.
+
+import os
+import sys
+import subprocess
+
+critical = 3
+
+def poparg(args, arg, rettype=str):
+    if not arg in args:
+        return ""
+    idx = args.index(arg)
+    value = args[idx+1]
+    del args[idx]
+    del args[idx]
+    try:
+        return rettype(value)
+    except:
+        return None
+
+def espeak(*args):
+    try:
+        with open(os.devnull, "w") as file:
+            return subprocess.call(["espeak", "-v", "default", *args], stdout=file, stderr=file)
+    except:
+        return 1
+
+def termdown(*args):
+    try:
+        with open(os.devnull, "w") as file:
+            return subprocess.call(["/usr/bin/termdown", *args], stderr=file)
+    except:
+        return 1
+
+if __name__ == "__main__":
+    try:
+        critical = poparg(sys.argv, "--critical", int)
+        if not critical: critical = poparg(sys.argv, "-c", int)
+        if not critical: critical = 3
+        critical = str(critical)
+
+        try:
+            exec_cmd_idx = sys.argv.index("--exec-cmd")
+            exec_cmd = " ".join(sys.argv[exec_cmd_idx+1:])
+        except:
+            exec_cmd = ""
+            exec_cmd_idx = None
+            pass
+        if not exec_cmd:
+            exec_cmd = r"test {0} -le " + critical + r" && espeak -v default {1}"
+        sys.argv = sys.argv[:exec_cmd_idx]
+
+        if len(sys.argv) == 1:
+            exit(termdown())
+
+        if len(sys.argv) != 2:
+            exit(termdown(*sys.argv[1:]))
+
+        # we only get here if termdown has a single argument
+        # apply default arguments.
+        exit_code = termdown(sys.argv[1], "--critical", critical, "--exec-cmd", exec_cmd)
+        if exit_code == 0: espeak("timer finished.")
+        exit(exit_code)
+    except Exception as e:
+        print(e)
+        exit(1)
+
+

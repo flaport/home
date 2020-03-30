@@ -313,6 +313,12 @@ pacman_install highlight
 pacman_install mediainfo
 # process information
 pacman_install htop
+# termdown: terminal timer/stopwatch
+pacman_install termdown
+# espeak: text to speach engine
+pacman_install espeak
+# aplay: simple sound player based on alsa
+yay_install alsaplayer-git
 # system information
 # pacman_install neofetch
 # lightweight system information
