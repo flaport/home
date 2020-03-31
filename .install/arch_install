@@ -523,6 +523,8 @@ systemctl_create openvpn
 # systemctl_enable openvpn
 # ssh (client and server)
 pacman_install openssh
+# allow X-forwarding for sshd:
+echo $password | sudo -S sed -i 's|^.*X11Forwarding.*|X11Forwarding yes|g' /etc/ssh/sshd_config > $LOG 2>> $ERR
 systemctl_enable sshd
 # autossh (for ssh daemons)
 pacman_install autossh
