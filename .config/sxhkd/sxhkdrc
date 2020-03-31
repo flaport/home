@@ -57,7 +57,9 @@ super + F
 super + g
     dmenu_greek
 
+# emails menu
 super + G
+    dmenu_emails
 
 # decrease master window size
 super + h
