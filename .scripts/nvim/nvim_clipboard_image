@@ -1,0 +1,95 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+"""
+save image currently in clipboard as a png in current folder with a random
+filename and output the filename. This script is used in conjunction with my
+init.vim
+
+If a single argument is given, this argument serves as the filename.
+
+If more than one argument is given, this script errors out.
+
+If "--base64" option is given, no filename should be supplied and the
+base64 png-representation will be print out in stead of the filename.
+
+"""
+
+# imports
+import os
+import sys
+import base64
+import secrets
+import subprocess
+
+# functions
+def eprint(*args, **kwargs):
+    kwargs["file"] = sys.stderr
+    print(*args, **kwargs)
+
+def parse_args():
+    if len(sys.argv) > 2:
+        eprint("usage: nvim_clipboard_image [filename.png]")
+        exit(1)
+    filename = "."
+    if len(sys.argv) == 2:
+        filename = sys.argv[1]
+    if os.path.isdir(filename):
+        filename = os.path.join(filename, random_filename())
+    if filename != "--base64":
+        if not filename.endswith(".png"):
+            filename = f"{filename}.png"
+        if os.path.exists(filename):
+            eprint(f"error: file '{filename}' already exists")
+            exit(1)
+    return filename
+
+def check_xclip():
+    with open(os.devnull, "w") as file:
+        exit_code = subprocess.call(["which", "xclip"], stdout=file, stderr=file)
+    if exit_code != 0:
+        eprint("error: xclip not installed")
+        exit(exit_code)
+
+def get_png_from_clipboard():
+    return subprocess.check_output(["xclip", "-selection", "clipboard", "-target", "image/png", "-o"])
+
+def save_bytes_as_png(b, filename=""):
+    if not filename:
+        filename=random_filename()
+    if filename == "--base64":
+        b64img = base64.b64encode(b).decode()
+        filename = f"data:image/png;base64,{b64img}"
+        return filename
+    if not filename.endswith(".png"):
+        filename = f"{filename}.png"
+    with open(filename, "wb") as file:
+        file.write(b)
+    return filename
+
+def save_png_from_clipboard(filename=""):
+    b = get_png_from_clipboard()
+    return save_bytes_as_png(b, filename)
+
+def random_filename(length=10):
+    letters = "abcdefghijklmnopqrstuvwxyz"
+    return "".join(secrets.choice(letters) for _ in range(length))
+
+
+if __name__ == "__main__":
+    try:
+        check_xclip()
+        filename = parse_args()
+        filename = save_png_from_clipboard(filename)
+        print(filename, end="")
+    except Exception as e:
+        eprint("error: something went wrong")
+        exit(1)
+
+
+
+

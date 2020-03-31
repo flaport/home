@@ -202,6 +202,16 @@ pip3_install() {
     echo_success $?
 }
 
+pip3_user_install() {
+    printf "pip3 install $1... "
+    printf "\n\n\npip3 install $1\n" >> $LOG
+    printf "\n\n\npip3 install $1\n" >> $ERR
+    printf "sudo /usr/bin/python3 -m pip install $1\n" >> $LOG
+    printf "sudo /usr/bin/python3 -m pip install $1\n" >> $ERR
+    /usr/bin/python3 -m pip install --user --upgrade $1 >> $LOG 2>> $ERR
+    echo_success $?
+}
+
 pip2_install() {
     printf "pip2 install $1... "
     printf "\n\n\npip2 install $1\n" >> $LOG
@@ -848,8 +858,10 @@ pacman_install python-httplib2
 # pacman_install python-pillow
 # sockets
 # pacman_install python-websockets
-# neovim integration
-pip3_install neovim-remote
+# neovim integration (install for user as it should be available in any environment)
+pip3_user_install neovim
+pip3_user_install pynvim
+pip3_user_install neovim-remote
 # image previews in terminal
 pip3_install ueberzug
 # automate GUI tasks with pyautogui

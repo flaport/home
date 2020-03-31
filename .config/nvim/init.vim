@@ -55,7 +55,7 @@ endfunction
 autocmd BufWritePre * call DoOnSave()
 
 " save on focus lost
-au FocusLost * :wa
+" au FocusLost * :wa
 
 " enable syntax highlighting
 syntax enable
@@ -251,7 +251,6 @@ tnoremap <C-h> <C-\><C-N><C-w>h " navigation out of terminal mode
 
 " jump to next position in text
 " <C-i> = TAB " standard vim keybinding
-autocmd FileType markdown nnoremap <C-i> 0v$"*y:read !~/.scripts/nvim/nvim_markdown_image<CR>kddk
 
 " move to split below of current split
 nnoremap <C-j> <C-w>j
@@ -405,6 +404,16 @@ nnoremap <leader>o :only<CR>
 " paste from clipboard in stead of selection
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
+
+function! ClipboardImageFunc(...)
+    let str = a:0 >= 1 ? a:1 : ""
+    exec "let @i = system(\"nvim_clipboard_image ".str."\")"
+    exec "normal a\<C-R>i"
+endfunc
+command! -nargs=* ClipboardImage :call ClipboardImageFunc(<f-args>)
+command! -nargs=0 ClipboardImageBase64 :call ClipboardImageFunc("--base64")
+nnoremap "ip :ClipboardImage<Space>
+nnoremap "hp :ClipboardImageBase64<Return>
 
 " rename variable (only for python)
 " <leader>r " from jedi plugin

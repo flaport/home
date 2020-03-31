@@ -79,7 +79,7 @@ let g:jedi#auto_vim_configuration = 0 " don't let the plugin mess with the defau
 let g:jedi#popup_select_first = 0 " don't let the plugin mess with the default completion settings
 let g:jedi#show_call_signatures = 1 " show call signatures inline
 let g:jedi#squelch_py_warning = 1 " no warning when python not available
-let g:jedi#completions_enabled = 0 " use deoplete instead of jedi for completion
+let g:jedi#completions_enabled = 1 " 0 -> use deoplete instead of jedi for completion (deoplete disabled atm, hence the use of jedi)
 let g:jedi#goto_command = '<Leader>d' " goto python definition
 let g:jedi#usages_command = '' " '<Leader>o'  find ocurrences (disabled)
 let g:jedi#rename_command = '<Leader>r' " rename python variable
@@ -131,7 +131,7 @@ let g:context_filetype#same_filetypes._ = '_'
 
 " Shougo/deoplete.nvim ---------------------------
 " enable deoplete
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 0
 " ignore case when code completing with lower case letters
 let g:deoplete#enable_ignore_case = 1
 " do not ignore case when code completing with upper case letters
