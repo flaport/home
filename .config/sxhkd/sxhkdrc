@@ -205,9 +205,9 @@ super + Y
 super + control + y
     wallpaper previous && wal
 
-# change wallpaper to random one.
+# wallpaper overview
 super + control + Y
-    wallpaper previous && wal
+    sxiv ~/.local/share/wallpapers/* && wal
 
 # shift focus to monitor Z
 super + z
