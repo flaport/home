@@ -165,10 +165,7 @@ super + T
 super + u
     dmenu_accents
 
-
-# stop transmission-cli
 super + U
-    transmission --stop
 
 # shift focus to monitor V
 super + v
@@ -398,10 +395,6 @@ super + F9
 
 super + F10
 
-# make screenshot
-Print
-    flameshot gui
-
 # decrease brightness
 super + F11
     [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
@@ -409,6 +402,10 @@ super + F11
 # increase brightness
 super + F12
     xbacklight -inc 10; dwm_status
+
+# make screenshot
+Print
+    flameshot gui
 
 # mute volume
 XF86AudioMute

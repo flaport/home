@@ -11,6 +11,11 @@ import sys
 from time import sleep
 from subprocess import call, check_output, Popen, PIPE, CalledProcessError
 
+SUPER=""
+SHIFT=""
+CONTROL="ctrl"
+RETURN="enter"
+
 def notify(title, message=""):
     if message:
         check_output(["notify-send", title, message])
@@ -28,7 +33,7 @@ except:
 max_key_length = 0
 
 
-def dmenu(list_in, prompt="⌨"):
+def dmenu(list_in, prompt=""):
     dmenu_in = Popen(["echo", "\n".join(str(x) for x in list_in)], stdout=PIPE).stdout
     prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
     try:
@@ -44,7 +49,7 @@ def dmenu(list_in, prompt="⌨"):
 class Shortcut:
     def __init__(self, keys, description, command):
         global max_key_length, shortcuts
-        self.keys = keys.strip().replace(" ", " ").replace("super", "◻️")
+        self.keys = self.parse_keys(keys)
         if len(self.keys) > max_key_length:
             max_key_length = len(self.keys)
         self.description = description.replace("#", "").strip()
@@ -55,6 +60,23 @@ class Shortcut:
             self.call_with_pyautogui()
         else:
             self.call_without_pyautogui()
+
+    @staticmethod
+    def parse_keys(keys):
+        abc = "abcdefghikjlmnopqrstuvwxyz"
+        keys = keys.replace("Return", RETURN)
+        keys = keys.strip()
+        if "XF86" in keys:
+            keys = keys.replace("XF86", "").lower()
+        for i in range(12):
+            if f"F{i}" in keys:
+                keys = keys.lower()
+        for x, X in zip(abc, abc.upper()):
+            keys = keys.replace(X, f"shift + {x}")
+        keys = keys.replace("shift", SHIFT)
+        keys = keys.replace("control",CONTROL)
+        keys = keys.replace("super", SUPER)
+        return keys
 
     def call_without_pyautogui(self):
         commands = self.command.split(";")
@@ -71,14 +93,18 @@ class Shortcut:
 
     def call_with_pyautogui(self):
         keys = (self.keys
-                .replace("◻️", "apps")
-                .replace("Return", "enter"))
+                .replace(SUPER, "apps")
+                .replace(SHIFT, "shift")
+                .replace(CONTROL, "ctrl")
+                .replace("return", "enter")
+                .replace("print", "PrtScn")
+                )
         keys = [key.strip() for key in keys.split("+")]
         pyautogui.press("apps") # needed to 'wake' pytautogui somehow
         pyautogui.hotkey(*keys)
 
     def __str__(self):
-        padding = " " * (max_key_length + 5 - len(self.keys))
+        padding = " " * (max_key_length + 1 - len(self.keys))
         return self.keys + ":" + padding + self.description
 
 
@@ -106,7 +132,7 @@ if __name__ == "__main__":
 
             shortcuts[shortcut.keys] = shortcut
 
-    chosen = dmenu(shortcuts.values(), prompt="shortcuts")
+    chosen = dmenu(shortcuts.values(), prompt="")
 
     if chosen is None:
         exit(0)
