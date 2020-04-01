@@ -59,9 +59,9 @@ def get_emails(filename="~/.local/share/contacts/contacts.vcf"):
                     name = f"{name[1].strip()} {name[0].strip()}"
                 if line.startswith("EMAIL"):
                     email = line.split(":")[-1].strip().lower()
-            if name and email:
-                key = f"{name} ({email})"
-                emails[key] = email
+                    if name and email:
+                        key = f"{name} <{email}>"
+                        emails[key] = email
     return emails
 
 def get_current_window_name_and_position():
