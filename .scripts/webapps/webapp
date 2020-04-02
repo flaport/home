@@ -24,9 +24,11 @@ def parse_address(address):
     if not address.startswith("http://") and not address.startswith("https://"):
         while "//" in address:
             address = address.replace("//","/")
-        address = f"http://{address}"
+        address = address if os.path.exists(address) else f"http://{address}"
     while "///" in address:
         address = address.replace("///","//")
+    if not address.startswith("http://"):
+        address = f"file:///{address}"
     return address
 
 def run_and_exit(command):
