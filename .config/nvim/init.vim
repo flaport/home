@@ -405,6 +405,12 @@ nnoremap <leader>o :only<CR>
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 
+function! ChooseCommandFunc()
+    let str = system("nvim_commands")
+    exec str
+endfunc
+nnoremap <leader><F1> :call ChooseCommandFunc()<CR>
+
 function! ClipboardImageFunc(...)
     let str = a:0 >= 1 ? a:1 : ""
     exec "let @i = system(\"nvim_clipboard_image ".str."\")"

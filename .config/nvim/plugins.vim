@@ -80,9 +80,9 @@ let g:jedi#popup_select_first = 0 " don't let the plugin mess with the default c
 let g:jedi#show_call_signatures = 1 " show call signatures inline
 let g:jedi#squelch_py_warning = 1 " no warning when python not available
 let g:jedi#completions_enabled = 1 " 0 -> use deoplete instead of jedi for completion (deoplete disabled atm, hence the use of jedi)
-let g:jedi#goto_command = '<Leader>d' " goto python definition
-let g:jedi#usages_command = '' " '<Leader>o'  find ocurrences (disabled)
-let g:jedi#rename_command = '<Leader>r' " rename python variable
+let g:jedi#goto_command = '<leader>d' " goto python definition
+let g:jedi#usages_command = '' " '<leader>o'  find ocurrences (disabled)
+let g:jedi#rename_command = '<leader>r' " rename python variable
 let g:jedi#documentation_command = 'K' " show python docstring
 let g:jedi#popup_on_dot = 0 " only after first letter
 let g:jedi#goto_assignments_command = '' " not used (partially covered by goto_command)
@@ -90,13 +90,13 @@ let g:jedi#goto_definitions_command = '' " not used (partially covered by goto_c
 
 " junegunn/fzf.vim -------------------------------
 " general code finder in current file mapping
-nmap <Leader>/ :BLines<CR>
+nnoremap <leader>/ :BLines<CR>
 " general code finder in all files mapping
-nmap <Leader>f :Lines<CR>
+nnoremap <leader>f :Lines<CR>
 " file finder mapping
-nmap <Leader>e :Files<CR>
+nnoremap <leader>e :Files<CR>
 " tags (symbols) in all files finder mapping
-nmap <Leader>t :Tag<CR>
+nnoremap <leader>t :Tag<CR>
 
 " kshenoy/vim-signature --------------------------
 " add a way to disable this for less wide margins

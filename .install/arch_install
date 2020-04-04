@@ -874,9 +874,9 @@ pacman_install python-httplib2
 # sockets
 # pacman_install python-websockets
 # neovim integration (install for user as it should be available in any environment)
-pip3_user_install neovim
-pip3_user_install pynvim
-pip3_user_install neovim-remote
+pip3_install neovim
+pip3_install pynvim
+pip3_install neovim-remote
 # image previews in terminal
 pip3_install ueberzug
 # automate GUI tasks with pyautogui
