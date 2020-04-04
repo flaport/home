@@ -309,6 +309,8 @@ pacman_install vifm
 pacman_install tmux
 # show manual for executable
 pacman_install man
+# mplayer (anki dependency)
+pacman_install mplayer
 # show most common commands for executable (I use this one more often than man)
 pacman_install tldr
 # copying and pasting from the terminal
@@ -692,6 +694,8 @@ pacman_install zathura-pdf-mupdf
 pacman_install zathura-djvu
 # etcher: GUI dd alternative
 # yay_install etcher-bin
+# anki: a flashcard program
+pacman_install anki
 
 
 ## Images, video and media

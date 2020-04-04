@@ -3,3 +3,4 @@ theme=KvGnomeDark#
 
 [Applications]
 KvArc=klayout
+KvArc=anki
