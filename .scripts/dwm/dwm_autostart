@@ -87,18 +87,7 @@ done &
 # sync joplin notes every hour
 while true; do
     sleep 10s
-    ln -f $HOME/.config/joplin/database.sqlite $HOME/.config/joplin/database.tui.sqlite
-    joplin sync &> /dev/null
-    ps -Af | grep joplin-desktop | grep -v grep &> /dev/null
-    if [ $? -ne 0 ]; then # joplin GUI not running
-        ps -Af | grep joplin | grep -v grep &> /dev/null
-        if [ $? -ne 0 ]; then # joplin TUI not running
-            ln -f $HOME/.config/joplin-desktop/database.sqlite $HOME/.config/joplin/database.sqlite
-            joplin sync &> /dev/null
-            ln -f $HOME/.config/joplin/database.tui.sqlite $HOME/.config/joplin/database.sqlite
-        fi
-    fi
-    joplin sync &> /dev/null
+    joplin-sync
     sleep 3550s
 done &
 

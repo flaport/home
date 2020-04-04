@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# improved joplin sync script that syncs both TUI and GUI (not only TUI)
+
+ln -f $HOME/.config/joplin/database.sqlite $HOME/.config/joplin/database.tui.sqlite
+echo "syncing joplin TUI..."
+joplin sync
+ps -Af | grep joplin-desktop | grep -v grep | grep -v joplin-sync &> /dev/null
+if [ $? -ne 0 ]; then # joplin GUI not running
+    ps -Af | grep joplin | grep -v grep | grep -v joplin-sync &> /dev/null
+    if [ $? -ne 0 ]; then # joplin TUI not running
+        ln -f $HOME/.config/joplin-desktop/database.sqlite $HOME/.config/joplin/database.sqlite
+        echo
+        echo "syncing joplin GUI..."
+        joplin sync
+        ln -f $HOME/.config/joplin/database.tui.sqlite $HOME/.config/joplin/database.sqlite
+        echo
+        echo "syncing joplin TUI again..."
+        joplin sync
+    else
+        echo
+        echo "syncing joplin TUI again skipped..."
+    fi
+else
+    echo
+    echo "syncing joplin GUI skipped."
+fi
+
