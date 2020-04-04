@@ -39,8 +39,8 @@ fi
 mkdir -p $HOME/.local/share
 LOG="$HOME/.local/share/arch_install.log"
 ERR="$HOME/.local/share/arch_install_errors.log"
-printf "ARCH PACKAGE INSTALL\n\n\n" > $LOG
-printf "ARCH PACKAGE INSTALL\n\n\n" > $ERR
+printf "ARCH PACKAGE INSTALL\n\n\n" >> $LOG
+printf "ARCH PACKAGE INSTALL\n\n\n" >> $ERR
 
 
 ## User input
@@ -376,7 +376,7 @@ pacman_install ctags
 # spotify-tui: terminal client for spotify
 # yay_install spotify-tui
 # patch pacman to enable Color and ILoveCandy
-echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf > $LOG 2>> $ERR
+echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf >> $LOG 2>> $ERR
 
 
 ## Drive and file system drivers
@@ -464,11 +464,14 @@ pacman_install lightdm
 #yay_install lightdm-slick-greeter
 yay_install lightdm-mini-greeter
 echo $password | sudo -S mkdir -p /usr/share/xsessions
-echo $password | sudo -S sed -i "s/\(#\)\?.*greeter-session.*=.*/greeter-session=lightdm-mini-greeter/g" /etc/lightdm/lightdm.conf > $LOG 2>> $ERR
-echo $password | sudo -S sed -i "s/\(#\)\?.*user-session.*=.*/user-session=dwm/g" /etc/lightdm/lightdm.conf > $LOG 2>> $ERR
-echo $password | sudo -S sed -i "s/^user = CHANGE_ME$/user = $USER/g" /etc/lightdm/lightdm-mini-greeter.conf > $LOG 2>> $ERR
-echo $password | sudo -S sed -i "s/F92672/2AA198/g" /etc/lightdm/lightdm-mini-greeter.conf > $LOG 2>> $ERR
 echo $password | sudo -S cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
+echo $password | sudo -S sed -i "s/\(#\)\?.*greeter-session.*=.*/greeter-session=lightdm-mini-greeter/g" /etc/lightdm/lightdm.conf >> $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s/\(#\)\?.*user-session.*=.*/user-session=dwm/g" /etc/lightdm/lightdm.conf >> $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s/^user.*=.*/user = $USER/g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s/^show-password-label.*=.*/show-password-label = false/g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s/^password-label-text.*=.*/password-label-text = $USER:/g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s|^background-image.*=.*|background-image=\"$HOME/.cache/current-wallpaper\"|g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s/F92672/2AA198/g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
 systemctl_enable lightdm
 # maybe you just want autologin instead of a display manager:
 # systemctl_create getty-auto-login
@@ -482,7 +485,7 @@ pacman_install dunst
 
 ## Windows compatibility & Gaming
 # patch pacman settings to include multilib
-# sudo sed -i 's|^#\[multilib\]|[multilib]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf > $LOG 2>> $ERR
+# sudo sed -i 's|^#\[multilib\]|[multilib]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> $LOG 2>> $ERR
 # wine:
 # pacman_install wine
 # pacman_install wine-gecko
@@ -527,7 +530,7 @@ systemctl_create openvpn
 # ssh (client and server)
 pacman_install openssh
 # allow X-forwarding for sshd:
-echo $password | sudo -S sed -i 's|^.*X11Forwarding.*|X11Forwarding yes|g' /etc/ssh/sshd_config > $LOG 2>> $ERR
+echo $password | sudo -S sed -i 's|^.*X11Forwarding.*|X11Forwarding yes|g' /etc/ssh/sshd_config >> $LOG 2>> $ERR
 systemctl_enable sshd
 # autossh (for ssh daemons)
 pacman_install autossh
@@ -943,7 +946,7 @@ yay_install autojump-git
 # stderred: show stderr messages in red:
 yay_install stderred
 # patch autojump to only work with system python (acts weirdly when in a virtual env / conda env)
-echo $password | sudo -S sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $(which autojump) > $LOG 2>> $ERR
+echo $password | sudo -S sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $(which autojump) >> $LOG 2>> $ERR
 # same fo the autosuggestions, simply ctrl+p [at least for my .zshrc] to accept suggestion. Priceless.
 pacman_install zsh-autosuggestions
 # syntax highlighting is also useful for zsh:
