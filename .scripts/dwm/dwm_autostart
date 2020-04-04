@@ -5,52 +5,55 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
+rm -f $HOME/.local/share/dwm_autostart.log
+touch $HOME/.local/share/dwm_autostart.log
+rm -f $HOME/.local/share/dwm_autostart.errors.log
+touch $HOME/.local/share/dwm_autostart.errors.log
+start(){
+    pidof $1 || $@ >> $HOME/.local/share/dwm_autostart.log 2>> $HOME/.local/share/dwm_autostart.errors.log &
+}
 
 # enable hotkeys
-pidof sxhkd || sxhkd &> /dev/null &
+start sxhkd
 
 # set wallpaper
-wallpaper current &
+start wallpaper current
 
 # enable transparent windows
 if [ -f "$HOME/.config/picom/blur-kern" ]; then
-    picom --no-fading-openclose --blur-kern=$(cat $HOME/.config/picom/blur-kern) &
+    start picom --no-fading-openclose --blur-kern=$(cat $HOME/.config/picom/blur-kern)
 else
-    picom --no-fading-openclose &
+    start picom --no-fading-openclose
 fi
 
 # update xrdb database
-if [ -f ~/.Xresources ]; then
-    xrdb ~/.Xresources &
-fi
+[ -f ~/.Xresources ] && start xrdb ~/.Xresources
 
-# start smdv (simple markdown viewer) in the background
-pidof smdv || smdv --no-browser &
+# start nextcloud client
+start nextcloud
 
 # export your desired screenlayout with `arandr`
-default_screenlayout &
+start default_screenlayout
 
 # notifications
-pidof dunst || dunst &
+start dunst
 
 # network manager applet (in most right corner of the screen)
-pidof nm-applet || nm-applet &
+start nm-applet
 
 # automatically lock screen after 10 minutes
-pidof xautolock || xautolock -time 10 -locker validate_and_lock_screen &
+start xautolock -time 10 -locker validate_and_lock_screen
 
 # make the mouse invisible after a brief period of not using it.
-pidof unclutter || unclutter &
+start unclutter
 
 # conky dashboards
-if ! pidof conky; then
-    conky -c $HOME/.config/conky/conky.conf -x 60 &
-    conky -c $HOME/.config/conky/conky.conf -x -1860 &
-    conky -c $HOME/.config/conky/conky.conf -x -3780 &
-fi
+start conky -c $HOME/.config/conky/conky.conf -x 60
+start conky -c $HOME/.config/conky/conky.conf -x -1860
+start conky -c $HOME/.config/conky/conky.conf -x -3780
 
 # set cursor speed
-# wrapped into loop, as sometimes this stops working
+# wrapped into loop, as sometimes this inexplicably stops working
 while true; do
     xset r rate 200 45 &
     sleep 60
@@ -58,8 +61,9 @@ done &
 
 # update dwm status bar every 10 seconds
 while true; do
-    dwm_status &> /dev/null
-    sleep 10s
+    sleep 2s
+    dwm_status &> /dev/null &
+    sleep 8s
 done &
 
 # check battery status every 10 minutes
@@ -83,7 +87,18 @@ done &
 # sync joplin notes every hour
 while true; do
     sleep 10s
-    joplin sync &> /dev/null &
+    ln -f $HOME/.config/joplin/database.sqlite $HOME/.config/joplin/database.tui.sqlite
+    joplin sync &> /dev/null
+    ps -Af | grep joplin-desktop | grep -v grep &> /dev/null
+    if [ $? -ne 0 ]; then # joplin GUI not running
+        ps -Af | grep joplin | grep -v grep &> /dev/null
+        if [ $? -ne 0 ]; then # joplin TUI not running
+            ln -f $HOME/.config/joplin-desktop/database.sqlite $HOME/.config/joplin/database.sqlite
+            joplin sync &> /dev/null
+            ln -f $HOME/.config/joplin/database.tui.sqlite $HOME/.config/joplin/database.sqlite
+        fi
+    fi
+    joplin sync &> /dev/null
     sleep 3550s
 done &
 
