@@ -1,0 +1,35 @@
+*~
+.*
+._*
+\#*#
+]*.~*
+~$*
+.apdisk
+*.crdownload
+.directory
+].DocumentRevisions-V100
+].ds_store
+].DS_Store
+*.filepart
+.fseventd
+.fuse_hidden*
+*.gnucash.tmp-*
+]Icon\r*
+*.kate-swp
+.~lock.*
+My Saved Places.
+.nfs*
+*.part
+.*.*sw?
+.*.sw?
+.symform
+.symform-store
+.sync.ffs_db
+.synkron.*
+System Volume Information
+].TemporaryItems
+]Thumbs.db
+~*.tmp
+].Trash-*
+].Trashes
+*.unison
