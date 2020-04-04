@@ -26,10 +26,10 @@ def save_current_wallpaper_path(path):
 
 def download_wallpaper(url):
     try:
-        os.makedirs(os.path.expanduser("~/.cache/downloaded-wallpapers"))
+        os.makedirs(os.path.expanduser("~/.local/share/downloaded-wallpapers"))
     except FileExistsError:
         pass
-    path = os.path.join(os.path.expanduser("~/.cache/downloaded-wallpapers"), url.split("/")[-1])
+    path = os.path.join(os.path.expanduser("~/.local/share/downloaded-wallpapers"), url.split("/")[-1])
     if not os.path.exists(path):
         urllib.request.urlretrieve(url, filename=path)
     if os.path.isfile(path) and path != CURRENT_WALLPAPER:
