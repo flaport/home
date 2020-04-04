@@ -366,6 +366,9 @@ pacman_install ctags
 # yay_install ddgr
 # trans: command line translation engine
 # pacman_install translate-shell
+# cronie: cron job daemon
+# pacman_install cronie
+# systemctl_enable cronie
 # ncmpcpp: terminal music client
 # pacman_install ncmpcpp
 # spotify daemon (dependency for spotify-tui)
