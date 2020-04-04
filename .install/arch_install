@@ -588,6 +588,7 @@ systemctl_create syncthing
 # yay_install jellyfin
 # systemctl_enable jellyfin
 # nextcloud: your own dropbox at home :-)
+pacman_install nextcloud-client
 # pacman_install nextcloud
 # nginx: reverse proxy
 pacman_install nginx
