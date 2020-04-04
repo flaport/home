@@ -6,43 +6,7 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
-# imports
-import os
-import sys
-import time
-from subprocess import Popen, call, check_output, PIPE, CalledProcessError
-try:
-    import pyautogui
-except:
-    pyautogui = None
-with open(os.devnull, "w") as out:
-    has_xdotool = not call(["which", "xdotool"], stdout=out, stderr=out)
-
-# functions
-def dmenu(list_in, prompt=""):
-    time.sleep(0.1)
-    prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
-    try:
-        dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
-        choice = check_output(
-            ["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in
-        ).decode().strip()
-        return choice
-    except CalledProcessError:
-        return ""
-
-def notify(title, message=""):
-    if message:
-        check_output(["notify-send", title, message])
-    else:
-        check_output(["notify-send", title])
-
-def copy_to_clipboard(content):
-    xclip_in = Popen(["echo", "-n", content], stdout=PIPE).stdout
-    status = call(["xclip", "-selection", "primary"], stdin=xclip_in)
-    xclip_in = Popen(["echo", "-n", content], stdout=PIPE).stdout
-    status = call(["xclip", "-selection", "clipboard"], stdin=xclip_in)
-    return status
+from python_dmenu_lib import *
 
 def get_emojis(filename="~/.scripts/dmenu/emoji.txt"):
     filename = os.path.abspath(os.path.expanduser(filename))
@@ -52,63 +16,10 @@ def get_emojis(filename="~/.scripts/dmenu/emoji.txt"):
             line = line.split(";")[0].split(" ")
             emoji = line[0].strip()
             name = " ".join(line[1:]).strip()
-            name = f"{name} ({emoji})"
+            name = f"{name} {emoji}"
             emojis[name] = emoji
     return emojis
 
-def get_current_window_name_and_position():
-    if not has_xdotool:
-        return "", 0, 0
-    window_id = check_output(["xdotool", "getactivewindow"]).strip().decode()
-    name = check_output(["xdotool", "getwindowname", window_id]).strip().decode()
-    geometry = check_output(["xdotool", "getwindowgeometry", window_id]).strip().decode()
-    x, y = geometry.split("Position: ")[1].split(" ")[0].split(",")
-    return name, x, y
-
-def move_mouse(x, y):
-    if pyautogui is not None:
-        pyautogui.keyUp("apps")
-    if not has_xdotool:
-        return 1
-    return call(["xdotool", "mousemove", x, y])
-
-def middle_click():
-    if not has_xdotool:
-        return 1
-    return call(["xdotool", "click", "2"])
-
-def paste_emoji(emoji):
-    if windowname in {"st", "xterm", "urxvt"}:
-        if not has_xdotool:
-            notify(f"'{emoji}' copied to clipboard.")
-            exit(0)
-        middle_click()
-    elif pyautogui is not None:
-        middle_click()
-        pyautogui.press("apps")
-        pyautogui.hotkey("ctrl", "v")
-    elif has_xdotool:
-        middle_click()
-    else:
-        notify(f"'{emoji}' copied to clipboard.")
-
-# program
 if __name__ == "__main__":
-    emojis = get_emojis()
-    windowname, x, y = get_current_window_name_and_position()
-    if len(sys.argv) == 1: # no arguments
-        name = dmenu(emojis.keys(), "")
-    else:
-        related_name = " ".join(sys.argv[1:]).strip()
-        for name in emojis.keys():
-            if related_name in name:
-                break
-        else:
-            exit(1)
-    emoji = emojis.get(name, "")
-    if emoji:
-        status = copy_to_clipboard(emoji)
-        move_mouse(x, y)
-        paste_emoji(emoji)
-
+    exit(main(get_emojis))
 

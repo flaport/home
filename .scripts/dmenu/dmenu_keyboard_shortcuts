@@ -27,10 +27,9 @@ def notify(title, message=""):
 try:
     import pyautogui
 except:
-    notify("pyautogui is not installed", "some selected keyboard combinations might not work")
+    notify("pyautogui is not available", "some selected keyboard combinations might not work")
     pyautogui = None
 
-max_key_length = 0
 
 
 def dmenu(list_in, prompt=""):
@@ -109,6 +108,7 @@ class Shortcut:
 
 
 if __name__ == "__main__":
+    max_key_length = 0
     with open(os.path.expanduser(f"~/.config/sxhkd/sxhkdrc")) as file:
         lines = file.read().splitlines()
 
