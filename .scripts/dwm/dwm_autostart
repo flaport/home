@@ -80,20 +80,27 @@ while true; do
     if [[ $battery = *Discharging* && $percentage -lt 5 ]]; then
         notify-send --urgency=CRITICAL "battery low" "   $percentage%" &
     fi
-    sleep 550s
+    sleep 590s
 done &
 
 # update weather report every hour
 while true; do
     sleep 10s
     update_weather &> /dev/null &
-    sleep 3550s
+    sleep 3590s
+done &
+
+# update email inbox every half hour
+while true; do
+    sleep 10s
+    mbsync --all &> /dev/null &
+    sleep 1790s
 done &
 
 # sync joplin notes every hour
 while true; do
     sleep 10s
     joplin-sync &> /dev/null &
-    sleep 3550s
+    sleep 3590s
 done &
 
