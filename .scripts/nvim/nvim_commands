@@ -1,13 +1,26 @@
 #!/usr/bin/env bash
 # leader=$(grep "mapleader" $HOME/.config/nvim/init.vim | sed 's|.*=\ *\(.*\)\ *|\1|g' | sed 's/"//g' | sed s/\'//g )
-cmd=$(cat $HOME/.config/nvim/init.vim $HOME/.config/nvim/plugins.vim \
-  | grep nnoremap | grep : \
-  | grep -v mapleader | grep -v autocmd | grep -v "; :"\
+
+# this script should be called from within nvim *after* executing the vim command:
+# :redir! > /tmp/nvim_map | silent map | redir END
+
+# nvim -c "redir! > /tmp/nvim_map.txt | silent map | redir END | quit"
+
+if [ ! -f /tmp/nvim_map ]; then
+    printf ":"
+    exit 1
+fi
+
+cmd=$(\
+cat /tmp/nvim_map \
+  | grep : \
+  | sed 's/<Plug>//g' | sed 's/<Esc>//g' | sed 's/<C-U>//g' | sed 's/<SNR>//g' | sed 's/<CR>//g' \
   | sed '/^\ .*/d' | sed '/^".*/d' | sed '/^let.*/d' \
-  | sed 's/nnoremap//g' | sed 's/<Esc>//g' | sed 's/<CR>//g' \
   | sort \
   | dmenu \
-  | sed 's/^.*:\([^<]*\).*$/\1/g')
+  | sed 's/^.*:\([^<]*\).*$/\1/g' | sed 's/\#/\\\#/g' \
+)
 exit_code=$?
 printf "$cmd"
 exit $exit_code
+

@@ -227,8 +227,15 @@ tnoremap `<Esc> <C-\><C-n>
 " <C-a> " standard vim keybinding
 
 " exit current buffer without saving
-inoremap <C-c> <Esc>:bd!<CR>
-nnoremap <C-c> <Esc>:bd!<CR>
+function! CloseBuffer()
+    if bufname('%') != ''
+        exec "bd!"
+    else
+        exec "qa!"
+    endif
+endfunction
+inoremap <C-c> <Esc>:call CloseBuffer()<CR>
+nnoremap <C-c> <Esc>:call CloseBuffer()<CR>
 
 " down half screen
 " <C-d> " standard vim keybinding
@@ -409,7 +416,7 @@ function! ChooseCommandFunc()
     let str = system("nvim_commands")
     exec str
 endfunc
-nnoremap <leader><F1> :call ChooseCommandFunc()<CR>
+nnoremap <leader><F1> :redir! > /tmp/nvim_map \| silent nnoremap \| redir END<CR>:call ChooseCommandFunc()<CR>
 
 function! ClipboardImageFunc(...)
     let str = a:0 >= 1 ? a:1 : ""
