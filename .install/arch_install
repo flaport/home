@@ -781,7 +781,9 @@ submodule_install legacyfox
 # chromium
 # pacman_install chromium
 # yay_install ungoogled-chromium
-# qutebrowser
+# vimb: vim-like browser
+pacman_install vimb
+# qutebrowser: another vim-like browser
 # pacman_install qutebrowser
 # surf
 # pacman_install webkit2gtk # surf build dependency
