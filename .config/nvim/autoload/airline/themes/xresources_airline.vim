@@ -60,15 +60,3 @@ let s:IA2   = [ s:gui05, s:gui00, s:cterm05, s:cterm00 ]
 let s:IA3   = [ s:gui05, s:gui00, s:cterm00, s:cterm04 ]
 let g:airline#themes#xresources_airline#palette.inactive = airline#themes#generate_color_map(s:IA1, s:IA2, s:IA3)
 
-" Here we define the color map for ctrlp.  We check for the g:loaded_ctrlp
-" variable so that related functionality is loaded iff the user is using
-" ctrlp. Note that this is optional, and if you do not define ctrlp colors
-" they will be chosen automatically from the existing palette.
-if !get(g:, 'loaded_ctrlp', 0)
-  finish
-endif
-let g:airline#themes#xresources_airline#palette.ctrlp = airline#extensions#ctrlp#generate_color_map(
-      \ [ s:gui15, s:gui02, s:cterm15, s:cterm02, '' ],
-      \ [ s:gui15, s:gui04, s:cterm15, s:cterm04, '' ],
-      \ [ s:gui05, s:gui00, s:cterm05, s:cterm00, 'bold' ])
-

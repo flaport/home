@@ -36,7 +36,7 @@ Plug 'christoomey/vim-tmux-navigator' " tmux navigation
 Plug 'davidhalter/jedi-vim' " python go-to-definition [autocompletion disabled]
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
 Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
-Plug 'kien/ctrlp.vim' " alternative fuzzy file finder
+Plug 'ctrlpvim/ctrlp.vim' " alternative fuzzy file finder
 Plug 'kshenoy/vim-signature' " show marks in margin
 Plug 'lilydjwg/colorizer' " paint css colors with the real color
 Plug 'mbbill/undotree' " undo tree for vim
@@ -110,8 +110,8 @@ nnoremap <leader>e :Files<CR>
 nnoremap <leader>t :Tag<CR>
 
 " kien/ctrlp.vim ---------------------------------
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-let g:ctrlp_use_caching = 0
+" let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+" let g:ctrlp_use_caching = 0
 
 " kshenoy/vim-signature --------------------------
 " add a way to disable this for less wide margins
