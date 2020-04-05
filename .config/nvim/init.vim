@@ -38,6 +38,9 @@ set wildmenu
 " use newline characters instead of cariage return
 set ff=unix
 
+" tell vim where to find the ctags
+set tags=./.tags;,.tags;
+
 " underline current line if in insert mode
 autocmd InsertEnter * set cul
 
@@ -52,10 +55,15 @@ function! DoOnSave()
     normal `m
     normal mm
 endfunction
-autocmd BufWritePre * call DoOnSave()
+autocmd BufWritePre * :call DoOnSave()
 
 " save on focus lost
-" au FocusLost * :wa
+function! MaybeSave()
+    if bufname('%') != ''
+        exec "wa"
+    endif
+endfunction
+au FocusLost * :silent call MaybeSave()
 
 " enable syntax highlighting
 syntax enable
@@ -444,15 +452,18 @@ endfunction
 autocmd FileType tex nmap <leader>s :call SyncTex()<CR>
 "FYI: Ctrl-Click  --> latex synctex zathura pdf->tex
 
+"<leader>s: sort (visual mode)
+vnoremap <leader>s :!sort<CR>
+
 " fuzzy find in tags
-" <leader>t :Tag<CR>
+nnoremap <leader>tf :Tag<CR>
 
-" make tags (may need to install ctags first)
-nnoremap <leader>T :!ctags -R .<CR>
+" create tags
+nnoremap <leader>tt !ctags -f .tags -R .
 
-" swap splits. Note that this only works when NOT in the main split.
-" from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946
-function! Zoom()
+" Move currently active buffer to the 'main' split.
+" adapted from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946
+function! MoveToMainSplit()
     let g:markedWinNum = 1
     "Mark destination
     let curNum = winnr()
@@ -468,7 +479,7 @@ function! Zoom()
     exe 'hide buf' markedBuf
 endfunction
 " zoom split and go to main split (should eventually get rid of this hacky line...):
-nnoremap <leader>z :call Zoom()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
+nnoremap <leader>z :call MoveToMainSplit()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
 
 
 "" Function key keyboard shortcuts

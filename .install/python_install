@@ -111,12 +111,11 @@ $PIP install bayesian-optimization >> $LOG 2>> $ERR # optimization of hyperparam
 echo "installing pygmo for environment: base"
 $PIP install pygmo >> $LOG 2>> $ERR # optimization of multi-variable functions
 
-echo "installing smdv for environment: base"
-$PIP install smdv >> $LOG 2>> $ERR # simple markdown viewer
+echo "installing pynvim for environment: base"
+$PIP install pynvim >> $LOG 2>> $ERR # neovim python support
 
-echo "installing neovim support for environment: base"
-$PIP install neovim >> $LOG 2>> $ERR
-$NPM install -g neovim >> $LOG 2>> $ERR
+echo "installing neovim-remote for environment: base"
+$PIP install neovim-remote >> $LOG 2>> $ERR # neovim remote support
 
 echo "installing linters and formatters for environment: base"
 $PIP install pep8 >> $LOG 2>> $ERR
@@ -156,9 +155,6 @@ $CONDA install -y -S pandoc pylint pydocstyle mypy line_profiler ipywidgets tqdm
 echo "installing altair for environment: py2"
 $CONDA install -y -S -n py2 -c conda-forge altair vega >> $LOG 2>> $ERR
 
-echo "installing neovim support for environment: py2"
-$PIP install neovim >> $LOG 2>> $ERR
-
 echo "installing linters and formatters for environment: py2"
 $PIP install pep8 >> $LOG 2>> $ERR
 $PIP install flake8 >> $LOG 2>> $ERR
@@ -166,6 +162,9 @@ $PIP install pyflakes >> $LOG 2>> $ERR
 $PIP install isort >> $LOG 2>> $ERR
 $PIP install yapf >> $LOG 2>> $ERR
 $PIP install black >> $LOG 2>> $ERR
+
+echo "installing pynvim for environment: py2"
+$PIP install pynvim >> $LOG 2>> $ERR # neovim python support
 
 
 ## R environment
@@ -183,6 +182,9 @@ home=$(echo $HOME | sed 's/\//\\\//g')
 sed "0,/R/{s/R/$home\/.anaconda\/envs\/r\/bin\/R/}" $HOME/.anaconda/share/jupyter/kernels/ir/kernel.json > $HOME/.anaconda/share/jupyter/kernels/ir/kernel2.json
 mv $HOME/.anaconda/share/jupyter/kernels/ir/kernel2.json $HOME/.anaconda/share/jupyter/kernels/ir/kernel.json
 
+echo "installing pynvim for environment: r"
+$PIP install pynvim >> $LOG 2>> $ERR # neovim python support
+
 
 ## Julia environment
 #-------------------------------------------------------------------------------
@@ -198,6 +200,8 @@ echo "installing ipykernel for environment: [julia]"
 $HOME/.anaconda/envs/julia/bin/julia -E 'using IJulia; installkernel("Julia")' >> $LOG 2>> $ERR
 mv $HOME/.local/share/jupyter/kernels/julia* $HOME/.anaconda/share/jupyter/kernels/
 
+echo "installing pynvim for environment: julia"
+$PIP install pynvim >> $LOG 2>> $ERR # neovim python support
 
 ## Fixes
 #-------------------------------------------------------------------------------

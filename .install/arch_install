@@ -202,16 +202,6 @@ pip3_install() {
     echo_success $?
 }
 
-pip3_user_install() {
-    printf "pip3 install $1... "
-    printf "\n\n\npip3 install $1\n" >> $LOG
-    printf "\n\n\npip3 install $1\n" >> $ERR
-    printf "sudo /usr/bin/python3 -m pip install $1\n" >> $LOG
-    printf "sudo /usr/bin/python3 -m pip install $1\n" >> $ERR
-    echo $password | sudo -S -u $USER /usr/bin/python3 -m pip install --user --upgrade $1 >> $LOG 2>> $ERR
-    echo_success $?
-}
-
 pip2_install() {
     printf "pip2 install $1... "
     printf "\n\n\npip2 install $1\n" >> $LOG
@@ -256,6 +246,9 @@ link() {
     printf "\n\n\nlink $1 to $2\n" >> $ERR
     printf "sudo ln -sf $1 $2\n" >> $LOG
     printf "sudo ln -sf $1 $2\n" >> $ERR
+    if [ -f "$2" ]; then
+        echo $password | sudo -S mv $2 $2.bak  >> $LOG 2>> $ERR
+    fi
     echo $password | sudo -S ln -sf $1 $2  >> $LOG 2>> $ERR
     echo_success $?
 }
@@ -276,6 +269,8 @@ git_install https://aur.archlinux.org/yay.git
 ## Terminal
 # search tool
 pacman_install grep
+# alternative search tool
+pacman_install ripgrep
 # alternative search tool
 # pacman_install ack
 # fuzzy finder tool
@@ -353,11 +348,14 @@ pacman_install lsd
 # yay_install conky-lua-nv
 # vim / neovim: terminal text editor
 pacman_install neovim
-link /usr/bin/nvim /usr/bin/vim
 pacman_install npm
 echo $password | sudo -S npm -g install instant-markdown-d >> $LOG 2>> $ERR
 # ctags: recommended vim dependency for jump-to-tag functionality
 pacman_install ctags
+# install YouCompleteMe package from AUR to make it work:
+yay_install vim-youcompleteme-git
+# force nvim to open when vim is typed
+link /usr/bin/nvim /usr/bin/vim
 # scim: terminal spreadsheet viewer/editor
 # yay_install sc-im
 # wordgrinder: terminal word processor
@@ -874,7 +872,6 @@ pacman_install python-httplib2
 # sockets
 # pacman_install python-websockets
 # neovim integration (install for user as it should be available in any environment)
-pip3_install neovim
 pip3_install pynvim
 pip3_install neovim-remote
 # image previews in terminal
