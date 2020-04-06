@@ -35,24 +35,6 @@ bindkey -v '^?' backward-delete-char
 bindkey -v
 export KEYTIMEOUT=1
 
-# change cursor shape for different vi modes.  = NORMAL; _ = insert
-NORMAL='\e[1 q\e\\' # █
-INSERT='\e[4 q\e\\' # _   - INSERT='\e[5 q\e\\' # |
-function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
-    echo -ne $NORMAL
-  elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
-    echo -ne $INSERT
-  fi
-}
-zle -N zle-keymap-select
-zle-line-init() {
-    echo -ne $INSERT
-}
-zle -N zle-line-init
-echo -ne $INSERT # at startup.
-preexec() { echo -ne $INSERT ;} # at new prompt.
-
 # colored man pages:
 man() {
     LESS_TERMCAP_md=$'\e[01;31m' \
@@ -72,8 +54,35 @@ bindkey "^y" "" # noop
 # colored zsh prompt
 setopt prompt_subst
 
-# PROMPT THEME
+# zsh theme
+SPACESHIP_CHAR_SYMBOL=" "
 sourcefile $HOME/.config/zsh/themes/spaceship.zsh
+
+# change cursor shape for different vi modes. █ = NORMAL; _ = insert
+NORMAL='\e[1 q\e\\' # █
+INSERT='\e[4 q\e\\' # _   - INSERT='\e[5 q\e\\' # |
+SPACESHIP_CHAR_SYMBOL_NORMAL=" "
+SPACESHIP_CHAR_SYMBOL_INSERT=$SPACESHIP_CHAR_SYMBOL
+# in neovim, don't change cursor shape as that doesn't work anyhow :(
+[ -z $NVIM_LISTEN_ADDRESS ] || INSERT=$NORMAL
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+    echo -ne $NORMAL
+    SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_NORMAL
+  elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
+    echo -ne $INSERT
+    SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
+  fi
+  zle reset-prompt
+}
+function zle-line-init() {
+  echo -ne $INSERT
+  zle reset-prompt
+}
+zle -N zle-keymap-select
+zle -N zle-line-init
+echo -ne $INSERT # at startup.
+preexec() { echo -ne $INSERT ;} # at new prompt.
 
 ## Aliases
 #-------------------------------------------------------------------------------
