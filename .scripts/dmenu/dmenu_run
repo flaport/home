@@ -14,29 +14,50 @@ import os
 import sys
 from subprocess import call, check_output, Popen, PIPE, CalledProcessError
 
+
 # constants
 TERMINAL = os.environ.get("TERMINAL")
 BROWSER = os.environ.get("BROWSER")
 OPEN_IN_TERMINAL=["vifm", "vim"]
-DMENU_PATH = check_output(["dmenu_path"]).decode().splitlines()[4:]
+DMENU_PATH = check_output(["dmenu_path"]).decode().splitlines()
 DMENU_HISTORY_PATH = os.path.expanduser("~/.scripts/dmenu/dmenu_run.history")
 DESKTOP_FILE_PATHS = [
     "~/.local/share/applications/",
     "/usr/share/applications/",
 ]
+CURRENT_DIRECTORY=check_output(["find", ".", "-maxdepth", "2"]).decode().splitlines()
 
 # functions
+def get_selection():
+    try:
+        return check_output(["xclip", "-o"]).decode().replace("\n"," ")
+    except CalledProcessError:
+        return ""
+
+def get_clipboard():
+    try:
+        return check_output(["xclip", "-selection", "clipboard", "-o"]).decode().replace("\n"," ")
+    except CalledProcessError:
+        return ""
 def dmenu(list_in, prompt=""):
     dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
     prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
     try:
         choice = check_output(
             ["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in
-        ).decode()[:-1]
-        return choice
+        ).decode().replace("\n", " ")
     except CalledProcessError:
-        pass
-    return ""
+        choice = ""
+    if "*" in choice:
+        choice = choice.replace(" * ", f" {get_selection()} ")
+    if "+" in choice:
+        choice = choice.replace(" + ", f" {get_clipboard()} ")
+    choice = choice.replace("\n", "").replace("\t", "")
+    while "  " in choice:
+        choice = choice.replace("  "," ")
+    while choice.endswith(" "):
+        choice = choice[:-1]
+    return choice
 
 def open_desktop_file(args):
     desktop_filename = args[0][:-1]
@@ -75,6 +96,7 @@ if __name__ == "__main__":
             + [BROWSER]
             + DMENU_PATH
             + DESKTOP_FILES
+            + CURRENT_DIRECTORY
             + ["[clear history]"]
     )})
 
@@ -83,27 +105,31 @@ if __name__ == "__main__":
     if not choice:
         exit(0)
 
-    if choice == "[clear history]":
+    choice = choice.split(" ")
+    if " ".join(choice) == "[clear history]":
         os.remove(DMENU_HISTORY_PATH)
-    elif choice.split(" ")[0] in OPEN_IN_TERMINAL:
-        Popen([TERMINAL, "-e", choice])
-    elif choice.split(" ")[0] in DESKTOP_FILES:
-        open_desktop_file(choice.split(" "))
+    elif choice[0] in OPEN_IN_TERMINAL:
+        Popen([TERMINAL, "-e"] + choice)
+    elif choice[0] in DESKTOP_FILES:
+        open_desktop_file(choice)
     else:
         try:
-            Popen(choice.split(" "))
-        except FileNotFoundError:
-            if "http://" in choice or "https://" in choice or len(choice.split(".")) in (2,3):
-                Popen([BROWSER, choice])
+            Popen(choice)
+        except (FileNotFoundError, PermissionError):
+            if any(choice[0].startswith(prefix) for prefix in ("http://", "https://", "file:///")):
+                Popen([BROWSER, "%20".join(choice)])
+            elif os.path.isdir(" ".join(choice)):
+                directory = " ".join(choice)
+                os.chdir(directory)
+                Popen([TERMINAL])
+            elif os.path.exists(" ".join(choice)):
+                Popen(["xdg-open", f"{' '.join(choice)}"])
             else:
-                if os.path.exists(os.path.expanduser("~/.scripts/search")):
-                    Popen([os.path.expanduser("~/.scripts/search")] +  choice.split(" ") + ["--dmenuargs"] + sys.argv[2:] + ["-l", "25"])
-                else:
-                    duckduckgo_query = "https://duckduckgo.com/?q=" + choice.replace(" ", "+")
-                    Popen([BROWSER, duckduckgo_query])
-                    exit(1) # command given does not exist, it's also not a valid url
+                duckduckgo_query = f"https://duckduckgo.com/?q={'+'.join(choice)}"
+                Popen([BROWSER, duckduckgo_query])
+                exit(1) # command given does not exist, it's also not a valid url
 
     with open(DMENU_HISTORY_PATH, "a") as file:
         if choice != "[clear history]":
-            file.write(choice+"\n")
+            file.write(f"{' '.join(choice)}\n")
 
