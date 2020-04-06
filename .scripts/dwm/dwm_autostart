@@ -90,11 +90,12 @@ while true; do
     sleep 3590s
 done &
 
-# update email inbox every half hour
+# update email inbox every 10 minutes (but only if gpg password is cached)
 while true; do
     sleep 10s
+    export PASSWORD_STORE_GPG_OPTS="--pinentry-mode error"
     mbsync --all &> /dev/null &
-    sleep 1790s
+    sleep 590s
 done &
 
 # sync joplin notes every hour
