@@ -1,9 +1,9 @@
 # SSH folder
 
-For security reasons, i won't push the hosts, nor the public keys to the `arch_home` repo.
+For security reasons, I won't push my hosts, nor my keys to the `arch_home` repo.
 
 ## Hosts
-Hosts can easily be configured in `~/.ssh/config` as follows:
+Hosts can be easily configured in `~/.ssh/config` as follows:
 ```
     Host <name>
     Hostname <ip-address>
