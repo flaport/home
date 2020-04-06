@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# simple backup script for my git repositories
+
+update(){
+    uri=$1
+    [ -z $uri ] && return
+    [ ! -z $2 ] && echo wrong format for \"$@\": skipped && return
+    echo updating $uri...
+    dir=$(echo $uri | sed 's|.*://||g' | sed 's|/|-|g' | sed 's|.*@||g')
+    echo $dir
+    return
+    cd $dir 2> /dev/null
+    if [ $? -eq 0 ]; then
+        git pull --recurse-submodules >/dev/null 2> /dev/null
+        cd ..
+    else
+        git clone --recurse-submodules $uri $dir >/dev/null 2> /dev/null
+    fi
+    echo
+}
+
+mirrorlist=$1
+[ -z $mirrorlist ] && echo "no mirrorlist given" && exit 1
+[ ! -z $2 ] && echo "too many arguments" && exit 1
+while read uri; do
+    update "$uri"
+done < $mirrorlist
