@@ -26,6 +26,7 @@ DESKTOP_FILE_PATHS = [
     "/usr/share/applications/",
 ]
 CURRENT_DIRECTORY=check_output(["find", ".", "-maxdepth", "2"]).decode().splitlines()
+CLEAR_HISTORY=False
 
 # functions
 def get_selection():
@@ -107,7 +108,7 @@ if __name__ == "__main__":
 
     choice = choice.split(" ")
     if " ".join(choice) == "[clear history]":
-        os.remove(DMENU_HISTORY_PATH)
+        CLEAR_HISTORY=True
     elif choice[0] in OPEN_IN_TERMINAL:
         Popen([TERMINAL, "-e"] + choice)
     elif choice[0] in DESKTOP_FILES:
@@ -130,6 +131,7 @@ if __name__ == "__main__":
                 exit(1) # command given does not exist, it's also not a valid url
 
     with open(DMENU_HISTORY_PATH, "a") as file:
-        if choice != "[clear history]":
-            file.write(f"{' '.join(choice)}\n")
+        file.write(f"{' '.join(choice)}\n")
 
+    if CLEAR_HISTORY:
+        os.remove(DMENU_HISTORY_PATH)
