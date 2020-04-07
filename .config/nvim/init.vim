@@ -459,7 +459,7 @@ vnoremap <leader>s :!sort<CR>
 nnoremap <leader>tf :Tag<CR>
 
 " create tags
-nnoremap <leader>tt !ctags -f .tags -R .
+nnoremap <leader>tt :silent !ctags -f .tags -R .<CR>
 
 " Move currently active buffer to the 'main' split.
 " adapted from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946
