@@ -55,34 +55,41 @@ bindkey "^y" "" # noop
 setopt prompt_subst
 
 # zsh theme
-SPACESHIP_CHAR_SYMBOL=" "
 sourcefile $HOME/.config/zsh/themes/spaceship.zsh
 
-# change cursor shape for different vi modes. █ = NORMAL; _ = insert
+# change prompt and change cursor shape for different vi modes.
+# cursor shape: normal: "█"; insert: "_"
+# prompt: normal: ""; insert: ""
 NORMAL='\e[1 q\e\\' # █
 INSERT='\e[4 q\e\\' # _   - INSERT='\e[5 q\e\\' # |
 SPACESHIP_CHAR_SYMBOL_NORMAL=" "
-SPACESHIP_CHAR_SYMBOL_INSERT=$SPACESHIP_CHAR_SYMBOL
+SPACESHIP_CHAR_SYMBOL_INSERT=" "
 # in neovim, don't change cursor shape as that doesn't work anyhow :(
 [ -z $NVIM_LISTEN_ADDRESS ] || INSERT=$NORMAL
-function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
-    echo -ne $NORMAL
-    SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_NORMAL
-  elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
+# initialize at startup:
+echo -ne $INSERT
+SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
+function zle-keymap-select { # gets run every time the mode changes
+    if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+        echo -ne $NORMAL
+        SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_NORMAL
+    elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
+        echo -ne $INSERT
+        SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
+    fi
+    zle reset-prompt
+}
+function zle-line-init() { # gets run every new line
     echo -ne $INSERT
     SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
-  fi
-  zle reset-prompt
+    zle reset-prompt
 }
-function zle-line-init() {
-  echo -ne $INSERT
-  zle reset-prompt
+function preexec() { # gets run at new prompt.
+    echo -ne $INSERT
+    SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
 }
 zle -N zle-keymap-select
 zle -N zle-line-init
-echo -ne $INSERT # at startup.
-preexec() { echo -ne $INSERT ;} # at new prompt.
 
 ## Aliases
 #-------------------------------------------------------------------------------
