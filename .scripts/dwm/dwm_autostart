@@ -33,10 +33,7 @@ else
 fi
 
 # update xrdb database
-[ -f ~/.Xresources ] && start xrdb ~/.Xresources
-
-# start nextcloud client
-start nextcloud
+[ -f ~/.Xresources ] && xrdb ~/.Xresources
 
 # export your desired screenlayout with `arandr`
 start default_screenlayout
