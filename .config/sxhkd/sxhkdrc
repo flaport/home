@@ -185,11 +185,11 @@ super + V
 
 # start default browser
 super + w
-    $BROWSER
+    /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox
 
 # search the web
 super + W
-    chromium
+    /usr/bin/taskset --cpu-list 2 /usr/bin/chromium
 
 # shift focus to monitor X
 super + x

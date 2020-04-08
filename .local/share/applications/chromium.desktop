@@ -1,0 +1,25 @@
+[Desktop Entry]
+Version=1.0
+Name=Chromium
+GenericName=Web Browser
+Comment=Access the Internet
+Exec=/usr/bin/taskset --cpu-list 2 /usr/bin/chromium %U
+StartupNotify=true
+Terminal=false
+Icon=chromium
+Type=Application
+Categories=Network;WebBrowser;
+MimeType=application/pdf;application/rdf+xml;application/rss+xml;application/xhtml+xml;application/xhtml_xml;application/xml;image/gif;image/jpeg;image/png;image/webp;text/html;text/xml;x-scheme-handler/ftp;x-scheme-handler/http;x-scheme-handler/https;
+Actions=new-window;new-private-window;new-app-window;
+
+[Desktop Action new-window]
+Name=New Window
+Exec=/usr/bin/taskset --cpu-list 2 /usr/bin/chromium %U
+
+[Desktop Action new-private-window]
+Name=New Incognito Window
+Exec=/usr/bin/taskset --cpu-list 2 /usr/bin/chromium --incognito %U
+
+[Desktop Action new-app-window]
+Name=New App Window
+Exec=/usr/bin/taskset --cpu-list 2 /usr/bin/chromium --app=%U
