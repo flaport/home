@@ -14,22 +14,22 @@ if [ ! -z "$passlines" ]; then
     fi
 fi
 
-notify-send "syncing emails..."
+[ -d $HOME/.local/share/email ] || >&2 echo "email directory '$HOME/.local/share/email' does not exist" && exit 1
+
 echo "syncing emails..."
 num_unread1=$(find $HOME/.local/share/email/*/INBOX/new/ -type f | wc -l 2> /dev/null)
-num_unread2=$num_unread1
 mbsync --all &> /dev/null
-exit_code=$?
-[ $exit_code -eq 0 ] && notmuch new &> /dev/null && num_unread2=$(find $HOME/.local/share/email/*/INBOX/new/ -type f | wc -l 2> /dev/null)
+notmuch new  &> /dev/null
+num_unread2=$(find $HOME/.local/share/email/*/INBOX/new/ -type f | wc -l 2> /dev/null)
 
 new_mail=$(python -c "print($num_unread2-$num_unread1)")
-if [ "$new_mail" -eq 1 ]; then
+if [ "$new_mail" -eq 0 ]; then
+    echo "no new email."
+elif [ "$new_mail" -eq 1 ]; then
     notify-send "syncmail:" "$new_mail new unread email."
     echo "$new_mail new unread email."
-    exit $exit_code
 else
     notify-send "syncmail:" "$new_mail new unread emails."
     echo "$new_mail new unread emails."
-    exit $exit_code
 fi
-
+exit $exit_code
