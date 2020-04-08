@@ -32,9 +32,6 @@ else
     start picom
 fi
 
-# export your desired screenlayout with `arandr`
-start default_screenlayout
-
 # notifications
 start dunst
 
@@ -101,3 +98,5 @@ while true; do
     sleep 3590s
 done &
 
+# export your desired screenlayout with `arandr`
+sleep 1 && default_screenlayout &
