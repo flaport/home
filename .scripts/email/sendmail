@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+neomutt -s ""
+exit_code=$?
+if [ $exit_code -eq 0 ]; then
+    notify-send "email sent."
+    echo email sent.
+else
+    notify-send "sending email failed."
+    echo sending email failed.
+fi
+exit $exit_code

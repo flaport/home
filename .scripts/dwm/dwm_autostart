@@ -32,9 +32,6 @@ else
     start picom
 fi
 
-# update xrdb database
-[ -f ~/.Xresources ] && xrdb ~/.Xresources
-
 # export your desired screenlayout with `arandr`
 start default_screenlayout
 
@@ -55,11 +52,21 @@ start conky -c $HOME/.config/conky/conky.conf -x 60
 start conky -c $HOME/.config/conky/conky.conf -x -1860
 start conky -c $HOME/.config/conky/conky.conf -x -3780
 
+# update xrdb database
+start xrdb ~/.Xresources
+
 # set cursor speed
 # wrapped into loop, as sometimes this inexplicably stops working
 while true; do
     xset r rate 200 45 &
     sleep 60
+done &
+
+# update email inbox every 10 minutes (but only ask once for the password.)
+while true; do
+    syncmail &> /dev/null &
+    export PASSWORD_STORE_GPG_OPTS="--pinentry-mode error"
+    sleep 600s
 done &
 
 # update dwm status bar every 10 seconds
@@ -85,14 +92,6 @@ while true; do
     sleep 10s
     update_weather &> /dev/null &
     sleep 3590s
-done &
-
-# update email inbox every 10 minutes (but only if gpg password is cached)
-while true; do
-    sleep 10s
-    export PASSWORD_STORE_GPG_OPTS="--pinentry-mode error"
-    mbsync --all &> /dev/null &
-    sleep 590s
 done &
 
 # sync joplin notes every hour

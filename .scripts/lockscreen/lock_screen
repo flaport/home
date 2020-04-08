@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-#    _____ _     ____  ____  ____  ____  _____ 
+#    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
-#   |  __\| |   | / \||  \/|| / \||  \/|  / \  
-#   | |   | |_/\| |-|||  __/| \_/||    /  | |  
-#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/  
-#
-xset dpms force off # turns off backlight
-i3lock --color 444444 --ignore-empty-password --show-failed-attempts
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+
+kill -SIGHUP $(pidof gpg-agent) # flush all cached gpg-key passwords.
+sleep 5 && xset dpms force off & # turn off backlight
+i3lock --color 444444 --ignore-empty-password --show-failed-attempts --nofork
+syncmail # ask for gpg-key password again (and then synchronize emails)

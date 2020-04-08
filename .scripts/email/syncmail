@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+passlines=$(grep PassCmd $HOME/.mbsyncrc)
+if [ ! -z "$passlines" ]; then
+    passline=$(printf "$passlines" | head -1)
+    passcmd=$(echo $passline | sed 's/.*"\(.*\).*"/\1/g')
+    [ -z "$passcmd" ] && passcmd=$(echo $passline | sed "s/.*\'\(.*\).*\'/\1/g")
+    $passcmd > /dev/null
+    exit_code=$?
+    if [ $exit_code -ne 0 ]; then
+        notify-send "syncmail failed!" "could not decrypt passwords."
+        >&2 echo "syncmail failed!"
+        >&2 echo "could not decrypt passwords."
+        exit $exit_code
+    fi
+fi
+
+notify-send "syncing emails..."
+echo "syncing emails..."
+num_unread1=$(find $HOME/.local/share/email/*/INBOX/new/ -type f | wc -l 2> /dev/null)
+num_unread2=$num_unread1
+mbsync --all &> /dev/null
+exit_code=$?
+[ $exit_code -eq 0 ] && notmuch new &> /dev/null && num_unread2=$(find $HOME/.local/share/email/*/INBOX/new/ -type f | wc -l 2> /dev/null)
+
+new_mail=$(python -c "print($num_unread2-$num_unread1)")
+if [ "$new_mail" -eq 1 ]; then
+    notify-send "syncmail:" "$new_mail new unread email."
+    echo "$new_mail new unread email."
+    exit $exit_code
+else
+    notify-send "syncmail:" "$new_mail new unread emails."
+    echo "$new_mail new unread emails."
+    exit $exit_code
+fi
+

@@ -58,7 +58,7 @@ status(){
 
 # define the list of active widgets here (widgets defined below)
 set-status(){
-    status serv hub sync jelly cups sshd ssht vpn ocn bt pcmn alpha vol brt bat wtr dte tme
+    status serv hub sync jelly cups sshd ssht vpn ocn gpg bt pcmn mail alpha vol brt bat wtr dte tme
     #status cups vpn alpha vol brt bat wtr dte tme
 }
 
@@ -225,6 +225,21 @@ dte1(){ # mouse-button 1 action for date widget
 
 # -----------
 
+gpg(){ # cached gpg keys
+    gpg-connect-agent 'keyinfo --list' /bye | grep "1 P" &> /dev/null
+    [ $? -eq 0 ] && echo -e 
+}
+gpg1(){ # mouse-button 1 to display cached keys
+    key=$(gpg-connect-agent 'keyinfo --list' /bye | grep "1 P" | sed 's/.*KEYINFO\ *\([^\ !]*\).*/\1/g')
+    notify-send "passwords cached for these gpg keys:" "$key\n\n[middle click to empty cache]"
+}
+gpg2(){ # mouse-button 2 to empty gpg password cache
+    kill -SIGHUP $(pidof gpg-agent) && sleep 1 && dwm_status
+}
+
+
+# -----------
+
 hub(){ # jupyterhub status
     systemctl is-active jupyterhub &> /dev/null && echo -e   #🪐
 }
@@ -245,6 +260,31 @@ jelly1(){ # mouse-button 1 action for jupyterhub widget
 }
 jelly2(){
     toggleservice jellyfin
+}
+
+# -----------
+
+mail(){ # number of unread emails
+    [ -f $HOME/.msmtprc ] || return
+    gpg-connect-agent 'keyinfo --list' /bye | grep "1 P" &> /dev/null
+    if [ $? -eq 0 ]; then
+        num_unread=$(find $HOME/.local/share/email/*/INBOX/new/ -type f | wc -l 2> /dev/null)
+        echo -e " $num_unread"
+    else
+        echo -e " "
+    fi
+}
+mail1(){ # give more email info
+    num_unread=$(find $HOME/.local/share/email/*/INBOX/new/ -type f | wc -l 2> /dev/null)
+    gpg-connect-agent 'keyinfo --list' /bye | grep "1 P" &> /dev/null
+    if [ $? -eq 0 ]; then
+        notify-send "$num_unread unread emails" "\nmiddle click to sync now."
+    else
+        notify-send "emails not syncing." "\nmiddle click to unlock gpg key and sync now\n\n($num_unread unread emails)"
+    fi
+}
+mail2(){ # start syncing emails
+    $HOME/.scripts/email/syncmail
 }
 
 # -----------
