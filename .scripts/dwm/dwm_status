@@ -35,7 +35,7 @@ widgets=(
     # memory # uses same icon as disk. Know which one is which.
     # cpu # shows cpu usage
     # disk # uses same icon as memory. Know which one is which.
-    # weather # reads from cache! Make sure you have it regularly update somewhere else.
+    weather # reads from cache! Make sure you have it regularly update somewhere else.
     calendar # shows the current date
     clock # shows a clock
     # localip # same info after clicking network icon
@@ -75,7 +75,6 @@ mkdir -p $HOME/.cache
 
 status(){
     s=""
-    delim=$(printf "\x$(printf %x 31)") # 31: invisible ascii character; 124: |
     i=0
     for func in "${widgets[@]}"
     do
@@ -85,11 +84,13 @@ status(){
                 $func$BUTTON &> /dev/null || exit 1
                 out=$($func)
             fi
-            s=$s" "$out$delim
+            s="$s $out#"
             i=$((i+1))
         fi
     done
-    s=$(echo $s | sed 's/[ ][ ]*/ /g')
+    delim=$(printf "\x$(printf %x 32)") # 32: standard space (make sure the asci code matches with the one in dwm config.h !)
+    unicodespace=" " # unicode space U+2000 (replace all normal spaces by this one bc normal space is reserved for separator)
+    s="$(echo $s | sed "s/[ ]/$unicodespace/g" | sed "s/\#/$delim/g" )"
     xsetroot -name "$s" &> /dev/null
     echo $s > $HOME/.cache/dwm_status 2> /dev/null
 }
@@ -141,11 +142,11 @@ battery(){ # battery
     [ -z $pct ] && return
     batstatus=$(cat /sys/class/power_supply/BAT*/status | head -1)
     if [ "$batstatus" = "Discharging" ] &> /dev/null; then
-        [ "$pct" -gt 90 ] && echo "  $pct%" && return
-        [ "$pct" -gt 60 ] && echo "  $pct%" && return
-        [ "$pct" -gt 30 ] && echo "  $pct%" && return
-        [ "$pct" -gt  5 ] && echo "  $pct%" && return
-        echo " $pct\%" && return
+        [ "$pct" -gt 90 ] && echo " $pct%" && return
+        [ "$pct" -gt 60 ] && echo " $pct%" && return
+        [ "$pct" -gt 30 ] && echo " $pct%" && return
+        [ "$pct" -gt  5 ] && echo " $pct%" && return
+        echo "$pct\%" && return
     fi
     echo " $pct%"
 }
