@@ -36,6 +36,7 @@ Plug 'christoomey/vim-tmux-navigator' " tmux navigation
 Plug 'davidhalter/jedi-vim' " python go-to-definition [autocompletion disabled]
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
 Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
+Plug 'junegunn/goyo.vim', " distraction free writing.
 Plug 'ctrlpvim/ctrlp.vim' " alternative fuzzy file finder
 Plug 'kshenoy/vim-signature' " show marks in margin
 Plug 'lilydjwg/colorizer' " paint css colors with the real color
@@ -108,6 +109,10 @@ nnoremap <leader>f :Lines<CR>
 nnoremap <leader>e :Files<CR>
 " tags (symbols) in all files finder mapping
 nnoremap <leader>t :Tag<CR>
+
+" junegunn/goyo.vim -------------------------------
+" toggle Goyo
+nnoremap <leader>G :Goyo<CR>
 
 " kien/ctrlp.vim ---------------------------------
 " let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']

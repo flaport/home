@@ -84,9 +84,11 @@ set shell=/usr/bin/zsh
 
 " set a column at 90 characters
 set colorcolumn=90
+autocmd BufRead,BufNewFile /tmp/neomutt-* set colorcolumn=0
 
 " disable line wrapping
 set nowrap
+autocmd BufRead,BufNewFile /tmp/neomutt-* set wrap
 
 " allow pattern matching with special characters
 set magic
@@ -159,7 +161,7 @@ set showcmd
 
 " tex / latex / xelatex / markdown
 autocmd BufNewFile,BufRead *.tex set filetype=tex
-autocmd BufRead,BufNewFile *.md,/tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
+autocmd BufRead,BufNewFile *.md,/tmp/neomutt*,/tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
 autocmd FileType tex,markdown setlocal spell spelllang=en_us
 autocmd FileType tex,markdown set nonumber
 autocmd FileType tex,markdown set norelativenumber
@@ -374,6 +376,9 @@ nnoremap <leader>cd :lcd %:p:h<CR>
 
 " Toggle (git) diff bar
 " <leader>g " from signify plugin
+
+" Toggle Goyo
+" <leader>G
 
 " enable hard mode (for practice purposes)
 " <leader>h " from hard mode plugin
