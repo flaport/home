@@ -76,10 +76,11 @@ done &
 # check battery status every 10 minutes
 while true; do
     sleep 10s
-    battery=$(acpi -b 2> /dev/null)
-    percentage=$(echo $battery |  sed 's/^.*, \([0-9]*\)%.*$/\1/g')
-    if [[ $battery = *Discharging* && $percentage -lt 5 ]]; then
-        notify-send --urgency=CRITICAL "battery low" "   $percentage%" &
+    capacity=$(cat /sys/class/power_supply/BAT*/capacity | head -1)
+    [ -z $capacity ] && break
+    batstatus=$(cat /sys/class/power_supply/BAT*/status | head -1)
+    if [ "$batstatus" = "Discharging" ] && [ "$capacity" -lt 5 ]; then
+        notify-send --urgency=CRITICAL "battery low" "   $capacity%" &
     fi
     sleep 590s
 done &
@@ -99,4 +100,4 @@ while true; do
 done &
 
 # export your desired screenlayout with `arandr`
-sleep 1 && default_screenlayout &
+sleep 1 && default_screenlayout &> /dev/null &

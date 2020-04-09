@@ -12,26 +12,36 @@
 # Each included widget needs to be defined below by a function with the same name.
 
 widgets=(
-    services
-    syncthing
-    sshd
-    sshtunnel
-    jellyfin
-    jupyterhub
-    openvpn
-    openconnect
-    cups
-    gpg
-    bluetooth
-    email
-    pacmanstatus
-    brightness
-    volume
-    battery
-    alpha
-    weather
-    yearmonthdate
-    clock
+    transmission # torrenting status
+    playercontrol # status of currently open media player (pause/play)
+    appointments # show time of current/next appointment.
+    services # clickable icon to start/stop services
+    bluetooth # show  if bluetooth is connected,  otherwise
+    syncthing # show icon if syncthing service is active
+    sshd # show icon if sshd service is active
+    sshtunnel # show icon if sshtunnel service is active
+    jellyfin # show icon if jellyfin service is active
+    jupyterhub # show icon if jupyterhub service is active
+    openvpn # show icon if openvpn is connected
+    openconnect # show icon if openconnect is connected
+    cups # show icon if the CUPS printer service is running
+    gpg # show icon if a gpg key password is currently cached
+    email # number of unread emails
+    pacmanstatus # number of updatable packages
+    volume # volume (managed by pulseaudio)
+    brightness # brightness
+    battery # shows battery percentage left
+    alpha # shows terminal transparency (managed by Xresources, enabled by picom)
+    # memory # uses same icon as disk. Know which one is which.
+    # cpu # shows cpu usage
+    # disk # uses same icon as memory. Know which one is which.
+    # weather # reads from cache! Make sure you have it regularly update somewhere else.
+    calendar # shows the current date
+    clock # shows a clock
+    # localip # same info after clicking network icon
+    # publicip # introduces lag due to curl call
+    network # shows a clickable globe icon.
+    # wifi # same info after clicking network icon
 )
 
 # Parse arguments
@@ -50,6 +60,9 @@ WIDGET="$1"
 BUTTON="$2"
 
 mkdir -p $HOME/.cache
+
+# kill all currently running dwm_status processes
+# ps aux | grep -ie dwm_status | grep -v grep | grep -v vim | awk '{print $2}' | sed "/$$/d" | xargs kill -9 &
 
 
 # Status Command
@@ -76,6 +89,7 @@ status(){
             i=$((i+1))
         fi
     done
+    s=$(echo $s | sed 's/[ ][ ]*/ /g')
     xsetroot -name "$s" &> /dev/null
     echo $s > $HOME/.cache/dwm_status 2> /dev/null
 }
@@ -123,17 +137,17 @@ alpha1(){ # mouse-button 1 action for alpha widget
 # -----------
 
 battery(){ # battery
-    battery=$(acpi -b 2> /dev/null)
-    p=$(echo $battery |  sed 's/^.*, \([0-9]*\)%.*$/\1/g')
-    [ -z "$p" ] && echo "" && return
-    if echo $battery | grep "Discharging" &> /dev/null; then
-        [ "$p" -gt 90 ] && echo "  $p%" && return
-        [ "$p" -gt 60 ] && echo "  $p%" && return
-        [ "$p" -gt 30 ] && echo "  $p%" && return
-        [ "$p" -gt  5 ] && echo "  $p%" && return
-        echo " $p\%" && return
+    pct=$(cat /sys/class/power_supply/BAT*/capacity | head -1)
+    [ -z $pct ] && return
+    batstatus=$(cat /sys/class/power_supply/BAT*/status | head -1)
+    if [ "$batstatus" = "Discharging" ] &> /dev/null; then
+        [ "$pct" -gt 90 ] && echo "  $pct%" && return
+        [ "$pct" -gt 60 ] && echo "  $pct%" && return
+        [ "$pct" -gt 30 ] && echo "  $pct%" && return
+        [ "$pct" -gt  5 ] && echo "  $pct%" && return
+        echo " $pct\%" && return
     fi
-    echo " $p%"
+    echo " $pct%"
 }
 battery1(){ # mouse-button 1 action for battery widget
     notify-send "$(acpi -b)"
@@ -179,6 +193,60 @@ bluetooth2(){ # mouse-button 1 action for bluetooth widget
 }
 
 # -----------
+appointments(){
+    hm=$(grep $(date +'%m/%d/%Y') $HOME/.calcurse/apts | sed 's/[^@]*@\ \([0-9]*:[0-9]*\)[^@]*@[^|]*|/\1: /g' | grep $(date +'%H') | sed 's/^\([0-9][0-9]:[0-9][0-9]\).*/\1/g')
+    if [ -z "$hm" ]; then
+        next=$(calcurse --next | sed '/next.*/d')
+        [ -z "$next" ] && return
+        H=$(date +'%H')
+        M=$(date +'%M')
+        h=$(echo $next | sed 's/^[^0-9]*\([0-9]*\).*/\1/g')
+        m=$(echo $next | sed 's/^[^:]*:[^0-9]*\([0-9]*\).*/\1/g')
+        m=$((M+m))
+        h=$((H+h))
+        while [ "$m" -ge 60 ]; do
+            m=$((m-60))
+            h=$((h+1))
+        done
+        m=$(echo "0$m" | sed 's/^0\([0-9][0-9]$\)/\1/g')
+        while [ "$h" -ge 24 ]; do
+            h=$((h-24))
+        done
+        h=$(echo "0$h" | sed 's/^0\([0-9][0-9]$\)/\1/g')
+        hm=$h:$m
+    fi
+    echo  $hm
+}
+appointments1(){
+    apt1=$(grep $(date +'%m/%d/%Y') $HOME/.calcurse/apts | sed 's/[^@]*@\ \([0-9]*:[0-9]*\)[^@]*@[^|]*|/\1: /g' | grep $(date +'%H') | sed 's/^[0-9][0-9]:[0-9][0-9]:\ //g')
+    apt2=$(calcurse --next | sed '/next.*/d')
+    echo $apt2 | grep "$apt1" &> /dev/null && apt1=""
+    [ -z $apt1 ] || apt1="   [ now ] $apt1\n"
+    notify-send "Appointment:" "$apt1$apt2\n\nmiddle click to open calcurse."
+}
+appointments2(){
+    $TERMINAL -e calcurse
+}
+
+# -----------
+
+calendar(){ # date
+    date +'  %Y-%m-%d' # 📅
+}
+calendar1(){ # mouse-button 1 action for date widget
+    notify-send "$(date +'%A, %B %d')" "\n$(cal | sed "s/\<$(date +%-d)\>//g")"
+}
+
+# -----------
+
+clock(){ # time
+    date +' %H:%M' # 🕒
+}
+clock1(){ # mouse-button 1 action for time widget
+    notify-send "Date: $(date)"
+}
+
+# -----------
 
 cpu(){ # cpu
     read cpu a b c previdle rest < /proc/stat
@@ -187,7 +255,7 @@ cpu(){ # cpu
     read cpu a b c idle rest < /proc/stat
     total=$((a+b+c+idle))
     cpu=$((100*( (total-prevtotal) - (idle-previdle) ) / (total-prevtotal) ))
-    echo " $cpu% cpu" # 💻
+    echo " $cpu%"
 }
 cpu1(){ # mouse-button 1 action for cpu widget
     notify-send "cpu"
@@ -207,11 +275,12 @@ cups2(){
 
 # -----------
 
-yearmonthdate(){ # date
-    date +'  %Y-%m-%d' # 📅
+disk(){ # memory
+    usage=$(df -h . | grep -v Filesystem | awk '{print $5}')
+    echo " $usage"
 }
-yearmonthdate1(){ # mouse-button 1 action for date widget
-    notify-send "$(date +'%A, %B %d')" "\n$(cal | sed "s/\<$(date +%-d)\>//g")"
+disk1() { # mouse-button 1 action for memory widget
+    notify-send "disk usage:" "$(df -h $HOME)"
 }
 
 # -----------
@@ -222,7 +291,7 @@ gpg(){ # cached gpg keys
 }
 gpg1(){ # mouse-button 1 to display cached keys
     key=$(gpg-connect-agent 'keyinfo --list' /bye | grep "1 P" | sed 's/.*KEYINFO\ *\([^\ !]*\).*/\1/g')
-    notify-send "passwords cached for these gpg keys:" "$key\n\n[middle click to empty cache]"
+    notify-send "passwords cached for these gpg keys:" "$key\n\nmiddle click to empty cache"
 }
 gpg2(){ # mouse-button 2 to empty gpg password cache
     kill -SIGHUP $(pidof gpg-agent)
@@ -280,6 +349,15 @@ email2(){ # start syncing emails
 
 # -----------
 
+localip(){ # local ip address
+    nmcli -a | grep inet4 | sed 's/^[^ ]*[ ]\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*/\1/g'
+}
+localip1(){
+    network1
+}
+
+# -----------
+
 memory(){ # memory
     used=$(free | awk '/Mem/ {print $3 }')
     total=$(free | awk '/Mem/ {print $2 }')
@@ -293,17 +371,80 @@ memory1() { # mouse-button 1 action for memory widget
 
 # -----------
 
+network(){
+    echo 
+}
+network1(){
+    notify-send "Network:" "connected to: $(wifi)\nlocal ip:     $(localip)\npublic ip:    $(publicip)"
+}
+
+# -----------
+
+openconnect(){ # openconnect
+    pidof openconnect &> /dev/null && echo   #|| echo ""
+}
+openconnect1(){ # mouse-button 1 action for openconnect widget
+    pidof openconnect &> /dev/null && notify-send "openconnect" "running.\n\nmiddle click to stop" || notify-send "openconnect" "stopped."
+}
+openconnect2(){ # mouse-button 1 action for openconnect widget
+    pidof openconnect &> /dev/null && sudo -A killall openconnect
+}
+
+# -----------
+
+openvpn(){ # openvpn
+    systemctl is-active openvpn &> /dev/null && echo   #|| echo ""
+}
+openvpn1(){ # mouse-button 1 action for openvpn widget
+    notifyservice openvpn
+}
+openvpn2(){ # mouse-button 2 action for openvpn widget
+    toggleservice openvpn
+}
+
+# -----------
+
 pacmanstatus(){ # pacman
     num=$(pacman -Qu | wc -l)
-    [[ $num > 0 ]] && echo  $num || echo "" # 📦
+    [[ $num > 0 ]] && echo  $num
 }
 pacmanstatus1(){ # pacman
     num=$(pacman -Qu | wc -l)
     notify-send "Pacman ($num)" "$num packages can be updated\n\nmiddle click to update [pacman -Syu]"
 }
 pacmanstatus2(){ # update packages
-    sudo -A -p "[sudo] password for 'pacman -Syu'" st -n float -e pacman -Syu
+    sudo -A -p "[sudo] password for 'pacman -Syu'" $TERMINAL -n float -e pacman -Syu
 }
+
+# -----------
+
+playercontrol(){ # toggle a service
+    # the icon needs to be cached as sometimes playerctl gives Stopped when nothing has happened.
+    previous_icon=$(cat $HOME/.cache/dwm_playercontrol)
+    [ -z $previous_icon ] && previous_icon=
+    icon=$(timeout 1s playerctl status 2> /dev/null | sed 's/Playing//g' | sed 's/Paused//g' | sed "s/Stopped/$previous_icon/g") || icon=""
+    echo $icon > $HOME/.cache/dwm_playercontrol
+    echo $icon
+}
+playercontrol1(){ # toggle a service
+    timeout 1s playerctl play-pause
+    icon1=$(cat $HOME/.cache/dwm_playercontrol)
+    [ "$icon1" = "" ] && icon2= && notify-send ""
+    [ "$icon1" = "" ] && icon2= && notify-send ""
+    echo $icon2 > $HOME/.cache/dwm_playercontrol
+    sed -i "s/$icon1/$icon2/g" $HOME/.cache/dwm_status
+    xsetroot -name "$(cat $HOME/.cache/dwm_status)"
+}
+
+# -----------
+
+publicip(){ # local ip address
+    curl -s https://ipinfo.io/ip
+}
+publicip1(){
+    network1
+}
+
 
 # -----------
 
@@ -353,25 +494,44 @@ syncthing2(){
 
 # -----------
 
-clock(){ # time
-    date +' %H:%M' # 🕒
+transmission(){
+    pidof transmission-daemon &> /dev/null || return
+    transmission-remote --list \
+        | grep -v ID | grep -v Sum:\
+        | awk  '{ print $2;}' \
+        | sed '/100%/d' | sed 's/%//g' | sed 's|n/a||g' \
+        | xargs python -c "from sys import argv; print(f' {sum(int(i) for i in argv[1:])/len(argv[1:]):.0f}%')" 2> /dev/null
+    if [ $? -ne 0 ]; then
+        num=$(transmission-remote --list | grep -v ID | grep -v Sum: | wc -l)
+        [ $num -gt 0 ] && echo "🌱$num" && return # seeding
+        echo  # active
+    fi
 }
-clock1(){ # mouse-button 1 action for time widget
-    notify-send "Date: $(date)"
+transmission1(){
+    notify-send "Transmission $(transmission | sed 's//active: /g' | sed 's/🌱/seeding: 🌱/g')" "$(transmission-remote --list)\n\nmiddle click to open transmission-cli\nright click to stop transmission-daemon"
 }
+transmission2(){
+    $TERMINAL -e $HOME/.local/bin/transmission
+}
+transmission3(){
+    kill -SIGTERM $(pidof transmission-daemon)
+}
+
 
 # -----------
 
 volume(){ # volume
     string=$(amixer -D pulse get Master)
     if [[ $string == *"[on]"* ]]; then
-        percentage=$(echo $string | cut -d "[" -f2 | cut -d "]" -f1)
-        echo "🔊 $percentage" # 🔊
-    else
-      echo 🔇
+        pct=$(echo $string | cut -d "[" -f2 | cut -d "%" -f1)
+        [ "$pct" -gt 60 ] && echo "🔊 $pct%" && return
+        [ "$pct" -gt 20 ] && echo "🔉 $pct%" && return
+        echo "🔈 $pct%"
+        return
     fi
+    echo 🔇
 }
-volume2(){ # mouse-button 1 action for volume widget
+volume1(){ # mouse-button 1 action for volume widget
     string=$(amixer -D pulse get Master)
     percentage=$(echo $string | cut -d "[" -f2 | cut -d "]" -f1)
     notify-send "Volume $percentage" "\n\n + : volume up\n + : volume down\n +  + : mute"
@@ -379,31 +539,8 @@ volume2(){ # mouse-button 1 action for volume widget
 
 # -----------
 
-openvpn(){ # openvpn
-    systemctl is-active openvpn &> /dev/null && echo   #|| echo ""
-}
-openvpn1(){ # mouse-button 1 action for openvpn widget
-    notifyservice openvpn
-}
-openvpn2(){ # mouse-button 2 action for openvpn widget
-    toggleservice openvpn
-}
-
-# -----------
-
-openconnect(){ # openconnect
-    pidof openconnect &> /dev/null && echo   #|| echo ""
-}
-openconnect1(){ # mouse-button 1 action for openconnect widget
-    pidof openconnect &> /dev/null && notify-send "openconnect" "running.\n\n[middle click to stop]" || notify-send "openconnect" "stopped."
-}
-openconnect2(){ # mouse-button 1 action for openconnect widget
-    pidof openconnect &> /dev/null && sudo -A killall openconnect
-}
-
-# -----------
-
 weather(){ # weather
+    # reads from cache! Make sure you have it regularly update somewhere else.
     test -f ~/.cache/weatherreportshort && cat ~/.cache/weatherreportshort || echo ""
 }
 weather1(){ # mouse-button 1 action for weather widget
@@ -412,8 +549,17 @@ weather1(){ # mouse-button 1 action for weather widget
     notify-send "Weather" "$report\n\nmiddle click for full report"
 }
 weather2(){
-    st -n float -f mono:12 -g 130x40+1130 -e update_weather --block
+    $TERMINAL -n float -f mono:12 -g 130x40+1130 -e update_weather --block
 }
+
+# -----------
+wifi(){
+    nmcli | grep "connected to" | sed 's/.*connected to //g'
+}
+wifi1(){
+    network1
+}
+
 
 
 

@@ -14,7 +14,7 @@ if [ ! -z "$passlines" ]; then
     fi
 fi
 
-[ -d $HOME/.local/share/email ] || >&2 echo "email directory '$HOME/.local/share/email' does not exist" && exit 1
+[ -d $HOME/.local/share/email ] || (>&2 echo "email directory '$HOME/.local/share/email' does not exist" && exit 1)
 
 echo "syncing emails..."
 num_unread1=$(find $HOME/.local/share/email/*/INBOX/new/ -type f | wc -l 2> /dev/null)
@@ -32,4 +32,7 @@ else
     notify-send "syncmail:" "$new_mail new unread emails."
     echo "$new_mail new unread emails."
 fi
+
+dwm_status
+
 exit $exit_code

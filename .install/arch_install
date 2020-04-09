@@ -375,6 +375,8 @@ link /usr/bin/nvim /usr/bin/vim
 # yay_install spotifyd-full
 # spotify-tui: terminal client for spotify
 # yay_install spotify-tui
+# playerctl: terminal client to control spotify, spotifyd, vlc, ...
+pacman_install playerctl
 # patch pacman to enable Color and ILoveCandy
 echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf >> $LOG 2>> $ERR
 

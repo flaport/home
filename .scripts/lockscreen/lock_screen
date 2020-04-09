@@ -5,7 +5,14 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
+# prepare to lock:
 kill -SIGHUP $(pidof gpg-agent) # flush all cached gpg-key passwords.
 sleep 5 && xset dpms force off & # turn off backlight
+timeout 1s playerctl pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol) &
+
+# actual lock command
 i3lock --color 444444 --ignore-empty-password --show-failed-attempts --nofork
+
+# after unlocking:
 syncmail # ask for gpg-key password again (and then synchronize emails)
+dwm_status
