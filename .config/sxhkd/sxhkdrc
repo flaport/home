@@ -183,13 +183,21 @@ super + v
 super + V
     # handled by dwm
 
-# start default browser
+# start firefox
 super + w
-    /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox
+    /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window
 
-# search the web
+# start chromium
 super + W
-    /usr/bin/taskset --cpu-list 2 /usr/bin/chromium
+    /usr/bin/taskset --cpu-list 2 /usr/bin/chromium --new-window
+
+# search the web with duckduckgo:
+super + control + w
+    q=$(echo -ne "" | dmenu -p "duckduckgo:") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
+
+# search the web with google:
+super + control + W
+    q=$(echo -ne "" | dmenu -p "google:") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
 
 # shift focus to monitor X
 super + x
@@ -237,7 +245,7 @@ super + control + Return
 
 # toggle pause / play
 super + shift + equal
-    notify-send "toggle pause / play"; ff-toggle-pause; mpvcontrol togglepause
+    notify-send "toggle play"; ff-toggle-pause; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
 
 # raise volume
 super + equal
@@ -250,8 +258,6 @@ super + minus
 # toggle mute volume
 super + shift + minus
     amixer -D pulse set Master 1+ toggle; dwm_status
-
-super + shift + equal
 
 # promote (zoom) window
 super + space
@@ -381,19 +387,33 @@ super + 9
 super + shift + 9
     # handled by dwm
 
+super + Up
+
+super + Down
+
+# next song
+super + Right
+    timeout 1s playerctl next; notify-send "⏭"
+
+# previous song
+super + Left
+    timeout 1s playerctl previous; notify-send "⏮"
+
 # select keyboard shortcut
 super + F1
     dmenu_keyboard_shortcuts
 
+# raise volume
 super + F2
+    amixer -D pulse set Master 5%+; dwm_status
 
-# paste NO [cross mark (❌)]
+# lower volume
 super + F3
-    dmenu_emoji cross mark
+    amixer -D pulse set Master 5%-; dwm_status
 
-# paste YES [white heavy check mark (✅)]
+# toggle mute volume
 super + F4
-    dmenu_emoji white heavy check mark
+    amixer -D pulse set Master 1+ toggle; dwm_status
 
 super + F5
 
@@ -403,7 +423,13 @@ super + F7
 
 super + F8
 
+# search the web with duckduckgo:
 super + F9
+    q=$(echo -ne "" | dmenu -p "duckduckgo:") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
+
+# search the web with google:
+super + shift + F9
+    q=$(echo -ne "" | dmenu -p "google:") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
 
 super + F10
 
@@ -418,6 +444,14 @@ super + F12
 # make screenshot
 Print
     flameshot gui
+
+# toggle pause / play
+Pause
+    notify-send " "; ff-toggle-pause; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
+
+# sleep
+super + insert
+    lock_screen
 
 # mute volume
 XF86AudioMute
@@ -439,38 +473,47 @@ XF86MonBrightnessUp
 XF86MonBrightnessDown
     [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
 
+# next song
 XF86AudioNext
-    notify-send XF86AudioNext "not implemented"
+    timeout 1s playerctl next; notify-send "⏭"
 
+# previous song
 XF86AudioPrev
-    notify-send XF86AudioPrev "not implemented"
+    timeout 1s playerctl previous; notify-send "⏮"
 
 # toggle pause / play
 XF86AudioPause
-    notify-send "toggle pause / play"; ff-toggle-pause; mpvcontrol togglepause
+    notify-send " "; ff-toggle-pause; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
 
 # toggle pause / play
 XF86AudioPlay
-    notify-send "toggle pause / play"; ff-toggle-pause; mpvcontrol togglepause
+    notify-send " "; ff-toggle-pause; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
 
+# toggle pause / play
 XF86AudioStop
-    notify-send XF86AudioStop "not implemented"
+    killall ncmpcpp; killall spotifyd; killall spt; killall spotify; killall vlc; killall mpv
 
 XF86AudioRewind
-    notify-send XF86AudioRewind "not implemented"
+    notify-send XF86AudioForward "rewind: no mapping"
 
 XF86AudioForward
-    notify-send XF86AudioForward "not implemented"
+    notify-send XF86AudioForward "forward: no mapping"
 
 XF86AudioRecord
-    notify-send XF86AudioRecord "not implemented"
+    notify-send XF86AudioRecord "record: no mapping"
 
 XF86AudioMedia
-    notify-send XF86AudioMedia "not implemented"
+    notify-send XF86AudioMedia "media: no mapping"
 
+# search the web with duckduckgo:
 XF86Search
-    notify-send XF86Search "not implemented"
+    q=$(echo -ne "" | dmenu -p "duckduckgo:") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
 
+# search the web with google:
+shift + XF86Search
+    q=$(echo -ne "" | dmenu -p "google:") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
+
+# new floating ipython repl
 XF86Calculator
-    notify-send XF86Calculator "not implemented"
+    cd $HOME; $TERMINAL -n float -e $HOME/.anaconda/bin/ipython
 
