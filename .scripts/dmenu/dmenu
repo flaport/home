@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-[ -z $DISPLAY ] && DMENU=fzf
+[ -z "$DISPLAY" ] && DMENU=fzf
 
-if [ $DMENU == fzf ] && [ -x /usr/bin/fzf ]; then
+if [ "$DMENU" == fzf ] && [ -x /usr/bin/fzf ]; then
     /usr/bin/fzf # ignore all dmenu arguments
     exit $?
-elif [ $DMENU == rofi ] && [ -x /usr/bin/rofi ]; then
+elif [ "$DMENU" == rofi ] && [ -x /usr/bin/rofi ]; then
     cmd="$HOME/.local/bin/rofi" # improved rofi wrapper script
     [ -x "$cmd" ] || cmd="/usr/bin/rofi"
-    $cmd -dmenu $@ # pass dmenu arguments to rofi
+    $cmd -dmenu "$@" # pass dmenu arguments to rofi
     exit $?
-else
+elif [ "$DMENU" == dmenu ] && [ -x /usr/local/bin/dmenu ]; then # probably custom dmenu build.
     cmd="/usr/local/bin/dmenu"
     nb=$(grep color0 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
     nf=$(grep color15 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
@@ -20,7 +20,10 @@ else
     hnf=$(grep color3 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
     hsb=$(grep color4 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
     hsf=$(grep color3 $HOME/.Xresources | sed 's/^.*#/#/g' | head -1)
-    $cmd -i -l 10 -c -bw 1 -nb $nb -nf $nf -sb $sb -sf $sf -hnb $hnb -hnf $hnf -hsb $hsb -hsf $hsf $@
+    $cmd -i -l 10 -c -bw 1 -nb $nb -nf $nf -sb $sb -sf $sf -hnb $hnb -hnf $hnf -hsb $hsb -hsf $hsf "$@"
+    exit $?
+elif [ "$DMENU" == dmenu ] && [ -x /usr/bin/dmenu ]; then # probably vanilla dmenu.
+    $cmd "$@"
     exit $?
 fi
 

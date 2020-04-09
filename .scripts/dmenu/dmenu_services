@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
 
 message() {
-    if [ $1 ]; then
+    if [ ! -z "$1" ]; then
         notify-send "$3 $2" "success!"
     else
         notify-send "$3 $2" "failed."
     fi
 }
 
-services(){
+preferred-services(){
     find /etc/systemd/system -maxdepth 1 -type f -iname "*.service" | sed 's/@\.service//g' | sed 's/\.service//g' | sed 's|/etc/systemd/system/||g'
     # extra entry for sshd:
     find /usr/lib/systemd/system -maxdepth 1 -type f -iname "*.service" | grep sshd.service | sed 's/@\.service//g' | sed 's/\.service//g' | sed 's|/usr/lib/systemd/system/||g'
@@ -18,25 +24,30 @@ services(){
     find /usr/lib/systemd/system -maxdepth 1 -type f -iname "*.service" | grep cupsd.service | sed 's/@\.service//g' | sed 's/\.service//g' | sed 's|/usr/lib/systemd/system/||g'
 }
 
-service=$(services | sort | dmenu -p "toggle-service" $@)
+other-services(){
+    # all other services
+    find /usr/lib/systemd/system -maxdepth 1 -type f -iname "*.service" | sed 's/@\.service//g' | sed 's/\.service//g' | sed 's|/usr/lib/systemd/system/||g' | grep -v systemd
+}
 
-if [ ! $service ]; then
-    notify-send "no service selected"
+services=$(\
+while read line;  do
+    echo "[$(systemctl is-active $line)] $line"
+done <<< $((preferred-services | sort) && (other-services | sort)))
+
+service=$(printf "$services" | sed 's/\[active\]/ [stop]/g' | sed 's/\[activating\]/ [stop]/g' | sed 's/\[inactive\]/[start]/g' | dmenu -p "toggle service" "$@" | sed 's/\ *\[.*\]\ //g')
+
+if [ -z "$service" ]; then
     exit 1
 fi
-
-if [[ $service == *:* ]]; then
-    notify-send "no valid service selected"
-    exit 1
-fi
-
 
 if [[ $(systemctl is-active $service) == "active" ]]; then
     sudo -A -p "[sudo] password to stop '$service.service'" systemctl stop $service
     message $? $service "stopping..."
-    dwm_status
 else
     sudo -A -p "[sudo] password to start '$service.service'" systemctl restart $service;
     message $? $service "starting..."
-    dwm_status
 fi
+
+# update status bar
+dwm_status
+
