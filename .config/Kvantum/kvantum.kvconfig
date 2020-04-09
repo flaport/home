@@ -1,6 +1,7 @@
 [General]
-theme=KvGnomeDark#
+theme=KvAdaptaDark#
 
 [Applications]
 KvArc=klayout
 KvArc=anki
+
