@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Skype
+Comment=Skype Internet Telephony
+Exec=/usr/bin/taskset --cpu-list 1 /usr/bin/skypeforlinux %U
+Icon=skypeforlinux
+Terminal=false
+Type=Application
+StartupNotify=true
+StartupWMClass=Skype
+Encoding=UTF-8
+Categories=Network;Application;
+MimeType=x-scheme-handler/skype;
+X-KDE-Protocols=skype
+Actions=QuitSkype;
