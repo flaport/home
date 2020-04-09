@@ -238,6 +238,10 @@ tnoremap `<Esc> <C-\><C-n>
 
 " exit current buffer without saving
 function! CloseBuffer()
+    if bufname('%') == 'NetrwTreeListing'
+        " execute it twice for netrw
+        exec "bd!"
+    endif
     if bufname('%') != ''
         exec "bd!"
     else
