@@ -10,65 +10,74 @@ PREVIEW=""
 [[ ! -z $1 ]] && FILENAME=$1 || exit 1
 [[ ! -z $2 ]] && LINESSHOWN=$2 || LINESSHOWN=51
 
-# ueberzug preview:
+# dummy ueberzug preview (note that path is empty -> no preview):
 < <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
-X=$((TERMINAL_COLUMNS - COLUMNS - 2))
-Y=$((TERMINAL_LINES - LINES - 1))
->"${FZF_UEBERZUG_FIFO}" declare -A -p cmd=( \
+>"${FZF_UBZ_FIFO}" declare -A -p cmd=( \
     [action]=add [identifier]="preview" \
-    [x]="${X}" [y]="${Y}" \
-    [width]="${COLUMNS}" [height]="${LINES}" \
+    [x]="0" [y]="0" \
+    [width]="${FZF_PREVIEW_COLUMNS}" [height]="${FZF_PREVIEW_LINES}" \
     [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
     [path]="")
 
-[[ $FILENAME == *.mp4 ]] && ffmpeg -y -i $FILENAME -ss 00:00:01.000 -vframes 1 /tmp/fzf_ueberzug_preview.png &> /dev/null && FILENAME=/tmp/fzf_ueberzug_preview.png
-[[ $FILENAME == *.svg ]] && inkscape "$FILENAME" -e /tmp/fzf_ueberzug_preview.png &> /dev/null && FILENAME=/tmp/fzf_ueberzug_preview.png
 
-if [[ $FILENAME == *.png || $FILENAME == *.jpg || $FILENAME == *.jpeg ]]; then
-    PREVIEW="$FILENAME"
+if [ ! -d $FILENAME ] 2> /dev/null && [ ! -f "$FILENAME" ] 2> /dev/null; then
+    printf "$FILENAME"
+    exit
+fi
+
+if [ -d "$FILENAME" ] 2> /dev/null; then
+    tree -L 1 $FILENAME
+    exit
+fi
+
+if [[ $FILENAME == *.py ]]; then
+    cat $FILENAME | highlight --src-lang=python -O ansi --force 2> /dev/null || echo $FILENAME
+    exit
+fi
+
+if [[ $FILENAME == *.ipynb ]]; then
+    jupyter nbconvert $FILENAME --to python --stdout 2> /dev/null | highlight -O ansi --force 2> /dev/null || echo "$FILENAME"
+    exit
+fi
+
+if [[ $FILENAME == *.htm* ]]; then
+    cat $FILENAME | highlight --src-lang=html -O ansi --force 2> /dev/null || echo $FILENAME
+    exit
+fi
+
+if [[ $FILENAME == *.md ]]; then
+    cat $FILENAME | highlight --src-lang=markdown -O ansi --force 2> /dev/null || echo $FILENAME
+    exit
+fi
+
+if [[ $FILENAME == *.pdf ]]; then
+    pdftotext -q "$FILENAME" - 2> /dev/null || echo $FILENAME
+    exit
+fi
+
+if [[ $FILENAME == *.bash ||  $FILENAME == *.sh ]]; then
+    cat $FILENAME | highlight --src-lang=bash -O ansi --force 2> /dev/null || echo $FILENAME
+    exit
+fi
+
+if [[ $FILENAME == *.png || $FILENAME == *.jpg || $FILENAME == *.jpeg || $FILENAME == *.svg || $FILENAME == *.mp4 ]]; then
+    echo $FILENAME
+    [[ $FILENAME == *.mp4 ]] && ffmpeg -y -i $FILENAME -ss 00:00:01.000 -vframes 1 /tmp/fzf-ubz-preview.png &> /dev/null && FILENAME=/tmp/fzf-ubz-preview.png
+    [[ $FILENAME == *.svg ]] && inkscape "$FILENAME" -e /tmp/fzf-ubz-preview.png &> /dev/null && FILENAME=/tmp/fzf-ubz-preview.png
     # ueberzug preview:
-    if true; then
     < <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
-    X=$((TERMINAL_COLUMNS - COLUMNS - 3))
-    Y=$((TERMINAL_LINES - LINES - 1))
-    [ "$CURSORPOSITION" -lt "$Y" ] && Y="$CURSORPOSITION"
-    >"${FZF_UEBERZUG_FIFO}" declare -A -p cmd=( \
+    X=$((TERMINAL_COLUMNS - FZF_PREVIEW_COLUMNS - 3))
+    Y=$((TERMINAL_LINES - FZF_PREVIEW_LINES - 1))
+    [ "$FZF_UBZ_LINE" -lt "$Y" ] 2> /dev/null && Y="$FZF_UBZ_LINE"
+    >"${FZF_UBZ_FIFO}" declare -A -p cmd=( \
         [action]=add [identifier]="preview" \
         [x]="${X}" [y]="${Y}" \
-        [width]="${COLUMNS}" [height]="${LINES}" \
+        [width]="${FZF_PREVIEW_COLUMNS}" [height]="${FZF_PREVIEW_LINES}" \
         [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
         [path]="${FILENAME}")
-    fi &
-elif [[ $FILENAME == *.py ]]; then
-    PREVIEW=$(cat $FILENAME | highlight --src-lang=python -O ansi --force)
-elif [[ $FILENAME == *.ipynb ]]; then
-    which jupyter &> /dev/null
-    if [[ $? == 0 ]]; then
-        PREVIEW=$(jupyter nbconvert $FILENAME --to python --stdout 2> /dev/null | highlight -O ansi --force)
-    else
-        PREVIEW=$FILENAME
-    fi
-elif [[ $FILENAME == *.htm* ]]; then
-    PREVIEW=$(cat $FILENAME | highlight --src-lang=html -O ansi --force)
-elif [[ $FILENAME == *.md ]]; then
-    PREVIEW=$(cat $FILENAME | highlight --src-lang=markdown -O ansi --force)
-elif [[ $FILENAME == *.pdf ]]; then
-    which pdftotext &> /dev/null
-    if [[ $? == 0 ]]; then
-        PREVIEW=$(pdftotext -q $FILENAME -)
-    else
-        PREVIEW=$FILENAME
-    fi
-elif [[ $FILENAME == *.bash ||  $FILENAME == *.sh ]]; then
-    PREVIEW=$(cat $FILENAME | highlight --src-lang=bash -O ansi --force)
-else
-    PREVIEW=$(cat $FILENAME | highlight -O ansi --force)
+    exit
 fi
 
-if [[ -z $PREVIEW ]]; then
-    PREVIEW=$FILENAME
-fi
-
-# printed preview
-printf "$PREVIEW"
+# if all else fails:
+printf "$FILENAME"
 

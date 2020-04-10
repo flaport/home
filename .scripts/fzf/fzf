@@ -1,34 +1,34 @@
 #!/usr/bin/env bash
 
-IFS='[;' read -p $'\e[6n' -d R -a pos -rs || echo "failed with error: $? ; ${pos[*]}"
-export CURSORPOSITION="${pos[1]}"
+# name of ueberzug tempfile:
+export FZF_UBZ_FIFO="$(mktemp --dry-run --suffix "fzf-ubz-$$")"
 
-export FZF_UEBERZUG_FIFO="$(mktemp --dry-run --suffix "fzf-$$-ueberzug")"
-
-
-# print the redraw key twice as there's a run condition we can't circumvent
-# (we can't know the time fzf finished redrawing it's layout)
-mkfifo "${FZF_UEBERZUG_FIFO}"
-<"${FZF_UEBERZUG_FIFO}" \
+# Open Ueberzug fifo:
+mkfifo "${FZF_UBZ_FIFO}"
+<"${FZF_UBZ_FIFO}" \
 ueberzug layer --parser bash --silent &
 # prevent EOF
-3>"${FZF_UEBERZUG_FIFO}" \
+3>"${FZF_UBZ_FIFO}" \
 exec
 
+# Execute FZF
 SHELL="/bin/bash" \
     /usr/bin/fzf \
         "${@}"
 exit_code=$?
 
+# Close Ueberzug fifo
 3>&- \
     exec
 &>/dev/null \
-    rm "${FZF_UEBERZUG_FIFO}"
+    rm "${FZF_UBZ_FIFO}"
 &>/dev/null \
     kill $(jobs -p)
 
+# make sure ueberzug is closed
 killall ueberzug 2> /dev/null
-rm -f $FZF_UEBERZUG_FIFO
+rm -f $FZF_UBZ_FIFO
 
+# exit with status of FZF command
 exit $exit_code
 
