@@ -104,7 +104,9 @@ endif
 " general code finder in current file mapping
 nnoremap <leader>/ :BLines<CR>
 " general code finder in all files mapping
-nnoremap <leader>f :Lines<CR>
+nnoremap <leader>ff :Lines<CR>
+" fuzzy find in tags
+nnoremap <leader>ft :Tag<CR>
 " file finder mapping
 nnoremap <leader>e :Files<CR>
 " tags (symbols) in all files finder mapping

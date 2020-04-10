@@ -41,6 +41,10 @@ set ff=unix
 " tell vim where to find the ctags
 set tags=./.tags;,.tags;
 
+" spell check, set default to en_us and turn it off by default
+setlocal spell spelllang=en_us
+setlocal spell!
+
 " underline current line if in insert mode
 autocmd InsertEnter * set cul
 
@@ -185,9 +189,6 @@ command! -nargs=* VT vsplit | terminal <args>
 
 "" Special keyboard shortcuts
 "-------------------------------------------------------------------------------
-
-" easier access to command mode
-nnoremap ; :
 
 " back to normal mode
 inoremap jj <Esc>
@@ -464,11 +465,11 @@ autocmd FileType tex nmap <leader>s :call SyncTex()<CR>
 "<leader>s: sort (visual mode)
 vnoremap <leader>s :!sort<CR>
 
-" fuzzy find in tags
-nnoremap <leader>tf :Tag<CR>
-
 " create tags
 nnoremap <leader>tt :silent !ctags -f .tags -R .<CR>
+
+" set filetype
+nnoremap <leader>tf :set filetype=<CR>:source ~/.config/nvim/init.vim<CR>:set filetype=
 
 " Move currently active buffer to the 'main' split.
 " adapted from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946
