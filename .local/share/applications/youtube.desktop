@@ -1,4 +1,4 @@
 [Desktop Entry]
-Exec=wa youtube.com
+Exec=/usr/bin/chromium --app=https://youtube.com
 Name=YouTube
-Icon=/usr/local/share/icons/youtube.png # add this icon yourself.
+Icon=/usr/local/share/icons/youtube.png
