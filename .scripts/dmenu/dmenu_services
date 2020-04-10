@@ -6,14 +6,6 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
-message() {
-    if [ ! -z "$1" ]; then
-        notify-send "$3 $2" "success!"
-    else
-        notify-send "$3 $2" "failed."
-    fi
-}
-
 preferred-services(){
     find /etc/systemd/system -maxdepth 1 -type f -iname "*.service" | sed 's/@\.service//g' | sed 's/\.service//g' | sed 's|/etc/systemd/system/||g'
     # extra entry for sshd:
@@ -42,10 +34,10 @@ fi
 
 if [[ $(systemctl is-active $service) == "active" ]]; then
     sudo -A -p "[sudo] password to stop '$service.service'" systemctl stop $service
-    message $? $service "stopping..."
+    notify-send "stopping $service..." "$( [ $? -eq 0 ] && echo 'success!' || echo 'failed.' )"
 else
     sudo -A -p "[sudo] password to start '$service.service'" systemctl restart $service;
-    message $? $service "starting..."
+    notify-send "starting $service..." "$( [ $? -eq 0 ] && echo 'success!' || echo 'failed.' )"
 fi
 
 # update status bar
