@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+export FZF_UEBERZUG_FIFO="$(mktemp --dry-run --suffix "fzf-$$-ueberzug")"
+
+# print the redraw key twice as there's a run condition we can't circumvent
+# (we can't know the time fzf finished redrawing it's layout)
+mkfifo "${FZF_UEBERZUG_FIFO}"
+<"${FZF_UEBERZUG_FIFO}" \
+ueberzug layer --parser bash --silent &
+# prevent EOF
+3>"${FZF_UEBERZUG_FIFO}" \
+exec
+
+SHELL="/bin/bash" \
+    /usr/bin/fzf \
+        "${@}"
+exit_code=$?
+
+3>&- \
+    exec
+&>/dev/null \
+    rm "${FZF_UEBERZUG_FIFO}"
+&>/dev/null \
+    kill $(jobs -p)
+
+killall ueberzug 2> /dev/null
+exit $exit_code
+

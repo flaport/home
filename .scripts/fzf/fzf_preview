@@ -4,17 +4,37 @@
 #   |  __\| |   | / \||  \/|| / \||  \/|  / \
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
-#
 
 PREVIEW=""
 
-echo2(){>&2 echo $@;}
+# ueberzug preview:
+< <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
+X=$((TERMINAL_COLUMNS - COLUMNS - 2))
+Y=$((TERMINAL_LINES - LINES - 1))
+>"${FZF_UEBERZUG_FIFO}" declare -A -p cmd=( \
+    [action]=add [identifier]="preview" \
+    [x]="${X}" [y]="${Y}" \
+    [width]="${COLUMNS}" [height]="${LINES}" \
+    [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
+    [path]="")
 
 [[ ! -z $1 ]] && FILENAME=$1 || exit 1
-[[ ! -z $2 ]] && LINES=$2 || LINES=51
+[[ ! -z $2 ]] && LINESSHOWN=$2 || LINESSHOWN=51
 
-if [[ $FILENAME == *.png ]]; then
-    PREVIEW=$FILENAME
+if [[ $FILENAME == *.png || $FILENAME == *.jpg ]]; then
+    PREVIEW="$FILENAME"
+
+    # ueberzug preview:
+    < <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
+    X=$((TERMINAL_COLUMNS - COLUMNS - 2))
+    Y=$((TERMINAL_LINES - LINES - 1))
+    >"${FZF_UEBERZUG_FIFO}" declare -A -p cmd=( \
+        [action]=add [identifier]="preview" \
+        [x]="${X}" [y]="${Y}" \
+        [width]="${COLUMNS}" [height]="${LINES}" \
+        [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
+        [path]="${FILENAME}")
+
 elif [[ $FILENAME == *.py ]]; then
     PREVIEW=$(cat $FILENAME | highlight --src-lang=python -O ansi --force)
 elif [[ $FILENAME == *.ipynb ]]; then
@@ -45,4 +65,6 @@ if [[ -z $PREVIEW ]]; then
     PREVIEW=$FILENAME
 fi
 
+# printed preview
 printf "$PREVIEW"
+
