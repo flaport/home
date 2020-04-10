@@ -5,9 +5,9 @@ LS=/usr/bin/ls
 
 # however, in an interactive session (i.e. in a shell, use lsd if available)
 if [ -t 1 ]; then
-    LS=$(which lsd 2> /dev/null)
-    [ $? -ne 0 ] && LS=/usr/bin/ls
+    LS="$(which lsd 2> /dev/null) --group-dirs first"
+    [ $? -ne 0 ] && LS="/usr/bin/ls --group-directories-first --color=auto"
 fi
 
 # call ls with all arguments supplied
-$LS $@
+$LS "$@"
