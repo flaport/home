@@ -7,6 +7,9 @@
 
 PREVIEW=""
 
+[[ ! -z $1 ]] && FILENAME=$1 || exit 1
+[[ ! -z $2 ]] && LINESSHOWN=$2 || LINESSHOWN=51
+
 # ueberzug preview:
 < <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
 X=$((TERMINAL_COLUMNS - COLUMNS - 2))
@@ -18,23 +21,24 @@ Y=$((TERMINAL_LINES - LINES - 1))
     [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
     [path]="")
 
-[[ ! -z $1 ]] && FILENAME=$1 || exit 1
-[[ ! -z $2 ]] && LINESSHOWN=$2 || LINESSHOWN=51
+[[ $FILENAME == *.mp4 ]] && ffmpeg -y -i $FILENAME -ss 00:00:01.000 -vframes 1 /tmp/fzf_ueberzug_preview.png &> /dev/null && FILENAME=/tmp/fzf_ueberzug_preview.png
+[[ $FILENAME == *.svg ]] && inkscape "$FILENAME" -e /tmp/fzf_ueberzug_preview.png &> /dev/null && FILENAME=/tmp/fzf_ueberzug_preview.png
 
-if [[ $FILENAME == *.png || $FILENAME == *.jpg ]]; then
+if [[ $FILENAME == *.png || $FILENAME == *.jpg || $FILENAME == *.jpeg ]]; then
     PREVIEW="$FILENAME"
-
     # ueberzug preview:
+    if true; then
     < <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
-    X=$((TERMINAL_COLUMNS - COLUMNS - 2))
+    X=$((TERMINAL_COLUMNS - COLUMNS - 3))
     Y=$((TERMINAL_LINES - LINES - 1))
+    [ "$CURSORPOSITION" -lt "$Y" ] && Y="$CURSORPOSITION"
     >"${FZF_UEBERZUG_FIFO}" declare -A -p cmd=( \
         [action]=add [identifier]="preview" \
         [x]="${X}" [y]="${Y}" \
         [width]="${COLUMNS}" [height]="${LINES}" \
         [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
         [path]="${FILENAME}")
-
+    fi &
 elif [[ $FILENAME == *.py ]]; then
     PREVIEW=$(cat $FILENAME | highlight --src-lang=python -O ansi --force)
 elif [[ $FILENAME == *.ipynb ]]; then

@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
+IFS='[;' read -p $'\e[6n' -d R -a pos -rs || echo "failed with error: $? ; ${pos[*]}"
+export CURSORPOSITION="${pos[1]}"
+
 export FZF_UEBERZUG_FIFO="$(mktemp --dry-run --suffix "fzf-$$-ueberzug")"
+
 
 # print the redraw key twice as there's a run condition we can't circumvent
 # (we can't know the time fzf finished redrawing it's layout)
@@ -24,5 +28,7 @@ exit_code=$?
     kill $(jobs -p)
 
 killall ueberzug 2> /dev/null
+rm -f $FZF_UEBERZUG_FIFO
+
 exit $exit_code
 
