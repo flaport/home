@@ -13,23 +13,23 @@ super + a
 super + A
     alpha set +10 && dwm_status
 
-# connect to bluetooth device (devices should be paired using bluetoothctl)
+# connect to already paired bluetooth device
 super + b
     dmenu_bluetooth
 
-# show/hide status bar
+# toggle dwm status bar
 super + B
     # handled by dwm
 
-# shift focus to monitor C
+# shift focus to monitor C (dwm)
 super + c
     # handled by dwm
 
-# move active window to monitor C
+# send selected window to monitor C (dwm)
 super + C
     # handled by dwm
 
-# decrease number of windows in master area
+# decrease number of windows in master area (dwm)
 super + d
     # handled by dwm
 
@@ -37,31 +37,31 @@ super + d
 super + D
     # handled by dwm
 
-# show a list of emojis
+# insert emoji
 super + e
     dmenu_emoji
 
-# show a list of font-awesome glyphs
+# insert font-awesome glyph
 super + E
     dmenu_awesome_terminal_fonts
 
-# full screen (monocle) layout
+# enable full screen (monocle) dwm layout
 super + f
     # handled by dwm
 
-# floating layout
+# floating dwm layout
 super + F
     # handled by dwm
 
-# greek letters menu
+# insert greek letter
 super + g
     dmenu_greek
 
-# emails menu
+# insert email
 super + G
     dmenu_emails
 
-# decrease master window size
+# decrease master window size (dwm)
 super + h
     # handled by dwm
 
@@ -69,7 +69,7 @@ super + h
 super + H
     open-in-mpv
 
-# increase number of windows in master area
+# increase number of windows in master area (dwm)
 super + i
     # handled by dwm
 
@@ -77,21 +77,21 @@ super + i
 super + I
     inkscape
 
-# focus on window higher on the stack
+# focus on window higher on the stack (dwm)
 super + j
     # handled by dwm
 
 super + J
 
-# focus on window lower on the stack
+# focus on window lower on the stack (dwm)
 super + k
     # handled by dwm
 
-# run passmenu
+# copy password to clipboard with passmenu
 super + K
     /usr/bin/passmenu -l 20
 
-# increase master window size
+# increase master window size (dwm)
 super + l
     # handled by dwm
 
@@ -99,11 +99,11 @@ super + l
 super + L
     lock_screen
 
-# dmenu mount drive menu
+# mount a drive
 super + m
     dmenu_mount mount
 
-# dmenu unmount drive menu
+# unmount a drive
 super + M
     dmenu_mount unmount
 
@@ -111,21 +111,21 @@ super + M
 super + n
     nemo
 
-# open dmenu networkmanager
+# open vifm file browser
 super + N
     st -e vifm
 
-# switch between nemo and st
+# switch between nemo and st (experimental)
 super + control + n
     switch-nemo-st
 
-# activate all tags to which current window belongs
+# activate all dwm tags to which selected window belongs
 super + o
     # handled by dwm
 
 super + O
 
-# dmenu choose screen layout
+# dmenu choose monitor layout
 super + p
     dmenu_screenlayout
 
@@ -133,12 +133,16 @@ super + p
 super + P
     default_screenlayout
 
-# kill current window
+# kill current window (dwm)
 super + q
     # handled by dwm
 
-# quit dwm
+# quit dwm (logout)
 super + Q
+    # handled by dwm
+
+# restart dwm
+super + control + Q
     # handled by dwm
 
 # open neomutt
@@ -153,19 +157,19 @@ super + R
 super + control + r
     cd $HOME; $TERMINAL -e sendmail
 
-# run a program
+# application launcher: run any program.
 super + s
     dmenu_run
 
-# start/stop a service
+# toggle a systemd service
 super + S
     dmenu_services
 
-# toggle between last two layouts
+# toggle between last two dwm layouts
 super + t
     # handled by dwm
 
-# enable default layout
+# enable default dwm layout
 super + T
     # handled by dwm
 
@@ -175,11 +179,11 @@ super + u
 
 super + U
 
-# shift focus to monitor V
+# shift focus to monitor V (dwm)
 super + v
     # handled by dwm
 
-# move active window to monitor V
+# send selected window to monitor V (dwm)
 super + V
     # handled by dwm
 
@@ -193,41 +197,41 @@ super + W
 
 # search the web with duckduckgo:
 super + control + w
-    q=$(echo -ne "" | dmenu -p "duckduckgo:") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + control + W
-    q=$(echo -ne "" | dmenu -p "google:") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
 
-# shift focus to monitor X
+# shift focus to monitor X (dwm)
 super + x
     # handled by dwm
 
-# move active window to monitor X
+# send selected window to monitor X (dwm)
 super + X
     # handled by dwm
 
-# change color scheme
+# change global Xresources color scheme
 super + y
     xcs
 
-# change wallpaper
+# change wallpaper (next)
 super + Y
     wallpaper next && wal
 
-# change wallpaper
+# change wallpaper (previous)
 super + control + y
     wallpaper previous && wal
 
-# wallpaper overview
+# show wallpaper overview in sxiv
 super + control + Y
     sxiv ~/.local/share/wallpapers/* && wal
 
-# shift focus to monitor Z
+# shift focus to monitor Z (dwm)
 super + z
     # handled by dwm
 
-# move active window to monitor Z
+# send selected window to monitor Z (dwm)
 super + Z
     # handled by dwm
 
@@ -239,7 +243,7 @@ super + Return
 super + shift + Return
     cd $HOME; $TERMINAL -n float
 
-# new floating ipython repl
+# new floating ipython shell
 super + control + Return
     cd $HOME; $TERMINAL -n float -e $HOME/.anaconda/bin/ipython
 
@@ -249,37 +253,45 @@ super + shift + equal
 
 # raise volume
 super + equal
-    amixer -D pulse set Master 5%+; dwm_status
+    notify-send "🔊 ↗"; amixer -D pulse set Master 5%+; dwm_status
 
 # lower volume
 super + minus
-    amixer -D pulse set Master 5%-; dwm_status
+    notify-send "🔉 ↘"; amixer -D pulse set Master 5%-; dwm_status
 
 # toggle mute volume
 super + shift + minus
-    amixer -D pulse set Master 1+ toggle; dwm_status
+    notify-send "🔊 ↔ 🔇"; amixer -D pulse set Master 1+ toggle; dwm_status
 
-# promote (zoom) window
+# promote (zoom) window (dwm)
 super + space
     # handled by dwm
 
-# promote monitor to master monitor
-super + control + space
-    # handled by dwm
-
-# toggle floating for current window
+# toggle floating for current window (dwm)
 super + shift + space
     # handled by dwm
 
-# toggle between previous tags
-super + Tab
+# promote monitor to master monitor (dwm)
+super + control + space
     # handled by dwm
 
-# cycle forward through layout list
+# swap windows between monitors (dwm)
+super + tab
+    # handled by dwm
+
+# change focus to last active monitor (dwm)
+super + shift + tab
+    # handled by dwm
+
+# toggle between last two active tags (dwm)
+super + control + tab
+    # handled by dwm
+
+# cycle forward through dwm layout list
 super + semicolon
     # handled by dwm
 
-# cycle backward through layout list
+# cycle backward through dwm layout list
 super + shift + semicolon
     # handled by dwm
 
@@ -287,103 +299,107 @@ super + slash
 
 super + apostrophe
 
-# focus on next monitor
+# focus on next monitor (dwm)
 super + comma
     # handled by dwm
 
-# focus on previous monitor
+# focus on previous monitor (dwm)
 super + period
     # handled by dwm
 
+# send window to next monitor (dwm)
 super + shift + comma
+    # handled by dwm
 
+# send window to previous monitor (dwm)
 super + shift + period
+    # handled by dwm
 
-# enable hidden tag
+# view hidden dwm tag
 super + grave
     # handled by dwm
 
-# apply hidden tag to focused window
+# move focused window to hidden dwm tag
 super + shift + grave
     # handled by dwm
 
-# enable all tags
+# enable all dwm tags (except hidden tag)
 super + 0
     # handled by dwm
 
-# apply all tags to focused windows
+# apply all dwm tags (except hidden tag) to visible windows
 super + shift + 0
     # handled by dwm
 
-# view all windows with tag #1
+# view all windows with dwm tag #1
 super + 1
     # handled by dwm
 
-# apply tag 1 to focused window
+# apply dwm tag 1 to focused window
 super + shift + 1
     # handled by dwm
 
-# view all windows with tag #2
+# view all windows with dwm tag #2
 super + 2
     # handled by dwm
 
-# apply tag 2 to focused window
+# apply dwm tag 2 to focused window
 super + shift + 2
     # handled by dwm
 
-# view all windows with tag #3
+# view all windows with dwm tag #3
 super + 3
     # handled by dwm
 
-# apply tag 3 to focused window
+# apply dwm tag 3 to focused window
 super + shift + 3
     # handled by dwm
 
-# view all windows with tag #4
+# view all windows with dwm tag #4
 super + 4
     # handled by dwm
 
-# apply tag 4 to focused window
+# apply dwm tag 4 to focused window
 super + shift + 4
     # handled by dwm
 
-# view all windows with tag #5
+# view all windows with dwm tag #5
 super + 5
     # handled by dwm
 
-# apply tag 5 to focused window
+# apply dwm tag 5 to focused window
 super + shift + 5
     # handled by dwm
 
-# view all windows with tag #6
+# view all windows with dwm tag #6
 super + 6
     # handled by dwm
 
-# apply tag 6 to focused window
+# apply dwm tag 6 to focused window
 super + shift + 6
     # handled by dwm
 
-# view all windows with tag #7
+# view all windows with dwm tag #7
 super + 7
     # handled by dwm
 
-# apply tag 7 to focused window
+# apply dwm tag 7 to focused window
 super + shift + 7
     # handled by dwm
 
-# view all windows with tag #8
+# view all windows with dwm tag #8
 super + 8
     # handled by dwm
 
-# apply tag 8 to focused window
+# apply dwm tag 8 to focused window
 super + shift + 8
     # handled by dwm
 
-# view all windows with tag #9
+# view all windows with dwm tag #9
 super + 9
     # handled by dwm
 
-# apply tag 9 to focused window
+# apply dwm tag 9 to focused window
 super + shift + 9
     # handled by dwm
 
@@ -393,11 +409,11 @@ super + Down
 
 # next song
 super + Right
-    timeout 1s playerctl next; notify-send "⏭"
+    notify-send "⏭"; timeout 1s playerctl next
 
 # previous song
 super + Left
-    timeout 1s playerctl previous; notify-send "⏮"
+    notify-send "⏮"; timeout 1s playerctl previous
 
 # select keyboard shortcut
 super + F1
@@ -405,15 +421,15 @@ super + F1
 
 # raise volume
 super + F2
-    amixer -D pulse set Master 5%+; dwm_status
+    notify-send "🔊 ↗"; amixer -D pulse set Master 5%+; dwm_status
 
 # lower volume
 super + F3
-    amixer -D pulse set Master 5%-; dwm_status
+    notify-send "🔉 ↘"; amixer -D pulse set Master 5%-; dwm_status
 
 # toggle mute volume
 super + F4
-    amixer -D pulse set Master 1+ toggle; dwm_status
+    notify-send "🔊 ↔ 🔇"; amixer -D pulse set Master 1+ toggle; dwm_status
 
 super + F5
 
@@ -425,61 +441,53 @@ super + F8
 
 # search the web with duckduckgo:
 super + F9
-    q=$(echo -ne "" | dmenu -p "duckduckgo:") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + shift + F9
-    q=$(echo -ne "" | dmenu -p "google:") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
 
 super + F10
 
 # decrease brightness
 super + F11
-    [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
+    notify-send "☀ ↘"; [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
 
 # increase brightness
 super + F12
-    xbacklight -inc 10; dwm_status
+    notify-send "☀ ↗"; xbacklight -inc 10; dwm_status
 
-# make screenshot
+# make a screenshot with flameshot
 Print
     flameshot gui
 
-# toggle pause / play
-Pause
-    notify-send "⏯"; ff-toggle-pause; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
-
-# sleep
-super + insert
-    lock_screen
-
 # mute volume
 XF86AudioMute
-    amixer -D pulse set Master 1+ toggle; dwm_status
+    notify-send "🔊 ↔ 🔇"; amixer -D pulse set Master 1+ toggle; dwm_status
 
 # lower volume
 XF86AudioLowerVolume
-    amixer -D pulse set Master 5%-; dwm_status
+    notify-send "🔉 ↘"; amixer -D pulse set Master 5%-; dwm_status
 
 # raise volume
 XF86AudioRaiseVolume
-    amixer -D pulse set Master 5%+; dwm_status
+    notify-send "🔊 ↗"; amixer -D pulse set Master 5%+; dwm_status
 
 # increase brightness
 XF86MonBrightnessUp
-    xbacklight -inc 10; dwm_status
+    notify-send "☀ ↗"; xbacklight -inc 10; dwm_status
 
 # decrease brightness
 XF86MonBrightnessDown
-    [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
+    notify-send "☀ ↘"; [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
 
 # next song
 XF86AudioNext
-    timeout 1s playerctl next; notify-send "⏭"
+    notify-send "⏭"; timeout 1s playerctl next
 
 # previous song
 XF86AudioPrev
-    timeout 1s playerctl previous; notify-send "⏮"
+    notify-send "⏮"; timeout 1s playerctl previous
 
 # toggle pause / play
 XF86AudioPause
@@ -491,29 +499,29 @@ XF86AudioPlay
 
 # toggle pause / play
 XF86AudioStop
-    killall ncmpcpp; killall spotifyd; killall spt; killall spotify; killall vlc; killall mpv
+    notify-send "⏹"; killall ncmpcpp; killall spotifyd; killall spt; killall spotify; killall vlc; killall mpv
 
 XF86AudioRewind
-    notify-send XF86AudioForward "rewind: no mapping"
+    notify-send "XF86AudioForward" "rewind: no mapping"
 
 XF86AudioForward
-    notify-send XF86AudioForward "forward: no mapping"
+    notify-send "XF86AudioForward" "forward: no mapping"
 
 XF86AudioRecord
-    notify-send XF86AudioRecord "record: no mapping"
+    notify-send "XF86AudioRecord" "record: no mapping"
 
 XF86AudioMedia
-    notify-send XF86AudioMedia "media: no mapping"
+    notify-send "XF86AudioMedia" "media: no mapping"
 
 # search the web with duckduckgo:
 XF86Search
-    q=$(echo -ne "" | dmenu -p "duckduckgo:") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 shift + XF86Search
-    q=$(echo -ne "" | dmenu -p "google:") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
 
-# new floating ipython repl
+# new floating ipython shell
 XF86Calculator
     cd $HOME; $TERMINAL -n float -e $HOME/.anaconda/bin/ipython
 
