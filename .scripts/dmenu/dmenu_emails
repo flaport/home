@@ -29,5 +29,5 @@ def get_emails(filename="~/.local/share/contacts/contacts.vcf"):
     return emails
 
 if __name__ == "__main__":
-    exit(main(get_emails))
+    exit(main(get_emails, " "))
 

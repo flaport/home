@@ -10,4 +10,4 @@ from functools import partial
 from python_dmenu_lib import *
 
 if __name__ == "__main__":
-    exit(main(partial(get_dict, os.path.expanduser("~/.scripts/dmenu/accents.txt"))))
+    exit(main(partial(get_dict, os.path.expanduser("~/.scripts/dmenu/accents.txt")), "á"))

@@ -21,8 +21,7 @@ with open(os.devnull, "w") as out:
 
 # functions
 def dmenu(list_in, prompt=""):
-    time.sleep(0.1)
-    prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
+    prompt = [] if not prompt else ["-p", prompt]
     try:
         dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
         choice = check_output(

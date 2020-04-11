@@ -40,15 +40,23 @@ def get_clipboard():
         return check_output(["xclip", "-selection", "clipboard", "-o"]).decode().replace("\n"," ")
     except CalledProcessError:
         return ""
-def dmenu(list_in, prompt=""):
-    dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
-    prompt = [] if not prompt else ["-p", prompt.replace(" ", "-")]
+
+def crop_line(line, length=35):
+    if len(line) < length:
+        return line
+    return f"{line[:length-3].strip()}..."
+
+def dmenu(list_in, prompt=" "):
+    dict_in = {crop_line(line): line for line in list_in}
+    dmenu_in = Popen(["echo", "\n".join(dict_in.keys())], stdout=PIPE).stdout
+    prompt = [] if not prompt else ["-p", prompt ]
     try:
         choice = check_output(
             ["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in
         ).decode().replace("\n", " ")
     except CalledProcessError:
         choice = ""
+    choice = dict_in.get(choice, choice)
     if "*" in choice:
         choice = choice.replace(" * ", f" {get_selection()} ")
     if "+" in choice:

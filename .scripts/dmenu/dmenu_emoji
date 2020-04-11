@@ -21,5 +21,5 @@ def get_emojis(filename="~/.scripts/dmenu/emoji.txt"):
     return emojis
 
 if __name__ == "__main__":
-    exit(main(get_emojis))
+    exit(main(get_emojis, "😀"))
 

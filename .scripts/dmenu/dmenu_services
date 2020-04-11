@@ -26,7 +26,7 @@ while read line;  do
     echo "[$(systemctl is-active $line)] $line"
 done <<< $((preferred-services | sort) && (other-services | sort)))
 
-service=$(printf "$services" | sed 's/\[active\]/ [stop]/g' | sed 's/\[activating\]/ [stop]/g' | sed 's/\[inactive\]/[start]/g' | dmenu -p "toggle service" "$@" | sed 's/\ *\[.*\]\ //g')
+service=$(printf "$services" | sed 's/\[active\]/ [stop]/g' | sed 's/\[activating\]/ [stop]/g' | sed 's/\[inactive\]/[start]/g' | dmenu -p " " "$@" | sed 's/\ *\[.*\]\ //g')
 
 if [ -z "$service" ]; then
     exit 1
