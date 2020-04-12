@@ -47,7 +47,7 @@ git init .
 add this git repository (or your fork) as origin:
 
 ```
-git remote add origin http://github.com/flaport/arch_home
+git remote add origin http://github.com/flaport/arch-home
 ```
 
 pull the repository:
