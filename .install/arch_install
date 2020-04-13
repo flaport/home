@@ -100,7 +100,9 @@ pacman_install(){ # will only install the first argument!
     printf "sudo pacman -S --noconfirm --noprogress $1\n" >> $LOG
     printf "sudo pacman -S --noconfirm --noprogress $1\n" >> $ERR
     echo $password | sudo -S pacman -S --noconfirm --noprogress $1 >> $LOG 2>> $ERR
-    echo_success $?
+    success=$?
+    echo_success $success
+    return $success
 }
 
 yay_install(){ # will only install the first argument!
@@ -120,7 +122,9 @@ yay_install(){ # will only install the first argument!
     printf "yay -S -q --noconfirm $1\n" >> $LOG
     printf "yay -S -q --noconfirm $1\n" >> $ERR
     yay -S -q --noconfirm $1 >> $LOG 2>> $ERR
-    echo_success $?
+    success=$?
+    echo_success $success
+    return $success
 }
 
 git_install(){ # will only install the first argument!
@@ -151,7 +155,8 @@ git_install(){ # will only install the first argument!
     printf "makepkg -si --noconfirm --noprogress\n" >> $LOG
     printf "makepkg -si --noconfirm --noprogress\n" >> $ERR
     makepkg -si --noconfirm --noprogress >> $LOG 2>> $ERR
-    echo_success $?
+    success=$?
+    echo_success $success
 
     printf "cd ~\n" >> $LOG
     printf "cd ~\n" >> $ERR
@@ -161,6 +166,7 @@ git_install(){ # will only install the first argument!
     printf "rm -rf /tmp/gitpkg\n" >> $ERR
     rm -rf /tmp/gitpkg >> $LOG 2>> $ERR
 
+    return $success
 }
 
 submodule_install(){ # will only install the first argument!
@@ -183,13 +189,16 @@ submodule_install(){ # will only install the first argument!
     echo $password | sudo -S make clean >> $LOG 2>> $ERR
     echo $password | sudo -S make all >> $LOG 2>> $ERR
     echo $password | sudo -S make install >> $LOG 2>> $ERR
-    echo_success $?
+    success=$?
+    echo_success $success
     echo $password | sudo -S make clean >> $LOG 2>> $ERR
     echo $password | rm -f config.h >> $LOG 2>> $ERR
 
     printf "cd $HOME\n" >> $LOG
     printf "cd $HOME\n" >> $ERR
     cd $HOME >> $LOG 2>> $ERR
+
+    return $success
 }
 
 pip3_install() {
@@ -199,7 +208,9 @@ pip3_install() {
     printf "sudo /usr/bin/python3 -m pip install $1\n" >> $LOG
     printf "sudo /usr/bin/python3 -m pip install $1\n" >> $ERR
     echo $password | sudo -S /usr/bin/python3 -m pip install $1 >> $LOG 2>> $ERR
-    echo_success $?
+    success=$?
+    echo_success $success
+    return $success
 }
 
 pip2_install() {
@@ -209,7 +220,9 @@ pip2_install() {
     printf "sudo /usr/bin/python2 -m pip install $1\n" >> $LOG
     printf "sudo /usr/bin/python2 -m pip install $1\n" >> $ERR
     echo $password | sudo -S /usr/bin/python2 -m pip install $1 >> $LOG 2>> $ERR
-    echo_success $?
+    success=$?
+    echo_success $success
+    return $success
 }
 
 systemctl_create() {
@@ -237,7 +250,9 @@ systemctl_enable() {
     printf "sudo systemctl enable $1\n" >> $ERR
     echo $password | sudo -S systemctl enable $1 >> $LOG 2>> $ERR
     [[ $1 != "lightdm" && $1 != "NetworkManager" ]] && echo $password | sudo -S systemctl restart $1 >> $LOG 2>> $ERR
-    echo_success $?
+    success=$?
+    echo_success $success
+    return $success
 }
 
 link() {
@@ -250,7 +265,9 @@ link() {
         echo $password | sudo -S mv $2 $2.bak  >> $LOG 2>> $ERR
     fi
     echo $password | sudo -S ln -sf $1 $2  >> $LOG 2>> $ERR
-    echo_success $?
+    success=$?
+    echo_success $success
+    return $success
 }
 
 
@@ -270,6 +287,8 @@ git_install https://aur.archlinux.org/yay.git
 echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf >> $LOG 2>> $ERR
 # install scripts for bootstrapping new arch installations
 pacman_install arch-install-scripts
+# calcurse: a terminal calendar client
+pacman_install calcurse
 # search tool
 pacman_install grep
 # alternative search tool
@@ -408,6 +427,7 @@ pacman_install sshfs
 # the graphical server
 # pacman_install xorg
 pacman_install xorg-server
+pacman_install xorg-server-devel
 # querying window information
 # pacman_install xorg-xwininfo
 # initializing (for starting the window manager without display manager)
@@ -544,7 +564,7 @@ pacman_install autossh
 pacman_install bluez
 pacman_install bluez-utils
 pacman_install pulseaudio-bluetooth
-# pacman_install blueman
+# enable bluetooth service
 systemctl_enable bluetooth
 # remote desktop
 pacman_install remmina
@@ -700,6 +720,10 @@ pacman_install zathura-djvu
 yay_install etcher-bin
 # anki: a flashcard program
 pacman_install anki
+# pulseaudio control panel
+pacman_install pavucontrol
+# bluetooth manager (run blueman-manager)
+pacman_install blueman
 
 
 ## Images, video and media
@@ -759,7 +783,7 @@ yay_install joplin
 ## Programming
 # code OSS (open source build of vscode)
 pacman_install code
-if [ ?$ == 0 ]; then
+if [ $? -eq 0 ]; then
     code --install-extension vscodevim.vim >> $LOG 2>> $ERR
     code --install-extension ban.spellright >> $LOG 2>> $ERR
     code --install-extension wholroyd.jinja >> $LOG 2>> $ERR
@@ -784,6 +808,9 @@ pacman_install firefox
 submodule_install legacyfox
 # chromium
 pacman_install chromium
+# chromium with vaapi hardware acceleration (custom chromium needs to be compiled, takes AGES!)
+# yay_install chromium-vaapi
+# the name says it all (custom chromium needs to be compiled, takes AGES!):
 # yay_install ungoogled-chromium
 # vimb: vim-like browser
 # pacman_install vimb
@@ -815,27 +842,32 @@ pacman_install lynx
 # yay_install mutt-wizard
 
 
-## Hardware acceleration (DANGER ZONE, only change things if you know what you're doing)
-# 3D acceleration driver
-# sudo pacman -S mesa
-# intel driver
-# pacman_install libva-intel-driver
-# mesa driver
+## Hardware acceleration
+# (DANGER ZONE, this may break video output!)
+pacman_install vainfo
+pacman_install vdpauinfo
+
+# configuration for intel graphics:
+pacman_install intel-media-driver
+pacman_install libva-intel-driver
+# yay_install libva-intel-driver-g45-h264
+
+# configuration for nvidia open-source nouveau driver (i cannot get this to work):
 # pacman_install libva-mesa-driver
-# accelleration for X
-# pacman_install xf86-video-nouveau
-# some utilities
-# pacman_install libva-utils
-# nouveau proprietary firmware
+# pacman_install mesa-vdpau
 # yay_install nouveau-fw
-# nvidia driver
+# pacman_install libva-utils
+# yay_install intel-opencl
+
+# configuration for proprietary nvidia driver (i cannot get this to work):
 # pacman_install nvidia
-# pacman_install vdpauinfo
-# translation layer:
+# pacman_install nvidia-utils
+# pacman_install nvidia-settings
+# pacman_install opencl-nvidia
 # pacman_install libva-vdpau-driver
-# patched alternative translation layer:
-# yay_install libva-vdpau-driver-chromium
-# deep learning:
+# pacman_install libva-va-gl
+
+# deep learning (needs nvidia):
 # pacman_install cuda-toolkit
 
 
