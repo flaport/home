@@ -657,6 +657,9 @@ systemctl_enable org.cups.cupsd
 ## Fonts
 # fontconfig should already be installed, but just to be sure:
 pacman_install fontconfig
+# link personal fontconfig to system wide config for better coverage:
+link $HOME/.config/fontconfig/conf.d/45-generic.conf /etc/fonts/conf.d/45-generic.conf
+link $HOME/.config/fontconfig/conf.d/60-generic.conf /etc/fonts/conf.d/60-generic.conf
 # my preferred serif font.
 pacman_install ttf-linux-libertine
 # my preferred sans-serif (+ chromium dependency)
@@ -672,7 +675,7 @@ yay_install nerd-fonts-hack
 # specific symbols for powerlines (recommended dependency for my st build)
 pacman_install powerline-fonts
 # unicode symbols / emojis (these are standard unicode symbols, hence different than awesome terminal fonts!)
-# yay_install ttf-symbola
+yay_install ttf-symbola-free
 # yay_install ttf-twemoji-color
 # pacman_install noto-fonts-emoji
 pacman_install ttf-joypixels
