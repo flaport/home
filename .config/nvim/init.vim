@@ -156,6 +156,9 @@ set foldcolumn=2
 " lower updatetime (for vim signify)
 set updatetime=200
 
+" better autocomplete:
+set wildmode=longest,list,full
+
 " show status bar (variable is for toggle functionality <leader>b)
 let s:status_hidden = 0
 set showmode
