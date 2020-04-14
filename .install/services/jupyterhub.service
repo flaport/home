@@ -10,8 +10,8 @@ Description=Jupyterhub
 After=syslog.target network.target
 
 [Service]
-User=root
-WorkingDirectory=/root
+User={USER}
+WorkingDirectory={HOME}
 Environment="PATH={HOME}/.anaconda/bin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 ExecStart={HOME}/.anaconda/bin/jupyterhub -f {HOME}/.jupyter/jupyterhub_config.py
 
