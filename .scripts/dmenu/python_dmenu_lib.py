@@ -78,14 +78,7 @@ def middle_click():
     return call(["xdotool", "click", "2"])
 
 def paste(windowname, content):
-    if windowname in {"st", "xterm", "urxvt"}:
-        if not has_xdotool:
-            notify(f"'{content}' copied to clipboard.")
-            exit(0)
-        middle_click()
-    elif pyautogui is not None:
-        middle_click()
-        pyautogui.press("apps")
+    if pyautogui is not None and not windowname in {"st", "xterm", "urxvt"}:
         pyautogui.hotkey("ctrl", "v")
     elif has_xdotool:
         middle_click()
