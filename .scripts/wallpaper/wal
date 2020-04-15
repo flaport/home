@@ -25,7 +25,7 @@ else
 fi
 
 # apply colors to dwm:
-xsetroot -name "fsignal:1" &> /dev/null
+xsetroot -name "fsignal:3" &> /dev/null
 
 exit $exitcode
 

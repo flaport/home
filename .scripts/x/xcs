@@ -165,8 +165,7 @@ def set_zathura_recolor(xresources):
         file.write(f'set recolor-darkcolor "{darkcolor}"\nset recolor-lightcolor "{lightcolor}"')
 
 def set_dwm_colors(xresources):
-    # my dwm build listens to fsignal:1 to update colors
-    subprocess.call(["xsetroot", "-name", "fsignal:1"])
+    subprocess.call(["xsetroot", "-name", "fsignal:3"])
 
 def set_rofi_colors(xresources):
     # write some colors to ~/.config/rofi/xresources-colors to use in xresources-theme.rasi

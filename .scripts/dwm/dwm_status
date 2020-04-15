@@ -92,7 +92,7 @@ status(){
         fi
     done
     unicodespace=$(printf "\u$(printf %u 2000)") # unicode space U+2000 (replace all normal spaces by this one bc normal space is reserved as a possible delimiter)
-    rootname="$(echo $rootname | sed "s/[ ]/$unicodespace/g" | sed "s/$tempdelim/$DELIM/g" | sed "s/$DELIM\$//g" )"
+    rootname="$unicodespace$unicodespace$(echo $rootname | sed "s/[ ]/$unicodespace/g" | sed "s/$tempdelim/$DELIM/g" | sed "s/$DELIM\$//g" )$unicodespace"
     xsetroot -name "$rootname" &> /dev/null
     mkdir -p $HOME/.cache
     echo $rootname > $HOME/.cache/dwm_status 2> /dev/null
