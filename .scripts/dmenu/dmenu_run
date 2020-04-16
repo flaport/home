@@ -50,10 +50,9 @@ def dmenu(list_in, prompt=" "):
     dict_in = {crop_line(line): line for line in list_in}
     dmenu_in = Popen(["echo", "\n".join(dict_in.keys())], stdout=PIPE).stdout
     prompt = [] if not prompt else ["-p", prompt ]
+    command = ["dmenu"] + prompt + sys.argv[1:]
     try:
-        choice = check_output(
-            ["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in
-        ).decode().replace("\n", " ")
+        choice = check_output(command , stdin=dmenu_in).decode().replace("\n", " ")
     except CalledProcessError:
         choice = ""
     choice = dict_in.get(choice, choice)
