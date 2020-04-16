@@ -217,15 +217,15 @@ super + y
 
 # change wallpaper (next)
 super + Y
-    wallpaper next && wal
+    wallpaper next
 
 # change wallpaper (previous)
 super + control + y
-    wallpaper previous && wal
+    wallpaper previous
 
 # show wallpaper overview in sxiv
 super + control + Y
-    sxiv ~/.local/share/wallpapers/* && wal
+    sxiv ~/.local/share/wallpapers/*
 
 # shift focus to monitor Z (dwm)
 super + z
