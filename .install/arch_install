@@ -847,7 +847,7 @@ pacman_install lynx
 
 ## Hardware acceleration
 # (DANGER ZONE, this may break video output!)
-pacman_install vainfo
+pacman_install libva-utils
 pacman_install vdpauinfo
 
 # configuration for intel graphics:
