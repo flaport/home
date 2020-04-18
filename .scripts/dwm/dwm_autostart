@@ -45,12 +45,12 @@ start xautolock -time 10 -locker validate_and_lock_screen
 start unclutter
 
 # conky dashboards
-start conky -c $HOME/.config/conky/conky.conf -x 60
-start conky -c $HOME/.config/conky/conky.conf -x -1860
-start conky -c $HOME/.config/conky/conky.conf -x -3780
+start conky -x 60
+start conky -x -1860
+start conky -x -3780
 
 # update xrdb database
-start xrdb ~/.Xresources
+start xrdb $HOME/.Xresources
 
 # set cursor speed
 # wrapped into loop, as sometimes this inexplicably stops working
@@ -99,5 +99,5 @@ while true; do
     sleep 3590s
 done &
 
-# export your desired screenlayout with `arandr`
+# export possible screenlayouts and set default one with `arandr`
 sleep 1 && default_screenlayout &> /dev/null &
