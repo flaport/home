@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Skype
 Comment=Skype Internet Telephony
-Exec=/usr/bin/taskset --cpu-list 1 /usr/bin/skypeforlinux %U
+Exec=/usr/bin/skypeforlinux %U
 Icon=skypeforlinux
 Terminal=false
 Type=Application

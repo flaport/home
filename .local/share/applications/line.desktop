@@ -1,4 +1,4 @@
 [Desktop Entry]
-Exec=chromium --app=chrome-extension://ophjlpahpchlmihnnnihgmmeilfjmjjc/index.html &>/dev/null & disown
+Exec=chromium --app=chrome-extension://ophjlpahpchlmihnnnihgmmeilfjmjjc/index.html
 Name=LINE
 Icon=/usr/local/share/icons/line.png # add this icon yourself.

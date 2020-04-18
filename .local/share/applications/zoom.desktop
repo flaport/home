@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Zoom
 Comment=Zoom Video Conference
-Exec=/usr/bin/taskset --cpu-list 1 /usr/bin/zoom %U
+Exec=/usr/bin/zoom %U
 Icon=Zoom.png
 Terminal=false
 Type=Application
