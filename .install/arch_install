@@ -249,7 +249,7 @@ systemctl_enable() {
     printf "sudo systemctl enable $1\n" >> $LOG
     printf "sudo systemctl enable $1\n" >> $ERR
     echo $password | sudo -S systemctl enable $1 >> $LOG 2>> $ERR
-    [[ $1 != "lightdm" && $1 != "NetworkManager" ]] && echo $password | sudo -S systemctl restart $1 >> $LOG 2>> $ERR
+    [[ $1 != "lightdm" && $1 != "NetworkManager" && $1 != "bluetooth" ]] && echo $password | sudo -S systemctl restart $1 >> $LOG 2>> $ERR
     success=$?
     echo_success $success
     return $success
@@ -813,6 +813,8 @@ submodule_install legacyfox
 pacman_install chromium
 # chromium with vaapi hardware acceleration (custom chromium needs to be compiled, takes AGES!)
 # yay_install chromium-vaapi
+# to make hw acceleration actually work, you need this:
+pacman_install gstreamer-vaapi
 # the name says it all (custom chromium needs to be compiled, takes AGES!):
 # yay_install ungoogled-chromium
 # vimb: vim-like browser
@@ -846,29 +848,40 @@ pacman_install lynx
 
 
 ## Hardware acceleration
-# (DANGER ZONE, this may break video output!)
+# I usually download all options and configure
+# LIBVA_DRIVER_NAME and VDPAU_DRIVER in /etc/environment
+# libva status and utilities
 pacman_install libva-utils
+# vdpau status and utilities
 pacman_install vdpauinfo
-
-# configuration for intel graphics:
+# intel gpu tools
+pacman_install intel-gpu-tools
+# proprietary nvidia driver [nvidia]
+pacman_install nvidia
+pacman_install nvidia-utils
+pacman_install nvidia-settings
+pacman_install nvtop
+# better nvidia-support for nouveau driver [nouveau]:
+yay_install nouveau-fw
+# libva intel driver [iHD]:
 pacman_install intel-media-driver
+# alternative libva intel driver [i965]:
 pacman_install libva-intel-driver
+# alternative libva intel driver [i965]:
 # yay_install libva-intel-driver-g45-h264
+# libva nouveau driver [nouveau]:
+pacman_install libva-mesa-driver
+pacman_install mesa-vdpau
+# libva translation from vdpau [vdpau]
+#pacman_install libva-vdpau-driver
+yay_install libva-vdpau-driver-chromium
+# vdpau intel driver (derived from libva) [va_gl]:
+pacman_install libvdpau-va-gl
+# vdpau nouveau driver [nouveau]:
+pacman_install mesa-vdpau
+# libva configuration (intel integrated graphics):
+grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || printf "LIBVA_DRIVER_NAME=\"iHD\"\nVDPAU_DRIVER=\"va_gl\"" | sudo tee /etc/environment
 
-# configuration for nvidia open-source nouveau driver (i cannot get this to work):
-# pacman_install libva-mesa-driver
-# pacman_install mesa-vdpau
-# yay_install nouveau-fw
-# pacman_install libva-utils
-# yay_install intel-opencl
-
-# configuration for proprietary nvidia driver (i cannot get this to work):
-# pacman_install nvidia
-# pacman_install nvidia-utils
-# pacman_install nvidia-settings
-# pacman_install opencl-nvidia
-# pacman_install libva-vdpau-driver
-# pacman_install libva-va-gl
 
 # deep learning (needs nvidia):
 # pacman_install cuda-toolkit
