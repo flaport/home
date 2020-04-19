@@ -7,11 +7,11 @@
 
 # decrease alpha of windows
 super + a
-    alpha set -10 && dwm_status
+    alpha set -5 && dwm_status
 
 # increase alpha of windows
 super + A
-    alpha set +10 && dwm_status
+    alpha set +5 && dwm_status
 
 # connect to already paired bluetooth device
 super + b
