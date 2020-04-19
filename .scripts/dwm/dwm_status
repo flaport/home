@@ -155,7 +155,7 @@ battery(){ # battery
         [ "$pct" -gt 60 ] && echo " $pct%" && return
         [ "$pct" -gt 30 ] && echo " $pct%" && return
         [ "$pct" -gt  5 ] && echo " $pct%" && return
-        echo "$pct\%" && return
+        echo " $pct%" && return
     fi
     echo " $pct%"
 }
