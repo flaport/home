@@ -189,19 +189,19 @@ super + V
 
 # start firefox
 super + w
-    /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window
+    /usr/lib/firefox/firefox --new-window
 
 # start chromium
 super + W
-    /usr/bin/taskset --cpu-list 2 /usr/bin/chromium --new-window
+    /usr/bin/chromium --new-window
 
 # search the web with duckduckgo:
 super + control + w
-    q=$(printf "" | dmenu -p "🦆 ") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + control + W
-    q=$(printf "" | dmenu -p " ") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && /usr/bin/chromium --new-window "https://google.com/search?q=$q"
 
 # shift focus to monitor X (dwm)
 super + x
@@ -441,11 +441,11 @@ super + F8
 
 # search the web with duckduckgo:
 super + F9
-    q=$(printf "" | dmenu -p "🦆 ") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + shift + F9
-    q=$(printf "" | dmenu -p " ") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && /usr/bin/chromium --new-window "https://google.com/search?q=$q"
 
 super + F10
 
@@ -515,11 +515,11 @@ XF86AudioMedia
 
 # search the web with duckduckgo:
 XF86Search
-    q=$(printf "" | dmenu -p "🦆 ") && /usr/bin/taskset --cpu-list 3 /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && /usr/lib/firefox/firefox --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 shift + XF86Search
-    q=$(printf "" | dmenu -p " ") && /usr/bin/taskset --cpu-list 3 /usr/bin/chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && /usr/bin/chromium --new-window "https://google.com/search?q=$q"
 
 # new floating ipython shell
 XF86Calculator
