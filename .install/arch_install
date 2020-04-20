@@ -392,8 +392,8 @@ pacman_install translate-shell
 # whois information
 pacman_install whois
 # cronie: cron job daemon
-# pacman_install cronie
-# systemctl_enable cronie
+pacman_install cronie
+systemctl_enable cronie
 # ncmpcpp: terminal music client
 pacman_install ncmpcpp
 # spotify daemon (dependency for spotify-tui)
@@ -536,6 +536,8 @@ systemctl_enable mpd
 # network manager
 pacman_install networkmanager
 systemctl_enable NetworkManager
+# use cloudflare DNS servers:
+printf "[global-dns-domain-*]\nservers=1.1.1.1,1.0.0.1" | sudo tee /etc/NetworkManager/conf.d/dns-servers.conf > /dev/null 2>> $ERR
 # create network group (this might fail if the group exists already, but who cares.)
 groupadd network >> $LOG 2>> $ERR
 # create policy kit rule (everyone in network group can connect to / change networks)
