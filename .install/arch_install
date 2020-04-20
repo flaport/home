@@ -955,7 +955,7 @@ pacman_install python-cjkwrap
 pacman_install python-coverage
 pacman_install python-beautifulsoup4
 yay_install python-mpv
-yay_insall castero
+yay_install castero
 # neovim-remote needed for synctex
 pip3_install neovim-remote
 # image previews in terminal
