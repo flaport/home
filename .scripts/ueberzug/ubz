@@ -18,7 +18,7 @@ import subprocess
 import ueberzug.lib.v0 as ueberzug
 
 # Constants
-EXTS = {".png", ".jpg", ".jpeg", ".svg", ".JPG", ".JPEG", ".PNG"}
+EXTS = {".png", ".jpg", ".jpeg", ".svg", ".pdf", ".JPG", ".JPEG", ".PNG"}
 
 # Functions
 def usage(stdout=sys.stderr, exitcode=1):
@@ -65,8 +65,8 @@ def wait_for_any_input():
     return ch
 
 def draw(path, xywh=None):
-    if path.endswith(".svg"):
-        return show_svg(path, xywh=xywh)
+    if any(path.endswith(ext) for ext in [".svg", ".pdf"]):
+        return show_inkscape(path, xywh=xywh)
     if not xywh or len(xywh) != 4:
         xywh = (0, 0, 100, 50)
 
@@ -77,7 +77,7 @@ def draw(path, xywh=None):
         demo.visibility = ueberzug.Visibility.VISIBLE
         return wait_for_any_input()
 
-def show_svg(path, xywh=None):
+def show_inkscape(path, xywh=None):
     with open(os.devnull, "w") as devnull:
         subprocess.call(["inkscape", path, "-e", "/tmp/ubz.png"], stdout=devnull, stderr=devnull)
     return draw("/tmp/ubz.png", xywh=xywh)
