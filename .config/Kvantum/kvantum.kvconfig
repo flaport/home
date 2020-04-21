@@ -1,7 +1,5 @@
 [General]
-theme=KvAdaptaDark#
+theme=Nordic#
 
 [Applications]
-KvArc=klayout
-KvArc=anki
-
+KvArc=anki, klayout
