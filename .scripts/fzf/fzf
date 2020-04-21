@@ -6,7 +6,7 @@ export FZF_UBZ_FIFO="$(mktemp --dry-run --suffix "fzf-ubz-$$")"
 # Open Ueberzug fifo:
 mkfifo "${FZF_UBZ_FIFO}"
 <"${FZF_UBZ_FIFO}" \
-ueberzug layer --parser bash --silent &
+ueberzug layer --parser bash --silent &> /dev/null &
 # prevent EOF
 3>"${FZF_UBZ_FIFO}" \
 exec

@@ -11,13 +11,15 @@ PREVIEW=""
 [[ ! -z $2 ]] && LINESSHOWN=$2 || LINESSHOWN=51
 
 # dummy ueberzug preview (note that path is empty -> no preview):
-< <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
->"${FZF_UBZ_FIFO}" declare -A -p cmd=( \
-    [action]=add [identifier]="preview" \
-    [x]="0" [y]="0" \
-    [width]="${FZF_PREVIEW_COLUMNS}" [height]="${FZF_PREVIEW_LINES}" \
-    [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
-    [path]="")
+if [ ! -z "$DISPLAY" ]; then
+    < <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
+    >"${FZF_UBZ_FIFO}" declare -A -p cmd=( \
+        [action]=add [identifier]="preview" \
+        [x]="0" [y]="0" \
+        [width]="${FZF_PREVIEW_COLUMNS}" [height]="${FZF_PREVIEW_LINES}" \
+        [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
+        [path]="")
+fi
 
 
 if [ ! -d $FILENAME ] 2> /dev/null && [ ! -f "$FILENAME" ] 2> /dev/null; then
@@ -65,16 +67,18 @@ if [[ $FILENAME == *.png || $FILENAME == *.jpg || $FILENAME == *.jpeg || $FILENA
     [[ $FILENAME == *.mp4 ]] && ffmpeg -y -i $FILENAME -ss 00:00:01.000 -vframes 1 /tmp/fzf-ubz-preview.png &> /dev/null && FILENAME=/tmp/fzf-ubz-preview.png
     [[ $FILENAME == *.svg ]] && inkscape "$FILENAME" -e /tmp/fzf-ubz-preview.png &> /dev/null && FILENAME=/tmp/fzf-ubz-preview.png
     # ueberzug preview:
-    < <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
-    X=$((TERMINAL_COLUMNS - FZF_PREVIEW_COLUMNS - 3))
-    Y=$((TERMINAL_LINES - FZF_PREVIEW_LINES - 1))
-    [ "$FZF_UBZ_LINE" -lt "$Y" ] 2> /dev/null && Y="$FZF_UBZ_LINE"
-    >"${FZF_UBZ_FIFO}" declare -A -p cmd=( \
-        [action]=add [identifier]="preview" \
-        [x]="${X}" [y]="${Y}" \
-        [width]="${FZF_PREVIEW_COLUMNS}" [height]="${FZF_PREVIEW_LINES}" \
-        [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
-        [path]="${FILENAME}")
+    if [ ! -z "$DISPLAY" ]; then
+        < <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
+        X=$((TERMINAL_COLUMNS - FZF_PREVIEW_COLUMNS - 3))
+        Y=$((TERMINAL_LINES - FZF_PREVIEW_LINES - 1))
+        [ "$FZF_UBZ_LINE" -lt "$Y" ] 2> /dev/null && Y="$FZF_UBZ_LINE"
+        >"${FZF_UBZ_FIFO}" declare -A -p cmd=( \
+            [action]=add [identifier]="preview" \
+            [x]="${X}" [y]="${Y}" \
+            [width]="${FZF_PREVIEW_COLUMNS}" [height]="${FZF_PREVIEW_LINES}" \
+            [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
+            [path]="${FILENAME}")
+    fi
     exit
 fi
 
