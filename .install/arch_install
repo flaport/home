@@ -423,21 +423,20 @@ pacman_install sshfs
 
 
 ## Graphical server: xorg
-# the graphical server
+# install everything from xorg:
 # pacman_install xorg
+# install just the graphical server
 pacman_install xorg-server
-pacman_install xorg-server-devel
-# querying window information
-# pacman_install xorg-xwininfo
+# install the xorg server development packages
+# pacman_install xorg-server-devel
 # initializing (for starting the window manager without display manager)
 pacman_install xorg-xinit
+# querying window information
+# pacman_install xorg-xwininfo
 # tool for detecting window properties
 pacman_install xorg-xprop
 # tool for showing x event names
 pacman_install xorg-xev
-# for transparent windows etc.
-# pacman_install xcompmgr
-pacman_install picom
 # get info on current active windows
 # pacman_install xorg-xdpyinfo
 # virtual x server
@@ -450,6 +449,10 @@ yay_install xurls
 # yay_install xcape-git
 # viewer with synctex support, and some custom plugins
 pacman_install xdotool
+# compositor (for transparent windows, blur, ...)
+# pacman_install xcompmgr
+# better compositor:
+pacman_install picom
 # libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
 # the reason it is installed this way is because this library replaces libxft
 # requiring you to answer yes on a [y/N] question...
@@ -863,6 +866,8 @@ pacman_install vdpauinfo
 pacman_install intel-gpu-tools
 # proprietary nvidia driver [nvidia]
 pacman_install nvidia
+# force 96 dpi when nvidia driver is in use (nvidia might default to 75 dpi, resulting in smaller font rendering)
+grep dpi /etc/X11/xinit/xserverrc &> /dev/null || sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
 pacman_install nvidia-utils
 pacman_install nvidia-settings
 pacman_install nvtop
