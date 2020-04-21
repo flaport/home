@@ -451,11 +451,11 @@ super + F10
 
 # decrease brightness
 super + F11
-    notify-send "☀ ↘"; [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
+    notify-send "☀ ↘"; [ $(printf %.0f $(light)) -gt 15 ] && light -U 10; dwm_status
 
 # increase brightness
 super + F12
-    notify-send "☀ ↗"; xbacklight -inc 10; dwm_status
+    notify-send "☀ ↗"; light -A 10; dwm_status
 
 # make a screenshot with flameshot
 Print

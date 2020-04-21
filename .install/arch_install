@@ -403,7 +403,6 @@ yay_install spotify-tui
 # playerctl: terminal client to control spotify, spotifyd, vlc, ...
 pacman_install playerctl
 
-
 ## Drive and file system drivers
 # mount cifs parititions
 pacman_install cifs-utils
@@ -451,15 +450,6 @@ yay_install xurls
 # yay_install xcape-git
 # viewer with synctex support, and some custom plugins
 pacman_install xdotool
-# for changing brightness etc:
-pacman_install xorg-xbacklight
-# correct settings for xorg-xbacklight:
-cat /etc/X11/xorg.conf 2> /dev/null | grep "Intel Graphics" &> /dev/null
-already_configured=$?
-if [ -d /sys/class/backlight/intel_backlight ] && [ $already_configured -ne 0 ]; then
-    pacman_install xf86-video-intel
-    printf "\nSection \"Device\"\n    Identifier \"Intel Graphics\"\n    Driver \"intel\"\n    Option \"Backlight\" \"intel_backlight\"\nEndSection\n" | sudo tee -a /etc/X11/xorg.conf &> /dev/null
-fi
 # libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
 # the reason it is installed this way is because this library replaces libxft
 # requiring you to answer yes on a [y/N] question...
@@ -473,6 +463,13 @@ pacman_install i3lock
 pacman_install xorg-xsetroot
 # sxhkd: keyboard shortcuts daemon
 pacman_install sxhkd
+# light: CLI utility to change backlight value of laptops
+pacman_install light
+# allow only users in video group to make changes to backlight
+groupadd video >> $LOG 2>> $ERR
+echo $password | sudo -S usermod -a -G video $USER
+echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chgrp video /sys/class/backlight/%k/brightness\"" | sudo tee /etc/udev/rules.d/backlight.rules > /dev/null 2> $ERR
+echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chmod g+w /sys/class/backlight/%k/brightness\"" | sudo tee -a /etc/udev/rules.d/backlight.rules > /dev/null 2> $ERR
 # xautolock to automatically lock the screen
 pacman_install xautolock
 # wallpapers

@@ -175,20 +175,10 @@ battery1(){ # mouse-button 1 action for battery widget
 # -----------
 
 brightness(){ # screen brightness
-    dir=/sys/class/backlight/intel_backlight
-    if [ ! -d $dir ]; then
-        echo ""
-        return
-    fi
-    max_brightness=$(cat $dir/max_brightness)
-    brightness=$(cat $dir/brightness)
-    python -c "print(' %.0f'%(100*$brightness/$max_brightness)+'%')"
+    printf " %.0f%%" $(light)
 }
 brightness1(){ # mouse-button 1 action for brightness widget
-    dir=/sys/class/backlight/intel_backlight
-    max_brightness=$(cat $dir/max_brightness)
-    brightness=$(cat $dir/brightness)
-    brightness=$(python -c "print('%.0f'%(100*$brightness/$max_brightness)+'%')")
+    brightness=$(printf "%.0f%%" $(light))
     notify-send "☀ brightness [$brightness]" "\n[  + F11: brightness up   ]\n[  + F12: brightness down ]"
 }
 
