@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0.201
+Name=Joplin
+Comment=Joplin note taking app
+Exec=/usr/bin/joplin-desktop %U
+Icon=/usr/share/joplin/resources/build/icons/128x128.png
+Terminal=false
+Type=Application
+Categories=Application;Office;
