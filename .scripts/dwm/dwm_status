@@ -11,6 +11,10 @@
 # the widget delimiter:
 DELIM=$(printf "\x$(printf %x 32)") # 32: standard ascii space (make sure the ascii code matches with the one defined in dwm's config.h !)
 
+# folder where widgets and status bar will be cached:
+CACHEDIR="$HOME/.cache/dwm_status"
+mkdir -p "$CACHEDIR"
+
 # The widget array determines which widgets are included in the status bar.
 # Each included widget needs to be defined below by a function with the same name.
 
@@ -94,8 +98,7 @@ status(){
     unicodespace=$(printf "\u$(printf %u 2000)") # unicode space U+2000 (replace all normal spaces by this one bc normal space is reserved as a possible delimiter)
     rootname="$unicodespace$unicodespace$(echo $rootname | sed "s/[ ]/$unicodespace/g" | sed "s/$tempdelim/$DELIM/g" | sed "s/$DELIM\$//g" )$unicodespace"
     xsetroot -name "$rootname" &> /dev/null
-    mkdir -p $HOME/.cache
-    echo $rootname > $HOME/.cache/dwm_status 2> /dev/null
+    echo $rootname > "$CACHEDIR/status" 2> /dev/null
 }
 
 
@@ -430,20 +433,20 @@ pacmanstatus2(){ # update packages
 
 playercontrol(){ # toggle a service
     # the icon needs to be cached as sometimes playerctl gives Stopped when nothing has happened.
-    previous_icon=$(cat $HOME/.cache/dwm_playercontrol)
+    previous_icon=$(cat "$CACHEDIR/playercontrol") 2> /dev/null
     [ -z $previous_icon ] && previous_icon=
     icon=$(timeout 1s playerctl status 2> /dev/null | sed 's/Playing//g' | sed 's/Paused//g' | sed "s/Stopped/$previous_icon/g") || icon=""
-    echo $icon > $HOME/.cache/dwm_playercontrol
+    echo $icon > "$CACHEDIR/playercontrol"
     echo $icon
 }
 playercontrol1(){ # toggle a service
     timeout 1s playerctl play-pause
-    icon1=$(cat $HOME/.cache/dwm_playercontrol)
+    icon1=$(cat "$CACHEDIR/playercontrol")
     [ "$icon1" = "" ] && icon2= && notify-send "⏯"
     [ "$icon1" = "" ] && icon2= && notify-send "⏯"
-    echo $icon2 > $HOME/.cache/dwm_playercontrol
-    sed -i "s/$icon1/$icon2/g" $HOME/.cache/dwm_status
-    xsetroot -name "$(cat $HOME/.cache/dwm_status)"
+    echo $icon2 > "$CACHEDIR/playercontrol"
+    sed -i "s/$icon1/$icon2/g" "$CACHEDIR/status"
+    xsetroot -name "$(cat "$CACHEDIR/status")"
 }
 
 # -----------
@@ -555,11 +558,11 @@ volume1(){ # mouse-button 1 action for volume widget
 
 weather(){ # weather
     # reads from cache! Make sure you have it regularly update somewhere else.
-    test -f ~/.cache/weatherreportshort && cat ~/.cache/weatherreportshort | sed 's/[ ][ ]*/ /g' || echo ""
+    [ -f "$HOME/.cache/weatherreport/short" ] && sed 's/[ ][ ]*/ /g' "$HOME/.cache/weatherreport/short" || echo ""
 }
 weather1(){ # mouse-button 1 action for weather widget
-    # cat out the weather report, show only the first 7 lines and remove all colors
-    report=$(cat ~/.cache/weatherreport | head -n 7 | sed 's/\x1b\[[0-9;]*m//g' | tail -n 6 | sed 's/\\/\\\\/g' | sed 's/―/-/g')
+    # get first 7 lines of weather report and remove all color escape sequences.
+    report=$(head -7 "$HOME/.cache/weatherreport/full" | sed 's/\x1b\[[0-9;]*m//g' | tail -n 6 | sed 's/\\/\\\\/g' | sed 's/―/-/g')
     notify-send "⛅ weather" "$(weather)\n$report\n\n[ middle click for full report ]"
 }
 weather2(){
