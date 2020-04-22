@@ -58,11 +58,11 @@ sourcefile $HOME/.config/zsh/themes/spaceship.zsh
 
 # change prompt and change cursor shape for different vi modes.
 # cursor shape: normal: "█"; insert: "_"
-# prompt: normal: ""; insert: ""
+# prompt: normal: ""; insert: " "
 NORMAL='\e[1 q\e\\' # █
 INSERT='\e[4 q\e\\' # _   - INSERT='\e[5 q\e\\' # |
-SPACESHIP_CHAR_SYMBOL_NORMAL=" "
-SPACESHIP_CHAR_SYMBOL_INSERT=" "
+SPACESHIP_CHAR_SYMBOL_NORMAL=""
+SPACESHIP_CHAR_SYMBOL_INSERT=" "
 # in neovim, don't change cursor shape as that doesn't work anyhow :(
 [ -z $NVIM_LISTEN_ADDRESS ] || INSERT=$NORMAL
 # initialize at startup:

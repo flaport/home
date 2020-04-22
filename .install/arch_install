@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last run: 2020.04.12
+# last complete install: 2020.04.22
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -396,10 +396,10 @@ pacman_install cronie
 systemctl_enable cronie
 # ncmpcpp: terminal music client
 pacman_install ncmpcpp
-# spotify daemon (dependency for spotify-tui)
-yay_install spotifyd-full
-# spotify-tui: terminal client for spotify
-yay_install spotify-tui
+# spotify-tui: terminal client for spotify (building this takes LONG)
+# yay_install spotify-tui
+# spotify daemon (dependency for spotify-tui, building this takes LONG)
+# yay_install spotifyd-full
 # playerctl: terminal client to control spotify, spotifyd, vlc, ...
 pacman_install playerctl
 
@@ -471,8 +471,8 @@ pacman_install light
 # allow only users in video group to make changes to backlight
 groupadd video >> $LOG 2>> $ERR
 echo $password | sudo -S usermod -a -G video $USER
-echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chgrp video /sys/class/backlight/%k/brightness\"" | sudo tee /etc/udev/rules.d/backlight.rules > /dev/null 2> $ERR
-echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chmod g+w /sys/class/backlight/%k/brightness\"" | sudo tee -a /etc/udev/rules.d/backlight.rules > /dev/null 2> $ERR
+echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chgrp video /sys/class/backlight/%k/brightness\"" | sudo tee /etc/udev/rules.d/backlight.rules > /dev/null 2>> $ERR
+echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chmod g+w /sys/class/backlight/%k/brightness\"" | sudo tee -a /etc/udev/rules.d/backlight.rules > /dev/null 2>> $ERR
 # xautolock to automatically lock the screen
 pacman_install xautolock
 # wallpapers
@@ -572,9 +572,9 @@ systemctl_enable bluetooth
 pacman_install remmina
 # add windows remote desktop protocol to remmina
 pacman_install freerdp
-# barrier: seemless mouse and keyboard sharing between computers
-yay_install barrier
-yay_install barrier-headless
+# barrier: seemless mouse and keyboard sharing between computers (takes a while to build)
+# yay_install barrier
+# yay_install barrier-headless
 
 
 ## Themes
@@ -665,50 +665,52 @@ systemctl_enable org.cups.cupsd
 ## Fonts
 # fontconfig should already be installed, but just to be sure:
 pacman_install fontconfig
-# link personal fontconfig to system wide config for better coverage:
-link $HOME/.config/fontconfig/conf.d/45-generic.conf /etc/fonts/conf.d/45-generic.conf
-link $HOME/.config/fontconfig/conf.d/60-generic.conf /etc/fonts/conf.d/60-generic.conf
-# my preferred serif font.
-pacman_install ttf-linux-libertine
-# my preferred sans-serif (+ chromium dependency)
-pacman_install ttf-droid
-# best monospace font: inconsolata
-# pacman_install ttf-inconsolata
-# alternative best monospace font: inconsolata-g
-yay_install ttf-inconsolata\-g
-# awesome terminal fonts: glyph dependencies (lsd and dwm [my build] dependency)
-pacman_install awesome-terminal-fonts
-# hack nerd font (requirement for lsd)
-yay_install nerd-fonts-hack
-# specific symbols for powerlines (recommended dependency for my st build)
-pacman_install powerline-fonts
-# unicode symbols / emojis (these are standard unicode symbols, hence different than awesome terminal fonts!)
-yay_install ttf-symbola-free
-# yay_install ttf-twemoji-color
-# pacman_install noto-fonts-emoji
-pacman_install ttf-joypixels
-# yay_install ttf-twemoji-color
-# monospace font with ligatures:
-# pacman_install ttf-fira-code
-# adobe fonts (dependency of GNOME apps. Yes, you'll probably have a few of them...)
-# pacman_install adobe-source-code-pro-fonts
-# cantarell fonts (dependency of GNOME apps.  Yes, you'll probably have a few of them...)
-# pacman_install cantarell-fonts
-# gsfonts (dependency of GNOME apps.  Yes, you'll probably have a few of them...)
-# pacman_install gsfonts
-# sans-serif + firefox & inkscape dependency (note that dejavu is disabled in fontconfig)
+# disable bitmap fonts:
+# link /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
+# enable sub-pixel RGB rendering:
+# link /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
+# enable LCD-filtering:
+# link /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
+# dejavu font: inkscape dependency (blocked by my fontconfig)
 # pacman_install ttf-dejavu
-# yay_install ttf-twemoji-color
-# yay_install ttf-pizzadude-bullets
-# yay_install otf-font-awesome-5-free
-# yay_install ttf-weather-icons
-# some general font improvements:
-# disable bitmaps:
-link /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
-# enable sub-pixel RGB rendering
-link /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
-# enable LCD-filtering
-link /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
+# cantarell fonts: gtk3 dependency (blocked by my fontconfig)
+# pacman_install cantarell-fonts
+# adobe fonts: nemo and other GNOME apps dependency (blocked by my fontconfig)
+# pacman_install adobe-source-code-pro-fonts
+# liberation fonts: chromium, firefox and mplayer dependency (blocked by my fontconfig)
+# pacman_install ttf-liberation
+# gnu free fonts: optional vlc dependency (blocked by my fontconfig)
+# pacman_install gnu-free-fonts
+# gnome core fontset:
+# pacman_install gsfonts
+# recommended font package for compatibility with MS Office:
+# yay_install ttf-ms-fonts
+# recommended font package for compatibility with MS Office:
+# yay_install ttf-vista-fonts
+# a nice serif font:
+pacman_install ttf-linux-libertine
+# a nice monospace font:
+# yay_install ttf-inconsolata-g
+# another nice monospace font (with ligatures):
+# pacman_install ttf-fira-code
+# my preferred font package (partly blocked by my fontconfig):
+pacman_install ttf-droid
+# black and white emojis and symbols:
+yay_install ttf-symbola
+# black and white emojis:
+# yay_install ttf-twemoji (blocked by my fontconfig)
+# color emojis (twitter):
+# yay_install ttf-twemoji-color (blocked by my fontconfig)
+# color emojis (google):
+# pacman_install noto-fonts-emoji (blocked by my fontconfig)
+# color emojis (joypixels):
+pacman_install ttf-joypixels
+# awesome terminal fonts: font package with nice icons: lsd and dwm [my build] dependency.
+pacman_install awesome-terminal-fonts
+# hack nerd font: patched hack font with powerline symbols (partly blocked by my fontconfig)
+yay_install nerd-fonts-hack
+# powerline fonts: patched fonts with powerline symbols.
+# pacman_install powerline-fonts
 
 
 ## GUIs
@@ -774,9 +776,6 @@ pacman_install klayout
 # open-source office
 pacman_install libreoffice-fresh
 # pacman_install libreoffice-still
-# recommended font packages for compatibility with MS Office
-yay_install ttf-ms-fonts
-yay_install ttf-vista-fonts
 # open-source office with MS Office look-and-feel:
 # yay_install onlyoffice-bin
 # sqlite database browser
@@ -787,8 +786,8 @@ yay_install ttf-vista-fonts
 pacman_install biber
 # convert document types into each other
 pacman_install pandoc
-# open-source note taking app
-yay_install joplin
+# open-source note taking app (takes a while to build)
+# yay_install joplin
 
 
 ## Programming
@@ -866,8 +865,8 @@ pacman_install vdpauinfo
 pacman_install intel-gpu-tools
 # proprietary nvidia driver [nvidia]
 pacman_install nvidia
-# force 96 dpi when nvidia driver is in use (nvidia might default to 75 dpi, resulting in smaller font rendering)
-grep dpi /etc/X11/xinit/xserverrc &> /dev/null || sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
+# you might want to force the dpi of your monitor when nvidia driver is in use:
+# grep dpi /etc/X11/xinit/xserverrc &> /dev/null || sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
 pacman_install nvidia-utils
 pacman_install nvidia-settings
 pacman_install nvtop
@@ -890,7 +889,7 @@ pacman_install libvdpau-va-gl
 # vdpau nouveau driver [nouveau]:
 pacman_install mesa-vdpau
 # libva configuration (intel integrated graphics):
-grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || printf "LIBVA_DRIVER_NAME=\"iHD\"\nVDPAU_DRIVER=\"va_gl\"" | sudo tee /etc/environment
+grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || printf "LIBVA_DRIVER_NAME=\"iHD\"\nVDPAU_DRIVER=\"va_gl\"" | sudo tee /etc/environment > /dev/null 2>> $ERR
 
 
 # deep learning (needs nvidia):
