@@ -661,55 +661,47 @@ pacman_install cups-pdf
 systemctl_enable org.cups.cupsd
 
 
-## Fonts
+## Fonts (remove fontconfig block if a font is not showing up after installing)
 # fontconfig should already be installed, but just to be sure:
 pacman_install fontconfig
-# disable bitmap fonts:
-# link /etc/fonts/conf.avail/70-no-bitmaps.conf /etc/fonts/conf.d
-# enable sub-pixel RGB rendering:
-# link /etc/fonts/conf.avail/10-sub-pixel-rgb.conf /etc/fonts/conf.d
-# enable LCD-filtering:
-# link /etc/fonts/conf.avail/11-lcdfilter-default.conf /etc/fonts/conf.d
-# dejavu font: inkscape dependency (blocked by my fontconfig)
-# pacman_install ttf-dejavu
-# cantarell fonts: gtk3 dependency (blocked by my fontconfig)
-# pacman_install cantarell-fonts
-# adobe fonts: nemo and other GNOME apps dependency (blocked by my fontconfig)
-# pacman_install adobe-source-code-pro-fonts
-# liberation fonts: chromium, firefox and mplayer dependency (blocked by my fontconfig)
-# pacman_install ttf-liberation
-# gnu free fonts: optional vlc dependency (blocked by my fontconfig)
-# pacman_install gnu-free-fonts
-# gnome core fontset:
-# pacman_install gsfonts
-# recommended font package for compatibility with MS Office:
-# yay_install ttf-ms-fonts
-# recommended font package for compatibility with MS Office:
-# yay_install ttf-vista-fonts
-# a nice serif font:
+# dejavu font: inkscape dependency (fully blocked by my fontconfig):
+pacman_install ttf-dejavu
+# cantarell fonts: gtk3 dependency (partly blocked by my fontconfig):
+pacman_install cantarell-fonts
+# adobe fonts: nemo and other GNOME apps dependency (partly blocked by my fontconfig):
+pacman_install adobe-source-code-pro-fonts
+# liberation fonts: chromium, firefox and mplayer dependency (partly blocked by my fontconfig):
+pacman_install ttf-liberation
+# gnu free fonts: optional vlc dependency (partly blocked by my fontconfig):
+pacman_install gnu-free-fonts
+# gnome core fontset (partly blocked by my fontconfig):
+pacman_install gsfonts
+# a nice monospace font with ligatures (partly blocked by my fontconfig):
+pacman_install ttf-fira-code
+# bitstream vera: alternative to dejavu (not blocked by my fontconfig):
+pacman_install ttf-bitstream-vera
+# nice serif (Linux Libertine) and sans-serif (Linux Biolinum) fonts (not blocked by my fontconfig):
 pacman_install ttf-linux-libertine
-# a nice monospace font:
+# recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
+yay_install ttf-ms-fonts
+# recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
+yay_install ttf-vista-fonts
+# alternative nice font package (partly blocked by my fontconfig):
+# pacman_install ttf-droid
+# yet another nice monospace font:
 # yay_install ttf-inconsolata-g
-# another nice monospace font (with ligatures):
-# pacman_install ttf-fira-code
-# my preferred font package (partly blocked by my fontconfig):
-pacman_install ttf-droid
-# black and white emojis and symbols:
-yay_install ttf-symbola
-# black and white emojis:
-# yay_install ttf-twemoji (blocked by my fontconfig)
-# color emojis (twitter):
-# yay_install ttf-twemoji-color (blocked by my fontconfig)
-# color emojis (google):
-# pacman_install noto-fonts-emoji (blocked by my fontconfig)
-# color emojis (joypixels):
-pacman_install ttf-joypixels
-# awesome terminal fonts: font package with nice icons: lsd and dwm [my build] dependency.
+# awesome terminal fonts: nice icons (lsd and dwm [my build] dependency):
 pacman_install awesome-terminal-fonts
-# hack nerd font: patched hack font with powerline symbols (partly blocked by my fontconfig)
-yay_install nerd-fonts-hack
-# powerline fonts: patched fonts with powerline symbols.
-# pacman_install powerline-fonts
+# Joypixels color emojis:
+pacman_install ttf-joypixels
+# google color emojis (blocked by my fontconfig):
+# pacman_install noto-fonts-emoji
+# black and white emojis and symbols (blocked by my fontconfig):
+# yay_install ttf-symbola
+# twitter black and white emojis (blocked by my fontconfig):
+# yay_install ttf-twemoji
+# twitter color emojis (blocked by my fontconfig):
+# yay_install ttf-twemoji-color
 
 
 ## GUIs
