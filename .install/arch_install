@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.04.22
+# last complete install: 2020.04.23
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -21,14 +21,14 @@
 ## pre-installation checks
 if [ "$USER" == root ]; then
     echo
-    echo "first_install.sh should not be run as root / with sudo."
-    echo "this script should be run normally by a user [with sudo privileges]."
+    echo "first_install.sh should NOT be run as root, nor should it be run with sudo."
+    echo "this script should be run [normally] by a user with sudo privileges."
     exit 1
 fi
 
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     echo
-    echo "first_install.sh should NOT be sourced."
+    echo "'arch_install' should NOT be sourced."
     exit 1
 fi
 
@@ -51,7 +51,7 @@ printf "ARCH PACKAGE INSTALL\n\n\n" >> $ERR
 read -s -p "[sudo] password for $USER: " password
 echo $password | sudo -S echo '' 2>/dev/null
 if [ $? -ne 0 ]; then
-    printf "\nIncorrect sudo password. Script ended prematurely.\n\nPlease start over.\n"
+    printf "\nIncorrect sudo password. Script ended prematurely.\n\nPlease start over.\n\n"
     exit 1
 fi
 
@@ -94,15 +94,15 @@ pacman_install(){ # will only install the first argument!
         printf "already installed.\n"
         printf "already installed.\n" >> $LOG
         printf "already installed.\n" >> $ERR
-        return 0
+        return 1
     fi
 
     printf "sudo pacman -S --noconfirm --noprogress $1\n" >> $LOG
     printf "sudo pacman -S --noconfirm --noprogress $1\n" >> $ERR
     echo $password | sudo -S pacman -S --noconfirm --noprogress $1 >> $LOG 2>> $ERR
-    success=$?
-    echo_success $success
-    return $success
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
 }
 
 yay_install(){ # will only install the first argument!
@@ -116,15 +116,15 @@ yay_install(){ # will only install the first argument!
         printf "already installed.\n"
         printf "already installed.\n" >> $LOG
         printf "already installed.\n" >> $ERR
-        return 0
+        return 1
     fi
 
     printf "yay -S -q --noconfirm $1\n" >> $LOG
     printf "yay -S -q --noconfirm $1\n" >> $ERR
     yay -S -q --noconfirm $1 >> $LOG 2>> $ERR
-    success=$?
-    echo_success $success
-    return $success
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
 }
 
 git_install(){ # will only install the first argument!
@@ -141,7 +141,7 @@ git_install(){ # will only install the first argument!
         printf "already installed.\n"
         printf "already installed.\n" >> $LOG
         printf "already installed.\n" >> $ERR
-        return 0
+        return 1
     fi
 
     printf "git clone $1 /tmp/gitpkg\n" >> $LOG
@@ -155,8 +155,8 @@ git_install(){ # will only install the first argument!
     printf "makepkg -si --noconfirm --noprogress\n" >> $LOG
     printf "makepkg -si --noconfirm --noprogress\n" >> $ERR
     makepkg -si --noconfirm --noprogress >> $LOG 2>> $ERR
-    success=$?
-    echo_success $success
+    exit_code=$?
+    echo_success $exit_code
 
     printf "cd ~\n" >> $LOG
     printf "cd ~\n" >> $ERR
@@ -166,7 +166,7 @@ git_install(){ # will only install the first argument!
     printf "rm -rf /tmp/gitpkg\n" >> $ERR
     rm -rf /tmp/gitpkg >> $LOG 2>> $ERR
 
-    return $success
+    return $exit_code
 }
 
 submodule_install(){ # will only install the first argument!
@@ -189,8 +189,8 @@ submodule_install(){ # will only install the first argument!
     echo $password | sudo -S make clean >> $LOG 2>> $ERR
     echo $password | sudo -S make all >> $LOG 2>> $ERR
     echo $password | sudo -S make install >> $LOG 2>> $ERR
-    success=$?
-    echo_success $success
+    exit_code=$?
+    echo_success $exit_code
     echo $password | sudo -S make clean >> $LOG 2>> $ERR
     echo $password | rm -f config.h >> $LOG 2>> $ERR
 
@@ -198,7 +198,7 @@ submodule_install(){ # will only install the first argument!
     printf "cd $HOME\n" >> $ERR
     cd $HOME >> $LOG 2>> $ERR
 
-    return $success
+    return $exit_code
 }
 
 pip3_install() {
@@ -208,9 +208,9 @@ pip3_install() {
     printf "sudo /usr/bin/python3 -m pip install $1\n" >> $LOG
     printf "sudo /usr/bin/python3 -m pip install $1\n" >> $ERR
     echo $password | sudo -S /usr/bin/python3 -m pip install $1 >> $LOG 2>> $ERR
-    success=$?
-    echo_success $success
-    return $success
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
 }
 
 pip2_install() {
@@ -220,9 +220,9 @@ pip2_install() {
     printf "sudo /usr/bin/python2 -m pip install $1\n" >> $LOG
     printf "sudo /usr/bin/python2 -m pip install $1\n" >> $ERR
     echo $password | sudo -S /usr/bin/python2 -m pip install $1 >> $LOG 2>> $ERR
-    success=$?
-    echo_success $success
-    return $success
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
 }
 
 systemctl_create() {
@@ -238,8 +238,8 @@ systemctl_create() {
     tail --lines=+7 $source | sed 's|{USER}|'$USER'|g' | sed 's|{HOME}|'$HOME'|g' | sudo tee -a $target > /dev/null 2>> $ERR
     echo $password | sudo -S systemctl daemon-reload
 
-    echo "$source created." >> $LOG 2>> $ERR
-    echo "$source created." 2>> $ERR
+    echo "$1 created." >> $LOG 2>> $ERR
+    echo "$1 created." 2>> $ERR
 }
 
 systemctl_enable() {
@@ -250,9 +250,9 @@ systemctl_enable() {
     printf "sudo systemctl enable $1\n" >> $ERR
     echo $password | sudo -S systemctl enable $1 >> $LOG 2>> $ERR
     [[ $1 != "lightdm" && $1 != "NetworkManager" && $1 != "bluetooth" ]] && echo $password | sudo -S systemctl restart $1 >> $LOG 2>> $ERR
-    success=$?
-    echo_success $success
-    return $success
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
 }
 
 link() {
@@ -265,9 +265,9 @@ link() {
         echo $password | sudo -S mv $2 $2.bak  >> $LOG 2>> $ERR
     fi
     echo $password | sudo -S ln -sf $1 $2  >> $LOG 2>> $ERR
-    success=$?
-    echo_success $success
-    return $success
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
 }
 
 
@@ -456,8 +456,7 @@ pacman_install picom
 # libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
 # the reason it is installed this way is because this library replaces libxft
 # requiring you to answer yes on a [y/N] question...
-echo $password | sudo -S pacman -Q libxft-bgra >> $LOG 2>> $ERR
-[ $? = 0 ] || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra >> $LOG 2>> $ERR
+pacman -Q libxft-bgra &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra >> $LOG 2>> $ERR
 
 ## Desktop Environment / Window Manager
 # i3lock: screen lock for i3 and other window managers like in this case dwm.
@@ -818,10 +817,6 @@ pacman_install firefox
 submodule_install legacyfox
 # chromium
 pacman_install chromium
-# chromium with vaapi hardware acceleration (custom chromium needs to be compiled, takes AGES!)
-# yay_install chromium-vaapi
-# to make hw acceleration actually work, you need this:
-pacman_install gstreamer-vaapi
 # the name says it all (custom chromium needs to be compiled, takes AGES!):
 # yay_install ungoogled-chromium
 # vimb: vim-like browser
@@ -855,45 +850,61 @@ pacman_install lynx
 
 
 ## Hardware acceleration
-# I usually download all options and configure
-# LIBVA_DRIVER_NAME and VDPAU_DRIVER in /etc/environment
-# libva status and utilities
-pacman_install libva-utils
-# vdpau status and utilities
-pacman_install vdpauinfo
-# intel gpu tools
-pacman_install intel-gpu-tools
 # proprietary nvidia driver [nvidia]
 pacman_install nvidia
-# you might want to force the dpi of your monitor when nvidia driver is in use:
-# grep dpi /etc/X11/xinit/xserverrc &> /dev/null || sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
+# useful utilities for nvidia driver:
 pacman_install nvidia-utils
-pacman_install nvidia-settings
+# useful top command for nvidia GPU
 pacman_install nvtop
-# better nvidia-support for nouveau driver [nouveau]:
-yay_install nouveau-fw
-# libva intel driver [iHD]:
-pacman_install intel-media-driver
-# alternative libva intel driver [i965]:
-pacman_install libva-intel-driver
-# alternative libva intel driver [i965]:
-# yay_install libva-intel-driver-g45-h264
-# libva nouveau driver [nouveau]:
-pacman_install libva-mesa-driver
-pacman_install mesa-vdpau
-# libva translation from vdpau [vdpau]
-#pacman_install libva-vdpau-driver
-yay_install libva-vdpau-driver-chromium
-# vdpau intel driver (derived from libva) [va_gl]:
-pacman_install libvdpau-va-gl
-# vdpau nouveau driver [nouveau]:
-pacman_install mesa-vdpau
-# libva configuration (intel integrated graphics):
-grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || printf "LIBVA_DRIVER_NAME=\"iHD\"\nVDPAU_DRIVER=\"va_gl\"" | sudo tee /etc/environment > /dev/null 2>> $ERR
-
-
+# nvidia settings manager
+pacman_install nvidia-settings
+# enable nvidia at next reboot using optimus-manager
+yay_install optimus-manager
+optimus-manager --no-confirm --set-startup nvidia >> $LOG 2>> $ERR
 # deep learning (needs nvidia):
 # pacman_install cuda-toolkit
+# force 96 dpi in Xorg when nvidia driver is in use:
+# grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
+# open source nvidia-driver [nouveau] (better support by instlaling proprietary dependencies)
+# yay_install nouveau-fw
+# libva status and utilities
+pacman_install libva-utils
+pacman_install gstreamer-vaapi
+# vdpau status and utilities
+pacman_install vdpauinfo
+# useful top command (intel_gpu_top) for intel integrated Graphics:
+pacman_install intel-gpu-tools
+pacman_install opencl-nvidia
+# install and enable libva intel driver [iHD]:
+pacman_install intel-media-driver
+grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# install and enable alternative libva intel driver [i965]:
+# pacman_install libva-intel-driver
+# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# install and enable alternative libva intel driver [i965]:
+# yay_install libva-intel-driver-g45-h264
+# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# install and enable libva nouveau driver [nouveau]:
+# pacman_install libva-mesa-driver
+# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# install and enable libva translation from vdpau [vdpau]
+# pacman_install libva-vdpau-driver
+# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# install and enable libva translation from vdpau [vdpau] (patched to work with chromium)
+# yay_install libva-vdpau-driver-chromium
+# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# install vdpau translation from libva [va_gl]:
+pacman_install libvdpau-va-gl
+grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# install and enable vdpau nouveau driver [nouveau]:
+# pacman_install mesa-vdpau
+# grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# install chromium with libva support from archlinuxcn repositories:
+# grep "\[archlinuxcn\]" /etc/pacman.conf &> /dev/null || printf "\n\n[archlinuxcn]\nServer=https://repo.archlinuxcn.org/\$arch" | sudo tee -a /etc/pacman.conf > /dev/null 2>> $ERR
+# echo $password | sudo -S pacman -Syy >> $LOG 2>> $ERR
+# pacman_install archlinuxcn-keyring
+# pacman -Q chromium-vaapi &> /dev/null || yes | LC_ALL=en_US.UTF-8 sudo pacman -S chromium-vaapi >> $LOG 2>> $ERR
+
 
 
 ## Resources
