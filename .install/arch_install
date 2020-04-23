@@ -692,6 +692,8 @@ yay_install ttf-vista-fonts
 # yay_install ttf-inconsolata-g
 # awesome terminal fonts: nice icons (lsd and dwm [my build] dependency):
 pacman_install awesome-terminal-fonts
+# hack nerd fonts: patched font with different nice icons (recommended for lsd):
+yay_install nerd-fonts-hack
 # Joypixels color emojis:
 pacman_install ttf-joypixels
 # google color emojis (blocked by my fontconfig):

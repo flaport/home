@@ -49,6 +49,8 @@ Only *Linux Libertine* and *Linux Biolinum* remain available.
 Only *Nimbus Sans* and *Numbus Roman* remain available.
 #### 71-block-adobe.conf
 Only *Source Code Pro* with styles *Regular*, *Bold* and *Italic* remains available.
+#### 71-block-hack.conf
+Only *Hack Nerd Font* with styles *Regular* and *Bold* remains available.
 #### 71-block-liberation.conf
 No *Liberation fonts* are blocked.
 #### 71-block-gnu-fonts.conf
