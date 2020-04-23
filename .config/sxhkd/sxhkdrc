@@ -13,6 +13,10 @@ super + a
 super + A
     alpha set +5 && dwm_status
 
+# reload picom config
+super + control + a
+    kill -SIGUSR1 $(pidof picom)
+
 # connect to already paired bluetooth device
 super + b
     dmenu_bluetooth
@@ -164,6 +168,10 @@ super + s
 # toggle a systemd service
 super + S
     dmenu_services
+
+# reload sxhkd config
+super + control + s
+    kill -SIGUSR1 $(pidof sxhkd)
 
 # toggle between last two dwm layouts
 super + t

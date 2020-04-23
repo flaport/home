@@ -26,11 +26,7 @@ start sxhkd
 start wallpaper current
 
 # enable transparent windows
-if [ -f "$HOME/.config/picom/blur-kern" ]; then
-    start picom --blur-kern=$(cat $HOME/.config/picom/blur-kern)
-else
-    start picom
-fi
+start picom
 
 # notifications
 start dunst

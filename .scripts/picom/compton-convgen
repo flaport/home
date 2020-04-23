@@ -1,4 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# vim:fileencoding=utf-8
+
 import math
 import argparse
 
@@ -43,7 +46,7 @@ def mdumpcompton(matrix):
         for j in range(width):
             if int(height / 2) == i and int(width / 2) == j:
                 continue
-            print(format(matrix[i][j], ".10f"), end=",")
+            print(format(matrix[i][j], ".6f"), end=",")
     print()
 
 
