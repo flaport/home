@@ -137,6 +137,21 @@ def parse_gtk2rc(filename="~/.gtkrc-2.0"):
             config[key] = value
     return config
 
+def parse_xsettings(filename="~/.config/xsettingsd/xsettingsd.conf"):
+    config = {}
+    filename = os.path.abspath(os.path.expanduser(filename))
+    if not os.path.exists(filename):
+        return config
+    with open(filename, "r") as file:
+        for line in file:
+            if not " " in line:
+                continue
+            splitted_line = line.split(" ")
+            key = splitted_line[0].strip()
+            value = " ".join(splitted_line[1:]).strip()
+            config[key] = value
+    return config
+
 def parse_xresources_options(dirname="~/.config/Xresources"):
     dirname = os.path.abspath(os.path.expanduser(dirname))
     filenames = {'current' : os.path.expanduser("~/.Xresources")}
@@ -221,6 +236,16 @@ def write_gtk2rc(xresources, filename="~/.gtkrc-2.0"):
         for key, value in config.items():
             file.write(f"{key}={value}\n")
 
+def write_xsettings(xresources, filename="~/.config/xsettingsd/xsettingsd.conf"):
+    gtktheme = xresources['gtktheme']
+    filename = os.path.abspath(os.path.expanduser(filename))
+    print(f"writing GTK theme '{gtktheme}' to '{filename}'...")
+    config = parse_xsettings(filename)
+    config["Net/ThemeName"] = f'"{gtktheme}"'
+    with open(filename, "w") as file:
+        for key, value in config.items():
+            file.write(f"{key} {value}\n")
+
 def update_xrdb(filename="~/.Xresources"):
     filename = os.path.abspath(os.path.expanduser(filename))
     print(f"updating xrdb database with '{filename}'...")
@@ -228,12 +253,19 @@ def update_xrdb(filename="~/.Xresources"):
 
 def update_picom(filename="~/.cache/alpha/picom.conf"):
     filename = os.path.abspath(os.path.expanduser(filename))
-    print(f"restarting picom with custom config file at '{filename}'...")
     if not os.path.exists(filename):
         return
+    print(f"restarting picom with custom config file at '{filename}'...")
     subprocess.call(["killall", "picom"])
     time.sleep(0.1)
     subprocess.Popen(["picom", "--config", filename])
+
+def update_xsettings(filename="~/.config/xsettingsd/xsettingsd.conf"):
+    filename = os.path.abspath(os.path.expanduser(filename))
+    if not os.path.exists(filename):
+        return
+    print(f"updating xsettings with new config file at '{filename}'...")
+    subprocess.Popen(["killall", "-HUP", "xsettingsd"])
 
 def update_terminal(xresources):
     print(f"updating terminal colors...")
@@ -290,31 +322,34 @@ def alpha_set(xresources, value):
     xresources["alpha"] = alpha
     write_xresources(xresources)
     write_picom_config(xresources)
-    update_terminal(xresources)
-    update_picom()
     update_xrdb()
+    update_terminal(xresources)
     update_dwm_status()
+    update_picom()
 
 def gtk_set(xresources, value):
     xresources["gtktheme"] = value
     write_gtk2rc(xresources)
     write_gtk3rc(xresources)
+    write_xsettings(xresources)
 
 def xcs_set(xresources):
-    write_xresources(xresources)
-    write_picom_config(xresources)
-    write_zathura_recolor(xresources)
-    write_rofi_colorscheme(xresources)
-    write_kvantum(xresources)
-    write_gtk2rc(xresources)
     write_gtk3rc(xresources)
+    write_gtk2rc(xresources)
+    write_kvantum(xresources)
+    write_xsettings(xresources)
+    write_zathura_recolor(xresources)
+    write_xresources(xresources)
+    write_rofi_colorscheme(xresources)
+    write_picom_config(xresources)
+    update_xsettings()
     update_xrdb()
     update_terminal(xresources)
-    update_picom()
     update_dwm()
+    update_picom()
 
 if __name__ == "__main__":
-#   try:
+    try:
         args = parse_args(sys.argv[1:])
         xresources_options = parse_xresources_options()
         xresources = parse_xresources(xresources_options, 'current')
@@ -346,10 +381,9 @@ if __name__ == "__main__":
 
         alpha = xresources.get('alpha', 0.9)
         xresources = parse_xresources(xresources_options, args.name)
-        print(xresources)
         xresources['alpha'] = alpha
 
         exit(xcs_set(xresources))
-#   except Exception as e:
-#       sys.stdout = sys.stderr
-#       print(e)
+    except Exception as e:
+        sys.stdout = sys.stderr
+        print(e)

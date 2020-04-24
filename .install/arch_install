@@ -583,6 +583,8 @@ pacman_install gtk3
 pacman_install gnome-themes-standard
 # murrine theme [inkscape dependency]
 pacman_install gtk-engine-murrine
+# adapta theme
+paman_install adapta-gtk-theme
 # arc theme
 pacman_install arc-gtk-theme
 # dark gruvbox-inspired arc theme (default theme for now)
