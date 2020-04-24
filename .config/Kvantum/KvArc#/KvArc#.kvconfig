@@ -1,6 +1,6 @@
 [%General]
-author=Eliver Lara
-comment=A dark theme created using the awesome Nord color pallete. 
+author=Tsu Jan
+comment=A minimalistic theme inspired by the Arc GTK theme
 x11drag=menubar_and_primary_toolbar
 alt_mnemonic=false
 left_tabs=false
@@ -11,23 +11,23 @@ toolbar_item_spacing=1
 toolbar_interior_spacing=3
 spread_progressbar=true
 composite=false
-menu_shadow_depth=5
+menu_shadow_depth=7
 menu_separator_height=6
 tooltip_shadow_depth=6
 splitter_width=4
-scroll_width=6
+scroll_width=9
 scroll_arrows=true
 scroll_min_extent=60
-slider_width=2
+slider_width=6
 slider_handle_width=18
 slider_handle_length=18
 center_toolbar_handle=true
 check_size=14
 textless_progressbar=false
-progressbar_thickness=2
+progressbar_thickness=3font
 menubar_mouse_tracking=false
 toolbutton_style=1
-double_click=false
+click_behavior=0
 translucent_windows=false
 blurring=false
 popup_blurring=false
@@ -52,46 +52,44 @@ layout_spacing=6
 layout_margin=9
 scrollbar_in_view=false
 transient_scrollbar=false
-transient_groove=false
-submenu_overlap=0
+transient_groove=true
+submenu_overlap=3
 tooltip_delay=-1
 tree_branch_line=false
-dark_titlebar=true
-opaque=kaffeine,kmplayer,subtitlecomposer,kdenlive,vlc,smplayer,smplayer2,avidemux,avidemux2_qt4,avidemux3_qt4,avidemux3_qt5,kamoso,QtCreator,VirtualBox,VirtualBoxVM,trojita,dragon,digikam,lyx
-reduce_window_opacity=18
-scrollable_menu=true
-submenu_delay=250
-no_inactiveness=false
-no_window_pattern=false
-reduce_menu_opacity=0
-respect_DE=true
 contrast=1.00
 dialog_button_layout=0
 intensity=1.00
+no_inactiveness=false
+no_window_pattern=false
+opaque=kaffeine,kmplayer,subtitlecomposer,kdenlive,vlc,smplayer,smplayer2,avidemux,avidemux2_qt4,avidemux3_qt4,avidemux3_qt5,kamoso,QtCreator,VirtualBox,VirtualBoxVM,trojita,dragon,digikam,lyx
+reduce_menu_opacity=0
+reduce_window_opacity=0
+respect_DE=true
 saturation=1.00
-click_behavior=0
+scrollable_menu=true
 shadowless_popup=false
+submenu_delay=250
 
 [GeneralColors]
-window.color=#434c5e
-base.color=#3b4252
-alt.base.color=#2E353D78
-button.color=#3c4454
-light.color=#2e3440
-mid.light.color=#2e3440
-dark.color=#2e3440
-mid.color=#2e3440
-highlight.color=#8fbcbb
-inactive.highlight.color=#8fbcbb
-text.color=#d8dee9
-window.text.color=#d8dee9
-button.text.color=#d8dee9
-disabled.text.color=#d8dee978
-tooltip.text.color=#d8dee9
-highlight.text.color=#2e3440
-link.color=#646464
-link.visited.color=#7f8c8d
-progress.indicator.text.color=#d8dee9
+window.color=#f5f6f7
+base.color=white
+alt.base.color=#f8f8f8
+button.color=#fbfbfc
+light.color=white
+mid.light.color=#f0f0f0
+dark.color=#c8c8c8
+mid.color=#e1e1e1
+highlight.color=#5294e2
+inactive.highlight.color=#5294e2
+text.color=#000000c8
+window.text.color=#000000c8
+button.text.color=#000000c8
+disabled.text.color=#00000073
+tooltip.text.color=#eefcff
+highlight.text.color=white
+link.color=#0057AE
+link.visited.color=#452886
+progress.indicator.text.color=white
 
 [Hacks]
 transparent_ktitle_label=false
@@ -99,23 +97,22 @@ transparent_dolphin_view=false
 transparent_pcmanfm_sidepane=false
 blur_translucent=false
 transparent_menutitle=false
-respect_darkness=true
+respect_darkness=false
 kcapacitybar_as_progressbar=false
 force_size_grip=false
 iconless_pushbutton=false
 iconless_menu=false
-disabled_icon_opacity=70
+disabled_icon_opacity=100
 lxqtmainmenu_iconsize=22
 normal_default_pushbutton=false
 single_top_toolbar=false
 tint_on_mouseover=0
 transparent_pcmanfm_view=false
-middle_click_scroll=false
-no_selection_tint=false
-opaque_colors=false
-scroll_jump_workaround=true
 centered_forms=false
 kinetic_scrolling=false
+middle_click_scroll=false
+no_selection_tint=false
+scroll_jump_workaround=false
 
 [PanelButtonCommand]
 frame=true
@@ -126,14 +123,14 @@ frame.left=3
 frame.right=3
 interior=true
 interior.element=button
-indicator.size=8
-text.normal.color=#d8dee9
-text.focus.color=#2e3440
-text.press.color=#2e3440
-text.toggle.color=#2e3440
+indicator.size=9
+text.normal.color=#000000c8
+text.focus.color=black
+text.press.color=white
+text.toggle.color=white
 text.shadow=0
 text.margin=1
-text.iconspacing=4
+text.iconspacing=3
 indicator.element=arrow
 text.margin.top=2
 text.margin.bottom=2
@@ -154,15 +151,15 @@ frame.top=1
 frame.bottom=1
 frame.left=1
 frame.right=1
-text.normal.color=#d8dee9
+text.normal.color=#000000c8
 
 [DockTitle]
 inherits=PanelButtonCommand
 frame=false
 interior=false
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
-text.bold=false
+text.normal.color=#00000096
+text.focus.color=black
+text.bold=true
 
 [IndicatorSpinBox]
 inherits=PanelButtonCommand
@@ -171,21 +168,21 @@ interior=true
 frame.left=1
 indicator.element=spin
 indicator.size=10
-text.normal.color=#d8dee9
+text.normal.color=#000000c8
 
 [RadioButton]
 inherits=PanelButtonCommand
 frame=false
 interior.element=radio
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
+text.normal.color=#000000c8
+text.focus.color=black
 
 [CheckBox]
 inherits=PanelButtonCommand
 frame=false
 interior.element=checkbox
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
+text.normal.color=#000000c8
+text.focus.color=black
 
 [Focus]
 inherits=PanelButtonCommand
@@ -203,17 +200,17 @@ frame=true
 interior=false
 frame.element=common
 interior.element=common
-frame.top=1
-frame.bottom=1
-frame.left=1
-frame.right=1
+frame.top=3
+frame.bottom=3
+frame.left=3
+frame.right=3
 
 [LineEdit]
 inherits=PanelButtonCommand
 frame.element=lineedit
 interior.element=lineedit
-text.margin.left=0
-text.margin.right=0
+text.margin.left=1
+text.margin.right=1
 
 [DropDownButton]
 inherits=PanelButtonCommand
@@ -221,13 +218,13 @@ indicator.element=arrow-down
 
 [IndicatorArrow]
 indicator.element=arrow
-indicator.size=8
+indicator.size=9
 
 [ToolboxTab]
 inherits=PanelButtonCommand
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
-text.press.color=#d2d2d4
+text.normal.color=#000000c8
+text.press.color=#00000096
+text.focus.color=black
 
 [Tab]
 inherits=PanelButtonCommand
@@ -242,9 +239,9 @@ frame.top=4
 frame.bottom=4
 frame.left=4
 frame.right=4
-text.normal.color=#d8dee9
-text.focus.color=#d8dee9
-text.toggle.color=#d8dee9
+text.normal.color=#0000007d
+text.focus.color=#000000b4
+text.toggle.color=#000000c8
 frame.expansion=0
 
 [TabFrame]
@@ -265,15 +262,15 @@ indicator.element=tree
 inherits=PanelButtonCommand
 interior.element=header
 frame.element=header
-frame.top=1
-frame.bottom=1
+frame.top=3
+frame.bottom=3
 frame.left=1
 frame.right=1
-text.bold=false
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
-text.press.color=#d2d2d4
-text.toggle.color=#d2d2d4
+text.bold=true
+text.normal.color=#00000096
+text.focus.color=#4c85cb
+text.toggle.color=black
+indicator.element=harrow
 frame.expansion=0
 
 [SizeGrip]
@@ -284,15 +281,12 @@ inherits=PanelButtonCommand
 indicator.element=toolbar
 indicator.size=5
 text.margin=0
-frame=true
+frame=false
 interior.element=menubar
 frame.element=menubar
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
-frame.left=0
-frame.right=0
-frame.top=0
-frame.bottom=1
+text.normal.color=#000000c8
+text.focus.color=black
+frame.bottom=0
 frame.expansion=0
 
 [Slider]
@@ -314,10 +308,10 @@ inherits=PanelButtonCommand
 frame.element=progress
 interior.element=progress
 text.margin=0
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
-text.press.color=#d2d2d4
-text.toggle.color=#d8dee9
+text.normal.color=#000000c8
+text.focus.color=black
+text.press.color=black
+text.toggle.color=black
 text.bold=false
 frame.expansion=8
 
@@ -340,12 +334,10 @@ text.margin.top=2
 text.margin.bottom=2
 text.margin.left=4
 text.margin.right=4
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
-text.press.color=#2e3440
-text.toggle.color=#2e3440
-min_width=+0.3font
-min_height=+0.3font
+text.normal.color=#000000c8
+text.focus.color=black
+text.press.color=white
+text.toggle.color=white
 frame.expansion=0
 
 [Splitter]
@@ -354,21 +346,24 @@ indicator.size=48
 [Scrollbar]
 inherits=PanelButtonCommand
 indicator.element=arrow
-indicator.size=8
+indicator.size=10
 
 [ScrollbarSlider]
 inherits=PanelButtonCommand
-interior.element=scrollbarslider
-interior=true
-frame=false
+frame.element=scrollbarslider
+interior=false
+frame.left=6
+frame.right=6
+frame.top=6
+frame.bottom=6
+indicator.element=grip
+indicator.size=13
 frame.expansion=48
 
 [ScrollbarGroove]
 inherits=PanelButtonCommand
-interior.element=scrollbargroove
-interior=true
+interior=false
 frame=false
-frame.expansion=48
 
 [MenuItem]
 inherits=PanelButtonCommand
@@ -376,26 +371,22 @@ frame=true
 frame.element=menuitem
 interior.element=menuitem
 indicator.element=menuitem
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
+text.normal.color=#000000c8
+text.focus.color=white
 text.margin.top=1
 text.margin.bottom=1
-text.margin.left=4
-text.margin.right=4
+text.margin.left=15
+text.margin.right=5
 frame.top=3
 frame.bottom=3
 frame.left=3
 frame.right=3
-text.bold=false
-min_width=+0.3font
-min_height=+0.3font
 frame.expansion=0
 
 [MenuBar]
 inherits=PanelButtonCommand
 frame.element=menubar
 interior.element=menubar
-text.normal.color=#d8dee9
 frame.bottom=0
 frame.expansion=0
 
@@ -412,31 +403,27 @@ text.margin.left=4
 text.margin.right=4
 text.margin.top=0
 text.margin.bottom=0
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
+text.normal.color=#000000b4
+text.focus.color=white
 frame.expansion=0
 
 [TitleBar]
 inherits=PanelButtonCommand
 frame=false
-text.margin.top=2
-text.margin.bottom=2
-text.margin.left=2
-text.margin.right=2
 interior.element=titlebar
-indicator.size=16
+indicator.size=12
 indicator.element=mdi
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
+text.normal.color=#787878
+text.focus.color=black
 text.bold=true
-text.italic=false
+text.italic=true
 frame.expansion=0
 
 [ComboBox]
 inherits=PanelButtonCommand
 interior.element=combo
 frame.element=combo
-text.press.color=#d2d2d4
+text.press.color=#000000c8
 indicator.element=carrow
 
 [Menu]
@@ -447,7 +434,7 @@ frame.left=1
 frame.right=1
 frame.element=menu
 interior.element=menu
-text.normal.color=#d8dee9
+text.normal.color=#000000c8
 text.shadow=false
 frame.expansion=0
 
@@ -456,8 +443,8 @@ inherits=GenericFrame
 frame=false
 text.shadow=0
 text.margin=0
-text.normal.color=#d8dee9
-text.focus.color=#c8c8ca
+text.normal.color=#00000096
+text.focus.color=black
 text.bold=true
 frame.expansion=0
 
@@ -487,7 +474,6 @@ frame.expansion=0
 [StatusBar]
 inherits=GenericFrame
 frame=false
-interior=false
 interior=false
 
 [Window]

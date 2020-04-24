@@ -2,4 +2,4 @@
 theme=Nordic#
 
 [Applications]
-KvArc=anki, klayout
+KvArc#=anki, klayout
