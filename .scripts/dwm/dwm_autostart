@@ -19,14 +19,14 @@ start(){
     pidof $1 &> /dev/null || $@ >> $HOME/.local/share/dwm_autostart.log 2>> $HOME/.local/share/dwm_autostart.errors.log &
 }
 
+# enable x settings daemon
+start xsettingsd
+
 # enable hotkeys
 start sxhkd
 
 # set wallpaper
 start wallpaper current
-
-# enable transparent windows
-start picom
 
 # notifications
 start dunst
@@ -47,6 +47,9 @@ start conky -x -3780
 
 # update xrdb database
 start xrdb $HOME/.Xresources
+
+# enable transparent windows
+start picom
 
 # set cursor speed
 # wrapped into loop, as sometimes this inexplicably stops working

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# wrapper script around lxappearance with callback for xcs:
+# xcs (my custom X Color Scheme script) should be called after
+# changing the GTK theme.
+
+/usr/bin/lxappearance "$@"
+exit_code=$?
+xcs current
+exit $exit_code
+
+

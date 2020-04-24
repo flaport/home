@@ -16,12 +16,12 @@ I recommend to use them in conjuction with the following GTK themes:
 ### One-to-one mappings:
 * Nordic (GTK) → [Nordic#](Nordic#)
 * Arc (GTK) → [KvArc#](KvArc#)
-* Ark Dark (GTK) → [KvArcDark#](KvArcDark#)
+* Arc Dark (GTK) → [KvArcDark#](KvArcDark#)
 
 ### Approximate mappings:
 * Arc Gruvbox (GTK) → [KvGnomeDark#](KvGnomeDark)
 * Adwaita (GTK)  → [KvArc#](KvArc#)
 * Adwaita Dark (GTK) → [KvArcDark#](KvArcDark#)
-* Ark Darker (GTK) → [KvArcDark#](KvArcDark#)
+* Arc Darker (GTK) → [KvArcDark#](KvArcDark#)
 * Nordic Polar (GTK)  → [KvArc#](KvArc#)
 

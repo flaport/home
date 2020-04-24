@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+# a simple wrapper script around pywal, using xcs when no arguments are given
+
+# if called without arguments, create colorscheme according to
+# currently set wallpaper and save colorscheme to ~/.Xresources
+if [ -z "$1" ]; then
+    xcs pywal
+    exitcode=$?
+else
+    /usr/bin/wal "$@"
+    exitcode=$?
+fi
+
+# apply colors to dwm:
+xsetroot -name "fsignal:3" &> /dev/null
+
+exit $exitcode
+

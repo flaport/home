@@ -538,15 +538,11 @@ transmission3(){
 # -----------
 
 volume(){ # volume
-    string=$(amixer -D pulse get Master)
-    if [[ $string == *"[on]"* ]]; then
-        pct=$(echo $string | cut -d "[" -f2 | cut -d "%" -f1)
-        [ "$pct" -gt 60 ] && echo "🔊 $pct%" && return
-        [ "$pct" -gt 20 ] && echo "🔉 $pct%" && return
-        echo "🔈 $pct%"
-        return
-    fi
-    echo 🔇
+    pct=$(amixer -D pulse get Master | grep "\[on\]" | head -1 | sed "s/^[^\[]*\[\([^%]*\)*%.*/\1/g")
+    [ $? -ne 0 ] && echo 🔇 && return
+    [ "$pct" -gt 60 ] && echo "🔊$pct%" && return
+    [ "$pct" -gt 20 ] && echo "🔉$pct%" && return
+    echo "🔈$pct%"
 }
 volume1(){ # mouse-button 1 action for volume widget
     icon=$(volume | sed 's/^\(.\).*/\1/g')

@@ -7,15 +7,19 @@
 
 # decrease alpha of windows
 super + a
-    alpha set -5 && dwm_status
+    alpha set -10
 
 # increase alpha of windows
 super + A
-    alpha set +5 && dwm_status
+    alpha set +10
 
 # reload picom config
 super + control + a
     kill -SIGUSR1 $(pidof picom)
+
+# set alpha to 100%
+super + control + A
+    alpha set 100
 
 # connect to already paired bluetooth device
 super + b
@@ -221,7 +225,7 @@ super + X
 
 # change global Xresources color scheme
 super + y
-    xcs
+    xcs --dmenu
 
 # change wallpaper (next)
 super + Y

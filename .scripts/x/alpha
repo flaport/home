@@ -1,144 +1,23 @@
-#!/usr/bin/python3
+#!/usr/bin/env bash
 
-# imports
-import os
-import sys
-import glob
-import subprocess
+# wrapper script around xcs, just to change alpha values
 
-# help
-help = """
-alpha [mode] [alpha]
+usage(){
+    >&2 echo usage: alpha: get and set transparency of windows [-h] {get,set} [value]
+    exit 1
+}
 
-mode: get/set/kill/-h/--help
-alpha: alpha value for set mode [0-100] or difference (prepend value with +/-)
-"""
+command="$1"
+value="$2"
 
-mode = ""
-alpha = 0
-alpha = 100
+if [ "$command" = "get" ]; then
+   xcs --alpha
+   exit $?
+fi
 
-# functions
-def picom_status():
-    with open(os.devnull, "w") as DEVNULL:
-        status = subprocess.call(["pidof", "picom"], stdout=DEVNULL, stderr=DEVNULL)
-    return status
+if [ "$command" = "set" ]; then
+   xcs --alpha "$value"
+   exit $?
+fi
 
-def get_alpha():
-    return int(float(xresources.get("alpha"))*100)
-
-def load_xresources():
-    """ load xresource file as dict. """
-    with open(os.path.expanduser("~/.Xresources"), "r") as file:
-        lines = file.read().replace("\t", " ").split("\n")
-    lines = [line.strip() for line in lines]
-    lines = [line for line in lines if line and not (line.startswith("!"))]
-    idxs = []
-    comment = False
-    for i, line in enumerate(lines):
-        if line.startswith("/*"):
-            comment = True
-        if comment:
-            idxs.append(i)
-        if line.endswith("*/"):
-            comment = False
-    for i in reversed(idxs):
-        del lines[i]
-    lines = [line if not line.startswith("*") else line[1:] for line in lines]
-    split_defined = [[word for word in line.split(" ") if word != "" and word != "#define"] for line in lines if "#define" in line]
-    defined_dict = {k.strip(): v.strip() for k, v in split_defined}
-    split_lines = [line.split(":") for line in lines if ":" in line]
-    xresources = {k.strip(): defined_dict.get(v.strip(), v.strip()).upper() for k, v in split_lines}
-    return xresources
-
-def set_xresources(xresources):
-    with open(os.path.expanduser("~/.Xresources"), "w") as file:
-        for k, v in xresources.items():
-            if k == "alpha":
-                file.write(f"*{k}: {v:3.2f}\n")
-            else:
-                file.write(f"*{k}: {v}\n")
-    with open(os.devnull, "w") as file:
-        subprocess.call(["xrdb", os.path.expanduser("~/.Xresources")], stdout=file, stderr=file)
-    if picom_status() != 0:
-        subprocess.Popen(["picom"])
-
-def set_terminal_alphas(xresources):
-    """ set the colors of the currently open terminals given Xresources dictionary
-
-    Args:
-        xresources: dictionary containing the xresources parameters
-    """
-    # custom st build
-    color = f"\033]4;0;{xresources['color0']};{xresources['alpha']}\033\\"
-    for term in glob.glob("/dev/pts/*"):
-        if term != "/dev/pts/ptmx":
-            with open(term, "w") as file:
-                file.write(color)
-    # urxvt
-    color = f"\033]11;[{xresources['alpha']}]{xresources['color0']}\033\\"
-    for term in glob.glob("/dev/pts/*"):
-        if term != "/dev/pts/ptmx":
-            with open(term, "w") as file:
-                file.write(color)
-
-def update_dwm_status_bar():
-    with open(os.devnull, "w") as file:
-        subprocess.Popen(["dwm_status"], stdout=file, stderr=file)
-
-# parse arguments
-if "-h" in sys.argv or "--help" in sys.argv:
-    print(help)
-    exit(0)
-if sys.argv[1] != "get" and sys.argv[1] != "set":
-    print("no valid mode (get/set) specified")
-    print(help)
-    exit(1)
-if sys.argv[1] == "get":
-    mode = "get"
-elif sys.argv[1] == "set":
-    mode = "set"
-    try:
-        alpha = sys.argv[2]
-    except IndexError:
-        print("no alpha specified for set mode")
-        print(help)
-        exit(1)
-
-
-# script
-xresources = load_xresources()
-
-if mode == "get":
-    if picom_status() == 1:
-        print(-1)
-        exit(0)
-    alpha = get_alpha()
-    print(alpha)
-    exit(0)
-
-if mode == "set":
-    if alpha[0] == "+":
-        alpha = min(get_alpha() + int(alpha[1:].strip()), 100)
-    elif alpha[0] == "-":
-        print(alpha)
-        alpha = max(get_alpha() - int(alpha[1:].strip()), 0)
-    alpha = int(alpha)
-    if alpha > 100:
-        print("alpha too high (max 100)")
-        print(help)
-        exit(1)
-    if alpha < 0:
-        print("alpha too low (max 0)")
-        print(help)
-        exit(1)
-    xresources["alpha"] = float(alpha)/100
-    set_xresources(xresources)
-    set_terminal_alphas(xresources)
-    update_dwm_status_bar()
-    exit(0)
-
-
-# you should never get here:
-exit(1)
-
+usage

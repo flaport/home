@@ -1,5 +1,5 @@
 [General]
-theme=Nordic#
+theme=KvArc#
 
 [Applications]
-KvArc#=anki, klayout
+KvArc%23=anki, klayout

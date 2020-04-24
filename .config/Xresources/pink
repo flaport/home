@@ -1,4 +1,4 @@
-*color0: #140D0C
+*color0: #A3CAC7
 *color1: #B94D58
 *color2: #A1535F
 *color3: #5A9755
@@ -13,5 +13,6 @@
 *color12: #C39C4A
 *color13: #406099
 *color14: #B85D93
-*color15: #A3CAC7
-*alpha: 0.70
+*color15: #140D0C
+*gtktheme: Arc
+*kvtheme: KvArc#
