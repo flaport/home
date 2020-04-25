@@ -282,6 +282,12 @@ def update_xsettings(filename="~/.config/xsettingsd/xsettingsd.conf"):
     print(f"updating xsettings with new config file at '{filename}'...")
     subprocess.Popen(["killall", "-HUP", "xsettingsd"])
 
+def update_qt5ct(filename="~/.config/qt5ct/qt5ct.conf"):
+    filename = os.path.abspath(os.path.expanduser(filename))
+    print(f"updating qt5ct...")
+    # just touching the file is enough to let qt5ct know the qt apps should be updated:
+    subprocess.Popen(["touch", filename])
+
 def update_terminal(xresources):
     print(f"updating terminal colors...")
     color = f"\033]4;0;{xresources['color0']};{xresources['alpha']}\033\\"
@@ -359,6 +365,7 @@ def xcs_set(xresources):
     write_picom_config(xresources)
     update_xsettings()
     update_xrdb()
+    update_qt5ct()
     update_terminal(xresources)
     update_dwm()
     update_picom()
