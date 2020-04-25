@@ -90,8 +90,8 @@ def parse_xresources(xresources_options, name):
 
     # get GTK theme from gtkrc2.0 if no gtktheme is specified in xresources:
     if "gtktheme" not in xresources:
-        gtk2config = parse_gtk2rc()
-        xresources["gtktheme"] = gtk2config["gtk-theme-name"].replace('"',"")
+        xsettingsconfig = parse_xsettings()
+        xresources["gtktheme"] = xsettingsconfig["Net/ThemeName"].replace('"',"")
 
     # get Kvantum (QT) theme from kvantum.kvconfig if no kvtheme is specified in xresources:
     if "kvtheme" not in xresources:
@@ -140,8 +140,11 @@ def parse_gtk2rc(filename="~/.gtkrc-2.0"):
 def parse_xsettings(filename="~/.config/xsettingsd/xsettingsd.conf"):
     config = {}
     filename = os.path.abspath(os.path.expanduser(filename))
-    if not os.path.exists(filename):
-        return config
+    dirname = os.path.dirname(filename)
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+    with open(filename, "a") as file: # create file if it does not exist
+        pass
     with open(filename, "r") as file:
         for line in file:
             if not " " in line:
@@ -150,6 +153,18 @@ def parse_xsettings(filename="~/.config/xsettingsd/xsettingsd.conf"):
             key = splitted_line[0].strip()
             value = " ".join(splitted_line[1:]).strip()
             config[key] = value
+    if not config:
+        gtk3config = parse_gtk3rc()
+        config["Net/ThemeName"] = gtk3config["Settings"]["gtk-theme-name"]
+    if not config:
+        gtk2config = parse_gtk2rc()
+        config["Net/ThemeName"] = gtk2config["gtk-theme-name"]
+    if not config: # TODO: remove hard coded option here:
+        config["Net/ThemeName"] = '"Arc-Dark"'
+    if not config["Net/ThemeName"][0] == '"':
+        config["Net/ThemeName"] = '"' + config["Net/ThemeName"]
+    if not config["Net/ThemeName"][-1] == '"':
+        config["Net/ThemeName"] = config["Net/ThemeName"] + '"'
     return config
 
 def parse_xresources_options(dirname="~/.config/Xresources"):
@@ -329,15 +344,15 @@ def alpha_set(xresources, value):
 
 def gtk_set(xresources, value):
     xresources["gtktheme"] = value
-    write_gtk2rc(xresources)
-    write_gtk3rc(xresources)
+    #write_gtk2rc(xresources)
+    #write_gtk3rc(xresources)
     write_xsettings(xresources)
 
 def xcs_set(xresources):
-    write_gtk3rc(xresources)
-    write_gtk2rc(xresources)
-    write_kvantum(xresources)
+    #write_gtk3rc(xresources)
+    #write_gtk2rc(xresources)
     write_xsettings(xresources)
+    write_kvantum(xresources)
     write_zathura_recolor(xresources)
     write_xresources(xresources)
     write_rofi_colorscheme(xresources)
@@ -349,7 +364,7 @@ def xcs_set(xresources):
     update_picom()
 
 if __name__ == "__main__":
-    try:
+#   try:
         args = parse_args(sys.argv[1:])
         xresources_options = parse_xresources_options()
         xresources = parse_xresources(xresources_options, 'current')
@@ -384,6 +399,6 @@ if __name__ == "__main__":
         xresources['alpha'] = alpha
 
         exit(xcs_set(xresources))
-    except Exception as e:
-        sys.stdout = sys.stderr
-        print(e)
+#   except Exception as e:
+#       sys.stdout = sys.stderr
+#       print(e)
