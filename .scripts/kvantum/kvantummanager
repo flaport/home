@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+# wrapper script around kvantummanager with callback for qt5ct
+# qt5ct should be updated after updating kvantum.
+
+/usr/bin/kvantummanager "$@"
+exit_code=$?
+sleep 1
+
+# just touching qt5ct conf is enough to update running QT applications
+touch $HOME/.config/qt5ct/qt5ct.conf
+
+# exit with lxappearance exit code
+exit $exit_code
+

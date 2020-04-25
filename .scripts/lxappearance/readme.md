@@ -1,5 +1,5 @@
 # lxappearance
 
-Wrapper script around `lxappearance` with callback for
-[`xcs`](../x/xcs): `xcs` (my custom X Color Scheme script) should be
-called after changing the GTK theme.
+* [lxappearance](lxappearance) wrapper script around lxappearance with
+callback for xsessiond.  # xsessiond should be updated after
+updating lxappearance

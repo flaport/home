@@ -1,12 +1,25 @@
 #!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
 
-# wrapper script around lxappearance with callback for xcs:
-# xcs (my custom X Color Scheme script) should be called after
-# changing the GTK theme.
+# wrapper script around lxappearance with callback for xsessiond.
+# xsessiond should be updated after updating lxappearance
 
 /usr/bin/lxappearance "$@"
 exit_code=$?
-xcs current
+
+# add theme change to xsettingsd
+theme=$(grep 'gtk-theme-name' "$HOME/.gtkrc-2.0" | head -1 | sed 's|^[^=]*=\(.*\)|\1|g')
+sed -i "s|Net/ThemeName.*|Net/ThemeName $theme|g" "$HOME/.config/xsettingsd/xsettingsd.conf"
+
+# update xsettingsd
+killall -HUP xsettingsd
+
+# exit with lxappearance exit code
 exit $exit_code
 
 
