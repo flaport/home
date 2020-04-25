@@ -449,6 +449,10 @@ yay_install xurls
 # yay_install xcape-git
 # viewer with synctex support, and some custom plugins
 pacman_install xdotool
+# xsettingsd: immediately apply changes in GTK theme
+pacman_install xsettingsd
+# viewer with synctex support, and some custom plugins
+pacman_install xdotool
 # compositor (for transparent windows, blur, ...)
 # pacman_install xcompmgr
 # better compositor:
