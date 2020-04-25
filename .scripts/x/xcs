@@ -119,7 +119,12 @@ def parse_gtk3rc(filename="~/.config/gtk-3.0/settings.ini"):
     return config
 
 def parse_kvantum(filename="~/.config/Kvantum/kvantum.kvconfig"):
-    return parse_gtk3rc(filename)
+    config = parse_gtk3rc(filename)
+    if "General" not in config:
+        config["General"] = {}
+    if "theme" not in config["General"]:
+        config["General"]["theme"] = "KvArcDark#" # TODO: remove hard coded option here
+    return config
 
 def parse_xresources(xresources_options, name):
     filename = os.path.abspath(os.path.expanduser(xresources_options[name]))
