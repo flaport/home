@@ -27,6 +27,17 @@ should_lock() {
     id=$(get_active_id)
     title=$(get_window_title $id)
 
+    # do not lock if anything is playing
+    if timeout 1s playerctl status 2> /dev/null | grep Playing &> /dev/null; then
+        return 1
+    fi
+
+    # do not lock if anything is playing
+    if grep  $HOME/.cache/dwm_status/status &> /dev/null; then
+        return 1
+    fi
+
+    # do not lock if any of the predefined window titles is fullscreen
     if is_fullscreen $id; then
         for i in "${LIST_OF_WINDOW_TITLES_THAT_PREVENT_LOCKING[@]}"; do
             if [[ $title =~ $i ]]; then

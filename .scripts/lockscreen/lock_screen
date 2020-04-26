@@ -7,7 +7,7 @@
 
 # prepare to lock:
 kill -SIGHUP $(pidof gpg-agent) # flush all cached gpg-key passwords.
-sleep 5 && xset dpms force off & # turn off backlight
+sleep 20 && pidof i3lock && xset dpms force off & # turn off backlight if i3lock is still running
 timeout 1s playerctl pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol) &
 
 # actual lock command
