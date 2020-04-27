@@ -10,3 +10,6 @@
 [submodule ".build/legacyfox"]
 	path = .build/legacyfox
 	url = https://github.com/flaport/LegacyFox
+[submodule ".build/scroll"]
+	path = .build/scroll
+	url = https://github.com/flaport/scroll

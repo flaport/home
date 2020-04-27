@@ -932,12 +932,14 @@ systemctl_create pacmanquery
 systemctl_enable pacmanquery
 
 ## Personal forks (placed at the end so all dependencies are already installed)
-# my st fork [terminal]
-submodule_install st
 # my dwm fork [window manager]
 submodule_install dwm
-# my dmenu fork [menu]
+# my dmenu fork [application launcher]
 submodule_install dmenu
+# my st fork [terminal]
+submodule_install st
+# my scroll fork [scroll] (implements scrollback in st)
+submodule_install scroll
 
 
 ## Python
