@@ -1,5 +1,25 @@
 #!/usr/bin/env bash
 
+# ueberzug previews do not know the vertical position of the preview.
+# You can place this in your .bashrc/.zshrc to export an environment
+# variable with this information. Beware! This is a nasty hack and
+# some things might break...
+
+# bash (place in $PROMPT_COMMAND):
+# exec < /dev/tty
+# oldstty=$(stty -g) 2> /dev/null
+# stty raw -echo min 0 2> /dev/null
+# echo -en "\033[6n" > /dev/tty 2> /dev/null
+# IFS=';' read -r -d R -a pos 2> /dev/null
+# stty $oldstty 2> /dev/null
+# export FZF_UBZ_LINE=$((${pos[0]:2}+1))
+
+# zsh (place in zle-line-init):
+# echo -ne "\033[6n" > /dev/tty
+# read -t 1 -s -d 'R' line < /dev/tty
+# line="${line##*\[}"
+# export FZF_UBZ_LINE="$((${line%;*}+1))"
+
 # name of ueberzug tempfile:
 export FZF_UBZ_FIFO="$(mktemp --dry-run --suffix "fzf-ubz-$$")"
 

@@ -79,11 +79,6 @@ function zle-keymap-select { # gets run every time the mode changes
     zle reset-prompt
 }
 function zle-line-init() { # gets run every new line
-    # fzf + ueberzug (nasty hack needed for correct position of the preview)
-    echo -ne "\033[6n" > /dev/tty
-    read -t 1 -s -d 'R' line < /dev/tty
-    line="${line##*\[}"
-    export FZF_UBZ_LINE="$((${line%;*}+1))"
     # vi mode
     echo -ne $INSERT
     SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
