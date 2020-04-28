@@ -254,9 +254,9 @@ systemctl_enable() {
     printf "\n\n\nenabling $1 service...\n" >> $ERR
     printf "sudo systemctl enable $1\n" >> $LOG
     printf "sudo systemctl enable $1\n" >> $ERR
-    echo $password | sudo -S systemctl enable $1 >> $LOG 2>> $ERR
-    [[ $1 != "lightdm" && $1 != "NetworkManager" && $1 != "bluetooth" ]] && echo $password | sudo -S systemctl restart $1 >> $LOG 2>> $ERR
+    echo $password | sudo -S systemctl enable "$1" >> $LOG 2>> $ERR
     exit_code=$?
+    [[ "$1" != "lightdm" && $1 != "NetworkManager" && "$1" != "bluetooth" ]] && echo $password | sudo -S systemctl restart $1 >> $LOG 2>> $ERR
     echo_success $exit_code
     return $exit_code
 }
@@ -869,7 +869,7 @@ pacman_install lynx
 
 
 ## Hardware acceleration
-# proprietary nvidia driver [nvidia]
+# proprietary nvidia driver; also, for HWA: [VDPAU_DRIVER=nvidia]
 pacman_install nvidia
 # useful utilities for nvidia driver:
 pacman_install nvidia-utils
@@ -894,29 +894,36 @@ pacman_install vdpauinfo
 # useful top command (intel_gpu_top) for intel integrated Graphics:
 pacman_install intel-gpu-tools
 pacman_install opencl-nvidia
-# install and enable libva intel driver [iHD]:
+# install and enable libva intel driver [LIBVA_DRIVER_NAME=iHD]:
 pacman_install intel-media-driver
-grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# install and enable alternative libva intel driver [i965]:
+# install and enable alternative libva intel driver [LIBVA_DRIVER_NAME=i965]:
 # pacman_install libva-intel-driver
-# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# install and enable alternative libva intel driver [i965]:
+# install and enable alternative libva intel driver [LIBVA_DRIVER_NAME=i965]:
 # yay_install libva-intel-driver-g45-h264
-# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# install and enable libva nouveau driver [nouveau]:
+# install and enable libva nouveau driver [LIBVA_DRIVER_NAME=nouveau]:
 # pacman_install libva-mesa-driver
-# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# install and enable libva translation from vdpau [vdpau]
+# install and enable libva translation from vdpau [LIBVA_DRIVER_NAME=vdpau]
 # pacman_install libva-vdpau-driver
-# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# install and enable libva translation from vdpau [vdpau] (patched to work with chromium)
+# install and enable libva translation from vdpau [LIBVA_DRIVER_NAME=vdpau] (patched to work with chromium)
 # yay_install libva-vdpau-driver-chromium
-# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# install vdpau translation from libva [va_gl]:
+# install vdpau translation from libva [VDPAU_DRIVER=va_gl]:
 pacman_install libvdpau-va-gl
-grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# install and enable vdpau nouveau driver [nouveau]:
+# install and enable vdpau nouveau driver [VDPAU_DRIVER=nouveau]:
 # pacman_install mesa-vdpau
+# override default libva & vdpau driver (option 0):
+# do nothing: write no environment variables (let system decide)
+# override default libva & vdpau driver (option 1: intel integrated graphics):
+grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# override default libva & vdpau driver (option 2: older intel integrated graphics):
+# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# override default libva & vdpau driver (option 3: nvidia proprietary driver):
+# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nvidia" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# override default libva & vdpau driver (option 4: nouveau open source driver):
+# sudo pacman -Rns --noconfirm nvidia >> $LOG 2>> $ERR
+# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 # grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 # install chromium with libva support from archlinuxcn repositories:
 # grep "\[archlinuxcn\]" /etc/pacman.conf &> /dev/null || printf "\n\n[archlinuxcn]\nServer=https://repo.archlinuxcn.org/\$arch" | sudo tee -a /etc/pacman.conf > /dev/null 2>> $ERR
