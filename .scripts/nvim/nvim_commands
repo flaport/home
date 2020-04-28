@@ -1,4 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+
 # leader=$(grep "mapleader" $HOME/.config/nvim/init.vim | sed 's|.*=\ *\(.*\)\ *|\1|g' | sed 's/"//g' | sed s/\'//g )
 
 # this script should be called from within nvim *after* executing the vim command:
@@ -12,8 +18,7 @@ if [ ! -f /tmp/nvim_map ]; then
 fi
 
 cmd=$(\
-cat /tmp/nvim_map \
-  | grep : \
+grep : /tmp/nvim_map \
   | sed 's/<Plug>//g' | sed 's/<Esc>//g' | sed 's/<C-U>//g' | sed 's/<SNR>//g' | sed 's/<CR>//g' \
   | sed '/^\ .*/d' | sed '/^".*/d' | sed '/^let.*/d' \
   | sort \
@@ -21,6 +26,6 @@ cat /tmp/nvim_map \
   | sed 's/^.*:\([^<]*\).*$/\1/g' | sed 's/\#/\\\#/g' \
 )
 exit_code=$?
-printf "$cmd"
+printf "%s" "$cmd"
 exit $exit_code
 

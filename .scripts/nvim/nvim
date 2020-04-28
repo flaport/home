@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
 #   |  __\| |   | / \||  \/|| / \||  \/|  / \
@@ -6,16 +6,15 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 # NOTE: this script should be placed in your path such that it takes
-#       priority over the nvim binary `/usr/bin/nvim`.
+#       priority over the nvim binary /usr/bin/nvim.
 
-if [ ! $2 ]; then
+if [ ! "$2" ]; then
     # if the argument does not exist and if theres an executable in path
     # open the executable for editing.
-    if [ ! -f $1 ]; then
-        exe=$(which $1 2> /dev/null)
-        if [[ $? == 0 ]]; then
-            echo $exe
-            /usr/bin/nvim $exe
+    if [ ! -f "$1" ]; then
+        if exe="$(which "$1" 2> /dev/null)"; then
+            echo "$exe"
+            /usr/bin/nvim "$exe"
             exit 0
         fi
     fi
@@ -23,4 +22,4 @@ if [ ! $2 ]; then
 fi
 
 # all other cases, just open neovim with all the arguments supplied.
-/usr/bin/nvim $@
+/usr/bin/nvim "$@"

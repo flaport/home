@@ -1,4 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
 
 # improved joplin sync script that syncs both TUI and GUI (not only TUI)
 
