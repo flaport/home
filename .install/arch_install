@@ -392,6 +392,8 @@ echo $password | sudo -S npm -g install instant-markdown-d >> $LOG 2>> $ERR
 # yay_install googler
 # terminal internet search: duckduckgo
 # yay_install ddgr
+# newsboat: RSS reader
+pacman_install newsboat
 # trans: command line translation engine
 pacman_install translate-shell
 # whois information
