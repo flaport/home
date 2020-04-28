@@ -32,6 +32,12 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     exit 1
 fi
 
+## Parse arguments
+#-------------------------------------------------------------------------------
+
+[ ! -z "$2" ] && >&2 echo usage: arch_install [--force] && exit 1
+[ ! -z "$1" ] && [  "$1" = "--force" ] && FORCE=1 || FORCE=0
+
 
 ## Logging
 #-------------------------------------------------------------------------------
@@ -90,7 +96,7 @@ pacman_install(){ # will only install the first argument!
 
     # check if package is already installed...
     echo $password | sudo -S pacman -Q $1 >> $LOG 2>> $ERR;
-    if [ $? = 0 ]; then
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
         printf "already installed.\n" >> $LOG
         printf "already installed.\n" >> $ERR
@@ -112,7 +118,7 @@ yay_install(){ # will only install the first argument!
 
     # check if package is already installed...
     echo $password | sudo -S pacman -Q $1 >> $LOG 2>> $ERR;
-    if [ $? = 0 ]; then
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
         printf "already installed.\n" >> $LOG
         printf "already installed.\n" >> $ERR
@@ -137,7 +143,7 @@ git_install(){ # will only install the first argument!
 
     # check if package is already installed...
     echo $password | sudo -S pacman -Q $name >> $LOG 2>> $ERR;
-    if [ $? = 0 ]; then
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
         printf "already installed.\n" >> $LOG
         printf "already installed.\n" >> $ERR
@@ -256,14 +262,13 @@ systemctl_enable() {
 }
 
 link() {
+    [ ! -z $3 ] && printf "link: too many arguments" && return 1
     printf "link $1 to $2... "
     printf "\n\n\nlink $1 to $2\n" >> $LOG
     printf "\n\n\nlink $1 to $2\n" >> $ERR
     printf "sudo ln -sf $1 $2\n" >> $LOG
     printf "sudo ln -sf $1 $2\n" >> $ERR
-    if [ -f "$2" ]; then
-        echo $password | sudo -S mv $2 $2.bak  >> $LOG 2>> $ERR
-    fi
+    [ -f "$2" ] && echo $password | sudo -S mv $2 $2.bak  >> $LOG 2>> $ERR
     echo $password | sudo -S ln -sf $1 $2  >> $LOG 2>> $ERR
     exit_code=$?
     echo_success $exit_code
