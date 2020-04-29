@@ -31,8 +31,11 @@ start wallpaper current
 # notifications
 start dunst
 
-# network manager applet (in most right corner of the screen)
+# network manager applet
 start nm-applet
+
+# bluetooth manager applet
+start blueman-applet
 
 # automatically lock screen after 10 minutes
 start xautolock -time 10 -locker validate_and_lock_screen
