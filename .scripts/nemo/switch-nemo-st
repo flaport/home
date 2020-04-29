@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # This script behaves differently according to the currently active window.
 # option 1: nemo is selected: close nemo and open currently open folder in st with --classname nemo
@@ -9,15 +9,15 @@
 keymap="super+Control_L+n"
 
 # get window information
-window=$(xdotool getactivewindow)
-windowtitle=$(xdotool getwindowname $window)
-windowclass=$(xprop -id $window | grep WM_CLASS | sed 's/^.*\"\(.*\)\".*/\1/g')
+window="$(xdotool getactivewindow)"
+windowtitle="$(xdotool getwindowname "$window")"
+windowclass="$(xprop -id "$window" | grep WM_CLASS | sed 's/^.*\"\(.*\)\".*/\1/g')"
 
-if [[ $windowclass == "Nemo" ]]; then
-    xdotool keyup $keymap && xdotool key alt+t && xdotool windowclose $window
-elif [[ $windowtitle == "st-nemo" ]]; then
-    xdotool keyup $keymap && xdotool key --window $window --delay 10 n e m o space period space ampersand exclam Return
-    xdotool windowclose $window
+if [ "$windowclass" = "Nemo" ]; then
+    xdotool keyup "$keymap" && xdotool key alt+t && xdotool windowclose "$window"
+elif [ "$windowtitle" = "st-nemo" ]; then
+    xdotool keyup "$keymap" && xdotool key --window "$window" --delay 10 n e m o space period space ampersand exclam Return
+    xdotool windowclose "$window"
 else
-    nemo $@
+    nemo "$@"
 fi

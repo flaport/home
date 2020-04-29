@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 FILENAME=$1
 
 xdotool type :q!
 xdotool key Return
 sleep .5
-xdotool type sudo\ nvim\ $FILENAME
+xdotool type sudo\ nvim\ "$FILENAME"
 xdotool key Return

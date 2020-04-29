@@ -6,21 +6,19 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
-systemctl status bluetooth | grep inactive
-[ $? -eq 0 ] && exit 1
+systemctl status bluetooth | grep inactive && exit 1
 
 bluetoothctl -- power on &> /dev/null
-device=$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]" | sed "s/.*\[\(.*\)\].*/\1/g")
+device="$(echo exit | bluetoothctl | grep -o -m 1 "\b\[.*\]" | sed 's/.*\[\(.*\)\].*/\1/g')"
 
-if [[ $device == bluetooth ]]; then # no connection -> try to connect
-    devices=$(bluetoothctl -- paired-devices)
-    numdevices=$(echo $devices | wc -l)
-    device=$(echo $devices | dmenu -p " " "$@")
-    mac=$(echo $device | grep -o "..:..:..:..:..:..")
-    [ -z $mac ] && exit 0
-    message=$(bluetoothctl -- connect $mac | grep 'successful\|Failed')
+if [ "$device" = bluetooth ]; then # no connection -> try to connect
+    devices="$(bluetoothctl -- paired-devices)"
+    device="$(echo "$devices" | dmenu -p " " "$@")"
+    mac="$(echo "$device" | grep -o "..:..:..:..:..:..")"
+    [ -z "$mac" ] && exit 0
+    message="$(bluetoothctl -- connect "$mac" | grep 'successful\|Failed')"
 else # a bluetooth connection exists -> try to disconnect
-    message=$(bluetoothctl -- disconnect | grep disconnected)
+    message="$(bluetoothctl -- disconnect | grep disconnected)"
 fi
 
 [ -z "$message" ] && exit 0
