@@ -58,4 +58,5 @@
     "vim.useSystemClipboard": true,
     "python.linting.pydocstyleEnabled": true,
     "git.autofetch": true,
+    "diffEditor.renderSideBySide": false,
 }
