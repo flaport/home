@@ -1,0 +1,23 @@
+# NOTE: DO NOT EDIT THE FIRST 6 LINES OF THIS FILE
+#
+# this service can be (re-)installed by enabling it in the
+# arch install script and running the script (again).
+#
+# TARGET: /etc/systemd/system/tmux.service
+
+[Unit]
+Description=Start tmux as a service
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User={USER}
+WorkingDirectory={HOME}
+ExecStart=/usr/bin/tmux new-session -s %u -d
+ExecStop=/usr/bin/tmux kill-session -t %u
+Restart=always
+RestartSec=1
+
+
+[Install]
+WantedBy=multi-user.target

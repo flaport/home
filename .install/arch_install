@@ -256,7 +256,6 @@ systemctl_enable() {
     printf "sudo systemctl enable $1\n" >> $ERR
     echo $password | sudo -S systemctl enable "$1" >> $LOG 2>> $ERR
     exit_code=$?
-    [[ "$1" != "lightdm" && $1 != "NetworkManager" && "$1" != "bluetooth" ]] && echo $password | sudo -S systemctl restart $1 >> $LOG 2>> $ERR
     echo_success $exit_code
     return $exit_code
 }
@@ -329,6 +328,9 @@ pacman_install vifm
 # pacman_install dos2unix
 # terminal multiplexer:
 pacman_install tmux
+# run tmux as a systemd service:
+systemctl_create tmux
+systemctl_enable tmux
 # program manuals
 pacman_install man
 pacman_install man-db
