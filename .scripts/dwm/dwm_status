@@ -547,7 +547,7 @@ syncthing2(){
 # torrenting status
 transmission(){
     pidof transmission-daemon > /dev/null 2>/dev/null || return
-    if transmission-remote --list \
+    if ! transmission-remote --list \
         | grep -v ID | grep -v Sum:\
         | awk  '{ print $2;}' \
         | sed '/100%/d' | sed 's/%//g' | sed 's|n/a||g' \
