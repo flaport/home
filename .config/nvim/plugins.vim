@@ -55,8 +55,8 @@ Plug 'valloric/MatchTagAlways' " highlight matching html tags
 Plug 'vim-airline/vim-airline' " better status bar
 Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --all' } " vim autocomplete
 call plug#end() " stop loading plugins
+
 
 
 "" Install Plugins
@@ -188,12 +188,3 @@ let g:airline_theme="xresources_airline"
 " enable hard mode (for practice purposes)
 nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
 
-" ycm-core/YouCompleteMe -------------------------
-nnoremap <leader>d :YcmCompleter GoTo<CR>
-nnoremap <leader>r :YcmCompleter RefactorRename<space>
-" nnoremap <leader>r :YcmCompleter GoToReferences<CR>
-let g:ycm_min_num_of_chars_for_completion = 1
-let g:ycm_max_num_candidates = 6
-let g:ycm_auto_trigger = 1
-let g:ycm_confirm_extra_conf = 0
-" let g:ycm_filetype_blacklist = ['python']
