@@ -23,6 +23,7 @@ mkdir -p "$CACHEDIR"
 
 setstatus(){
     status \
+    network \
     transmission \
     playercontrol \
     appointments \
@@ -46,7 +47,6 @@ setstatus(){
     clock \
     # services \
     # bluetooth \
-    # network \
     # memory \
     # cpu \
     # disk \
