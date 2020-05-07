@@ -9,6 +9,7 @@
 ## imports
 
 import os
+import re
 import sys
 import time
 import glob
@@ -341,8 +342,10 @@ def write_picom_config(xresources, filename="~/.cache/xcs/picom.conf"):
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
     master_filename = os.path.expanduser("~/.config/picom/picom.conf")
-    new_config = subprocess.check_output(["sed", f"s/\"[^:]*:/\"{100*alpha:.0f}:/g", master_filename])
-    with open(filename, "wb") as file:
+    with open(master_filename, "r") as file:
+        config = file.read()
+    new_config = re.sub('"[ ]*[0-9]*[ ]*:', f'"{100*alpha:.0f}:', config)
+    with open(filename, "w") as file:
         file.write(new_config)
 
 def write_rofi_colorscheme(xresources, filename="~/.config/rofi/xresources-colors.rasi"):
@@ -393,7 +396,7 @@ def write_zathura_recolor(xresources, filename="~/.config/zathura/recolor"):
 ## main program
 
 if __name__ == "__main__":
-  try:
+#  try:
         args = parse_args(sys.argv[1:])
         xresources_options = parse_xresources_options()
         xresources = parse_xresources(xresources_options, 'current')
@@ -428,6 +431,6 @@ if __name__ == "__main__":
         xresources['alpha'] = alpha
 
         exit(set_xcs(xresources))
-  except Exception as e:
-      sys.stdout = sys.stderr
-      print(e)
+#  except Exception as e:
+#      sys.stdout = sys.stderr
+#      print(e)
