@@ -1,0 +1,35 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "javascriptreact",
+    "typescript.tsx",
+    "css",
+    "markdown",
+    "html"
+  ],
+  "diagnostic.errorSign": "•",
+  "diagnostic.infoSign": "•",
+  "diagnostic.warningSign": "•",
+  "eslint.autoFixOnSave": true,
+  "eslint.filetypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact",
+    "typescript.tsx"
+  ],
+  "eslint.packageManager": "npm",
+  "html.format.enable": true,
+  "json.format.enable": true,
+  "python.autoComplete.addBrackets": true,
+  "python.formatting.provider":"black",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "suggest.autoTrigger": "always",
+  "suggest.echodocSupport": true,
+  "suggest.maxCompleteItemCount": 10,
+  "suggest.noselect": true
+}
