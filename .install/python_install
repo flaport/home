@@ -9,236 +9,321 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last run: 2020.01.30
+# last complete install: 2020.05.08
 
-# Note: this script can be run as often as you like. After the first time,
-#       running this script should be quite fast, making it a good way to
-#       install additional packages by adding them to the list below.
+# Note: this script can be run as often as you like. It will not attempt to re-install
+#       any already installed program, making it a very fast way update some preferences
+#       or install additional packages by adding them to the list below.
+
 
 ## Checks
 #-------------------------------------------------------------------------------
 
-## Pre-installation checks
-if [ $USER == root ]; then
+## pre-installation checks
+if [ "$USER" == root ]; then
     echo
-    echo "python_install should not be run as root / with sudo."
-    echo "this script should be run normally by a user [with sudo privileges]."
+    echo "'python_install' should NOT be run as root, nor should it be run with sudo."
+    echo "this script should be run [normally] by a user with sudo privileges."
     exit 1
 fi
 
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     echo
-    echo "python_install should NOT be sourced."
+    echo "'python_install' should NOT be sourced."
     exit 1
 fi
+
+
+## Parse arguments
+#-------------------------------------------------------------------------------
+
+
+FORCE=0
+CONDAROOT="$HOME/.anaconda"
+while [ ! -z "$1" ]; do
+    if [ "$1" = "--dir" ]; then
+        CONDAROOT="$2"
+        shift 1
+    elif [ "$1" = "--force" ]; then
+        FORCE=1
+    else
+        >&2 echo "usage: python_install [--dir DIR] [--force]"
+        exit 1
+    fi
+    shift 1
+done
+
+## Logging
+#-------------------------------------------------------------------------------
+
+mkdir -p $HOME/.local/share
+LOG="$HOME/.local/share/python_install.log"
+ERR="$HOME/.local/share/python_install_errors.log"
+printf "ANACONDA PACKAGE INSTALL\n\n\n" >> $LOG
+printf "ANACONDA PACKAGE INSTALL\n\n\n" >> $ERR
 
 
 ## Logging
 #-------------------------------------------------------------------------------
 
-LOG="$HOME/.local/share/python_install.log"
-ERR="$HOME/.local/share/python_install_errors.log"
-mkdir -p "$HOME/.local/share"
-printf "PYTHON PACKAGE INSTALL\n\n\n" > $LOG
-printf "PYTHON PACKAGE INSTALL\n\n\n" > $ERR
+echo_success(){
+    if [ $1 -ne 0 ]; then
+        printf "failed!\n"
+        printf "\nfailed!\n" >> $LOG
+        printf "\nfailed!\n" >> $ERR
+        return 1
+    fi
 
+    printf "success!\n"
+    printf "\nsuccess!\n" >> $LOG
+    printf "\nsuccess!\n" >> $ERR
+    return 0
+}
+
+create_environment(){
+    ENVNAME="$1"
+    printf "\n\n\ncreating environment '$ENVNAME'..."
+    printf "\n\n\ncreating environment '$ENVNAME'..." >> $LOG
+    printf "\n\n\ncreating environment '$ENVNAME'..." >> $ERR
+    [ ! -z "$2" ] && local V="python=$2"
+    NPM="$CONDAROOT/envs/$ENVNAME/bin/npm"
+    PIP="$CONDAROOT/envs/$ENVNAME/bin/pip"
+    PYTHON="$CONDAROOT/envs/$ENVNAME/bin/python"
+    if [ -d "$CONDAROOT/envs/$ENVNAME" ]; then
+        echo "already exists."
+        return 0
+    fi
+    $CONDA create -y -n $ENVNAME $V >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+update_environment() {
+    printf "updating environment '$ENVNAME'..."
+    printf "\n\n\nupdating environment '$ENVNAME'..." >> $LOG
+    printf "\n\n\nupdating environment '$ENVNAME'..." >> $ERR
+    $CONDA update -y -n $ENVNAME conda  >> $LOG 2>> $ERR
+    $CONDA update -y -n $ENVNAME --all >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+conda_install() {
+    printf "[conda] installing '$1' in environment '$ENVNAME'... "
+    printf "\n\n\n[conda] installing '$1' in environment '$ENVNAME'...\n" >> $LOG
+    printf "\n\n\n[conda] installing '$1' in environment '$ENVNAME'...\n" >> $ERR
+    local S=""
+    if [ $FORCE -eq 0 ]; then
+        if $PYTHON -c "import $1" &> /dev/null; then
+            echo "already installed."
+            return 0
+        fi
+        S="-S"
+    fi
+    if [ ! -z $2 ]; then
+        local CHANNEL="-c $2"
+    fi
+    printf "conda install -y $S $1\n" >> $LOG
+    printf "conda install -y $S $1\n" >> $ERR
+    $CONDA install -y $S -n $ENVNAME $CHANNEL $1 >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+pip_install() {
+    printf "[ pip ] installing '$1' in environment '$ENVNAME'... "
+    printf "\n\n\n[ pip ] installing '$1' in environment '$ENVNAME'...\n" >> $LOG
+    printf "\n\n\n[ pip ] installing '$1' in environment '$ENVNAME'...\n" >> $ERR
+    local S="--upgrade"
+    if [ $FORCE -eq 0 ]; then
+        if $PYTHON -c "import $1" &> /dev/null; then
+            echo "already installed."
+            return 0
+        fi
+        S=""
+    fi
+    printf "pip install $S $1\n" >> $LOG
+    printf "pip install $S $1\n" >> $ERR
+    $PIP install $S $1 >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+labextension_install(){
+    JUPYTER="$HOME/.anaconda/bin/jupyter"
+    printf "installing jupyterlab extension: $1..."
+    printf "\n\n\ninstalling jupyterlab extension: $1..." >> $LOG
+    printf "\n\n\ninstalling jupyterlab extension: $1..." >> $ERR
+    if $JUPYTER labextension check $1 >> $LOG 2>> $ERR; then
+        echo "already installed"
+        return 0
+    fi
+    echo
+    $JUPYTER labextension install $1 # >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
 
 ## Anaconda python
 #-------------------------------------------------------------------------------
 
-CONDA="$HOME/.anaconda/bin/conda"
-
-printf "installing anaconda python... "
-if [ ! -d $HOME/.anaconda ]; then
+if [ ! -d "$CONDAROOT" ]; then
+    printf "installing anaconda python... "
     cd $HOME
-    curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output miniconda.sh --silent
-    bash miniconda.sh -b -p $HOME/.anaconda >> $LOG 2>> $ERR
-    rm miniconda.sh
-    echo "installed."
-else
-    echo "already installed"
+    curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output /tmp/miniconda.sh --silent
+    bash /tmp/miniconda.sh -b -p $CONDAROOT >> $LOG 2>> $ERR
+    rm /tmp/miniconda.sh
+    echo "installed.\n"
 fi
 
 
 ## Base environment
 #-------------------------------------------------------------------------------
 
-PIP="$HOME/.anaconda/bin/pip"
-NPM="$HOME/.anaconda/bin/npm"
+ENVNAME="base"
+CONDA="$CONDAROOT/bin/conda"
+NPM="$CONDAROOT/bin/npm"
+PIP="$CONDAROOT/bin/pip"
+PYTHON="$CONDAROOT/bin/python"
 
-# packages in order of importance (conda-forge channel, default channel fails resolving)
-echo "installing jupyter stack..."
-$CONDA install -y -S -c conda-forge tornado=5 nodejs=8 jupyter ipykernel jupyterlab jupyterhub matplotlib >> $LOG 2>> $ERR
+update_environment
+conda_install cython
+conda_install numpy
+conda_install pytorch
+conda_install tensorflow
+conda_install matplotlib
+conda_install pillow
+conda_install scikit-learn
+conda_install h5py
+conda_install ipympl
+conda_install pandas
+conda_install nodejs
+conda_install jupyter
+conda_install jupyterlab
+conda_install ipykernel
+conda_install ipywidgets
+conda_install widgetsnbextension
+conda_install pandoc
+conda_install pylint
+conda_install pydocstyle
+conda_install mypy
+conda_install line_profiler
+conda_install tqdm
+conda_install altair
+conda_install plotly
+conda_install pep8
+conda_install black
+conda_install flake8
+conda_install pyflakes
+conda_install isort
+conda_install yapf
+pip_install ipdb
+pip_install pygmo
+pip_install pynvim
+pip_install neovim-remote
+pip_install octave_kernel
+pip_install bayesian-optimization
+pip_install ipyvolume
+pip_install jupyterlab_latex
+pip_install jupyterlab_git
+pip_install jupyterlab_code_formatter
+pip_install jupyter_tensorboard
+conda_install jupyterhub conda-forge
 
-echo "installing scientific stack... [takes long]"
-$CONDA install -y -S numpy pandas ipympl widgetsnbextension cython pillow scikit-learn h5py >> $LOG 2>> $ERR
-
-echo "installing machine learning stack... [takes long]"
-$CONDA install -y -S tensorflow keras >> $LOG 2>> $ERR
-$CONDA install -y -S -c pytorch pytorch >> $LOG 2>> $ERR
-
-echo "installing other tools... [takes long]"
-$CONDA install -y -S pandoc pylint pydocstyle mypy line_profiler ipywidgets tqdm >> $LOG 2>> $ERR
-
-echo "installing octave for environment: base"
-$PIP install octave_kernel >> $LOG 2>> $ERR
-
-# echo "installing matlab for environment: base"
-# cd <matlabinstallation>/extern/engines/python
-# sudo python setup.py install >> $LOG 2>> $ERR
-# cd $HOME
-# $PIP install matlab_kernel >> $LOG 2>> $ERR
-# altair
-
-echo "installing altair for environment: base"
-$CONDA install -y -S -c conda-forge altair vega >> $LOG 2>> $ERR
-
-echo "installing plotly for environment: base"
-$PIP install plotly >> $LOG 2>> $ERR # plotting library
-
-echo "installing ipdb for environment: base"
-$PIP install ipdb >> $LOG 2>> $ERR # pdb in jupyter notebooks
-
-echo "installing black for environment: base"
-$PIP install black >> $LOG 2>> $ERR # code formatting
-
-echo "installing ueberzug for environment: base"
-$PIP install ueberzug >> $LOG 2>> $ERR # display images in terminal
-
-echo "installing bayesian-optimization for environment: base"
-$PIP install bayesian-optimization >> $LOG 2>> $ERR # optimization of hyperparameters
-
-echo "installing pygmo for environment: base"
-$PIP install pygmo >> $LOG 2>> $ERR # optimization of multi-variable functions
-
-echo "installing pynvim for environment: base"
-$PIP install pynvim >> $LOG 2>> $ERR # neovim python support
-
-echo "installing neovim-remote for environment: base"
-$PIP install neovim-remote >> $LOG 2>> $ERR # neovim remote support
-
-echo "installing linters and formatters for environment: base"
-$PIP install pep8 >> $LOG 2>> $ERR
-$PIP install flake8 >> $LOG 2>> $ERR
-$PIP install pyflakes >> $LOG 2>> $ERR
-$PIP install isort >> $LOG 2>> $ERR
-$PIP install yapf >> $LOG 2>> $ERR
-$PIP install black >> $LOG 2>> $ERR
-
-## Python 2 environment
+## Jupyterlab extensions
 #-------------------------------------------------------------------------------
 
-PIP="$HOME/.anaconda/envs/py2/bin/pip"
+labextension_install @jupyter-widgets/jupyterlab-manager
+labextension_install ipyvolume
+labextension_install @jupyterlab/git
+labextension_install @jupyterlab/latex
+labextension_install jupyterlab-plotly
+labextension_install jupyterlab_tensorboard
+labextension_install @jupyterlab/toc
+labextension_install jupyterlab_vim
+labextension_install jupyter-matplotlib
+labextension_install jupyter-threejs
+labextension_install jupyterlab-datawidgets
+labextension_install @ryantam626/jupyterlab_code_formatter
+labextension_install @lckr/jupyterlab_variableinspector
 
-if [ ! -d "$HOME/.anaconda/envs/py2" ]; then
-    echo "creating python 2 environment... py2"
-    $CONDA create -y -n py2 -c conda-forge python=2.7 tornado=5 ipykernel matplotlib >> $LOG 2>> $ERR
-else
-    echo "updating python 2 environment... py2"
-    $CONDA install -y -S -n py2 -c conda-forge tornado=5 ipykernel matplotlib >> $LOG 2>> $ERR
-fi
+## Py2 environment
+#-------------------------------------------------------------------------------
 
-echo "installing jupyter stack... py2"
-$HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name py2 --display-name "Python 2"
-mv $HOME/.local/share/jupyter/kernels/py2 $HOME/.anaconda/share/jupyter/kernels/
-
-echo "installing scientific stack... py2"
-$CONDA install -y -S numpy pandas ipympl widgetsnbextension cython pillow scikit-learn h5py tensorflow keras >> $LOG 2>> $ERR
-
-echo "installing machine learning stack... py2"
-$CONDA install -y -S tensorflow keras >> $LOG 2>> $ERR
-$CONDA install -y -S -n py2 pytorch -c pytorch >> $LOG 2>> $ERR
-
-echo "installing other tools... py2"
-$CONDA install -y -S pandoc pylint pydocstyle mypy line_profiler ipywidgets tqdm >> $LOG 2>> $ERR
-
-echo "installing altair for environment: py2"
-$CONDA install -y -S -n py2 -c conda-forge altair vega >> $LOG 2>> $ERR
-
-echo "installing linters and formatters for environment: py2"
-$PIP install pep8 >> $LOG 2>> $ERR
-$PIP install flake8 >> $LOG 2>> $ERR
-$PIP install pyflakes >> $LOG 2>> $ERR
-$PIP install isort >> $LOG 2>> $ERR
-$PIP install yapf >> $LOG 2>> $ERR
-$PIP install black >> $LOG 2>> $ERR
-
-echo "installing pynvim for environment: py2"
-$PIP install pynvim >> $LOG 2>> $ERR # neovim python support
-
+create_environment py2 2.7
+update_environment
+conda_install cython
+conda_install numpy
+conda_install pytorch
+conda_install matplotlib
+conda_install pillow
+conda_install scikit-learn
+conda_install h5py
+conda_install ipympl
+conda_install pandas
+conda_install jupyter
+conda_install jupyterlab
+conda_install jupyterhub
+conda_install ipykernel
+conda_install ipywidgets
+conda_install widgetsnbextension
+conda_install pandoc
+conda_install pylint
+conda_install pydocstyle
+conda_install mypy
+conda_install line_profiler
+conda_install tqdm
+conda_install altair
+conda_install plotly
+conda_install pep8
+conda_install black
+conda_install flake8
+conda_install pyflakes
+conda_install isort
+conda_install yapf
+pip_install ipdb
+pip_install pygmo
+pip_install pynvim
+pip_install bayesian-optimization
+printf "installing jupyter kernel for environment: py2... "
+$HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name py2 --display-name "Python 2" >> $LOG 2>> $ERR
+mv $HOME/.local/share/jupyter/kernels/py2 $HOME/.anaconda/share/jupyter/kernels/ >> $LOG 2>> $ERR
+echo "finished."
 
 ## R environment
 #-------------------------------------------------------------------------------
 
-echo "creating R environment: [r]"
-if [ ! -d "$HOME/.anaconda/envs/r" ]; then
-    $CONDA create -y -n r >> $LOG 2>> $ERR
-fi
-echo "installing base packages for environment: [r]"
-$CONDA install -y -S -n r -c r r-irkernel >> $LOG 2>> $ERR
-echo "installing ipykernel for environment: [r]"
+create_environment r
+update_environment
+conda_install ipykernel
+conda_install ipywidgets
+conda_install r-irkernel conda-forge
+pip_install pynvim
+pip_install neovim-remote
+printf "installing jupyter kernel for environment: r... "
 cp -rf $HOME/.anaconda/envs/r/share/jupyter/kernels/ir $HOME/.anaconda/share/jupyter/kernels
 home=$(echo $HOME | sed 's/\//\\\//g')
-sed "0,/R/{s/R/$home\/.anaconda\/envs\/r\/bin\/R/}" $HOME/.anaconda/share/jupyter/kernels/ir/kernel.json > $HOME/.anaconda/share/jupyter/kernels/ir/kernel2.json
-mv $HOME/.anaconda/share/jupyter/kernels/ir/kernel2.json $HOME/.anaconda/share/jupyter/kernels/ir/kernel.json
-
-echo "installing pynvim for environment: r"
-$PIP install pynvim >> $LOG 2>> $ERR # neovim python support
+sed -i "0,/R/{s/R/$home\/.anaconda\/envs\/r\/bin\/R/}" $HOME/.anaconda/share/jupyter/kernels/ir/kernel.json
+echo "finished."
 
 
 ## Julia environment
 #-------------------------------------------------------------------------------
 
-echo "creating Julia environment: [julia]"
-if [ ! -d "$HOME/.anaconda/envs/julia" ]; then
-    $CONDA create -y -n julia >> $LOG 2>> $ERR
-fi
-echo "installing base packages for environment: [julia]"
-$CONDA install -y -S -n julia -c conda-forge julia >> $LOG 2>> $ERR
+create_environment julia
+update_environment
+conda_install ipykernel
+conda_install ipywidgets
+conda_install julia conda-forge
+pip_install pynvim
+pip_install neovim-remote
+echo "installing jupyter kernel for environment: julia... "
 $HOME/.anaconda/envs/julia/bin/julia -E 'using Pkg; Pkg.add("IJulia"); precompile' >> $LOG 2>> $ERR
-echo "installing ipykernel for environment: [julia]"
 $HOME/.anaconda/envs/julia/bin/julia -E 'using IJulia; installkernel("Julia")' >> $LOG 2>> $ERR
-mv $HOME/.local/share/jupyter/kernels/julia* $HOME/.anaconda/share/jupyter/kernels/
-
-echo "installing pynvim for environment: julia"
-$PIP install pynvim >> $LOG 2>> $ERR # neovim python support
-
-## Fixes
-#-------------------------------------------------------------------------------
-
-# remove $CONDA ld binary because it causes trouble for cython:
-echo "disabling $CONDA ld binary in favor of the system one [fixes cython on arch linux] "
-mv $HOME/.anaconda/compiler_compat/ld $HOME/.anaconda/compiler_compat/ld_disabled
-mv $HOME/.anaconda/envs/py2/compiler_compat/ld $HOME/.anaconda/envs/py2/compiler_compat/ld_disabled
-
-
-## Jupyterlab extensions
-#-------------------------------------------------------------------------------
-
-PIP="$HOME/.anaconda/bin/pip"
-labextension_install(){
-    echo "installing jupyterlab extension: "$1
-    JUPYTER="$HOME/.anaconda/bin/jupyter"
-    $JUPYTER labextension check $1 || $JUPYTER labextension install $1 >> $LOG 2>> $ERR
-}
-
-# jupyterlab extensions
-labextension_install @jupyterlab/plotly-extension
-labextension_install @jupyterlab/toc
-labextension_install @jupyter-widgets/jupyterlab-manager
-labextension_install @lckr/jupyterlab_variableinspector
-labextension_install @jupyter-widgets/jupyterlab-manager
-labextension_install jupyter-threejs
-labextension_install jupyter-matplotlib
-labextension_install jupyterlab_vim
-$PIP install ipyvolume >> $LOG 2>> $ERR
-labextension_install ipyvolume
-$PIP install jupyterlab_latex >> $LOG 2>> $ERR
-labextension_install @jupyterlab/latex
-$PIP install jupyterlab_git >> $LOG 2>> $ERR
-labextension_install @jupyterlab/git
-$PIP install jupyterlab_code_formatter >> $LOG 2>> $ERR
-labextension_install @ryantam626/jupyterlab_code_formatter
-# $PIP install jupyter_tensorboard
-# labextension_install jupyterlab_tensorboard
-
+mv $HOME/.local/share/jupyter/kernels/julia* $HOME/.anaconda/share/jupyter/kernels/ >> $LOG 2>> $ERR
+echo "finished."

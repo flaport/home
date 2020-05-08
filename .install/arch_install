@@ -15,13 +15,14 @@
 #       any already installed program, making it a very fast way update some preferences
 #       or install additional packages by adding them to the list below.
 
+
 ## Checks
 #-------------------------------------------------------------------------------
 
 ## pre-installation checks
 if [ "$USER" == root ]; then
     echo
-    echo "first_install.sh should NOT be run as root, nor should it be run with sudo."
+    echo "'arch_install' should NOT be run as root, nor should it be run with sudo."
     echo "this script should be run [normally] by a user with sudo privileges."
     exit 1
 fi
@@ -31,6 +32,7 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     echo "'arch_install' should NOT be sourced."
     exit 1
 fi
+
 
 ## Parse arguments
 #-------------------------------------------------------------------------------

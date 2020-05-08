@@ -470,7 +470,7 @@ c.JupyterHub.tornado_settings = {
 #  Some spawners allow shell-style expansion here, allowing you to use
 #  environment variables. Most, including the default, do not. Consult the
 #  documentation for your spawner to verify!
-c.Spawner.cmd = ["jupyter-labhub"]
+# c.Spawner.cmd = ["jupyter-labhub"]
 
 ## Maximum number of consecutive failures to allow before shutting down
 #  JupyterHub.
@@ -522,7 +522,7 @@ c.Spawner.cmd = ["jupyter-labhub"]
 #    navigate the whole filesystem from their notebook server, but still start in their home directory.
 #  - Start with `/notebooks` instead of `/tree` if `default_url` points to a notebook instead of a directory.
 #  - You can set this to `/lab` to have JupyterLab start by default, rather than Jupyter Notebook.
-# c.Spawner.default_url = ''
+c.Spawner.default_url = '/lab'
 
 ## Disable per-user configuration of single-user servers.
 #
