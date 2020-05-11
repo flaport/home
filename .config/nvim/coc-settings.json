@@ -7,8 +7,7 @@
     "javascriptreact",
     "typescript.tsx",
     "css",
-    "markdown",
-    "html"
+    "markdown"
   ],
   "diagnostic.errorSign": "•",
   "diagnostic.infoSign": "•",
