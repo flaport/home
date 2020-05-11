@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.04.23
+# last complete install: 2020.05.11
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -234,6 +234,9 @@ pip2_install() {
 }
 
 systemctl_create() {
+    printf "creating $1 service... "
+    printf "\n\n\ncreating $1 service...\n" >> $LOG
+    printf "\n\n\ncreating $1 service...\n" >> $ERR
     source=$HOME/.install/services/$1.service
     target=$(head -6 $source | tail -1 | sed 's/#\ *TARGET:\ *//g')
 
@@ -244,10 +247,10 @@ systemctl_create() {
     echo "# and run $HOME/.install/arch_install again to install it here." | sudo tee -a $target > /dev/null 2>> $ERR
     echo "" | sudo tee -a $target > /dev/null 2>> $ERR
     tail --lines=+7 $source | sed 's|{USER}|'$USER'|g' | sed 's|{HOME}|'$HOME'|g' | sudo tee -a $target > /dev/null 2>> $ERR
+    exit_code=$?
     echo $password | sudo -S systemctl daemon-reload
-
-    echo "$1 created." >> $LOG 2>> $ERR
-    echo "$1 created." 2>> $ERR
+    echo_success $exit_code
+    return $exit_code
 }
 
 systemctl_enable() {
@@ -346,7 +349,7 @@ pacman_install mplayer
 pacman_install xclip
 # pdf conversion
 pacman_install poppler
-# check if bash script is posix complient (needs haskell -> 250mb -> disables by default)
+# check if bash script is posix complient (needs haskell -> 250mb -> disabled by default)
 # pacman_install shellcheck
 # highlight: to highlight code in the terminal (nice `cat` alternative, used in my custom scripts)
 pacman_install highlight
@@ -365,7 +368,7 @@ pacman_install neofetch
 # lightweight system information
 yay_install pfetch
 # some more eye-candy (useless music visualizer):
-yay_install cli-visualizer
+# yay_install cli-visualizer
 # large ascii letters
 pacman_install figlet
 # task spooler: queue tasks
@@ -381,10 +384,10 @@ yay_install transmission-remote-cli-git
 pacman_install lsd
 # vim / neovim: terminal text editor
 pacman_install neovim
+# link neovim to standard vim binary:
+link /usr/bin/nvim /usr/bin/vim
 # ctags: recommended vim dependency for jump-to-tag functionality
 pacman_install ctags
-# link neovim to standard vim binary:
-# link /usr/bin/nvim /usr/bin/vim
 # scim: terminal spreadsheet viewer/editor
 # yay_install sc-im
 # wordgrinder: terminal word processor
@@ -401,7 +404,7 @@ pacman_install translate-shell
 pacman_install whois
 # cronie: cron job daemon
 pacman_install cronie
-systemctl_enable cronie
+# systemctl_enable cronie
 # ncmpcpp: terminal music client
 pacman_install ncmpcpp
 # spotify-tui: terminal client for spotify (building this takes LONG)
@@ -410,6 +413,11 @@ pacman_install ncmpcpp
 # yay_install spotifyd-full
 # playerctl: terminal client to control spotify, spotifyd, vlc, ...
 pacman_install playerctl
+# media daemon
+# pacman_install mpd
+# systemctl_enable mpd
+# media control
+# pacman_install mpc
 
 ## Drive and file system drivers
 # mount cifs parititions
@@ -536,13 +544,10 @@ pacman_install dunst
 ## Sound
 # alsamixer
 pacman_install alsa-utils
+# other alsa plugins
 pacman_install alsa-plugins
+# pulse audio
 pacman_install pulseaudio
-# media control
-pacman_install mpc
-# media daemon
-pacman_install mpd
-systemctl_enable mpd
 
 
 ## Connectivity & network tools
@@ -749,7 +754,7 @@ pacman_install zathura-pdf-mupdf
 # djvu reader extension
 pacman_install zathura-djvu
 # etcher: GUI dd alternative
-yay_install etcher-bin
+# yay_install etcher-bin
 # anki: a flashcard program
 pacman_install anki
 # pulseaudio control panel
@@ -871,16 +876,16 @@ pacman_install lynx
 
 ## Hardware acceleration
 # proprietary nvidia driver; also, for HWA: [VDPAU_DRIVER=nvidia]
-pacman_install nvidia
+# pacman_install nvidia
 # useful utilities for nvidia driver:
-pacman_install nvidia-utils
+# pacman_install nvidia-utils
 # useful top command for nvidia GPU
-pacman_install nvtop
+# pacman_install nvtop
 # nvidia settings manager
-pacman_install nvidia-settings
+# pacman_install nvidia-settings
 # enable nvidia at next reboot using optimus-manager
-yay_install optimus-manager
-optimus-manager --no-confirm --set-startup nvidia >> $LOG 2>> $ERR
+# yay_install optimus-manager
+# optimus-manager --no-confirm --set-startup nvidia >> $LOG 2>> $ERR
 # deep learning (needs nvidia):
 # pacman_install cuda-toolkit
 # force 96 dpi in Xorg when nvidia driver is in use:
@@ -888,15 +893,15 @@ optimus-manager --no-confirm --set-startup nvidia >> $LOG 2>> $ERR
 # open source nvidia-driver [nouveau] (better support by instlaling proprietary dependencies)
 # yay_install nouveau-fw
 # libva status and utilities
-pacman_install libva-utils
-pacman_install gstreamer-vaapi
+# pacman_install libva-utils
+# pacman_install gstreamer-vaapi
 # vdpau status and utilities
-pacman_install vdpauinfo
+# pacman_install vdpauinfo
 # useful top command (intel_gpu_top) for intel integrated Graphics:
-pacman_install intel-gpu-tools
-pacman_install opencl-nvidia
+# pacman_install intel-gpu-tools
+# pacman_install opencl-nvidia
 # install and enable libva intel driver [LIBVA_DRIVER_NAME=iHD]:
-pacman_install intel-media-driver
+# pacman_install intel-media-driver
 # install and enable alternative libva intel driver [LIBVA_DRIVER_NAME=i965]:
 # pacman_install libva-intel-driver
 # install and enable alternative libva intel driver [LIBVA_DRIVER_NAME=i965]:
@@ -908,14 +913,14 @@ pacman_install intel-media-driver
 # install and enable libva translation from vdpau [LIBVA_DRIVER_NAME=vdpau] (patched to work with chromium)
 # yay_install libva-vdpau-driver-chromium
 # install vdpau translation from libva [VDPAU_DRIVER=va_gl]:
-pacman_install libvdpau-va-gl
+# pacman_install libvdpau-va-gl
 # install and enable vdpau nouveau driver [VDPAU_DRIVER=nouveau]:
 # pacman_install mesa-vdpau
 # override default libva & vdpau driver (option 0):
 # do nothing: write no environment variables (let system decide)
 # override default libva & vdpau driver (option 1: intel integrated graphics):
-grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+# grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 # override default libva & vdpau driver (option 2: older intel integrated graphics):
 # grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 # grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
@@ -994,17 +999,25 @@ pacman_install python-neovim
 # pacman_install python-pillow
 # sockets
 # pacman_install python-websockets
-# castero: podcast client (dependencies installed first)
 pacman_install flake8
+# jedi: linting and more (disabled in favor of pip-install)
 # pacman_install python-jedi
-pip3_install jedi
+# requests (castero dependency)
 pacman_install python-requests
+# pytest (castero dependency)
 pacman_install python-pytest
+# cjkwrap (castero dependency)
 pacman_install python-cjkwrap
+# coverage (castero dependency)
 pacman_install python-coverage
+# beautifulsoup4 (castero dependency)
 pacman_install python-beautifulsoup4
+# python mpv (castero dependency)
 yay_install python-mpv
+# castero: tui podcast client
 yay_install castero
+# jedi: linting and more (newer version than via pacman)
+pip3_install jedi
 # neovim-remote needed for synctex
 pip3_install neovim-remote
 # image previews in terminal
