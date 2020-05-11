@@ -782,6 +782,16 @@ pacman_install ffmpeg
 # yay_install spotify
 # GDS viewer and editor
 pacman_install klayout
+# lbry: youtube alternative
+# yay_install lbry-app-bin
+# skype: video calls
+# yay_install skypeforlinux-stable-bin
+# microsoft teams: skype on steroids
+# yay_install teams
+# zoom: conference calls
+# yay_install zoom
+# jitsi meet: conference calls
+# yay_install jitsi-meet-bin
 
 
 ## Office
