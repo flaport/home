@@ -221,18 +221,6 @@ pip3_install() {
     return $exit_code
 }
 
-pip2_install() {
-    printf "pip2 install $1... "
-    printf "\n\n\npip2 install $1\n" >> $LOG
-    printf "\n\n\npip2 install $1\n" >> $ERR
-    printf "sudo /usr/bin/python2 -m pip install $1\n" >> $LOG
-    printf "sudo /usr/bin/python2 -m pip install $1\n" >> $ERR
-    echo $password | sudo -S /usr/bin/python2 -m pip install $1 >> $LOG 2>> $ERR
-    exit_code=$?
-    echo_success $exit_code
-    return $exit_code
-}
-
 systemctl_create() {
     printf "creating $1 service... "
     printf "\n\n\ncreating $1 service...\n" >> $LOG
@@ -765,7 +753,7 @@ pacman_install blueman
 
 ## Images, video and media
 # pinta: an improved ms paint clone
-pacman_install pinta
+yay_install pinta
 # inkscape
 pacman_install inkscape
 # GIMP: the GNU Image Manipulation program, a photoshop alternative
@@ -969,26 +957,18 @@ pacman_install tk
 pacman_install yapf
 # python package manager
 pacman_install python-pip
-pacman_install python2-pip
 # progress bars
 pacman_install python-tqdm
 # numerical calculations
 pacman_install python-numpy
-pacman_install python2-numpy
 # plotting
 pacman_install python-matplotlib
-pacman_install python2-matplotlib
 # linters & formatters (recommended for vim)
 pacman_install python-pylint
-pacman_install python2-pylint
 pacman_install autopep8
-pacman_install python2-autopep8
 pacman_install flake8
-pacman_install python2-flake8
 pacman_install python-pyflakes
-pacman_install python2-pyflakes
 pacman_install python-isort
-pacman_install python2-isort
 pacman_install python-black
 pacman_install python-pywal
 # connectivity (requirement for calcurse-caldav synchronization)
@@ -1028,9 +1008,6 @@ pip3_install pyautogui
 # pip3_install google-api-python-client
 # pip3_install google-auth-httplib2
 # pip3_install google-auth-oauthlib
-# pip2_install google-api-python-client
-# pip2_install google-auth-httplib2
-# pip2_install google-auth-oauthlib
 # smdv: simple markdown viewer
 # pip3_install smdv
 # run jupyterlab as a systemd service:
