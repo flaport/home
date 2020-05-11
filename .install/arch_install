@@ -47,8 +47,8 @@ fi
 mkdir -p $HOME/.local/share
 LOG="$HOME/.local/share/arch_install.log"
 ERR="$HOME/.local/share/arch_install_errors.log"
-printf "ARCH PACKAGE INSTALL\n\n\n" >> $LOG
-printf "ARCH PACKAGE INSTALL\n\n\n" >> $ERR
+printf "ARCH PACKAGE INSTALL\n\n\n" > $LOG
+printf "ARCH PACKAGE INSTALL\n\n\n" > $ERR
 
 
 ## User input
@@ -603,7 +603,7 @@ pacman_install gnome-themes-standard
 # murrine theme [inkscape dependency]
 pacman_install gtk-engine-murrine
 # adapta theme
-paman_install adapta-gtk-theme
+pacman_install adapta-gtk-theme
 # arc theme
 pacman_install arc-gtk-theme
 # dark gruvbox-inspired arc theme (default theme for now)
