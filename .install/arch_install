@@ -873,7 +873,8 @@ pacman_install lynx
 # pacman_install nvidia-settings
 # enable nvidia at next reboot using optimus-manager
 # yay_install optimus-manager
-# optimus-manager --no-confirm --set-startup nvidia >> $LOG 2>> $ERR
+# optimus-manager --no-confirm --switch nvidia >> $LOG 2>> $ERR
+# echo $password | sudo -S cp $HOME/.install/config/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
 # deep learning (needs nvidia):
 # pacman_install cuda-toolkit
 # force 96 dpi in Xorg when nvidia driver is in use:
