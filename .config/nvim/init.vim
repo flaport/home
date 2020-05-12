@@ -35,9 +35,6 @@ set path+=**
 " for navigating buffers/files/etc
 set wildmenu
 
-" use newline characters instead of cariage return
-set ff=unix
-
 " tell vim where to find the ctags
 set tags=./.tags;,.tags;
 
