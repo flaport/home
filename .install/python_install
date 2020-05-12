@@ -59,8 +59,8 @@ done
 mkdir -p $HOME/.local/share
 LOG="$HOME/.local/share/python_install.log"
 ERR="$HOME/.local/share/python_install_errors.log"
-printf "ANACONDA PACKAGE INSTALL\n\n\n" >> $LOG
-printf "ANACONDA PACKAGE INSTALL\n\n\n" >> $ERR
+printf "ANACONDA PACKAGE INSTALL\n\n\n" > $LOG
+printf "ANACONDA PACKAGE INSTALL\n\n\n" > $ERR
 
 
 ## Logging
@@ -154,7 +154,7 @@ pip_install() {
 }
 
 labextension_install(){
-    JUPYTER="$HOME/.anaconda/bin/jupyter"
+    JUPYTER="$CONDAROOT/bin/jupyter"
     printf "installing jupyterlab extension: $1..."
     printf "\n\n\ninstalling jupyterlab extension: $1..." >> $LOG
     printf "\n\n\ninstalling jupyterlab extension: $1..." >> $ERR
@@ -291,8 +291,8 @@ pip_install pygmo
 pip_install pynvim
 pip_install bayesian-optimization
 printf "installing jupyter kernel for environment: py2... "
-$HOME/.anaconda/envs/py2/bin/python -m ipykernel install --user --name py2 --display-name "Python 2" >> $LOG 2>> $ERR
-mv $HOME/.local/share/jupyter/kernels/py2 $HOME/.anaconda/share/jupyter/kernels/ >> $LOG 2>> $ERR
+$CONDAROOT/envs/py2/bin/python -m ipykernel install --user --name py2 --display-name "Python 2" >> $LOG 2>> $ERR
+mv $HOME/.local/share/jupyter/kernels/py2 $CONDAROOT/share/jupyter/kernels/ >> $LOG 2>> $ERR
 echo "finished."
 
 ## R environment
@@ -306,9 +306,9 @@ conda_install r-irkernel conda-forge
 pip_install pynvim
 pip_install neovim-remote
 printf "installing jupyter kernel for environment: r... "
-cp -rf $HOME/.anaconda/envs/r/share/jupyter/kernels/ir $HOME/.anaconda/share/jupyter/kernels
-home=$(echo $HOME | sed 's/\//\\\//g')
-sed -i "0,/R/{s/R/$home\/.anaconda\/envs\/r\/bin\/R/}" $HOME/.anaconda/share/jupyter/kernels/ir/kernel.json
+cp -rf $CONDAROOT/envs/r/share/jupyter/kernels/ir $CONDAROOT/share/jupyter/kernels
+condaroot=$(echo $CONDAROOT | sed 's/\//\\\//g')
+sed -i "0,/R/{s/R/$condaroot/envs\/r\/bin\/R/}" $CONDAROOT/share/jupyter/kernels/ir/kernel.json
 echo "finished."
 
 
@@ -323,7 +323,7 @@ conda_install julia conda-forge
 pip_install pynvim
 pip_install neovim-remote
 echo "installing jupyter kernel for environment: julia... "
-$HOME/.anaconda/envs/julia/bin/julia -E 'using Pkg; Pkg.add("IJulia"); precompile' >> $LOG 2>> $ERR
-$HOME/.anaconda/envs/julia/bin/julia -E 'using IJulia; installkernel("Julia")' >> $LOG 2>> $ERR
-mv $HOME/.local/share/jupyter/kernels/julia* $HOME/.anaconda/share/jupyter/kernels/ >> $LOG 2>> $ERR
+$CONDAROOT/envs/julia/bin/julia -E 'using Pkg; Pkg.add("IJulia"); precompile' >> $LOG 2>> $ERR
+$CONDAROOT/envs/julia/bin/julia -E 'using IJulia; installkernel("Julia")' >> $LOG 2>> $ERR
+mv $HOME/.local/share/jupyter/kernels/julia* $CONDAROOT/share/jupyter/kernels/ >> $LOG 2>> $ERR
 echo "finished."
