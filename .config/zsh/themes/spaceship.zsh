@@ -8,16 +8,16 @@
 # configured for arch-home by flaport
 #
 
-SPACESHIP_ROOT="/usr/lib/spaceship-prompt/"
+SPACESHIP_ROOT="$HOME/.spaceship-prompt"
 
 if [ ! -d "$SPACESHIP_ROOT" ]; then
-    >&2 echo "spaceship not installed. Please install spaceship from the AUR:"
-    >&2 echo
-    >&2 echo "yay -S spaceship-prompt-git"
-    >&2 echo
-    >&2 echo "falling back to theme 'dieter'"
-    source $HOME/.config/zsh/themes/dieter.zsh
-    return
+    >&2 echo "spaceship not installed. Attempting to install..."
+    if ! git clone "https://github.com/denysdovhan/spaceship-prompt" $SPACESHIP_ROOT; then
+        >&2 echo "failed. Falling back to dieter theme"
+        source $HOME/.config/zsh/themes/dieter.zsh
+        return
+    fi
+    echo "success"
 fi
 
 # ------------------------------------------------------------------------------

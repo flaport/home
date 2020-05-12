@@ -57,12 +57,12 @@ sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
 ## Extensions
 #-------------------------------------------------------------------------------
 
-# autojump
-sourcefile /usr/share/autojump/autojump.bash
-
-# stderr in red:
-[ -f /usr/lib/libstderred.so ] && export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
-
 # broot (fuzzy file finder/jumper/...)
 sourcefile $HOME/.config/broot/launcher/bash/br
+
+# autojump
+sourcefile $HOME/.config/autojump/share/autojump/autojump.bash
+
+# stderr in red:
+[ -f $HOME/.config/stderred/build/libstderred.so ] && export LD_PRELOAD="$HOME/.config/stderred/build/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
 

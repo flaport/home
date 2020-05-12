@@ -64,5 +64,5 @@ bind \cn accept-autosuggestion
 #-------------------------------------------------------------------------------
 
 # autojump
-source /usr/share/autojump/autojump.fish
+source "$HOME/.config/autojump/share/autojump/autojump.fish"
 

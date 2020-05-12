@@ -114,23 +114,23 @@ sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
 ## Extensions
 #-------------------------------------------------------------------------------
 
+# broot (fuzzy file finder/jumper/...)
+sourcefile $HOME/.config/broot/launcher/bash/br
+
 # autojump
-sourcefile /usr/share/autojump/autojump.zsh
+sourcefile $HOME/.config/autojump/share/autojump/autojump.zsh
 
 # my custom autojump commands (slightly different from default behavior):
 sourcefile $HOME/.scripts/autojump/autojump-improved.zsh
 
-# broot (fuzzy file finder/jumper/...)
-sourcefile $HOME/.config/broot/launcher/bash/br
-
 # zsh autosuggestions (like in the fish shell)
-sourcefile /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+sourcefile $HOME/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^p' autosuggest-accept #-execute
 bindkey '^n' autosuggest-accept #-execute
 
-# stderr in red:
-[ -f /usr/lib/libstderred.so ] && export LD_PRELOAD="/usr/lib/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
+# stderr in red; should be last.
+[ -f $HOME/.config/stderred/build/libstderred.so ] && export LD_PRELOAD="$HOME/.config/stderred/build/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
 
 # Load zsh-syntax-highlighting; should be last.
-sourcefile /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+sourcefile $HOME/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 

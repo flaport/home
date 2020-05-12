@@ -1060,38 +1060,56 @@ pacman_install browserpass-firefox # host for the pass "browserpass" firefox ext
 pacman_install browserpass-chromium # host for the pass "browserpass" chromium extension
 
 
-## Alternative shell
+## Shells and extensions
 #-------------------------------------------------------------------------------
+
 # dash: a minimal implementation of sh:
 pacman_install dash
 # we'll make sh point to dash in stead to bash
 link /usr/bin/dash /bin/sh
+# make dash the default shell:
+# echo $password | chsh -s /bin/dash 2>> $LOG >> $ERR
+
+# bash: should already have been installed:
+# pacman_install bash
+# make bash the default shell:
+# echo $password | chsh -s /bin/bash 2>> $LOG >> $ERR
 
 # fish: alternative shell. It's not posix complient, but friendly and interactive ;)
 # pacman_install fish
-# echo $password | chsh -s /usr/bin/fish
+# make fish the default shell:
+# echo $password | chsh -s /usr/bin/fish 2>> $LOG >> $ERR
 
 # zsh: another alternative shell. In contrast to fish, it is posix complient + extras
 # it's my preferred shell.
 pacman_install zsh
-# spaceship theme for zsh (my preferred zsh theme):
-yay_install spaceship-prompt-git
-# autojump extensionfor zsh, I could not live without it:
-yay_install autojump-git
-# patch autojump to only work with system python (acts weirdly when in a virtual env / conda env)
-echo $password | sudo -S sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $(which autojump) >> $LOG 2>> $ERR
-# stderred: show stderr messages in red:
-yay_install stderred
-# same fo the autosuggestions, simply ctrl+p [at least for my .zshrc] to accept suggestion. Priceless.
-pacman_install zsh-autosuggestions
-# syntax highlighting is also useful for zsh:
-pacman_install zsh-syntax-highlighting
-# optional: make customizing zsh easier (it's actually not so difficult to begin with):
-# yay_install oh-my-zsh-git
 # make zsh the default shell:
-echo "changing shell to zsh..."
 echo $password | chsh -s /usr/bin/zsh >> $LOG 2>> $ERR
-echo "done."
+
+# autojump extension for bash/zsh/fish, I could not live without it:
+mkdir -p $HOME/.cache
+rm -rf $HOME/.cache/autojump
+git clone https://github.com/wting/autojump $HOME/.cache/autojump 2>> $LOG >> $ERR
+cd $HOME/.cache/autojump 2>> $LOG >> $ERR
+python install.py -d $HOME/.config/autojump 2>> $LOG >> $ERR
+sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $HOME/.config/autojump/bin/autojump >> $LOG 2>> $ERR
+
+# stderred extension for bash/zsh: show stderr messages in red:
+rm -rf $HOME/.config/stderred
+git clone https://github.com/sickill/stderred $HOME/.config/stderred 2>> $LOG >> $ERR
+cd $HOME/.config/stderred 2>> $LOG >> $ERR
+make 2>> $LOG >> $ERR
+
+# fish-like autosuggestions for zsh:
+rm -rf $HOME/.config/zsh/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/zsh-autosuggestions 2>> $LOG >> $ERR
+
+# syntax highlighting for zsh:
+rm -rf $HOME/.config/zsh/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.config/zsh/zsh-syntax-highlighting 2>> $LOG >> $ERR
+
+# zsh package manager (i do not really recommend this):
+# yay_install oh-my-zsh-git
 
 
 ## Finished
