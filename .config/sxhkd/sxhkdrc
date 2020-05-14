@@ -469,8 +469,12 @@ super + F11
 super + F12
     notify-send "☀ ↗"; light -A 10; dwm_status
 
-# make a screenshot with flameshot
+# make a screenshot with flameshot with window transparency disabled
 Print
+    flameshot-gui-no-alpha
+
+# make a screenshot with flameshot with window transparency NOT disabled
+super + Print
     flameshot gui
 
 # mute volume
