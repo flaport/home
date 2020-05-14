@@ -67,7 +67,6 @@ call plug#end() " stop loading plugins
 if vim_plug_just_installed
     echo "Installing Bundles, please ignore key map error messages"
     :PlugInstall
-    :UpdateRemotePlugins
 endif
 
 
