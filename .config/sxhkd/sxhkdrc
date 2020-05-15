@@ -489,13 +489,13 @@ XF86AudioLowerVolume
 XF86AudioRaiseVolume
     notify-send "🔊 ↗"; amixer -D pulse set Master 5%+; dwm_status
 
-# increase brightness
-XF86MonBrightnessUp
-    notify-send "☀ ↗"; xbacklight -inc 10; dwm_status
-
 # decrease brightness
 XF86MonBrightnessDown
-    notify-send "☀ ↘"; [ $(printf %.0f $(xbacklight)) -gt 19 ] && xbacklight -dec 10; dwm_status
+    notify-send "☀ ↘"; [ $(printf %.0f $(light)) -gt 15 ] && light -U 10; dwm_status
+
+# increase brightness
+XF86MonBrightnessUp
+    notify-send "☀ ↗"; light -A 10; dwm_status
 
 # next song
 XF86AudioNext
