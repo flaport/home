@@ -1,5 +1,3 @@
-"    _____ _     ____  ____  ____  ____  _____
-"   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
 "   |  __\| |   | / \||  \/|| / \||  \/|  / \
 "   | |   | |_/\| |-|||  __/| \_/||    /  | |
 "   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
@@ -44,7 +42,8 @@ Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
 " Plug 'neomake/neomake' " linters (disabled in favor of CoC)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'psf/black' " black python plugin (disabled in favor of CoC)
+Plug 'psf/black' " black python plugin
+Plug 'voldikss/vim-floaterm' " floating terminal
 Plug 'Shougo/context_filetype.vim' " completion from other opened files
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'tpope/vim-commentary' " easy comment
