@@ -3,3 +3,5 @@
 	name = flaport
 [credential]
 	helper = cache --timeout=100000
+[push]
+	default = simple
