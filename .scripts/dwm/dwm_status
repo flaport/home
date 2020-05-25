@@ -146,8 +146,6 @@ toggleservice(){
 alpha(){ # window transparency
     if pidof picom > /dev/null; then
         echo " $("$HOME/.scripts/x/alpha" get)%"
-    else
-        echo " -"
     fi
 }
 alpha1(){ # mouse-button 1 action for alpha widget
