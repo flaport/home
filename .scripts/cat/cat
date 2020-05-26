@@ -6,7 +6,7 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 if [ -t 1 ] ; then
-    /usr/bin/cat $@ | highlight -O ansi --force
+    /usr/bin/cat "$@" | highlight -O ansi --force
 else
-    /usr/bin/cat $@
+    /usr/bin/cat "$@"
 fi
