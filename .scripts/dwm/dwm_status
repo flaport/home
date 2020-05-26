@@ -156,7 +156,7 @@ alpha1(){ # mouse-button 1 action for alpha widget
 
 # shows battery percentage left
 battery(){ # battery
-    pct=$(cat /sys/class/power_supply/BAT*/capacity | head -1)
+    pct=$(cat /sys/class/power_supply/BAT*/capacity 2> /dev/null | head -1) || return
     [ -z "$pct" ] && return
     batstatus=$(cat /sys/class/power_supply/BAT*/status | head -1)
     if [ "$batstatus" = "Discharging" ] > /dev/null 2>/dev/null; then
@@ -185,7 +185,8 @@ battery1(){ # mouse-button 1 action for battery widget
 
 # control brightness
 brightness(){ # screen brightness
-    printf " %.0f%%" "$(light)"
+    light -L 2> /dev/null | grep backlight > /dev/null || return
+    printf " %.0f%%" "$(light)" 2> /dev/null
 }
 brightness1(){ # mouse-button 1 action for brightness widget
     brightness=$(printf "%.0f%%" "$(light)")
