@@ -5,7 +5,9 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
-if [ -t 1 ] ; then
+if [ -z "$2" ] && [ -t 1 ]; then
+    highlight -O ansi --force "$1"
+elif [ -t 1 ] ; then
     /usr/bin/cat "$@" | highlight -O ansi --force
 else
     /usr/bin/cat "$@"
