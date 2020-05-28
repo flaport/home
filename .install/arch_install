@@ -699,10 +699,10 @@ yay_install ttf-vista-fonts
 pacman_install ttf-droid
 # yet another nice monospace font:
 # yay_install ttf-inconsolata-g
-# simplified chinese font (sans):
-pacman_install wqy-microhei
+# simplified chinese font (sans) which messes with korean symbols (fully blocked by my fontconfig):
+# pacman_install wqy-microhei
 # adobe simplified chinese fonts (sans):
-# pacman_install adobe-source-han-sans-cn-fonts
+pacman_install adobe-source-han-sans-cn-fonts
 # adobe traditional chinese fonts (sans):
 # pacman_install adobe-source-han-sans-tw-fonts
 # adobe simplified chinese fonts (serif):
