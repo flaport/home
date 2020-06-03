@@ -1,0 +1,57 @@
+#!/usr/bin/python
+
+import re
+import sys
+from collections import defaultdict
+from argparse import ArgumentParser
+
+def parse_args(args):
+    parser = ArgumentParser("sort css")
+    parser.add_argument("filename", type=str, nargs="?", default="")
+    return parser.parse_args()
+
+def parse_content(content):
+    dic = defaultdict(dict)
+    while "  " in content:
+        content = content.replace("  ", " ")
+    content = content.strip()
+    justbraces = re.sub("[^{}]", "", content)
+    if "{{" in justbraces:
+        raise ValueError("Cannot parse nested css")
+    while "{" in content:
+        idx = content.index("{")
+        key = content[:idx].strip()
+        content = content[idx+1:]
+        if not "}" in content:
+            raise ValueError("Unmatched braces in css")
+        idx = content.index("}")
+        values = dict([(k.strip(), v.strip()) for k, v in (line.strip().split(":") for line in content[:idx].strip().split("\n"))])
+        content = content[idx+1:]
+        dic[key].update(values)
+        dic[key] = dict(sorted([(k, v) for k, v in dic[key].items()]))
+    dic = dict(sorted([(k, v) for k, v in dic.items()]))
+    return dic
+
+def print_content(content, file=None):
+    for key, value in content.items():
+        print(f"{key} {{", file=file)
+        for k, v in value.items():
+            print(f"  {k}: {v}", file=file)
+        print("}\n", file=file)
+
+def main(args):
+    dic = {}
+    args = parse_args(args)
+    if args.filename:
+        with open(args.filename, "r") as file:
+            content = file.read()
+    else:
+        content = sys.stdin.read()
+    content = parse_content(content)
+    print_content(content)
+    return content
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
+
