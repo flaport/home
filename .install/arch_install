@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.05.11
+# last complete install: 2020.06.06
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -1084,24 +1084,25 @@ link /usr/bin/dash /bin/sh
 # make bash the default shell:
 # echo $password | chsh -s /bin/bash 2>> $LOG >> $ERR
 
-# fish: alternative shell. It's not posix complient, but friendly and interactive ;)
+# fish: alternative shell. It's not posix compliant, but friendly and interactive ;)
 # pacman_install fish
 # make fish the default shell:
 # echo $password | chsh -s /usr/bin/fish 2>> $LOG >> $ERR
 
-# zsh: another alternative shell. In contrast to fish, it is posix complient + extras
+# zsh: another alternative shell. In contrast to fish, it is posix compliant + extras
 # it's my preferred shell.
 pacman_install zsh
 # make zsh the default shell:
 echo $password | chsh -s /usr/bin/zsh >> $LOG 2>> $ERR
 
-# autojump extension for bash/zsh/fish, I could not live without it:
+# autojump extension for bash/zsh/fish
 mkdir -p $HOME/.cache
 rm -rf $HOME/.cache/autojump
 git clone https://github.com/wting/autojump $HOME/.cache/autojump 2>> $LOG >> $ERR
 cd $HOME/.cache/autojump 2>> $LOG >> $ERR
 python install.py -d $HOME/.config/autojump 2>> $LOG >> $ERR
 sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $HOME/.config/autojump/bin/autojump >> $LOG 2>> $ERR
+ln -sf $HOME/.config/autojump/bin/autojump $HOME/.local/bin
 
 # stderred extension for bash/zsh: show stderr messages in red:
 rm -rf $HOME/.config/stderred
