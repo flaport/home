@@ -41,19 +41,7 @@ f () {
 
 # an autojump-like method for "jumping" into a directory based on fzf:
 # advantage: see where you are going to jump before actually jumping
-fc () {
-    output=$(find . -maxdepth 3 -type d 2> /dev/null | fzf)
-    if [[ -d "${output}" ]]; then
-        echo -e "\\033[31m${output}\\033[0m"
-        cd "${output}"
-    else
-        echo -e "\\033[31m.\\033[0m"
-    fi
-}
-
-# an autojump-like method for "jumping" into a directory based on fzf:
-# advantage: see where you are going to jump before actually jumping
-ff () {
+jf () {
     file=$(find $HOME  -maxdepth 3 -type f 2> /dev/null | fzf)
     [ $? -ne 0 ] && return
     output=$(dirname $file)
@@ -65,3 +53,14 @@ ff () {
     fi
 }
 
+# an autojump-like method for "jumping" into a directory based on fzf:
+# advantage: see where you are going to jump before actually jumping
+jfc () {
+    output=$(find . -maxdepth 3 -type d 2> /dev/null | fzf)
+    if [[ -d "${output}" ]]; then
+        echo -e "\\033[31m${output}\\033[0m"
+        cd "${output}"
+    else
+        echo -e "\\033[31m.\\033[0m"
+    fi
+}

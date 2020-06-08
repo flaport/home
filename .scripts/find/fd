@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ -z $1 ]; then
+    find . -type d
+else
+    find . -maxdepth "$1"  -type d
+fi
