@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.05.08
+# last complete install: 2020.06.06
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -163,7 +163,7 @@ labextension_install(){
         return 0
     fi
     echo
-    $JUPYTER labextension install $1 # >> $LOG 2>> $ERR
+    $JUPYTER labextension install $1 >> $LOG 2>> $ERR
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -178,7 +178,7 @@ if [ ! -d "$CONDAROOT" ]; then
     curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output /tmp/miniconda.sh --silent
     bash /tmp/miniconda.sh -b -p $CONDAROOT >> $LOG 2>> $ERR
     rm /tmp/miniconda.sh
-    echo "installed.\n"
+    echo "installed."
 fi
 
 
@@ -194,63 +194,71 @@ PYTHON="$CONDAROOT/bin/python"
 update_environment
 conda_install cython
 conda_install numpy
-conda_install pytorch
-conda_install tensorflow
-conda_install matplotlib
-conda_install pillow
-conda_install scikit-learn
-conda_install h5py
-conda_install ipympl
 conda_install pandas
-conda_install nodejs
-conda_install jupyter
-conda_install jupyterlab
-conda_install ipykernel
-conda_install ipywidgets
-conda_install widgetsnbextension
+conda_install pytorch
+conda_install torchvision
+conda_install tensorflow
+conda_install scikit-learn
+conda_install matplotlib
+conda_install altair
+conda_install plotly
+conda_install pillow
 conda_install pandoc
+conda_install h5py
+conda_install tqdm
+conda_install line_profiler
 conda_install pylint
 conda_install pydocstyle
 conda_install mypy
-conda_install line_profiler
-conda_install tqdm
-conda_install altair
-conda_install plotly
 conda_install pep8
 conda_install black
 conda_install flake8
 conda_install pyflakes
 conda_install isort
 conda_install yapf
-pip_install ipdb
-pip_install pygmo
-pip_install pynvim
-pip_install neovim-remote
-pip_install octave_kernel
-pip_install bayesian-optimization
-pip_install ipyvolume
-pip_install jupyterlab_latex
-pip_install jupyterlab_git
-pip_install jupyterlab_code_formatter
-pip_install jupyter_tensorboard
+
 conda_install jupyterhub conda-forge
+conda_install nodejs conda-forge
+conda_install jupyter conda-forge
+conda_install jupyterlab conda-forge
+conda_install ipympl conda-forge
+conda_install ipykernel conda-forge
+conda_install ipywidgets conda-forge
+conda_install widgetsnbextension conda-forge
+
+conda_install ipdb conda-forge
+conda_install pygmo conda-forge
+conda_install nbdime conda-forge
+conda_install pynvim conda-forge
+conda_install octave_kernel conda-forge
+conda_install bayesian-optimization conda-forge
+conda_install ipyvolume conda-forge
+
+pip_install neovim-remote conda-forge
+pip_install jupyterlab_git conda-forge
+# pip_install jupyter_tensorboard
+# pip_install jupyterlab_latex
+# pip_install jupyterlab_code_formatter
+
 
 ## Jupyterlab extensions
 #-------------------------------------------------------------------------------
 
+labextension_install @axlair/jupyterlab_vim
 labextension_install @jupyter-widgets/jupyterlab-manager
 labextension_install ipyvolume
 labextension_install @jupyterlab/git
-labextension_install @jupyterlab/latex
 labextension_install jupyterlab-plotly
-labextension_install jupyterlab_tensorboard
 labextension_install @jupyterlab/toc
-labextension_install jupyterlab_vim
 labextension_install jupyter-matplotlib
 labextension_install jupyter-threejs
 labextension_install jupyterlab-datawidgets
-labextension_install @ryantam626/jupyterlab_code_formatter
-labextension_install @lckr/jupyterlab_variableinspector
+labextension_install nbdime-jupyterlab
+# labextension_install @jupyterlab/latex
+# labextension_install jupyterlab_tensorboard
+# labextension_install @ryantam626/jupyterlab_code_formatter
+# labextension_install @lckr/jupyterlab_variableinspector
+
 
 ## Py2 environment
 #-------------------------------------------------------------------------------
@@ -260,6 +268,7 @@ update_environment
 conda_install cython
 conda_install numpy
 conda_install pytorch
+conda_install torchvision
 conda_install matplotlib
 conda_install pillow
 conda_install scikit-learn
@@ -286,14 +295,15 @@ conda_install flake8
 conda_install pyflakes
 conda_install isort
 conda_install yapf
-pip_install ipdb
-pip_install pygmo
-pip_install pynvim
-pip_install bayesian-optimization
+conda_install ipdb conda-forge
+conda_install pygmo conda-forge
+conda_install pynvim conda-forge
+conda_install bayesian-optimization conda-forge
 printf "installing jupyter kernel for environment: py2... "
 $CONDAROOT/envs/py2/bin/python -m ipykernel install --user --name py2 --display-name "Python 2" >> $LOG 2>> $ERR
 mv $HOME/.local/share/jupyter/kernels/py2 $CONDAROOT/share/jupyter/kernels/ >> $LOG 2>> $ERR
 echo "finished."
+
 
 ## R environment
 #-------------------------------------------------------------------------------
@@ -303,12 +313,12 @@ update_environment
 conda_install ipykernel
 conda_install ipywidgets
 conda_install r-irkernel conda-forge
-pip_install pynvim
+conda_install pynvim conda-forge
 pip_install neovim-remote
 printf "installing jupyter kernel for environment: r... "
 cp -rf $CONDAROOT/envs/r/share/jupyter/kernels/ir $CONDAROOT/share/jupyter/kernels
-condaroot=$(echo $CONDAROOT | sed 's/\//\\\//g')
-sed -i "0,/R/{s/R/$condaroot/envs\/r\/bin\/R/}" $CONDAROOT/share/jupyter/kernels/ir/kernel.json
+sed -i "1s|R|$CONDAROOT/envs/r/bin/R|" $CONDAROOT/share/jupyter/kernels/ir/kernel.json
+
 echo "finished."
 
 
@@ -320,7 +330,7 @@ update_environment
 conda_install ipykernel
 conda_install ipywidgets
 conda_install julia conda-forge
-pip_install pynvim
+conda_install pynvim conda-forge
 pip_install neovim-remote
 echo "installing jupyter kernel for environment: julia... "
 $CONDAROOT/envs/julia/bin/julia -E 'using Pkg; Pkg.add("IJulia"); precompile' >> $LOG 2>> $ERR
