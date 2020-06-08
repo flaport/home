@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+
+# batch rename all files in a folder
+
+import os
+import sys
+import secrets
+import subprocess
+
+FOLDER = os.path.abspath(".")
+EDITOR = os.environ.get("EDITOR", "vim")
+TEMPFILE = f"/tmp/rename-{secrets.token_hex(8)}"
+
+def program_exists(program):
+    with open(os.devnull, "w") as file:
+        return not subprocess.call(["which", program], stdout=file, stderr=file)
+
+def edit(filename):
+    with open(os.devnull, "w") as file:
+        return not subprocess.call([EDITOR, filename])
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        raise ValueError("no arguments expected")
+    if not program_exists(EDITOR):
+        raise ValueError(f"Editor '{EDITOR}' not found. "
+                         "Specify an editor with the EDITOR environment variable.")
+    filenames = sorted(fn for fn in os.listdir(FOLDER) if not fn.startswith("."))
+    try:
+        with open(TEMPFILE, "w") as file:
+            for filename in filenames:
+                print(filename, file=file)
+        orig_mtime = int(os.path.getmtime(TEMPFILE))
+        edit(TEMPFILE)
+        new_mtime = int(os.path.getmtime(TEMPFILE))
+        if new_mtime == orig_mtime:
+            exit()
+        with open(TEMPFILE, "r") as file:
+            new_filenames = [fn.strip() for fn in file.read().split("\n") if fn.strip()]
+        if len(new_filenames) != len(filenames):
+            raise ValueError("Cannot map new filenames on old filenames. "
+                             "Note that removing lines from the document is not allowed. "
+                             "If you wish to NOT rename a file, leave the line as it is.")
+        if len(set(new_filenames)) != len(new_filenames):
+            raise ValueError("Duplicate destination filenames found. Renaming aborted.")
+        for new_filename, old_filename in zip(new_filenames, filenames):
+            if new_filename == old_filename:
+                continue
+            os.rename(old_filename, new_filename)
+    finally:
+        if os.path.exists(TEMPFILE):
+            os.remove(TEMPFILE)
