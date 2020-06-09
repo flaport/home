@@ -374,9 +374,16 @@ pacman_install figlet
 # pacman_install gnu-netcat
 # sockets (needed for custom mpvcontrol script)
 pacman_install socat
-# torrents: transmission
+# torrents: transmission cli
 pacman_install transmission-cli
-yay_install transmission-remote-cli-git
+# transmission remote cli curses interface:
+yay_install tremc
+# transmission remote cli gtk interface
+pacman_install transmission-remote-gtk
+# add current user to the transmission group:
+echo $password | sudo -S usermod -a -G transmission $USER
+# make the system transmission config writable by current user:
+echo $password | sudo -S chmod -R g+rw /var/lib/transmission
 # a more beautiful ls command (I have ls remapped to lsd when no arguments given)
 pacman_install lsd
 # vim / neovim: terminal text editor
@@ -433,7 +440,6 @@ pacman_install fuse
 pacman_install android-file-transfer # android access
 # access ssh file system
 pacman_install sshfs
-
 
 ## Graphical server: xorg
 # install everything from xorg:

@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=Transmission Remote GTK Interface
+Exec=/usr/bin/env transmission-remote-gtk %U

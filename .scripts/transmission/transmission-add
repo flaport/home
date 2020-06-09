@@ -1,0 +1,40 @@
+#!/bin/bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+
+URL="$1"
+
+if [ -z "$1" ] || [ -n "$2" ]; then
+    >&2 echo  usage: transmission-add URL
+fi
+
+if ! which transmission-remote > /dev/null 2> /dev/null; then
+    >&2 echo "could not find 'transmission-remote'. Is it installed?"
+    notify-send "transmission-add" "Could not find 'transmission-remote'.\nIs it installed?"
+fi
+
+if ! which transmission-daemon > /dev/null 2> /dev/null; then
+    >&2 echo "could not find 'transmission-daemon'. Is it installed?"
+    notify-send "transmission-add" "Could not find 'transmission-daemon'.\nIs it installed?"
+fi
+
+if ! pgrep -x transmission-da > /dev/null 2> /dev/null; then
+    transmission-daemon &
+    echo "Starting transmission daemon..."
+    notify-send "tranmission-add" "Starting transmission daemon..."
+    sleep 3
+fi
+
+if transmission-remote -a "$URL" > /dev/null 2> /dev/null; then
+    print "Torrent succesfully added."
+    notify-send "transmission-add" "Torrent succesfully added."
+    exit 0
+else
+    print "Failed to add torrent."
+    notify-send "transmission-add" "Failed to add torrent."
+    exit 1
+fi
+

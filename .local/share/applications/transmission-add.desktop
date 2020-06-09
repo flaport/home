@@ -1,4 +1,4 @@
 [Desktop Entry]
 Type=Application
 Name=Transmission
-Exec=/usr/bin/env transmission --new-terminal %U
+Exec=/usr/bin/env transmission-add %U
