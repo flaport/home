@@ -5,7 +5,23 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
-# thin wrapper around 'tremc' which automatically authorizes with the pass transmission entry:
+# thin wrapper around 'tremc' which
+#   - automatically authorizes with the 'transmission' of pass (the password manager).
+#   - starts transmission-daemon if it's not running.
+
+if ! which transmission-remote > /dev/null 2> /dev/null; then
+    >&2 echo "could not find 'transmission-remote'. Is it installed?"
+fi
+
+if ! which transmission-daemon > /dev/null 2> /dev/null; then
+    >&2 echo "could not find 'transmission-daemon'. Is it installed?"
+fi
+
+if ! pgrep -x transmission-da > /dev/null 2> /dev/null; then
+    transmission-daemon &
+    echo "Starting transmission daemon..."
+    sleep 3
+fi
 
 if pass transmission >/dev/null 2>/dev/null; then
     username=$(pass show transmission | head -2 | tail -1 | sed 's/^[^:]*:[ ]*//g' )
