@@ -7,11 +7,11 @@
 
 # decrease alpha of windows
 super + a
-    alpha set -10
+    alpha set -5
 
 # increase alpha of windows
 super + A
-    alpha set +10
+    alpha set +5
 
 # reload picom config
 super + control + a
