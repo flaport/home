@@ -1,0 +1,16 @@
+#!/bin/sh
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+
+# thin wrapper around 'tremc' which automatically authorizes with the pass transmission entry:
+
+if pass transmission >/dev/null 2>/dev/null; then
+    username=$(pass show transmission | head -2 | tail -1 | sed 's/^[^:]*:[ ]*//g' )
+    password=$(pass show transmission | head -1)
+    c="-c $username:$password@localhost:9091"
+fi
+
+/usr/bin/tremc $c "$@"

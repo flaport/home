@@ -28,12 +28,17 @@ if ! pgrep -x transmission-da > /dev/null 2> /dev/null; then
     sleep 3
 fi
 
-if transmission-remote -a "$URL" > /dev/null 2> /dev/null; then
-    print "Torrent succesfully added."
+if pass transmission >/dev/null 2>/dev/null; then
+    username=$(pass show transmission | head -2 | tail -1 | sed 's/^[^:]*:[ ]*//g' )
+    password=$(pass show transmission | head -1)
+    auth="--auth $username:$password"
+fi
+if transmission-remote $auth -a "$URL" > /dev/null 2> /dev/null; then
+    echo "Torrent succesfully added."
     notify-send "transmission-add" "Torrent succesfully added."
     exit 0
 else
-    print "Failed to add torrent."
+    echo "Failed to add torrent."
     notify-send "transmission-add" "Failed to add torrent."
     exit 1
 fi
