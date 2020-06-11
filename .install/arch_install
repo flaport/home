@@ -440,6 +440,11 @@ pacman_install fuse
 pacman_install android-file-transfer # android access
 # access ssh file system
 pacman_install sshfs
+# access mac-formatted drives (HFS+)
+# yay_install hfsprogs
+# testdisk to figure out location HFS+ partition wrapped in 'Apple Core Storage':
+# pacman_install testdisk
+
 
 ## Graphical server: xorg
 # install everything from xorg:
