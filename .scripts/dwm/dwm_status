@@ -545,6 +545,7 @@ syncthing2(){
 
 # torrenting status
 transmission(){
+    export PASSWORD_STORE_GPG_OPTS="--pinentry-mode error"
     pidof -s transmission-daemon >/dev/null 2>/dev/null || return
     if pass transmission >/dev/null 2>/dev/null; then
         username=$(pass show transmission | head -2 | tail -1 | sed 's/^[^:]*:[ ]*//g' )
