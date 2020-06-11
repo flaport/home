@@ -78,6 +78,7 @@ done &
 # check battery status every 10 minutes
 while true; do
     sleep 10s
+    cat /sys/class/power_supply/BAT* > /dev/null 2> /dev/null || break
     capacity="$(cat /sys/class/power_supply/BAT*/capacity | head -1)"
     [ -z "$capacity" ] && break
     batstatus=$(cat /sys/class/power_supply/BAT*/status | head -1)
