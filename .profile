@@ -31,7 +31,7 @@
 
 ## Environment variables
 #-------------------------------------------------------------------------------
-export BROWSER="firefox"
+export BROWSER="waterfox"
 export CC="gcc"
 export CXX="g++"
 export DMENU="dmenu" # rofi

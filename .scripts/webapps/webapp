@@ -45,10 +45,13 @@ if __name__ == "__main__":
     if exists("chromium"):
         run_and_exit(["chromium", f"--app={address}"])
 
-    if exists("firefox"):
-        run_and_exit(["firefox", f"--new-window", address])
-
     browser = os.environ.get("BROWSER")
     if exists(browser):
         run_and_exit([browser, address])
+
+    if exists("waterfox"):
+        run_and_exit(["waterfox", f"--new-window", address])
+
+    if exists("firefox"):
+        run_and_exit(["firefox", f"--new-window", address])
 

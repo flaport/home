@@ -276,6 +276,12 @@ link() {
     return $exit_code
 }
 
+pacman_add_archlinuxcn(){ # add archlinuxcn to the pacman repositories
+    grep "\[archlinuxcn\]" /etc/pacman.conf &> /dev/null || printf "\n\n[archlinuxcn]\nServer=https://repo.archlinuxcn.org/\$arch" | sudo tee -a /etc/pacman.conf > /dev/null 2>> $ERR
+    echo $password | sudo -S pacman -Syy >> $LOG 2>> $ERR
+    pacman_install archlinuxcn-keyring
+}
+
 
 ## Install and configure packages
 #-------------------------------------------------------------------------------
@@ -849,14 +855,19 @@ pacman_install octave
 
 
 ## Browsers
-# firefox (basically the only browser you'll ever need)
-pacman_install firefox
-# patch firefox to work with some legacy extensions (like vimfx)
+# waterfox (like firefox, but better defaults)
+yay_install waterfox-current-bin
+# firefox (like waterfox, but the original ;-) )
+# pacman_install firefox
+# patch firefox and waterfox to work with some legacy extensions (like vimfx)
 submodule_install legacyfox
 # chromium
 pacman_install chromium
-# the name says it all (custom chromium needs to be compiled, takes AGES!):
+# ungoogled-chromium: the name says it all (note: compiling takes HOURS!):
 # yay_install ungoogled-chromium
+# alternatively: install ungoogled-chromium from archlinuxcn repositories:
+# pacman_add_archlinuxcn && pacman_install ungoogled-chromium
+
 # vimb: vim-like browser
 # pacman_install vimb
 # qutebrowser: another vim-like browser
@@ -945,11 +956,10 @@ pacman_install lynx
 # sudo pacman -Rns --noconfirm nvidia >> $LOG 2>> $ERR
 # grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 # grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# install chromium with libva support from archlinuxcn repositories:
-# grep "\[archlinuxcn\]" /etc/pacman.conf &> /dev/null || printf "\n\n[archlinuxcn]\nServer=https://repo.archlinuxcn.org/\$arch" | sudo tee -a /etc/pacman.conf > /dev/null 2>> $ERR
-# echo $password | sudo -S pacman -Syy >> $LOG 2>> $ERR
-# pacman_install archlinuxcn-keyring
-# pacman -Q chromium-vaapi &> /dev/null || yes | LC_ALL=en_US.UTF-8 sudo pacman -S chromium-vaapi >> $LOG 2>> $ERR
+# chromium-vaapi: chromium with libva support (note: compiling takes HOURS!):
+# yay_install chromium-vaapi
+# alternatively: install chromium-vaapi from archlinuxcn repositories:
+# pacman_add_archlinuxcn && pacman_install chromium-vaapi
 
 
 

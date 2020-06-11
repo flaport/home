@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-/usr/bin/taskset --cpu-list 2 /usr/bin/chromium "$@"
