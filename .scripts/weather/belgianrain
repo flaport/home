@@ -1,0 +1,47 @@
+#!/usr/bin/python3
+
+import os
+from subprocess import Popen
+from urllib.request import urlretrieve
+from datetime import datetime, timedelta
+
+URL="https://www.meteo.be/services/web2016/getRadarImage.php?language=nl&run={now}&timestamp={time}"
+
+def download_url(url, idx=0):
+    filename = f"/tmp/belgianrain-{idx:02d}.jpg"
+    urlretrieve(url, filename)
+    return filename
+
+def format_time(time):
+    return time.strftime("%Y%m%d%H%M")
+
+def get_image(now, time, idx=0):
+    if time.tzinfo is not None:
+        utcoffset = time.tzinfo.utcoffset(time)
+        if utcoffset is not None:
+            time = datetime.strptime((time-utcoffset).strftime("%Y%b%d%H%M%S"), "%Y%b%d%H%M%S")
+    url = get_url(now, time)
+    filename = download_url(url, idx=idx)
+    return filename
+
+def get_images(dt=600, num_t=24):
+    now = datetime.fromtimestamp(int(datetime.utcnow().timestamp())//600*600) - timedelta(minutes=20)
+    times = [now + timedelta(seconds=i*dt//600*600) for i in range(num_t)]
+    paths = [get_image(now, time, idx=idx) for idx, time in enumerate(times)]
+    return paths
+
+def get_url(now, time):
+    nowstr = format_time(now)
+    timestr = format_time(time)
+    return URL.format(now=nowstr, time=timestr)
+
+def view_images(paths):
+    with open(os.devnull, "w") as file:
+        Popen(["sxiv", *paths])
+
+
+if __name__ == "__main__":
+    paths = get_images()
+    view_images(paths)
+
+
