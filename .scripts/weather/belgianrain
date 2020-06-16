@@ -1,11 +1,18 @@
 #!/usr/bin/python3
 
 import os
-from subprocess import Popen
+import sys
+from textwrap import dedent
+from subprocess import Popen, call
+from argparse import ArgumentParser
 from urllib.request import urlretrieve
 from datetime import datetime, timedelta
 
 URL="https://www.meteo.be/services/web2016/getRadarImage.php?language=nl&run={now}&timestamp={time}"
+
+def check_sxiv():
+    with open(os.devnull, "w") as file:
+        return not call(["which", "sxiv"], stdout=file, stderr=file)
 
 def download_url(url, idx=0):
     filename = f"/tmp/belgianrain-{idx:02d}.jpg"
@@ -24,8 +31,9 @@ def get_image(now, time, idx=0):
     filename = download_url(url, idx=idx)
     return filename
 
-def get_images(dt=600, num_t=24):
-    now = datetime.fromtimestamp(int(datetime.utcnow().timestamp())//600*600) - timedelta(minutes=20)
+def get_images(dt=600, num_t=24, offset=600):
+    offset = int(offset + 0.6)//600*600
+    now = datetime.fromtimestamp(int(datetime.utcnow().timestamp())//600*600) - timedelta(seconds=offset)
     times = [now + timedelta(seconds=i*dt//600*600) for i in range(num_t)]
     paths = [get_image(now, time, idx=idx) for idx, time in enumerate(times)]
     return paths
@@ -35,13 +43,33 @@ def get_url(now, time):
     timestr = format_time(time)
     return URL.format(now=nowstr, time=timestr)
 
+def parse_args(args):
+    parser = ArgumentParser(dedent("""
+    belgianrain: show a rain map for Belgium (powered by `sxiv`).
+
+    Navigation: use n/p to show next and previous weather maps.
+
+    Usage:
+    """).strip())
+    parser.add_argument("-o", "--offset", default=10, type=int, help=dedent("""
+        time offset with now (should be a multiple of 10 minutes) to select
+        the weather report. Sometimes, the current weather report is not yet
+        available. Going back 10 minutes might be useful.
+    """).strip())
+    parsed_args = parser.parse_args(args)
+    parsed_args.offset = int(parsed_args.offset + 0.5)//10*10
+    return parsed_args
+
 def view_images(paths):
     with open(os.devnull, "w") as file:
         Popen(["sxiv", *paths])
 
 
 if __name__ == "__main__":
-    paths = get_images()
+    if not check_sxiv():
+        raise RuntimeError("'sxiv' not found. Please install 'sxiv' first.")
+    args = parse_args(sys.argv[1:])
+    paths = get_images(offset=args.offset*60)
     view_images(paths)
 
 
