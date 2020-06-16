@@ -276,10 +276,17 @@ link() {
     return $exit_code
 }
 
-pacman_add_archlinuxcn(){ # add archlinuxcn to the pacman repositories
+pacman_enable_archlinuxcn(){ # add archlinuxcn to the pacman repositories
     grep "\[archlinuxcn\]" /etc/pacman.conf &> /dev/null || printf "\n\n[archlinuxcn]\nServer=https://repo.archlinuxcn.org/\$arch" | sudo tee -a /etc/pacman.conf > /dev/null 2>> $ERR
     echo $password | sudo -S pacman -Syy >> $LOG 2>> $ERR
     pacman_install archlinuxcn-keyring
+}
+
+
+pacman_enable_multilib(){
+    sudo sed -i 's|^#\[multilib\]|[multilib]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> $LOG 2>> $ERR
+    sudo sed -i 's|^#\[multilib-testing\]|[multilib-testing]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> $LOG 2>> $ERR
+    echo $password | sudo -S pacman -Syy >> $LOG 2>> $ERR
 }
 
 
@@ -544,15 +551,52 @@ pacman_install dunst
 
 ## Windows compatibility & Gaming
 # patch pacman settings to include multilib
-# sudo sed -i 's|^#\[multilib\]|[multilib]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> $LOG 2>> $ERR
-# wine:
+# pacman_enable_multilib
+# wine-staging (better version of wine):
+# pacman_install wine-staging
+# wine (worse vorsion of wine)
 # pacman_install wine
+# winetricks: install dependencies and so on
+# pacman_install winetricks
+# gecko driver for wine (for programs relying on IE)
 # pacman_install wine-gecko
+# mono driver for wine
 # pacman_install wine-mono
+# better game support on linux
 # pacman_install lutris
-# pacman_install playonlinux
+# steam game store
 # pacman_install steam
+# vulkan drivers
 # pacman_install vulkan-intel
+# playonlinux programs
+# pacman_install playonlinux
+# potentially useful audio drivers
+# pacman_install alsa-plugins
+# pacman_install lib32-alsa-plugins
+# pacman_install alsa-lib
+# pacman_install lib32-alsa-lib
+# pacman_install libpulse
+# pacman_install lib32-libpulse
+# other potentially useful drivers:
+# pacman_install mpg123
+# pacman_install lib32-mpg123
+# pacman_install giflib
+# pacman_install lib32-giflib
+# pacman_install libpng
+# pacman_install lib32-libpng
+# pacman_install gnutls
+# pacman_install lib32-gnutls
+# pacman_install gst-plugins-base
+# pacman_install lib32-gst-plugins-base
+# pacman_install gst-plugins-good
+# pacman_install lib32-gst-plugins-good
+# pacman_install openal
+# pacman_install lib32-openal
+# pacman_install libgl
+# pacman_install lib32-libgl
+# if you're using the nvidia driver:
+# pacman_install nvidia-utils
+# pacman_install lib32-nvidia-utils
 
 
 ## Sound
@@ -871,7 +915,7 @@ pacman_install chromium
 # ungoogled-chromium: the name says it all (note: compiling takes HOURS!):
 # yay_install ungoogled-chromium
 # alternatively: install ungoogled-chromium from archlinuxcn repositories:
-# pacman_add_archlinuxcn && pacman_install ungoogled-chromium
+# pacman_enable_archlinuxcn && pacman_install ungoogled-chromium
 
 # vimb: vim-like browser
 # pacman_install vimb
@@ -964,7 +1008,7 @@ pacman_install lynx
 # chromium-vaapi: chromium with libva support (note: compiling takes HOURS!):
 # yay_install chromium-vaapi
 # alternatively: install chromium-vaapi from archlinuxcn repositories:
-# pacman_add_archlinuxcn && pacman_install chromium-vaapi
+# pacman_enable_archlinuxcn && pacman_install chromium-vaapi
 
 
 
@@ -1017,7 +1061,7 @@ pacman_install python-httplib2
 # python-neovim integration
 pacman_install python-neovim
 # image processing in python
-# pacman_install python-pillow
+pacman_install python-pillow
 # sockets
 # pacman_install python-websockets
 pacman_install flake8
