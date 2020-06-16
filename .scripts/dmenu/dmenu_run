@@ -10,6 +10,7 @@
 """
 
 # imports
+import re
 import os
 import sys
 from subprocess import call, check_output, Popen, PIPE, CalledProcessError
@@ -71,16 +72,14 @@ def open_desktop_file(args):
     desktop_filename = args[0][:-1]
     for path in DESKTOP_FILE_PATHS:
         path = os.path.abspath(os.path.expanduser(path))
-        if desktop_filename+".desktop" in os.listdir(path):
-            with open(os.path.join(path,desktop_filename+".desktop"), "r") as file:
-                for line in file.readlines():
-                    if line.startswith("Exec"):
-                        exec_line = line
-                        exec_cmd = [c for c in exec_line[5:].split(" ") if not c.startswith("%")]
-                        break
-            if exec_line:
-                break
-    Popen(exec_cmd + args[1:])
+        if not desktop_filename+".desktop" in os.listdir(path):
+            continue
+        with open(os.path.join(path,desktop_filename+".desktop"), "r") as file:
+            for line in file:
+                if not line.startswith("Exec"):
+                    continue
+                cmd = line[5:].strip()
+                return Popen(cmd, shell=True)
 
 def list_desktop_files():
     applications = []
