@@ -216,6 +216,7 @@ conda_install flake8
 conda_install pyflakes
 conda_install isort
 conda_install yapf
+conda_install pytest
 
 conda_install jupyterhub conda-forge
 conda_install nodejs conda-forge
@@ -295,6 +296,7 @@ conda_install flake8
 conda_install pyflakes
 conda_install isort
 conda_install yapf
+conda_install pytest
 conda_install ipdb conda-forge
 conda_install pygmo conda-forge
 conda_install pynvim conda-forge
