@@ -1,0 +1,21 @@
+# NOTE: DO NOT EDIT THE FIRST 6 LINES OF THIS FILE
+#
+# this service can be (re-)installed by enabling it in the
+# arch install script and running the script (again).
+#
+# TARGET: /etc/systemd/system/x11vnc.service
+
+[Unit]
+Description=Start x11vnc screen sharing
+After=syslog.target network.target
+
+[Service]
+User={USER}
+ExecStart=/usr/bin/x11vnc -loop -forever -safer -shared -ultrafilexfer -bg -o {HOME}/.local/share/x11vnc.log
+ExecStop=/usr/bin/killall x11vnc
+Restart=always
+RestartSec=10
+
+
+[Install]
+WantedBy=multi-user.target
