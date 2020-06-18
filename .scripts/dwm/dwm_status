@@ -550,7 +550,7 @@ transmission(){
     pass transmission >/dev/null 2>/dev/null
     retval=$?
     [ $retval -eq 2 ] && echo  && return # transmission active but gpg inactive
-    if [ $retval -eq 0]; then
+    if [ $retval -eq 0 ]; then
         username=$(pass show transmission | head -2 | tail -1 | sed 's/^[^:]*:[ ]*//g' )
         password=$(pass show transmission | head -1)
         auth="--auth $username:$password"
