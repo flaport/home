@@ -833,6 +833,10 @@ pacman_install anki
 pacman_install pavucontrol
 # bluetooth manager (run blueman-manager)
 pacman_install blueman
+# jami: blockchain-based secure chat app
+pacman_install jami-daemon
+pacman_install libjamiclient
+pacman_install jami-gnome
 
 
 ## Images, video and media
