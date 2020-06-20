@@ -46,6 +46,7 @@ Plug 'psf/black' " black python plugin
 Plug 'voldikss/vim-floaterm' " floating terminal
 Plug 'Shougo/context_filetype.vim' " completion from other opened files
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'szymonmaszke/vimpyter' " edit jupyter notebooks
 Plug 'tpope/vim-commentary' " easy comment
 Plug 'tpope/vim-markdown' " markdown syntax highlighting
 Plug 'tpope/vim-repeat' " easily repeat plugin commands with .

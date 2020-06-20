@@ -235,8 +235,9 @@ conda_install octave_kernel conda-forge
 conda_install bayesian-optimization conda-forge
 conda_install ipyvolume conda-forge
 
-pip_install neovim-remote conda-forge
-pip_install jupyterlab_git conda-forge
+pip_install notedown
+pip_install neovim-remote
+pip_install jupyterlab_git
 # pip_install jupyter_tensorboard
 # pip_install jupyterlab_latex
 # pip_install jupyterlab_code_formatter
@@ -301,6 +302,7 @@ conda_install ipdb conda-forge
 conda_install pygmo conda-forge
 conda_install pynvim conda-forge
 conda_install bayesian-optimization conda-forge
+pip_install notedown
 printf "installing jupyter kernel for environment: py2... "
 $CONDAROOT/envs/py2/bin/python -m ipykernel install --user --name py2 --display-name "Python 2" >> $LOG 2>> $ERR
 mv $HOME/.local/share/jupyter/kernels/py2 $CONDAROOT/share/jupyter/kernels/ >> $LOG 2>> $ERR
@@ -316,6 +318,7 @@ conda_install ipykernel
 conda_install ipywidgets
 conda_install r-irkernel conda-forge
 conda_install pynvim conda-forge
+pip_install notedown
 pip_install neovim-remote
 printf "installing jupyter kernel for environment: r... "
 cp -rf $CONDAROOT/envs/r/share/jupyter/kernels/ir $CONDAROOT/share/jupyter/kernels
@@ -333,6 +336,7 @@ conda_install ipykernel
 conda_install ipywidgets
 conda_install julia conda-forge
 conda_install pynvim conda-forge
+pip_install notedown
 pip_install neovim-remote
 echo "installing jupyter kernel for environment: julia... "
 $CONDAROOT/envs/julia/bin/julia -E 'using Pkg; Pkg.add("IJulia"); precompile' >> $LOG 2>> $ERR
