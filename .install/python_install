@@ -16,7 +16,7 @@
 #       or install additional packages by adding them to the list below.
 
 
-## Checks
+## checks
 #-------------------------------------------------------------------------------
 
 ## pre-installation checks
@@ -34,7 +34,7 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
 fi
 
 
-## Parse arguments
+## parse arguments
 #-------------------------------------------------------------------------------
 
 
@@ -53,7 +53,7 @@ while [ ! -z "$1" ]; do
     shift 1
 done
 
-## Logging
+## logging
 #-------------------------------------------------------------------------------
 
 mkdir -p $HOME/.local/share
@@ -63,7 +63,7 @@ printf "ANACONDA PACKAGE INSTALL\n\n\n" > $LOG
 printf "ANACONDA PACKAGE INSTALL\n\n\n" > $ERR
 
 
-## Logging
+## helpers
 #-------------------------------------------------------------------------------
 
 echo_success(){
@@ -82,9 +82,9 @@ echo_success(){
 
 create_environment(){
     ENVNAME="$1"
-    printf "\n\n\ncreating environment '$ENVNAME'..."
-    printf "\n\n\ncreating environment '$ENVNAME'..." >> $LOG
-    printf "\n\n\ncreating environment '$ENVNAME'..." >> $ERR
+    printf "\n\n\n[conda] creating environment '$ENVNAME'..."
+    printf "\n\n\n[conda] creating environment '$ENVNAME'..." >> $LOG
+    printf "\n\n\n[conda] creating environment '$ENVNAME'..." >> $ERR
     [ ! -z "$2" ] && local V="python=$2"
     NPM="$CONDAROOT/envs/$ENVNAME/bin/npm"
     PIP="$CONDAROOT/envs/$ENVNAME/bin/pip"
@@ -100,9 +100,9 @@ create_environment(){
 }
 
 update_environment() {
-    printf "updating environment '$ENVNAME'..."
-    printf "\n\n\nupdating environment '$ENVNAME'..." >> $LOG
-    printf "\n\n\nupdating environment '$ENVNAME'..." >> $ERR
+    printf "[conda] updating environment '$ENVNAME'..."
+    printf "\n\n\n[conda] updating environment '$ENVNAME'..." >> $LOG
+    printf "\n\n\n[conda] updating environment '$ENVNAME'..." >> $ERR
     $CONDA update -y -n $ENVNAME conda  >> $LOG 2>> $ERR
     $CONDA update -y -n $ENVNAME --all >> $LOG 2>> $ERR
     exit_code=$?
@@ -155,9 +155,9 @@ pip_install() {
 
 labextension_install(){
     JUPYTER="$CONDAROOT/bin/jupyter"
-    printf "installing jupyterlab extension: $1..."
-    printf "\n\n\ninstalling jupyterlab extension: $1..." >> $LOG
-    printf "\n\n\ninstalling jupyterlab extension: $1..." >> $ERR
+    printf "[ lab ] installing extension: $1..."
+    printf "\n\n\n[ lab ] installing extension: $1..." >> $LOG
+    printf "\n\n\n[ lab ] installing extension: $1..." >> $ERR
     if $JUPYTER labextension check $1 >> $LOG 2>> $ERR; then
         echo "already installed"
         return 0
@@ -169,7 +169,7 @@ labextension_install(){
     return $exit_code
 }
 
-## Anaconda python
+## anaconda python
 #-------------------------------------------------------------------------------
 
 if [ ! -d "$CONDAROOT" ]; then
@@ -182,7 +182,7 @@ if [ ! -d "$CONDAROOT" ]; then
 fi
 
 
-## Base environment
+## base environment
 #-------------------------------------------------------------------------------
 
 ENVNAME="base"
@@ -195,8 +195,6 @@ update_environment
 conda_install cython
 conda_install numpy
 conda_install pandas
-conda_install pytorch
-conda_install torchvision
 conda_install tensorflow
 conda_install scikit-learn
 conda_install matplotlib
@@ -217,6 +215,9 @@ conda_install pyflakes
 conda_install isort
 conda_install yapf
 conda_install pytest
+
+conda_install pytorch pytorch
+conda_install torchvision pytorch
 
 conda_install jupyterhub conda-forge
 conda_install nodejs conda-forge
@@ -242,7 +243,7 @@ pip_install jupyterlab_git conda-forge
 # pip_install jupyterlab_code_formatter
 
 
-## Jupyterlab extensions
+## jupyterlab extensions
 #-------------------------------------------------------------------------------
 
 labextension_install @axlair/jupyterlab_vim
@@ -261,15 +262,13 @@ labextension_install nbdime-jupyterlab
 # labextension_install @lckr/jupyterlab_variableinspector
 
 
-## Py2 environment
+## py2 environment
 #-------------------------------------------------------------------------------
 
 create_environment py2 2.7
 update_environment
 conda_install cython
 conda_install numpy
-conda_install pytorch
-conda_install torchvision
 conda_install matplotlib
 conda_install pillow
 conda_install scikit-learn
@@ -297,10 +296,15 @@ conda_install pyflakes
 conda_install isort
 conda_install yapf
 conda_install pytest
+
+conda_install pytorch pytorch
+conda_install torchvision pytorch
+
 conda_install ipdb conda-forge
 conda_install pygmo conda-forge
 conda_install pynvim conda-forge
 conda_install bayesian-optimization conda-forge
+
 printf "installing jupyter kernel for environment: py2... "
 $CONDAROOT/envs/py2/bin/python -m ipykernel install --user --name py2 --display-name "Python 2" >> $LOG 2>> $ERR
 mv $HOME/.local/share/jupyter/kernels/py2 $CONDAROOT/share/jupyter/kernels/ >> $LOG 2>> $ERR
@@ -324,7 +328,7 @@ sed -i "1s|R|$CONDAROOT/envs/r/bin/R|" $CONDAROOT/share/jupyter/kernels/ir/kerne
 echo "finished."
 
 
-## Julia environment
+## julia environment
 #-------------------------------------------------------------------------------
 
 create_environment julia
