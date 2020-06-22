@@ -42,9 +42,12 @@ man() {
 alias :q=exit
 alias :x=exit
 alias :e=$EDITOR
+alias ll="ls -l"
+alias la="ls -la"
 alias grep="grep --color=auto"
 alias base="conda activate base"
 alias system="conda deactivate && conda deactivate"
+alias pip="pip --no-cache-dir"
 
 
 ## Python

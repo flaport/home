@@ -102,6 +102,7 @@ alias grep="grep --color=auto"
 alias base="conda activate base"
 alias system="conda deactivate && conda deactivate"
 alias history="history 1"
+alias pip="pip --no-cache-dir"
 
 
 ## Python
