@@ -1107,6 +1107,8 @@ pip3_install neovim-remote
 pip3_install ueberzug
 # automate GUI tasks with pyautogui
 pip3_install pyautogui
+# markdown <-> ipynb conversion
+pip3_install notedown
 # google cloud apis
 # pip3_install google-api-python-client
 # pip3_install google-auth-httplib2
