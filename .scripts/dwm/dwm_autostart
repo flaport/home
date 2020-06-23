@@ -43,16 +43,18 @@ start xautolock -time 10 -locker validate_and_lock_screen
 # make the mouse invisible after a brief period of not using it.
 start unclutter
 
-# conky dashboards
-start conky -x 60
-start conky -x -1860
-start conky -x -3780
-
 # update xrdb database
 start xrdb "$HOME/.Xresources"
 
 # enable transparent windows
 start picom
+
+# conky dashboards (same one on three monitors)
+if ! pidof conky >/dev/null 2> /dev/null; then
+    conky -x 60 >/dev/null 2>&1 &
+    conky -x -1860 >/dev/null 2>&1 &
+    conky -x -3780 >/dev/null 2>&1 &
+fi
 
 # set cursor speed
 # wrapped into loop, as sometimes this inexplicably stops working
