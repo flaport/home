@@ -16,7 +16,7 @@ j () {
 # slightly improved autojump command: when a valid path is given,
 # jump to that path instead of looking into the autojump database...
 # also, don't jump to folders not contained in current folder.
-jc () {
+jd () {
     output=$(echo $(pwd)/$@)
     [ ! -d "$output" ] && output=$(autojump $(pwd) $@)
     if [[ $output == *"$(pwd)"* && -d "$output" ]];then
@@ -41,7 +41,7 @@ f () {
 
 # an autojump-like method for "jumping" into a directory based on fzf:
 # advantage: see where you are going to jump before actually jumping
-jf () {
+ff () {
     file=$(find $HOME  -maxdepth 3 -type f 2> /dev/null | fzf)
     [ $? -ne 0 ] && return
     output=$(dirname $file)
@@ -55,7 +55,7 @@ jf () {
 
 # an autojump-like method for "jumping" into a directory based on fzf:
 # advantage: see where you are going to jump before actually jumping
-jfc () {
+fd () {
     output=$(find . -maxdepth 3 -type d 2> /dev/null | fzf)
     if [[ -d "${output}" ]]; then
         echo -e "\\033[31m${output}\\033[0m"

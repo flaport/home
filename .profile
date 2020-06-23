@@ -33,6 +33,7 @@
 #-------------------------------------------------------------------------------
 export BROWSER="waterfox"
 export CC="gcc"
+export COLORTERM="truecolor"
 export CXX="g++"
 export DMENU="dmenu" # rofi
 export EDITOR="vim"

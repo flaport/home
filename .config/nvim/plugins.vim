@@ -35,7 +35,7 @@ Plug 'christoomey/vim-tmux-navigator' " tmux navigation
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
 Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
 Plug 'junegunn/goyo.vim', " distraction free writing.
-Plug 'ctrlpvim/ctrlp.vim' " alternative fuzzy file finder
+" Plug 'ctrlpvim/ctrlp.vim' " alternative fuzzy file finder (disabled in favor of fzf)
 Plug 'kshenoy/vim-signature' " show marks in margin
 Plug 'lilydjwg/colorizer' " paint css colors with the real color
 Plug 'mbbill/undotree' " undo tree for vim
@@ -110,6 +110,7 @@ nnoremap <leader>ff :Lines<CR>
 nnoremap <leader>ft :Tag<CR>
 " file finder mapping
 nnoremap <leader>e :Files<CR>
+nnoremap <C-P> :Files<CR>
 " tags (symbols) in all files finder mapping
 nnoremap <leader>t :Tag<CR>
 

@@ -8,93 +8,71 @@
 [[ ! -z $1 ]] && FILENAME=$1 || exit 1
 [[ ! -z $2 ]] && LINESSHOWN=$2 || LINESSHOWN=51
 
-ubzpreview(){
-    if [ ! -z "$DISPLAY" ]; then
-        < <(</dev/tty stty size) read TERMINAL_LINES TERMINAL_COLUMNS
-        X=$((TERMINAL_COLUMNS - FZF_PREVIEW_COLUMNS - 3))
-        Y=$((TERMINAL_LINES - FZF_PREVIEW_LINES - 1))
-        [ "$FZF_UBZ_LINE" -lt "$Y" ] 2> /dev/null && Y="$FZF_UBZ_LINE"
-        >"${FZF_UBZ_FIFO}" declare -A -p cmd=( \
-            [action]=add [identifier]="preview" \
-            [x]="${X}" [y]="${Y}" \
-            [width]="${FZF_PREVIEW_COLUMNS}" [height]="${FZF_PREVIEW_LINES}" \
-            [scaler]=forced_cover [scaling_position_x]=0.5 [scaling_position_y]=0.5 \
-            [path]="$1")
-    fi
-}
-
-# empty ueberzug preview (note that path is empty -> no preview):
-ubzpreview
-
-
-if [ ! -d $FILENAME ] 2> /dev/null && [ ! -f "$FILENAME" ] 2> /dev/null; then
-    printf "$FILENAME"
-    exit
-fi
+echo $FILENAME
+echo $FILENAME | sed 's/./-/g'
 
 if [ -d "$FILENAME" ] 2> /dev/null; then
     tree -L 1 $FILENAME
     exit
 fi
 
+if [ -L "$FILENAME" ] 2> /dev/null; then
+    printf "LINK => $(readlink $FILENAME)"
+    exit
+fi
+
 if [[ $FILENAME == *.py ]]; then
-    cat $FILENAME | highlight --src-lang=python -O ansi --force 2> /dev/null || echo $FILENAME
+    highlight $FILENAME --src-lang=python -O ansi --force 2> /dev/null
     exit
 fi
 
 if [[ $FILENAME == *.ipynb ]]; then
-    jupyter nbconvert $FILENAME --to python --stdout 2> /dev/null | highlight -O ansi --force 2> /dev/null || echo "$FILENAME"
+    jupyter nbconvert $FILENAME --to python --stdout 2> /dev/null | highlight -O ansi --force 2> /dev/null
     exit
 fi
 
 if [[ $FILENAME == *.htm* ]]; then
-    cat $FILENAME | highlight --src-lang=html -O ansi --force 2> /dev/null || echo $FILENAME
+    highlight $FILENAME --src-lang=html -O ansi --force 2> /dev/null
     exit
 fi
 
 if [[ $FILENAME == *.md ]]; then
-    cat $FILENAME | highlight --src-lang=markdown -O ansi --force 2> /dev/null || echo $FILENAME
+    highlight $FILENAME --src-lang=markdown -O ansi --force 2> /dev/null
     exit
 fi
 
 if [[ $FILENAME == *.pdf ]]; then
-    pdftotext -q "$FILENAME" - 2> /dev/null || echo $FILENAME
-    inkscape "$FILENAME" -e /tmp/fzf-ubz-preview.png &> /dev/null
-    ubzpreview /tmp/fzf-ubz-preview.png
+    pdftotext -q "$FILENAME" - 2> /dev/null
     exit
 fi
 
 if [[ $FILENAME == *.bash ||  $FILENAME == *.sh ]]; then
-    cat $FILENAME | highlight --src-lang=bash -O ansi --force 2> /dev/null || echo $FILENAME
+    cat $FILENAME | highlight --src-lang=bash -O ansi --force 2> /dev/null
     exit
 fi
 
 if [[ $FILENAME == *.png || $FILENAME == *.PNG ]]; then
-    echo $FILENAME
-    ubzpreview $FILENAME
+    viu $FILENAME
     exit
 fi
 
 if [[ $FILENAME == *.jpg || $FILENAME == *.jpeg || $FILENAME == *.JPG || $FILENAME == *.JPEG ]]; then
-    echo $FILENAME
-    ubzpreview $FILENAME
+    viu $FILENAME
     exit
 fi
 
 if [[ $FILENAME == *.svg ]]; then
-    echo $FILENAME
     inkscape "$FILENAME" -e /tmp/fzf-ubz-preview.png &> /dev/null
-    ubzpreview /tmp/fzf-ubz-preview.png
+    viu /tmp/fzf-ubz-preview.png
     exit
 fi
 
 if [[ $FILENAME == *.mp4 ]]; then
-    echo $FILENAME
     ffmpeg -y -i $FILENAME -ss 00:00:01.000 -vframes 1 /tmp/fzf-ubz-preview.png &> /dev/null
-    ubzpreview /tmp/fzf-ubz-preview.png
+    viu /tmp/fzf-ubz-preview.png
     exit
 fi
 
 # if all else fails:
-echo "$FILENAME"
+/usr/bin/cat "$FILENAME"
 

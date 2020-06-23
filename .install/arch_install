@@ -421,6 +421,8 @@ pacman_install translate-shell
 pacman_install whois
 # cronie: cron job daemon
 pacman_install cronie
+# (pixelated) terminal image previews
+yay_install viu
 # systemctl_enable cronie
 # ncmpcpp: terminal music client
 pacman_install ncmpcpp
@@ -1103,8 +1105,8 @@ yay_install castero
 pip3_install jedi
 # neovim-remote needed for synctex
 pip3_install neovim-remote
-# image previews in terminal
-pip3_install ueberzug
+# image previews (overlays) in terminal (very difficult to configure)
+# pip3_install ueberzug
 # automate GUI tasks with pyautogui
 pip3_install pyautogui
 # markdown <-> ipynb conversion
