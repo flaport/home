@@ -36,15 +36,19 @@
 UUID=<root-uuid>                    /                   ext4        rw,relatime 0 1
 # home
 UUID=<home-uuid>                    /home               ext3        rw,relatime 0 2
+# swap
+UUID=<swap-uuid>      	            none                swap      	defaults  	0 0
 
 ## shared filesystems
-# ext3/ext4 partitions
-UUID=<ext-uuid>                     /drives/<name>      ext4        rw,relatime,nofail,x-systemd.device-timeout=1s 0 2
+# ext3 partitions
+UUID=<ext-uuid>                     /mnt/<name>      ext3        rw,relatime,nofail,x-systemd.device-timeout=1s 0 2
+# ext4 partitions
+UUID=<ext-uuid>                     /mnt/<name>      ext4        rw,relatime,nofail,x-systemd.device-timeout=1s 0 2
 # ntfs partitions
-UUID=<ntfs-uuid>                    /drives/<name>      ntfs-3g     defaults,nofail,x-systemd.device-timeout=1s,uid=root,gid=mount_access,dmask=003,umask=003 0 2
+UUID=<ntfs-uuid>                    /mnt/<name>      ntfs-3g     defaults,nofail,x-systemd.device-timeout=1s,uid=<user>,gid=<user>,dmask=033,umask=033 0 2
 # fat partitions (usbs)
-UUID=<fat-uuid>                     /drives/<name>      vfat        defaults,nofail,x-systemd.device-timeout=1s,uid=root,gid=mount_access,dmask=003,umask=003 0 2
+UUID=<fat-uuid>                     /mnt/<name>      vfat        defaults,nofail,x-systemd.device-timeout=1s,uid=<user>,gid=<user>,dmask=033,umask=033 0 2
 
-## network filesystems (use \040 to add spaces in path)
-//<domain>/location/sublocation     /network/<name>     cifs        defaults,nofail,x-systemd.device-timeout=1s,credentials=/home/flaport/.smbcredentials,uid=root,gid=mount_access,dir_mode=0774,file_mode=0774 0 2
+## network filesystems (use \040 to add spaces in path). Add noauto flag if network location should not be automatically mounted.
+//<domain>/location/sublocation     /mnt/<name>     cifs        noauto,defaults,nofail,x-systemd.device-timeout=1s,credentials=/home/<user>/.smbcredentials,uid=<user>,gid=<user>,dir_mode=0744,file_mode=0744 0 2
 
