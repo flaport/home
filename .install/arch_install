@@ -359,6 +359,14 @@ pacman_install mplayer
 pacman_install xclip
 # pdf conversion
 pacman_install poppler
+# video to thumbnail conversion
+pacman_install ffmpegthumbnailer
+# audio thumbnails with ffmpeg (heh?)
+yay_install ffmpegthumbnailer-mp3
+# epub thumbnailer
+yay_install epub-thumbnailer-git
+# font previewer
+yay_install fontpreview-git
 # check if bash script is posix complient (needs haskell -> 250mb -> disabled by default)
 # pacman_install shellcheck
 # highlight: to highlight code in the terminal (nice `cat` alternative, used in my custom scripts)
@@ -1106,7 +1114,8 @@ pip3_install jedi
 # neovim-remote needed for synctex
 pip3_install neovim-remote
 # image previews (overlays) in terminal (very difficult to configure)
-# pip3_install ueberzug
+pacman_install python-xlib # install this BEFORE ueberzug
+pip3_install ueberzug
 # automate GUI tasks with pyautogui
 pip3_install pyautogui
 # markdown <-> ipynb conversion
