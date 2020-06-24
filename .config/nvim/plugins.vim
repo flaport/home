@@ -30,6 +30,7 @@ endif
 " Run :PlugInstall to install extra packages after adding them to the list below
 " Run :UpdateRemotePlugins to update dependencies
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
+Plug 'anntzer/vim-cython' " cython syntax highlighting
 Plug 'christoomey/vim-tmux-navigator' " tmux navigation
 " Plug 'davidhalter/jedi-vim' " python go-to-definition (disabled in favor of CoC)
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
