@@ -847,6 +847,8 @@ pacman_install blueman
 pacman_install jami-daemon
 pacman_install libjamiclient
 pacman_install jami-gnome
+# 'airdrop' for linux (only works between pcs):
+yay_install warpinator
 
 
 ## Images, video and media
