@@ -1,4 +1,0 @@
-[Desktop Entry]
-Exec=/usr/bin/chromium --app=https://youtube.com
-Name=YouTube
-Icon=/usr/local/share/icons/youtube.png

@@ -21,6 +21,7 @@
 # Make sure the following files exist:
 #-------------------------------------------------------------------------------
 
+[ -d $HOME/.webapps ] || mkdir $HOME/.webapps
 [ -d $HOME/Downloads ] || mkdir $HOME/Downloads
 [ -d $HOME/Transmission ] || mkdir $HOME/Transmission
 [ -f $HOME/.pythonpath ] || touch $HOME/.pythonpath &> /dev/null

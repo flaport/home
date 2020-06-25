@@ -92,9 +92,9 @@ echo_success(){
 }
 
 pacman_install(){ # will only install the first argument!
-    printf "installing $1... "
-    printf "\n\n\ninstalling $1...\n" >> $LOG
-    printf "\n\n\ninstalling $1...\n" >> $ERR
+    printf "[pacman] install $1... "
+    printf "\n\n\n[pacman] install $1...\n" >> $LOG
+    printf "\n\n\n[pacman] install $1...\n" >> $ERR
 
     # check if package is already installed...
     echo $password | sudo -S pacman -Q $1 >> $LOG 2>> $ERR;
@@ -114,9 +114,9 @@ pacman_install(){ # will only install the first argument!
 }
 
 yay_install(){ # will only install the first argument!
-    printf "installing $1... "
-    printf "\n\n\ninstalling $1...\n" >> $LOG
-    printf "\n\n\ninstalling $1...\n" >> $ERR
+    printf "[ yay  ] install $1... "
+    printf "\n\n\n[ yay  ] install $1...\n" >> $LOG
+    printf "\n\n\n[ yay  ] install $1...\n" >> $ERR
 
     # check if package is already installed...
     echo $password | sudo -S pacman -Q $1 >> $LOG 2>> $ERR;
@@ -139,9 +139,9 @@ git_install(){ # will only install the first argument!
     name=$(basename $1)
     name=${name%.*}
 
-    printf "installing $name... "
-    printf "\n\n\ninstalling $name...\n" >> $LOG
-    printf "\n\n\ninstalling $name...\n" >> $ERR
+    printf "[ git  ] install $name... "
+    printf "\n\n\n[ git  ] install $name...\n" >> $LOG
+    printf "\n\n\n[ git  ] install $name...\n" >> $ERR
 
     # check if package is already installed...
     echo $password | sudo -S pacman -Q $name >> $LOG 2>> $ERR;
@@ -178,9 +178,9 @@ git_install(){ # will only install the first argument!
 }
 
 submodule_install(){ # will only install the first argument!
-    printf "installing $1... "
-    printf "\n\n\ninstalling $1...\n" >> $LOG
-    printf "\n\n\ninstalling $1...\n" >> $ERR
+    printf "[submod] install $1... "
+    printf "\n\n\n[submod] install $1...\n" >> $LOG
+    printf "\n\n\n[submod] install $1...\n" >> $ERR
 
     printf "cd $HOME/.build/$1\n" >> $LOG
     printf "cd $HOME/.build/$1\n" >> $ERR
@@ -219,9 +219,19 @@ submodule_install(){ # will only install the first argument!
 }
 
 pip3_install() {
-    printf "pip3 install $1... "
-    printf "\n\n\npip3 install $1\n" >> $LOG
-    printf "\n\n\npip3 install $1\n" >> $ERR
+    printf "[ pip  ] install $1... "
+    printf "\n\n\n[ pip  ] install $1\n" >> $LOG
+    printf "\n\n\n[ pip  ] install $1\n" >> $ERR
+
+    # check if package is already installed...
+    /usr/bin/python -c "import $1" >/dev/null 2>/dev/null
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
+        printf "already installed.\n"
+        printf "already installed.\n" >> $LOG
+        printf "already installed.\n" >> $ERR
+        return 1
+    fi
+
     printf "sudo /usr/bin/python3 -m pip install $1\n" >> $LOG
     printf "sudo /usr/bin/python3 -m pip install $1\n" >> $ERR
     echo $password | sudo -S /usr/bin/python3 -m pip install $1 >> $LOG 2>> $ERR
@@ -230,10 +240,32 @@ pip3_install() {
     return $exit_code
 }
 
+npm_install(){
+    printf "[ npm  ] install $1... "
+    printf "\n\n\n[ npm  ] install $1\n" >> $LOG
+    printf "\n\n\n[ npm  ] install $1\n" >> $ERR
+
+    # check if package is already installed...
+    echo $password | sudo -S npm list -g 2> /dev/null | grep "$1" >/dev/null 2>/dev/null
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
+        printf "already installed.\n"
+        printf "already installed.\n" >> $LOG
+        printf "already installed.\n" >> $ERR
+        return 1
+    fi
+
+    printf "sudo npm install -g $1\n" >> $LOG
+    printf "sudo npm install -g $1\n" >> $ERR
+    echo $password | sudo -S npm install -g $1 >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
 systemctl_create() {
-    printf "creating $1 service... "
-    printf "\n\n\ncreating $1 service...\n" >> $LOG
-    printf "\n\n\ncreating $1 service...\n" >> $ERR
+    printf "[system] create $1 service... "
+    printf "\n\n\n[system] create $1 service...\n" >> $LOG
+    printf "\n\n\n[system] create $1 service...\n" >> $ERR
     source=$HOME/.install/services/$1.service
     target=$(head -6 $source | tail -1 | sed 's/#\ *TARGET:\ *//g')
 
@@ -251,9 +283,9 @@ systemctl_create() {
 }
 
 systemctl_enable() {
-    printf "enabling $1 service... "
-    printf "\n\n\nenabling $1 service...\n" >> $LOG
-    printf "\n\n\nenabling $1 service...\n" >> $ERR
+    printf "[system] enable $1 service... "
+    printf "\n\n\n[system] enable $1 service...\n" >> $LOG
+    printf "\n\n\n[system] enable $1 service...\n" >> $ERR
     printf "sudo systemctl enable $1\n" >> $LOG
     printf "sudo systemctl enable $1\n" >> $ERR
     echo $password | sudo -S systemctl enable "$1" >> $LOG 2>> $ERR
@@ -264,9 +296,9 @@ systemctl_enable() {
 
 link() {
     [ ! -z $3 ] && printf "link: too many arguments" && return 1
-    printf "link $1 to $2... "
-    printf "\n\n\nlink $1 to $2\n" >> $LOG
-    printf "\n\n\nlink $1 to $2\n" >> $ERR
+    printf "[ link ] from $1 to $2... "
+    printf "\n\n\n[ link ] from $1 to $2\n" >> $LOG
+    printf "\n\n\n[ link ] from $1 to $2\n" >> $ERR
     printf "sudo ln -sf $1 $2\n" >> $LOG
     printf "sudo ln -sf $1 $2\n" >> $ERR
     [ -f "$2" ] && echo $password | sudo -S mv $2 $2.bak  >> $LOG 2>> $ERR
@@ -277,6 +309,9 @@ link() {
 }
 
 pacman_enable_archlinuxcn(){ # add archlinuxcn to the pacman repositories
+    printf "[pacman] enable archlinuxcn"
+    printf "\n\n\n[pacman] enable archlinuxcn\n" >> $LOG
+    printf "\n\n\n[pacman] enable archlinuxcn\n" >> $ERR
     grep "\[archlinuxcn\]" /etc/pacman.conf &> /dev/null || printf "\n\n[archlinuxcn]\nServer=https://repo.archlinuxcn.org/\$arch" | sudo tee -a /etc/pacman.conf > /dev/null 2>> $ERR
     echo $password | sudo -S pacman -Syy >> $LOG 2>> $ERR
     pacman_install archlinuxcn-keyring
@@ -284,6 +319,9 @@ pacman_enable_archlinuxcn(){ # add archlinuxcn to the pacman repositories
 
 
 pacman_enable_multilib(){
+    printf "[pacman] enable multilib"
+    printf "\n\n\n[pacman] enable multilib\n" >> $LOG
+    printf "\n\n\n[pacman] enable multilib\n" >> $ERR
     sudo sed -i 's|^#\[multilib\]|[multilib]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> $LOG 2>> $ERR
     sudo sed -i 's|^#\[multilib-testing\]|[multilib-testing]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> $LOG 2>> $ERR
     echo $password | sudo -S pacman -Syy >> $LOG 2>> $ERR
@@ -298,8 +336,13 @@ pacman_install git
 pacman_install make
 pacman_install cmake
 
-## AUR package manager
+## alternative package managers
+# yay (AUR helper)
 git_install https://aur.archlinux.org/yay.git
+# npm (node package manager)
+pacman_install npm
+# pip (python package manager)
+pacman_install npm
 
 ## Terminal
 # eyecandy: patch pacman config to enable Color and ILoveCandy
@@ -398,7 +441,7 @@ pacman_install socat
 # torrents: transmission cli
 pacman_install transmission-cli
 # transmission remote cli curses interface:
-yay_install tremc
+yay_install tremc-git
 # transmission remote cli gtk interface
 pacman_install transmission-remote-gtk
 # add current user to the transmission group:
@@ -411,6 +454,10 @@ pacman_install lsd
 pacman_install neovim
 # link neovim to standard vim binary:
 link /usr/bin/nvim /usr/bin/vim
+# instant-markdown-d used for instant markdown visualization in vim
+npm_install instant-markdown-d
+# eslint: javascript linter (required by COC plugin for nvim)
+npm_install eslint
 # ctags: recommended vim dependency for jump-to-tag functionality
 pacman_install ctags
 # scim: terminal spreadsheet viewer/editor
@@ -849,6 +896,8 @@ pacman_install libjamiclient
 pacman_install jami-gnome
 # 'airdrop' for linux (only works between pcs):
 yay_install warpinator
+# natifier: make 'native' electron apps given a url
+npm_install nativefier
 
 
 ## Images, video and media
@@ -1131,11 +1180,6 @@ pip3_install notedown
 # run jupyterlab as a systemd service:
 systemctl_create jupyterhub
 # systemctl_enable jupyterhub
-# instant-markdown-d (installed with npm) is a nice tool to live visualize markdown from within neovim.
-pacman_install npm
-echo $password | sudo -S npm -g install instant-markdown-d >> $LOG 2>> $ERR
-# eslint: javascript linter:
-echo $password | sudo -S npm -g install eslint >> $LOG 2>> $ERR
 
 
 ## System settings

@@ -3,6 +3,7 @@
 
 # imports
 import os
+import re
 import sys
 import argparse
 import subprocess
@@ -31,16 +32,38 @@ def parse_address(address):
         address = f"file:///{address}"
     return address
 
+def parse_natifier_name(parsed_address):
+    """ transform url to nativefier app name
+
+    Note:
+        natifier app should be created inside ~/.webapps with the following
+        command::
+
+            nativefier [url] --name [url]
+    """
+    http = re.sub("^https?://", "http", parsed_address)
+    http = http.replace("/","").replace(":","")
+    https = re.sub("^http", "https", http)
+    http = os.path.expanduser(f"~/.webapps/{http}-linux-x64/{http}")
+    https = os.path.expanduser(f"~/.webapps/{https}-linux-x64/{https}")
+    return http, https
+
 def run_and_exit(command):
     print(" ".join(command))
     with open(os.devnull, "w") as out:
-        subprocess.Popen(command, stdout=out, stderr=out)
+        subprocess.call(command, stdout=out, stderr=out)
     exit()
-
 
 if __name__ == "__main__":
     args = parse_args()
     address = parse_address(args.address)
+    nativefier_http, nativefier_https = parse_natifier_name(address)
+
+    if exists(nativefier_https):
+        run_and_exit([nativefier_https])
+
+    if exists(nativefier_http):
+        run_and_exit([nativefier_http])
 
     if exists("chromium"):
         run_and_exit(["chromium", f"--app={address}"])
