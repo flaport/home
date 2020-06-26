@@ -82,9 +82,9 @@ echo_success(){
 
 create_environment(){
     ENVNAME="$1"
-    printf "\n\n\n[conda] creating environment '$ENVNAME'..."
-    printf "\n\n\n[conda] creating environment '$ENVNAME'..." >> $LOG
-    printf "\n\n\n[conda] creating environment '$ENVNAME'..." >> $ERR
+    printf "\n\n\n[conda] create environment '$ENVNAME'..."
+    printf "\n\n\n[conda] create environment '$ENVNAME'..." >> $LOG
+    printf "\n\n\n[conda] create environment '$ENVNAME'..." >> $ERR
     [ ! -z "$2" ] && local V="python=$2"
     NPM="$CONDAROOT/envs/$ENVNAME/bin/npm"
     PIP="$CONDAROOT/envs/$ENVNAME/bin/pip"
@@ -100,9 +100,9 @@ create_environment(){
 }
 
 update_environment() {
-    printf "[conda] updating environment '$ENVNAME'..."
-    printf "\n\n\n[conda] updating environment '$ENVNAME'..." >> $LOG
-    printf "\n\n\n[conda] updating environment '$ENVNAME'..." >> $ERR
+    printf "[conda] update environment '$ENVNAME'..."
+    printf "\n\n\n[conda] update environment '$ENVNAME'..." >> $LOG
+    printf "\n\n\n[conda] update environment '$ENVNAME'..." >> $ERR
     $CONDA update -y -n $ENVNAME conda  >> $LOG 2>> $ERR
     $CONDA update -y -n $ENVNAME --all >> $LOG 2>> $ERR
     exit_code=$?
@@ -111,9 +111,9 @@ update_environment() {
 }
 
 conda_install() {
-    printf "[conda] installing '$1' in environment '$ENVNAME'... "
-    printf "\n\n\n[conda] installing '$1' in environment '$ENVNAME'...\n" >> $LOG
-    printf "\n\n\n[conda] installing '$1' in environment '$ENVNAME'...\n" >> $ERR
+    printf "[conda] install '$1' in environment '$ENVNAME'... "
+    printf "\n\n\n[conda] install '$1' in environment '$ENVNAME'...\n" >> $LOG
+    printf "\n\n\n[conda] install '$1' in environment '$ENVNAME'...\n" >> $ERR
     local S=""
     if [ $FORCE -eq 0 ]; then
         if $PYTHON -c "import $1" &> /dev/null; then
@@ -134,9 +134,9 @@ conda_install() {
 }
 
 pip_install() {
-    printf "[ pip ] installing '$1' in environment '$ENVNAME'... "
-    printf "\n\n\n[ pip ] installing '$1' in environment '$ENVNAME'...\n" >> $LOG
-    printf "\n\n\n[ pip ] installing '$1' in environment '$ENVNAME'...\n" >> $ERR
+    printf "[ pip ] install '$1' in environment '$ENVNAME'... "
+    printf "\n\n\n[ pip ] install '$1' in environment '$ENVNAME'...\n" >> $LOG
+    printf "\n\n\n[ pip ] install '$1' in environment '$ENVNAME'...\n" >> $ERR
     local S="--upgrade"
     if [ $FORCE -eq 0 ]; then
         if $PYTHON -c "import $1" &> /dev/null; then
@@ -155,9 +155,9 @@ pip_install() {
 
 labextension_install(){
     JUPYTER="$CONDAROOT/bin/jupyter"
-    printf "[ lab ] installing extension: $1..."
-    printf "\n\n\n[ lab ] installing extension: $1..." >> $LOG
-    printf "\n\n\n[ lab ] installing extension: $1..." >> $ERR
+    printf "[ lab ] install extension: $1..."
+    printf "\n\n\n[ lab ] install extension: $1..." >> $LOG
+    printf "\n\n\n[ lab ] install extension: $1..." >> $ERR
     if $JUPYTER labextension check $1 >> $LOG 2>> $ERR; then
         echo "already installed"
         return 0
@@ -173,7 +173,7 @@ labextension_install(){
 #-------------------------------------------------------------------------------
 
 if [ ! -d "$CONDAROOT" ]; then
-    printf "installing anaconda python... "
+    printf "installing anaconda python at $CONDAROOT... "
     cd $HOME
     curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output /tmp/miniconda.sh --silent
     bash /tmp/miniconda.sh -b -p $CONDAROOT >> $LOG 2>> $ERR
@@ -194,6 +194,7 @@ PYTHON="$CONDAROOT/bin/python"
 update_environment
 conda_install cython
 conda_install numpy
+conda_install scipy
 conda_install pandas
 conda_install tensorflow
 conda_install scikit-learn
@@ -270,6 +271,7 @@ create_environment py2 2.7
 update_environment
 conda_install cython
 conda_install numpy
+conda_install scipy
 conda_install matplotlib
 conda_install pillow
 conda_install scikit-learn
