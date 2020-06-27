@@ -165,6 +165,10 @@ super + R
 super + control + r
     cd $HOME; $TERMINAL -e sendmail
 
+# fix cursor repeat rate
+super + control + R
+    xset r rate 200 45
+
 # application launcher: run any program.
 super + s
     dmenu_run
