@@ -78,7 +78,7 @@ def open_desktop_file(args):
             for line in file:
                 if not line.startswith("Exec"):
                     continue
-                cmd = line[5:].strip()
+                cmd = re.sub("%.*$", "", line[5:].strip())
                 return Popen(cmd, shell=True)
 
 def list_desktop_files():
