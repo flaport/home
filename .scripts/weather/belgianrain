@@ -3,7 +3,7 @@
 import os
 import sys
 from textwrap import dedent
-from subprocess import Popen, call
+from subprocess import call
 from argparse import ArgumentParser
 from urllib.request import urlretrieve
 from datetime import datetime, timedelta
@@ -62,7 +62,7 @@ def parse_args(args):
 
 def view_images(paths):
     with open(os.devnull, "w") as file:
-        Popen(["sxiv", *paths])
+        call(["sxiv", *paths])
 
 
 if __name__ == "__main__":
