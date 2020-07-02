@@ -88,7 +88,8 @@ status(){
     idx=0
     rootname=""
     tempdelim="#DELIM#" # temporary delimiter, will be replaced by $DELIM later on. Defining a temporary delimiter is necessary as it ensures one can use a normal space as delimiter.
-    for widget in "$@"
+    $WIDGET$BUTTON && return # if widget name given
+    for widget in "$@" # if no widget or widget index given
     do
         out=$($widget)
         if [ -n "$out" ]; then
