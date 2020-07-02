@@ -49,19 +49,20 @@ SPACESHIP_PROMPT_ORDER=(
     # ember         # Ember.js section
     # kubectl       # Kubectl context section
     # terraform     # Terraform workspace section
-    exit_code     # Exit code section
+    # exit_code     # Exit code section
+    # conda         # conda virtualenv section
+    git           # Git section (git_branch + git_status)
+    conda         # conda virtualenv section
+    exec_time     # Execution time
     char          # Prompt character
 )
 
 SPACESHIP_RPROMPT_ORDER=(
-    # vi_mode       # Vi-mode indicator
-    git           # Git section (git_branch + git_status)
-    venv          # virtualenv section
-    conda         # conda virtualenv section
-    pyenv         # Pyenv section
-    jobs
-    exec_time     # Execution time
-    battery       # Battery level and status
+    # vi_mode     # Vi-mode indicator
+    # venv        # virtualenv section
+    # pyenv       # Pyenv section
+    # jobs
+    # battery     # Battery level and status
 )
 
 # PROMPT
@@ -127,8 +128,9 @@ spaceship_prompt() {
 spaceship_rprompt() {
   # Retrieve exit code of last command to use in exit_code
   RETVAL=$?
-
-  spaceship::compose_prompt $SPACESHIP_RPROMPT_ORDER
+  [ $RETVAL -ne 0 ] && printf "[$RETVAL]"
+  # dunno why, but somehow the prompt is broken if these characters are allowed:
+  spaceship::compose_prompt $SPACESHIP_RPROMPT_ORDER | sed 's///g' | sed 's/🅒//g'
 }
 
 # PS2
@@ -140,6 +142,7 @@ spaceship_ps2() {
   local char="${SPACESHIP_CHAR_SYMBOL_SECONDARY="$SPACESHIP_CHAR_SYMBOL"}"
   spaceship::section "$SPACESHIP_CHAR_COLOR_SECONDARY" "$char"
 }
+
 
 # ------------------------------------------------------------------------------
 # SETUP
