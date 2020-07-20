@@ -898,6 +898,9 @@ pacman_install jami-gnome
 yay_install warpinator
 # natifier: make 'native' electron apps given a url
 npm_install nativefier
+# dragon-drag-and-drop: drag files into applications (bound to 'd')
+yay_install dragon-drag-and-drop
+
 
 
 ## Images, video and media
