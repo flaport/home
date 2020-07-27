@@ -592,6 +592,8 @@ pacman_install xautolock
 pacman_install feh
 # rofi (dmenu alternative)
 # pacman_install rofi
+# xmenu (application launcher)
+yay_install xmenu
 # conky: a system monitor
 pacman_install conky
 # display manager
