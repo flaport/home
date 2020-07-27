@@ -902,6 +902,16 @@ yay_install warpinator
 npm_install nativefier
 # dragon-drag-and-drop: drag files into applications (bound to 'd')
 yay_install dragon-drag-and-drop
+# virtualbox dependency: linux headers
+pacman_install linux-headers
+# virtualbox dependency: linux headers [for linux lts kernel only!]
+# pacman_install linux-lts-headers
+# virtualbox: virtual machines
+pacman_install virtualbox
+# virtualbox drivers for non-linux kernels:
+pacman_install virtualbox-host-dkms
+# virtualbox drivers for linux kernels:
+# pacman_install virtualbox-host-modules-arch
 
 
 
