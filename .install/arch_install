@@ -855,7 +855,7 @@ pacman_install adobe-source-han-serif-cn-fonts
 # awesome terminal fonts: nice icons (lsd and dwm [my build] dependency):
 pacman_install awesome-terminal-fonts
 # hack nerd fonts: patched font with different nice icons (recommended for lsd):
-# yay_install nerd-fonts-hack
+yay_install nerd-fonts-hack
 # fira code nerd fonts: patched fira code font with nerd font glyphs (recommended for lsd):
 yay_install nerd-fonts-fira-code
 # Joypixels color emojis:

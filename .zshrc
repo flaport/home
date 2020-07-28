@@ -50,43 +50,67 @@ bindkey "^[h" up-line-or-history # alt + h
 bindkey "^[l" down-line-or-history # alt + l
 bindkey "^y" "" # noop
 
-# colored zsh prompt
+# prompt and cursor shape based on vi mode
 setopt prompt_subst
-
-# zsh theme
-sourcefile $HOME/.config/zsh/themes/spaceship.zsh
-
-# change prompt and change cursor shape for different vi modes.
-# cursor shape: normal: "█"; insert: "_"
-# prompt: normal: ""; insert: " "
+prompt(){
+    retval=$1
+    # is root user
+    [[ $UID == 0 ]] && echo -ne "%B%F{yellow}%{%G %}%f%b "
+    # conda info
+    if [[ ! -z $CONDA_DEFAULT_ENV ]]; then
+        echo -ne "%F{blue}%{%G %}%f" # 
+        [[ $CONDA_DEFAULT_ENV != base ]] && echo -ne "%F{blue}$CONDA_DEFAULT_ENV%f " || echo -ne "%F{blue}%f"
+    fi
+    # path
+    echo -ne "%F{cyan}%(4~|%-1~/…/%2~|%3~)/%f " # 
+    # git info
+    if git rev-parse --is-inside-work-tree 2> /dev/null | grep true &> /dev/null; then
+        branch_name=$(git branch --show-current | sed s/master//)
+        echo -ne "%F{magenta}%{%G%}$branch_name%f " #  
+    fi
+    # prompt symbol
+    [[ $retval == 0 ]] && echo -ne "%B%F{green}%{%G❭%}%f%b " || echo -ne "%B%F{red}%{%G❭%}%f%b " # ➜ ❭
+    [[ ! -z $CONDA_DEFAULT_ENV ]] && echo " " # necessary bc of the python ( ) symbol.
+}
+rprompt(){
+    retval=$1
+    # return value
+    [[ $retval != 0 ]] && echo -ne "%B%F{red}[$retval]%f%b "
+    # user@host
+    if [[ $UID == 0 ]]; then
+       echo -ne "%B%F{red}$USER%f%b"
+    else
+        [[ $UID != 1000 || -n $SSH_CLIENT ]] && echo -ne "%F{yellow}$USER%f"
+    fi
+    if [[ -n $SSH_CLIENT ]]; then
+       echo -ne "@%F{blue}$HOST%f"
+    else
+       echo -ne "    " # spacer
+    fi
+}
+PROMPT="$(prompt 0)"
+RPROMPT="$(rprompt 0)"
 NORMAL='\e[1 q\e\\' # █
 INSERT='\e[4 q\e\\' # _   - INSERT='\e[5 q\e\\' # |
-SPACESHIP_CHAR_SYMBOL_NORMAL="↔ "
-SPACESHIP_CHAR_SYMBOL_INSERT="➜ "
-# in neovim, don't change cursor shape as that doesn't work anyhow :(
 [ -z $NVIM_LISTEN_ADDRESS ] || INSERT=$NORMAL
-# initialize at startup:
 echo -ne $INSERT
-SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
 function zle-keymap-select { # gets run every time the mode changes
     if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
         echo -ne $NORMAL
-        SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_NORMAL
     elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ ${KEYMAP} = '' ]] || [[ $1 = 'beam' ]]; then
         echo -ne $INSERT
-        SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
     fi
     zle reset-prompt
 }
 function zle-line-init() { # gets run every new line
-    # vi mode
+    retval="$?" # should obviously always be first
     echo -ne $INSERT
-    SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
+    PROMPT="$(prompt $retval)"
+    RPROMPT="$(rprompt $retval)"
     zle reset-prompt
 }
 function preexec() { # gets run at new prompt.
     echo -ne $INSERT
-    SPACESHIP_CHAR_SYMBOL=$SPACESHIP_CHAR_SYMBOL_INSERT
 }
 zle -N zle-keymap-select
 zle -N zle-line-init
