@@ -258,10 +258,10 @@ appointments2(){
 
 # shows the current date
 calendar(){ # date
-    date +' %Y-%m-%d'
+    date +'  %Y-%m-%d'
 }
 calendar1(){ # mouse-button 1 action for date widget
-    notify-send "📅 $(date +'%A, %B %d')" "\n$(cal | sed "s/\<$(date +%-d)\>//g")"
+    notify-send "📅$(date +'%A, %B %d')" "\n$(cal | sed "s/\<$(date +%-d)\>//g")"
 }
 
 # -----------

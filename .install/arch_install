@@ -829,7 +829,7 @@ pacman_install gnu-free-fonts
 # gnome core fontset (partly blocked by my fontconfig):
 pacman_install gsfonts
 # a nice monospace font with ligatures (partly blocked by my fontconfig):
-pacman_install ttf-fira-code
+# pacman_install ttf-fira-code
 # bitstream vera: alternative to dejavu (not blocked by my fontconfig):
 pacman_install ttf-bitstream-vera
 # nice serif (Linux Libertine) and sans-serif (Linux Biolinum) fonts (not blocked by my fontconfig):
@@ -855,7 +855,9 @@ pacman_install adobe-source-han-serif-cn-fonts
 # awesome terminal fonts: nice icons (lsd and dwm [my build] dependency):
 pacman_install awesome-terminal-fonts
 # hack nerd fonts: patched font with different nice icons (recommended for lsd):
-yay_install nerd-fonts-hack
+# yay_install nerd-fonts-hack
+# fira code nerd fonts: patched fira code font with nerd font glyphs (recommended for lsd):
+yay_install nerd-fonts-fira-code
 # Joypixels color emojis:
 pacman_install ttf-joypixels
 # google color emojis (blocked by my fontconfig):
