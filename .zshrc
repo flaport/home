@@ -62,7 +62,7 @@ prompt(){
         [[ $CONDA_DEFAULT_ENV != base ]] && echo -ne "%F{blue}$CONDA_DEFAULT_ENV%f " || echo -ne "%F{blue}%f"
     fi
     # path
-    echo -ne "%F{cyan}%(4~|%-1~/…/%2~|%3~)/%f " # 
+    [[ $PWD == "/" ]] && echo -ne "%F{cyan}/%f " || echo -ne "%F{cyan}%(4~|%-1~/…/%2~|%3~)/%f " # 
     # git info
     if git rev-parse --is-inside-work-tree 2> /dev/null | grep true &> /dev/null; then
         branch_name=$(git branch --show-current | sed s/master//)
