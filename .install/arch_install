@@ -317,7 +317,6 @@ pacman_enable_archlinuxcn(){ # add archlinuxcn to the pacman repositories
     pacman_install archlinuxcn-keyring
 }
 
-
 pacman_enable_multilib(){
     printf "[pacman] enable multilib"
     printf "\n\n\n[pacman] enable multilib\n" >> $LOG
@@ -342,7 +341,7 @@ git_install https://aur.archlinux.org/yay.git
 # npm (node package manager)
 pacman_install npm
 # pip (python package manager)
-pacman_install npm
+pacman_install python-pip
 
 ## Terminal
 # eyecandy: patch pacman config to enable Color and ILoveCandy
@@ -354,7 +353,7 @@ pacman_install calcurse
 # search tool
 pacman_install grep
 # alternative search tool
-pacman_install ripgrep
+# pacman_install ripgrep
 # alternative search tool
 # pacman_install ack
 # fuzzy finder tool
@@ -372,11 +371,11 @@ pacman_install unrar
 # universal unarchiver (executable: unar)
 pacman_install unarchiver
 # rpm extraction shell script
-yay_install rpmextract
+# yay_install rpmextract
 # pv: progress bars on stdout
-pacman_install pv
+# pacman_install pv
 # battery information
-pacman_install acpi
+# pacman_install acpi
 # battery daemon (sleep on low power):
 # pacman_install acpid
 # systemctl_enable acpid
@@ -397,7 +396,7 @@ pacman_install texinfo
 # very useful alternative to man: show most common commands for executable
 pacman_install tldr
 # terminal music player: mplayer
-pacman_install mplayer
+# pacman_install mplayer
 # copying and pasting from the terminal
 pacman_install xclip
 # pdf conversion
@@ -427,11 +426,11 @@ pacman_install espeak
 # system information
 pacman_install neofetch
 # lightweight system information
-yay_install pfetch
+# yay_install pfetch
 # some more eye-candy (useless music visualizer):
 # yay_install cli-visualizer
 # large ascii letters
-pacman_install figlet
+# pacman_install figlet
 # task spooler: queue tasks
 # pacman_install task-spooler
 # netcat: for socket communication
@@ -443,7 +442,7 @@ pacman_install transmission-cli
 # transmission remote cli curses interface:
 yay_install tremc-git
 # transmission remote cli gtk interface
-pacman_install transmission-remote-gtk
+# pacman_install transmission-remote-gtk
 # add current user to the transmission group:
 echo $password | sudo -S usermod -a -G transmission $USER
 # make the system transmission config writable by current user:
@@ -461,7 +460,7 @@ npm_install eslint
 # ctags: recommended vim dependency for jump-to-tag functionality
 pacman_install ctags
 # scim: terminal spreadsheet viewer/editor
-# yay_install sc-im
+yay_install sc-im
 # wordgrinder: terminal word processor
 # yay_install wordgrinder
 # terminal internet search: google
@@ -475,7 +474,7 @@ pacman_install translate-shell
 # whois information
 pacman_install whois
 # cronie: cron job daemon
-pacman_install cronie
+# pacman_install cronie
 # (pixelated) terminal image previews
 yay_install viu
 # systemctl_enable cronie
@@ -558,11 +557,7 @@ systemctl_create x11vnc
 # view x11vnc session (executable: gvncviewer)
 # pacman_install gtk-vnc
 # view x11vnc session (executable: vncviewer) <-- better framerate
-# pacman_install tigervnc
-# create virtual display vor x11vnc (ONLY FOR INTEL):
-# printf "Section \"Device\"\n  Identifier \"VIRTUAL\"\n  Driver \"intel\"\n  Option \"VirtualHeads\" \"1\"\nEndSection" | sudo tee /etc/X11/xorg.conf.d/20-intel.conf
-# tool for connecting to screens belonging to other computers (install on both master and slave):
-# yay_install xorg-server-xdmx-dev
+pacman_install tigervnc
 # compositor (for transparent windows, blur, ...)
 # pacman_install xcompmgr
 # better compositor:
@@ -593,7 +588,7 @@ pacman_install feh
 # rofi (dmenu alternative)
 # pacman_install rofi
 # xmenu (application launcher)
-yay_install xmenu
+# yay_install xmenu
 # conky: a system monitor
 pacman_install conky
 # display manager
@@ -722,8 +717,8 @@ pacman_install remmina
 # add windows remote desktop protocol to remmina
 pacman_install freerdp
 # barrier: seemless mouse and keyboard sharing between computers (takes a while to build)
-# yay_install barrier
-# yay_install barrier-headless
+pacman_install barrier
+pacman_install barrier-headless
 
 
 ## Themes
@@ -779,7 +774,7 @@ systemctl_create syncthing
 pacman_install nextcloud-client
 # override the default general nextcloud settings
 [ -f $HOME/.config/Nextcloud/nextcloud.cfg ] || cp $HOME/.config/Nextcloud/nextcloud.general.cfg $HOME/.config/Nextcloud/nextcloud.cfg
-# nextcloud server:
+# nextcloud server (this needs quite a bit manual configuration):
 # pacman_install nextcloud
 # nginx: reverse proxy
 pacman_install nginx
@@ -813,7 +808,11 @@ pacman_install cups-pdf
 systemctl_enable org.cups.cupsd
 
 
-## Fonts (remove fontconfig block if a font is not showing up after installing)
+## Fonts
+# note: I block MANY fonts in ~/.config/fontconfig/conf.d/ I do this to have
+#       better control over which fonts are used on my system.  However, this
+#       means that installing a font might not automatically make it available.
+#       You might need to remove the fontconfig block.
 # fontconfig should already be installed, but just to be sure:
 pacman_install fontconfig
 # dejavu font: inkscape dependency (fully blocked by my fontconfig):
@@ -829,7 +828,9 @@ pacman_install gnu-free-fonts
 # gnome core fontset (partly blocked by my fontconfig):
 pacman_install gsfonts
 # a nice monospace font with ligatures (partly blocked by my fontconfig):
-# pacman_install ttf-fira-code
+pacman_install ttf-fira-code
+# a patched fira code font with nerd font glyphs (partly blocked by my fontconfig):
+yay_install nerd-fonts-fira-code
 # bitstream vera: alternative to dejavu (not blocked by my fontconfig):
 pacman_install ttf-bitstream-vera
 # nice serif (Linux Libertine) and sans-serif (Linux Biolinum) fonts (not blocked by my fontconfig):
@@ -856,8 +857,6 @@ pacman_install adobe-source-han-serif-cn-fonts
 pacman_install awesome-terminal-fonts
 # hack nerd fonts: patched font with different nice icons (recommended for lsd):
 yay_install nerd-fonts-hack
-# fira code nerd fonts: patched fira code font with nerd font glyphs (recommended for lsd):
-yay_install nerd-fonts-fira-code
 # Joypixels color emojis:
 pacman_install ttf-joypixels
 # google color emojis (blocked by my fontconfig):
@@ -895,11 +894,11 @@ pacman_install pavucontrol
 # bluetooth manager (run blueman-manager)
 pacman_install blueman
 # jami: blockchain-based secure chat app
-pacman_install jami-daemon
-pacman_install libjamiclient
-pacman_install jami-gnome
+# pacman_install jami-daemon
+# pacman_install libjamiclient
+# pacman_install jami-gnome
 # 'airdrop' for linux (only works between pcs):
-yay_install warpinator
+# yay_install warpinator
 # natifier: make 'native' electron apps given a url
 npm_install nativefier
 # dragon-drag-and-drop: drag files into applications (bound to 'd')
@@ -996,7 +995,7 @@ fi
 # Python programming language:
 pacman_install python
 # Scientific computing octave (Matlab alternative)
-pacman_install octave
+# pacman_install octave
 
 
 ## Browsers
@@ -1007,7 +1006,7 @@ yay_install waterfox-current-bin
 # patch firefox and waterfox to work with some legacy extensions (like vimfx)
 submodule_install legacyfox
 # chromium
-pacman_install chromium
+# pacman_install chromium
 # ungoogled-chromium: the name says it all (note: compiling takes HOURS!):
 # yay_install ungoogled-chromium
 # alternatively: install ungoogled-chromium from archlinuxcn repositories:
