@@ -11,6 +11,7 @@ import subprocess
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("address", help="web adress to open as webapp")
+    parser.add_argument("--fork", "-f", default=False, action="store_true", help="force new window")
     args = parser.parse_args()
     return args
 
@@ -50,8 +51,9 @@ def parse_natifier_name(parsed_address):
 
 def run_and_exit(command):
     print(" ".join(command))
+    call = subprocess.Popen if args.fork else subprocess.call
     with open(os.devnull, "w") as out:
-        subprocess.call(command, stdout=out, stderr=out)
+        call(command, stdout=out, stderr=out)
     exit()
 
 if __name__ == "__main__":
