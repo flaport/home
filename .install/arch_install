@@ -395,6 +395,8 @@ pacman_install man-pages
 pacman_install texinfo
 # very useful alternative to man: show most common commands for executable
 pacman_install tldr
+# unit conversions
+pacman_install units
 # terminal music player: mplayer
 # pacman_install mplayer
 # copying and pasting from the terminal
@@ -913,6 +915,8 @@ pacman_install virtualbox
 pacman_install virtualbox-host-dkms
 # virtualbox drivers for linux kernels:
 # pacman_install virtualbox-host-modules-arch
+# albert (dmenu alternative)
+# pacman_install albert
 
 
 
@@ -1174,6 +1178,8 @@ pacman_install python-coverage
 pacman_install python-beautifulsoup4
 # python mpv (castero dependency)
 yay_install python-mpv
+# pylatexenc: latex -> unicode conversion
+yay_install python-pylatexenc
 # castero: tui podcast client
 yay_install castero
 # jedi: linting and more (newer version than via pacman)
