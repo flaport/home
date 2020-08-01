@@ -587,6 +587,10 @@ echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RU
 pacman_install xautolock
 # wallpapers
 pacman_install feh
+# moving wallpapers
+# git clone https://github.com/glouw/paperview /tmp/paperview >$LOG 2>$ERR; cd /tmp/paperview >$LOG 2>$ERR; make >$LOG 2>$ERR; mv paperview ~/.local/bin >$LOG 2>$ERR; mv scenes ~/.local/share >$LOG 2>$ERR; cd ~; rm -rf /tmp/paperview
+# dependency for moving wallpapers
+# pacman_install sdl2
 # rofi (dmenu alternative)
 # pacman_install rofi
 # xmenu (application launcher)
