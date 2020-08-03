@@ -38,6 +38,9 @@ set wildmenu
 " tell vim where to find the ctags
 set tags=./.tags;,.tags;
 
+" enable mouse clicks
+set mouse=a
+
 " spell check, set default to en_us and turn it off by default
 setlocal spell spelllang=en_us
 setlocal spell!
