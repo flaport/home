@@ -47,7 +47,7 @@ start unclutter
 start xrdb "$HOME/.Xresources"
 
 # enable transparent windows
-start picom
+start picom --experimental-backends
 
 # conky dashboards (same one on three monitors)
 if ! pidof conky >/dev/null 2> /dev/null; then

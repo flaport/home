@@ -234,7 +234,7 @@ def update_picom(filename="~/.cache/xcs/picom.conf"):
     print(f"restarting picom with custom config file at '{filename}'...")
     subprocess.call(["killall", "picom"])
     time.sleep(0.1)
-    subprocess.Popen(["picom", "--config", filename])
+    subprocess.Popen(["picom", "--experimental-backends", "--config", filename])
 
 def update_qt5ct(filename="~/.config/qt5ct/qt5ct.conf"):
     filename = os.path.abspath(os.path.expanduser(filename))
