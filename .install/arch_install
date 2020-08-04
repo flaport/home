@@ -1190,6 +1190,8 @@ yay_install castero
 pip3_install jedi
 # neovim-remote needed for synctex
 pip3_install neovim-remote
+# dependency for neovim-remote:
+pacman_install python-psutil
 # image previews (overlays) in terminal (very difficult to configure)
 pacman_install python-xlib # install this BEFORE ueberzug
 pip3_install ueberzug
