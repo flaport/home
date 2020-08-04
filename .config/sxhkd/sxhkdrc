@@ -73,7 +73,7 @@ super + G
 super + h
     # handled by dwm
 
-# open current url in mpv (waterfox and chromium only)
+# open current url in mpv (firefox and chromium only)
 super + H
     open-in-mpv
 
@@ -203,9 +203,9 @@ super + v
 super + V
     # handled by dwm
 
-# start waterfox
+# start firefox
 super + w
-    waterfox --new-window
+    firefox --new-window
 
 # start chromium
 super + W
@@ -213,7 +213,7 @@ super + W
 
 # search the web with duckduckgo:
 super + control + w
-    q=$(printf "" | dmenu -p "🦆 ") && waterfox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && firefox --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + control + W
@@ -457,7 +457,7 @@ super + F8
 
 # search the web with duckduckgo:
 super + F9
-    q=$(printf "" | dmenu -p "🦆 ") && waterfox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && firefox --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + shift + F9
@@ -535,7 +535,7 @@ XF86AudioMedia
 
 # search the web with duckduckgo:
 XF86Search
-    q=$(printf "" | dmenu -p "🦆 ") && waterfox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && firefox --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 shift + XF86Search

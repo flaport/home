@@ -1008,9 +1008,9 @@ pacman_install python
 
 ## Browsers
 # waterfox (like firefox, but better defaults)
-yay_install waterfox-current-bin
+# yay_install waterfox-current-bin
 # firefox (like waterfox, but the original ;-) )
-# pacman_install firefox
+pacman_install firefox
 # patch firefox and waterfox to work with some legacy extensions (like vimfx)
 submodule_install legacyfox
 # chromium

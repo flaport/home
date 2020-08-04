@@ -32,7 +32,7 @@
 
 ## Environment variables
 #-------------------------------------------------------------------------------
-export BROWSER="waterfox"
+export BROWSER="firefox"
 export CC="gcc"
 export COLORTERM="truecolor"
 export CXX="g++"

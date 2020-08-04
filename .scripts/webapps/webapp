@@ -67,6 +67,14 @@ if __name__ == "__main__":
     if exists(nativefier_http):
         run_and_exit([nativefier_http])
 
+    try:
+        firefox_version = int(subprocess.check_output(["firefox", "--version"]).decode()[:-1].split(" ")[-1].split(".")[0])
+    except:
+        firefox_version = None
+
+    if firefox_version is not None and firefox_version > 71:
+        run_and_exit(["firefox", f"--new-window", f"--kiosk", address])
+
     if exists("chromium"):
         run_and_exit(["chromium", f"--app={address}"])
 
@@ -77,6 +85,6 @@ if __name__ == "__main__":
     if exists("waterfox"):
         run_and_exit(["waterfox", f"--new-window", address])
 
-    if exists("firefox"):
+    if firefox_version is not None:
         run_and_exit(["firefox", f"--new-window", address])
 
