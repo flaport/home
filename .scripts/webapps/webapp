@@ -72,8 +72,9 @@ if __name__ == "__main__":
     except:
         firefox_version = None
 
-    if firefox_version is not None and firefox_version > 71:
-        run_and_exit(["firefox", f"--new-window", f"--kiosk", address])
+    # when one kiosk is open all other windows will be opened as kiosk...
+    # if firefox_version is not None and firefox_version > 71:
+    #     run_and_exit(["firefox", f"--new-window", f"--kiosk", address])
 
     if exists("chromium"):
         run_and_exit(["chromium", f"--app={address}"])
