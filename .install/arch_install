@@ -484,7 +484,9 @@ yay_install viu
 pacman_install ncmpcpp
 # spotify-tui: terminal client for spotify (building this takes LONG)
 # yay_install spotify-tui
-# spotify daemon (dependency for spotify-tui, building this takes LONG)
+# spotify daemon (dependency for spotify-tui)
+pacman_install spotifyd
+# full spotify daemon (building this takes LONG)
 # yay_install spotifyd-full
 # playerctl: terminal client to control spotify, spotifyd, vlc, ...
 pacman_install playerctl
