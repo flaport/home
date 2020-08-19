@@ -120,7 +120,7 @@ text.latex.preamble :  # IMPROPER USE OF THIS FEATURE WILL LEAD TO LATEX FAILURE
                            # beware of package collisions: color, geometry, graphicx,
                            # type1cm, textcomp. Adobe Postscript (PSSNFS) font packages
                            # may also be loaded, depending on your font settings
-text.latex.preview : False
+# text.latex.preview : False
 
 text.hinting : auto   # May be one of the following:
                       #   'none': Perform no hinting
@@ -152,9 +152,7 @@ mathtext.bf  : serif:bold
 mathtext.sf  : sans\-serif
 mathtext.fontset : cm # Should be 'cm' (Computer Modern), 'stix',
                       # 'stixsans' or 'custom'
-mathtext.fallback_to_cm : True  # When True, use symbols from the Computer Modern
-                                # fonts when a symbol can not be found in one of
-                                # the custom math fonts.
+mathtext.fallback : cm
 
 mathtext.default : it # The default font to use for math.
                       # Can be any of the LaTeX font names, including
@@ -417,7 +415,6 @@ savefig.bbox        : standard # 'tight' or 'standard'.
                                # e.g. setting animation.writer to ffmpeg will not work,
                                # use ffmpeg_file instead
 savefig.pad_inches  : 0.1      # Padding to be used when bbox is set to 'tight'
-savefig.jpeg_quality: 95       # when a jpeg is saved, the default quality parameter.
 savefig.transparent : False    # setting that controls whether figures are saved with a
                                # transparent background by default
 savefig.orientation : portrait
@@ -465,7 +462,6 @@ keymap.quit : ctrl+w, cmd+w         # close the current figure
 keymap.grid : g                     # switching on/off a grid in current axes
 keymap.yscale : l                   # toggle scaling of y-axes ('log'/'linear')
 keymap.xscale : k, L                # toggle scaling of x-axes ('log'/'linear')
-keymap.all_axes : a                 # enable all axes
 
 ###ANIMATION settings
 animation.writer : ffmpeg         # MovieWriter 'backend' to use
@@ -476,9 +472,7 @@ animation.frame_format: png       # Controls frame format used by temp files
 animation.ffmpeg_path: ffmpeg     # Path to ffmpeg binary. Without full path
                                   # $PATH is searched
 animation.ffmpeg_args:            # Additional arguments to pass to ffmpeg
-animation.avconv_path: avconv     # Path to avconv binary. Without full path
                                   # $PATH is searched
-animation.avconv_args:            # Additional arguments to pass to avconv
 animation.convert_path: convert   # Path to ImageMagick's convert binary.
                                   # On Windows use the full path since convert
                                   # is also the name of a system tool.
