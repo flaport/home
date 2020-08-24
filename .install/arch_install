@@ -553,7 +553,7 @@ pacman_install xsettingsd
 # viewer with synctex support, and some custom plugins
 pacman_install xdotool
 # server access control for x
-pacman_install xhost
+pacman_install xorg-xhost
 # sharing and viewing x-sessions on other computers
 pacman_install x11vnc
 # create x11vnc systemd service:
