@@ -566,8 +566,11 @@ pacman_install tigervnc
 # pacman_install xcompmgr
 # better compositor:
 # pacman_install picom
-# fork of the better compositor (with rounded corners and dual kawase blur):
-yay_install picom-ibhagwan-git
+# picom fork (with dual kawase blur):
+yay_install picom-tryone-git
+# picom fork (with rounded corners and dual kawase blur):
+# yay_install picom-ibhagwan-git
+
 # libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
 # the reason it is installed this way is because this library replaces libxft
 # requiring you to answer yes on a [y/N] question...
