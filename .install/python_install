@@ -236,13 +236,13 @@ conda_install pynvim conda-forge
 conda_install octave_kernel conda-forge
 conda_install bayesian-optimization conda-forge
 conda_install ipyvolume conda-forge
+conda_install jupyterlab_code_formatter conda-forge
 
 pip_install notedown
 pip_install neovim-remote
 pip_install jupyterlab_git
 # pip_install jupyter_tensorboard
 # pip_install jupyterlab_latex
-# pip_install jupyterlab_code_formatter
 
 
 ## jupyterlab extensions
@@ -258,9 +258,9 @@ labextension_install jupyter-matplotlib
 labextension_install jupyter-threejs
 labextension_install jupyterlab-datawidgets
 labextension_install nbdime-jupyterlab
+labextension_install @ryantam626/jupyterlab_code_formatter
 # labextension_install @jupyterlab/latex
 # labextension_install jupyterlab_tensorboard
-# labextension_install @ryantam626/jupyterlab_code_formatter
 # labextension_install @lckr/jupyterlab_variableinspector
 
 

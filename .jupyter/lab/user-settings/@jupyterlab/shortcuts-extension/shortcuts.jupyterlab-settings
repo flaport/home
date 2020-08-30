@@ -225,10 +225,18 @@
             "selector": "[data-jp-kernel-user]:focus"
         },
         {
-            "command": "kernelmenu:shutdown",
+            "command": "runmenu:shutdown",
             "keys": [
                 "=",
                 "="
+            ],
+            "selector": "[data-jp-kernel-user]:focus"
+        },
+        {
+            "command": "notebook:run-all-above",
+            "keys": [
+                "\\",
+                "\\"
             ],
             "selector": "[data-jp-kernel-user]:focus"
         },
