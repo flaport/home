@@ -19,9 +19,6 @@ start(){
     pidof "$1" >/dev/null 2> /dev/null || "$@" >> "$HOME"/.local/share/dwm_autostart.log 2>> "$HOME"/.local/share/dwm_autostart.errors.log &
 }
 
-# enable x settings daemon
-start xsettingsd
-
 # enable hotkeys
 start sxhkd
 
@@ -46,8 +43,8 @@ start unclutter
 # update xrdb database
 start xrdb "$HOME/.Xresources"
 
-# enable transparent windows
-start picom --experimental-backends
+# enable x settings daemon
+start xsettingsd
 
 # conky dashboards (same one on three monitors)
 if ! pidof conky >/dev/null 2> /dev/null; then
@@ -106,3 +103,6 @@ done &
 
 # export possible screenlayouts and set default one with `arandr`
 sleep 1 && default_screenlayout >/dev/null 2> /dev/null &
+
+# enable transparent windows (doing this with 'start' doesn't work)
+sleep 2 && picom --experimental-backends >> "$HOME"/.local/share/dwm_autostart.log 2>> "$HOME"/.local/share/dwm_autostart.errors.log &
