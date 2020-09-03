@@ -217,6 +217,7 @@ conda_install isort
 conda_install yapf
 conda_install pytest
 conda_install twine
+conda_install suitesparse
 
 conda_install pytorch pytorch
 conda_install torchvision pytorch
@@ -246,6 +247,8 @@ pip_install kaggle
 pip_install notedown
 pip_install neovim-remote
 pip_install jupyterlab_git
+pip_install torch_sparse_solve
+pip_install torch_lfilter
 # pip_install jupyter_tensorboard
 # pip_install jupyterlab_latex
 
