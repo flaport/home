@@ -216,6 +216,7 @@ conda_install pyflakes
 conda_install isort
 conda_install yapf
 conda_install pytest
+conda_install twine
 
 conda_install pytorch pytorch
 conda_install torchvision pytorch
@@ -228,7 +229,10 @@ conda_install ipympl conda-forge
 conda_install ipykernel conda-forge
 conda_install ipywidgets conda-forge
 conda_install widgetsnbextension conda-forge
-
+conda_install voila conda-forge
+conda_install python-dotenv conda-forge
+conda_install nbstripout conda-forge
+conda_install pre-commit conda-forge
 conda_install ipdb conda-forge
 conda_install pygmo conda-forge
 conda_install nbdime conda-forge
@@ -238,6 +242,7 @@ conda_install bayesian-optimization conda-forge
 conda_install ipyvolume conda-forge
 conda_install jupyterlab_code_formatter conda-forge
 
+pip_install kaggle
 pip_install notedown
 pip_install neovim-remote
 pip_install jupyterlab_git
@@ -259,6 +264,7 @@ labextension_install jupyter-threejs
 labextension_install jupyterlab-datawidgets
 labextension_install nbdime-jupyterlab
 labextension_install @ryantam626/jupyterlab_code_formatter
+jupyter labextension install @jupyter-voila/jupyterlab-preview
 # labextension_install @jupyterlab/latex
 # labextension_install jupyterlab_tensorboard
 # labextension_install @lckr/jupyterlab_variableinspector
