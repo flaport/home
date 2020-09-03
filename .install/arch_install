@@ -598,6 +598,8 @@ pacman_install feh
 # pacman_install sdl2
 # rofi (dmenu alternative)
 # pacman_install rofi
+# albert (dmenu alternative)
+# pacman_install albert
 # xmenu (application launcher)
 # yay_install xmenu
 # conky: a system monitor
@@ -912,7 +914,7 @@ pacman_install blueman
 # yay_install warpinator
 # natifier: make 'native' electron apps given a url
 npm_install nativefier
-# dragon-drag-and-drop: drag files into applications (bound to 'd')
+# dragon-drag-and-drop: drag files into applications (aliassed to 'd')
 yay_install dragon-drag-and-drop
 # virtualbox dependency: linux headers
 pacman_install linux-headers
@@ -924,8 +926,8 @@ pacman_install virtualbox
 pacman_install virtualbox-host-dkms
 # virtualbox drivers for linux kernels:
 # pacman_install virtualbox-host-modules-arch
-# albert (dmenu alternative)
-# pacman_install albert
+# qemu: alternative virtual machine client
+pacman_install qemu
 
 
 
