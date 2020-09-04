@@ -7,7 +7,12 @@
 
 import os
 import sys
+from time import sleep
 from subprocess import call, check_output, CalledProcessError, Popen, PIPE
+
+# check if picom is running
+with open(os.devnull, "w") as file:
+    picom = not call(["pidof", "picom"], stdout=file, stderr=file)
 
 # get possible layouts
 layouts = os.listdir(os.path.expanduser("~/.scripts/screenlayout"))
@@ -28,6 +33,13 @@ try:
 except CalledProcessError:
     pass
 
+sleep(1)
+
 # reset keystroke repeat rate
 Popen(["xset", "r", "rate", "200", "45"])
+
+# restart picom if it was running
+with open(os.devnull, "w") as file:
+    if picom and call(["pidof", "picom"], stdout=file, stderr=file):
+        Popen(["picom", "--experimental-backends"], stdout=file, stderr=file)
 

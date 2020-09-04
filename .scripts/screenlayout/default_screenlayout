@@ -3,6 +3,7 @@
 ## Imports
 import os
 import stat
+from time import sleep
 from itertools import permutations
 from subprocess import call, check_output, Popen
 ## Sample command:
@@ -14,6 +15,9 @@ def tuple_to_res(lst):
     assert isinstance(lst, list)
     return "x".join(map(str, lst))
 
+# check if picom is running
+with open(os.devnull, "w") as file:
+    picom = not call(["pidof", "picom"], stdout=file, stderr=file)
 
 ## Build subcommands
 
@@ -135,6 +139,13 @@ if __name__ == "__main__":
 
     call(command)
 
+    sleep(2)
+
     # reset keystroke repeat rate
     Popen(["xset", "r", "rate", "200", "45"])
+
+    # restart picom if it was running
+    with open(os.devnull, "w") as file:
+        if picom and call(["pidof", "picom"], stdout=file, stderr=file):
+            Popen(["picom", "--experimental-backends"], stdout=file, stderr=file)
 
