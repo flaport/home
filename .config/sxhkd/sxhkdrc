@@ -131,7 +131,9 @@ super + control + n
 super + o
     # handled by dwm
 
+# make current window 'sticky'
 super + O
+    # handled by dwm
 
 # dmenu choose monitor layout
 super + p
