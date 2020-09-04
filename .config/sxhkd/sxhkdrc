@@ -217,7 +217,7 @@ super + control + w
 
 # search the web with google:
 super + control + W
-    q=$(printf "" | dmenu -p " ") && chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && firefox --new-window "https://google.com/search?q=$q"
 
 # shift focus to monitor X (dwm)
 super + x
@@ -461,7 +461,7 @@ super + F9
 
 # search the web with google:
 super + shift + F9
-    q=$(printf "" | dmenu -p " ") && chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && firefox --new-window "https://google.com/search?q=$q"
 
 super + F10
 
@@ -539,7 +539,7 @@ XF86Search
 
 # search the web with google:
 shift + XF86Search
-    q=$(printf "" | dmenu -p " ") && chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && firefox --new-window "https://google.com/search?q=$q"
 
 # new floating ipython shell
 XF86Calculator
