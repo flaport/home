@@ -1,5 +1,3 @@
-# standard library
-
 import os
 import sys
 import shutil
@@ -18,36 +16,22 @@ def nostdout():
         sys.stdout, sys.stderr = oldstdout, oldstderr
         file.close()
 
-# often-used libraries
-with nostdout(): # don't show mpl warning for python2
+with nostdout():
     try:
-        from pylab import *
+        import matplotlib.pyplot as plt
     except ImportError:
-        try:
-            from numpy import *
-        except ImportError:
-            pass
-        try:
-            from matplotlib.pyplot import *
-        except ImportError:
-            pass
-
-# wrap not-so often used libraries or libraries that take time to import so
-# it's easy to import them on the fly if necessary.
-
-def t():
-    global t
-    try:
-        import torch as t
-    except ImportError:
-        del t
         pass
 
-def torch():
-    global torch
     try:
         import torch
+        import torch.nn as nn
+        import torch.nn.functional as F
     except ImportError:
-        del t
         pass
 
+    try:
+        import numpy as np
+    except ImportError:
+        pass
+
+del nostdout
