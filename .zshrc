@@ -55,11 +55,11 @@ setopt prompt_subst
 prompt(){
     retval=$1
     # is root user
-    [[ $UID == 0 ]] && echo -ne "%B%F{yellow}%{%G %}%f%b "
+    [[ $UID == 0 ]] && echo -ne "%B%F{yellow}%{%G%} %f%b "
     # conda info
     if [[ ! -z $CONDA_DEFAULT_ENV ]]; then
-        echo -ne "%F{blue}%{%G %}%f" # 
-        [[ $CONDA_DEFAULT_ENV != base ]] && echo -ne "%F{blue}$CONDA_DEFAULT_ENV%f " || echo -ne "%F{blue}%f"
+        echo -ne "%F{blue}%{%G%} %f" # 
+        [[ $CONDA_DEFAULT_ENV != base ]] && echo -ne "%F{blue}$CONDA_DEFAULT_ENV%f "
     fi
     # path
     [[ $PWD == "/" ]] && echo -ne "%F{cyan}/%f " || echo -ne "%F{cyan}%(4~|%-1~/…/%2~|%3~)/%f " # 
@@ -70,7 +70,6 @@ prompt(){
     fi
     # prompt symbol
     [[ $retval == 0 ]] && echo -ne "%B%F{green}%{%G❭%}%f%b " || echo -ne "%B%F{red}%{%G❭%}%f%b " # ➜ ❭
-    [[ ! -z $CONDA_DEFAULT_ENV ]] && echo " " # necessary bc of the python ( ) symbol.
 }
 rprompt(){
     retval=$1
