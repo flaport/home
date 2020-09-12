@@ -152,7 +152,7 @@ mathtext.bf  : serif:bold
 mathtext.sf  : sans\-serif
 mathtext.fontset : cm # Should be 'cm' (Computer Modern), 'stix',
                       # 'stixsans' or 'custom'
-mathtext.fallback : cm
+# mathtext.fallback : cm
 
 mathtext.default : it # The default font to use for math.
                       # Can be any of the LaTeX font names, including
