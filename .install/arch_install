@@ -346,6 +346,8 @@ pacman_install python-pip
 ## Terminal
 # eyecandy: patch pacman config to enable Color and ILoveCandy
 echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf >> $LOG 2>> $ERR
+# disable tty tickets (giving sudo password in one terminal enables passwordless sudo in other terminals as well for 15 min)
+echo Defaults:$USER '!tty_tickets', timestamp_timeout=15 | sudo tee /etc/sudoers.d/tty_tickets
 # install scripts for bootstrapping new arch installations
 pacman_install arch-install-scripts
 # calcurse: a terminal calendar client
@@ -455,6 +457,7 @@ pacman_install lsd
 pacman_install neovim
 # link neovim to standard vim binary:
 link /usr/bin/nvim /usr/bin/vim
+link /usr/bin/nvim /usr/bin/vi
 # instant-markdown-d used for instant markdown visualization in vim
 npm_install instant-markdown-d
 # eslint: javascript linter (required by COC plugin for nvim)
