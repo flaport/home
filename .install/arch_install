@@ -1061,69 +1061,55 @@ pacman_install lynx
 
 
 ## Hardware acceleration
-# proprietary nvidia driver; also, for HWA: [VDPAU_DRIVER=nvidia]
-# pacman_install nvidia
-# useful utilities for nvidia driver:
-# pacman_install nvidia-utils
-# useful top command for nvidia GPU
-# pacman_install nvtop
-# nvidia settings manager
-# pacman_install nvidia-settings
-# enable nvidia at next reboot using optimus-manager
-# yay_install optimus-manager
-# optimus-manager --no-confirm --switch nvidia >> $LOG 2>> $ERR
-# echo $password | sudo -S cp $HOME/.install/config/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
-# deep learning (needs nvidia):
-# pacman_install cuda-toolkit
-# force 96 dpi in Xorg when nvidia driver is in use:
-# grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
-# open source nvidia-driver [nouveau] (better support by instlaling proprietary dependencies)
-# yay_install nouveau-fw
-# libva status and utilities
-# pacman_install libva-utils
-# pacman_install gstreamer-vaapi
-# vdpau status and utilities
-# pacman_install vdpauinfo
-# useful top command (intel_gpu_top) for intel integrated Graphics:
-# pacman_install intel-gpu-tools
-# pacman_install opencl-nvidia
-# install and enable libva intel driver [LIBVA_DRIVER_NAME=iHD]:
+
+# general settings:
+pacman_install libva-utils
+pacman_install gstreamer-vaapi
+pacman_install vdpauinfo
+pacman_install intel-gpu-tools
+
+# option 0: do nothing
+
+# option 1: intel integrated graphics (recommended on most systems):
 # pacman_install intel-media-driver
-# install and enable alternative libva intel driver [LIBVA_DRIVER_NAME=i965]:
-# pacman_install libva-intel-driver
-# install and enable alternative libva intel driver [LIBVA_DRIVER_NAME=i965]:
-# yay_install libva-intel-driver-g45-h264
-# install and enable libva nouveau driver [LIBVA_DRIVER_NAME=nouveau]:
-# pacman_install libva-mesa-driver
-# install and enable libva translation from vdpau [LIBVA_DRIVER_NAME=vdpau]
-# pacman_install libva-vdpau-driver
-# install and enable libva translation from vdpau [LIBVA_DRIVER_NAME=vdpau] (patched to work with chromium)
-# yay_install libva-vdpau-driver-chromium
-# install vdpau translation from libva [VDPAU_DRIVER=va_gl]:
 # pacman_install libvdpau-va-gl
-# install and enable vdpau nouveau driver [VDPAU_DRIVER=nouveau]:
-# pacman_install mesa-vdpau
-# override default libva & vdpau driver (option 0):
-# do nothing: write no environment variables (let system decide)
-# override default libva & vdpau driver (option 1: intel integrated graphics):
 # grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 # grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# override default libva & vdpau driver (option 2: older intel integrated graphics):
+
+# option 2: older intel integrated graphics:
+# pacman_install libva-intel-driver  # OR: yay_install libva-intel-driver-g45-h264
+# pacman_install libvdpau-va-gl
 # grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 # grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# override default libva & vdpau driver (option 3: nvidia proprietary driver):
+
+# option 3: nvidia proprietary drivers and acceleration:
+# pacman_install nvidia
+# pacman_install nvidia-utils
+# pacman_install nvtop
+# pacman_install nvidia-settings
+# pacman_install cuda-toolkit
+# pacman_install opencl-nvidia
+# yay_install optimus-manager
+# echo $password | sudo -S cp $HOME/.install/config/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
+# systemctl_enable optimus-manager
+# pacman_install libva-vdpau-driver # OR: yay_install libva-vdpau-driver-chromium
 # grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 # grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nvidia" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# override default libva & vdpau driver (option 4: nouveau open source driver):
+# force 96 dpi in Xorg when nvidia driver is in use:
+# grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
+
+# option 4: open source nvidia-driver [nouveau]
 # sudo pacman -Rns --noconfirm nvidia >> $LOG 2>> $ERR
+# pacman_install libva-mesa-driver
+# pacman_install mesa-vdpau
+# yay_install nouveau-fw
 # grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 # grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# chromium-vaapi: chromium with libva support (note: compiling takes HOURS!):
+
+# chromium-vaapi: chromium with libva support (does not work for option 0):
 # yay_install chromium-vaapi
 # alternatively: install chromium-vaapi from archlinuxcn repositories:
 # pacman_enable_archlinuxcn && pacman_install chromium-vaapi
-
-
 
 ## Resources
 # a collection of very nice wallpapers:
