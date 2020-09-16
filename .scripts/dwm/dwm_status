@@ -220,14 +220,14 @@ bluetooth2(){ # mouse-button 1 action for bluetooth widget
 
 # show time of current/next appointment.
 appointments(){
-    hm="$(grep "$(date +'%m/%d/%Y')" "$HOME/.calcurse/apts" | sed 's/[^@]*@\ \([0-9]*:[0-9]*\)[^@]*@[^|]*|/\1: /g' | grep "$(date +'%H')" | sed 's/^\([0-9][0-9]:[0-9][0-9]\).*/\1/g')"
+    hm="$(grep "$(date +'%m/%d/%Y')" "$HOME/.calcurse/apts" | sed 's/!/|/g' | sed 's/[^@]*@\ \([0-9]*:[0-9]*\)[^@]*@[^|]*|/\1: /g' | grep "$(date +'%H')" | sed 's/^\([0-9][0-9]:[0-9][0-9]\).*/\1/g')"
     if [ -z "$hm" ]; then
         next=$(calcurse --next | sed '/next.*/d')
         [ -z "$next" ] && return
-        H=$(date +'%H')
-        M=$(date +'%M')
-        h=$(echo "$next" | sed 's/^[^0-9]*\([0-9]*\).*/\1/g')
-        m=$(echo "$next" | sed 's/^[^:]*:[^0-9]*\([0-9]*\).*/\1/g')
+        H=$(date +'%H' | sed 's/^0//g')
+        M=$(date +'%M' | sed 's/^0//g')
+        h=$(echo "$next" | sed 's/^[^0-9]*\([0-9]*\).*/\1/g' | sed 's/^0//g')
+        m=$(echo "$next" | sed 's/^[^:]*:[^0-9]*\([0-9]*\).*/\1/g' | sed 's/^0//g')
         m=$((M+m))
         h=$((H+h))
         while [ "$m" -ge 60 ]; do
@@ -244,7 +244,7 @@ appointments(){
     echo " $hm"
 }
 appointments1(){
-    apt1="$(grep "$(date +'%m/%d/%Y')" "$HOME/.calcurse/apts" | sed 's/[^@]*@\ \([0-9]*:[0-9]*\)[^@]*@[^|]*|/\1: /g' | grep "$(date +'%H')" | sed 's/^[0-9][0-9]:[0-9][0-9]:\ //g')"
+    apt1="$(grep "$(date +'%m/%d/%Y')" "$HOME/.calcurse/apts" | sed 's/!/|/g' | sed 's/[^@]*@\ \([0-9]*:[0-9]*\)[^@]*@[^|]*|/\1: /g' | grep "$(date +'%H')" | sed 's/^[0-9][0-9]:[0-9][0-9]:\ //g')"
     apt2="$(calcurse --next | sed '/next.*/d')"
     echo "$apt2" | grep "$apt1" > /dev/null 2>/dev/null && apt1=""
     [ -z "$apt1" ] || apt1="   [ now ] $apt1\n"
