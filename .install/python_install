@@ -195,7 +195,9 @@ update_environment
 conda_install cython
 conda_install numpy
 conda_install scipy
+conda_install sympy
 conda_install pandas
+conda_install pytables
 conda_install tensorflow
 conda_install scikit-learn
 conda_install matplotlib
