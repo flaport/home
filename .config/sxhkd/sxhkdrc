@@ -121,11 +121,7 @@ super + n
 
 # open vifm file browser
 super + N
-    st -e vifm
-
-# switch between nemo and st (experimental)
-super + control + n
-    switch-nemo-st
+    alacritty -e vifm
 
 # activate all dwm tags to which selected window belongs
 super + o

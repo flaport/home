@@ -78,7 +78,7 @@ def middle_click():
     return call(["xdotool", "click", "2"])
 
 def paste(windowname, content):
-    if pyautogui is not None and not windowname in {"st", "xterm", "urxvt"}:
+    if pyautogui is not None and not windowname in {"st", "xterm", "urxvt", "Alacritty"}:
         pyautogui.hotkey("ctrl", "v")
     elif has_xdotool:
         middle_click()

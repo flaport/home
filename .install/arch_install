@@ -350,6 +350,8 @@ echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf
 echo Defaults:$USER '!tty_tickets', timestamp_timeout=15 | sudo tee /etc/sudoers.d/tty_tickets
 # install scripts for bootstrapping new arch installations
 pacman_install arch-install-scripts
+# alacritty: arguably the best terminal
+pacman_install alacritty
 # calcurse: a terminal calendar client
 pacman_install calcurse
 # search tool
