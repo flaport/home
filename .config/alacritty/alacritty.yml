@@ -56,7 +56,7 @@ colors:
     background: '#3B4252'
     foreground: '#ECEFF4'
     dim_foreground: '#4C566A'
-    bright_foreground: '#E5E9F0'
+    bright_foreground: '#FFFFFF'
   normal:
     black: '#3B4252'
     red: '#BF616A'
@@ -111,16 +111,36 @@ mouse_bindings:
   - { mouse: Middle, action: PasteSelection }
 
 key_bindings:
-  - { key: Paste,                                action: Paste          }
-  - { key: Copy,                                 action: Copy           }
-  - { key: L,         mods: Control,             action: ClearLogNotice }
-  - { key: L,         mods: Control, mode: ~Vi,  chars: "\x0c"          }
-  - { key: PageUp,    mods: Shift,   mode: ~Alt, action: ScrollPageUp,  }
-  - { key: PageDown,  mods: Shift,   mode: ~Alt, action: ScrollPageDown }
-  - { key: Home,      mods: Shift,   mode: ~Alt, action: ScrollToTop,   }
-  - { key: End,       mods: Shift,   mode: ~Alt, action: ScrollToBottom }
+  - { key: J,        mods: Alt,                     action: ScrollLineDown     }
+  - { key: K,        mods: Alt,                     action: ScrollLineUp       }
+  - { key: D,        mods: Alt,                     action: ScrollHalfPageDown }
+  - { key: U,        mods: Alt,                     action: ScrollHalfPageUp   }
+  - { key: V,        mods: Alt,                     action: Paste              }
+  - { key: V,        mods: Control|Shift,           action: Paste              }
+  - { key: Paste,                                   action: Paste              }
+  - { key: C,        mods: Alt,                     action: Copy               }
+  - { key: C,        mods: Control|Shift,           action: Copy               }
+  - { key: Copy,                                    action: Copy               }
+  - { key: P,        mods: Alt,                     action: PasteSelection     }
+  - { key: Insert,   mods: Shift,                   action: PasteSelection     }
+  - { key: Key0,     mods: Control,                 action: ResetFontSize      }
+  - { key: Equals,   mods: Control,                 action: IncreaseFontSize   }
+  - { key: Add,      mods: Control,                 action: IncreaseFontSize   }
+  - { key: Add,      mods: Control,                 action: IncreaseFontSize   }
+  - { key: I,        mods: Alt,                     action: IncreaseFontSize   }
+  - { key: Minus,    mods: Control,                 action: DecreaseFontSize   }
+  - { key: O,        mods: Alt,                     action: DecreaseFontSize   }
+  - { key: F,        mods: Control|Shift,           action: SearchForward      }
+  - { key: B,        mods: Control|Shift,           action: SearchBackward     }
+  - { key: L,        mods: Control,                 action: ClearLogNotice     }
+  - { key: L,        mods: Control, mode: ~Vi,      chars: "\x0c"              }
+  - { key: PageUp,   mods: Shift,   mode: ~Alt,     action: ScrollPageUp,      }
+  - { key: PageDown, mods: Shift,   mode: ~Alt,     action: ScrollPageDown     }
+  - { key: Home,     mods: Shift,   mode: ~Alt,     action: ScrollToTop,       }
+  - { key: End,      mods: Shift,   mode: ~Alt,     action: ScrollToBottom     }
+  - { key: Space,    mods: Shift|Control,           action: ToggleViMode          }
   - { key: Space,  mods: Shift|Control, mode: Vi, action: ScrollToBottom          }
-  - { key: Space,  mods: Shift|Control,           action: ToggleViMode            }
+  - { key: C,      mods: Control|Shift, mode: Vi, action: ClearSelection          }
   - { key: Escape,                      mode: Vi, action: ClearSelection          }
   - { key: I,                           mode: Vi, action: ScrollToBottom          }
   - { key: I,                           mode: Vi, action: ToggleViMode            }
@@ -165,17 +185,7 @@ key_bindings:
   - { key: Slash,  mods: Shift,         mode: Vi, action: SearchBackward          }
   - { key: N,                           mode: Vi, action: SearchNext              }
   - { key: N,      mods: Shift,         mode: Vi, action: SearchPrevious          }
-  - { key: V,        mods: Control|Shift,           action: Paste            }
-  - { key: C,        mods: Control|Shift,           action: Copy             }
-  - { key: F,        mods: Control|Shift,           action: SearchForward    }
-  - { key: B,        mods: Control|Shift,           action: SearchBackward   }
-  - { key: C,        mods: Control|Shift, mode: Vi, action: ClearSelection   }
-  - { key: Insert,   mods: Shift,                   action: PasteSelection   }
-  - { key: Key0,     mods: Control,                 action: ResetFontSize    }
-  - { key: Equals,   mods: Control,                 action: IncreaseFontSize }
-  - { key: Add,      mods: Control,                 action: IncreaseFontSize }
-  - { key: Subtract, mods: Control,                 action: DecreaseFontSize }
-  - { key: Minus,    mods: Control,                 action: DecreaseFontSize }
+
 
 debug:
   render_timer: false
