@@ -87,7 +87,7 @@ colors:
 
 bell:
   animation: EaseOutExpo
-  duration: 10
+  duration: 0
   color: '#ffffff'
   command: None
 
