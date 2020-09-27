@@ -32,6 +32,7 @@
 
 ## Environment variables
 #-------------------------------------------------------------------------------
+
 export BROWSER="firefox"
 export CC="gcc"
 export COLORTERM="truecolor"
@@ -51,7 +52,8 @@ export READER="zathura"
 export SAVEHIST=100000
 export SUDO_ASKPASS="$HOME/.local/bin/askpass"
 export SUDO_ASKUSERPASS="$HOME/.local/bin/askuserpass"
-export TERMINAL="st"
+export TERMINAL="alacritty"
+
 
 # Python
 #-------------------------------------------------------------------------------
