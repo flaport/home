@@ -5,12 +5,13 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
+
 ## General settings
 #-------------------------------------------------------------------------------
 
 # source function (ignore file if file does not exist)
 function sourcefile {
-    [[ -f $1 ]] && source $1
+    [[ -f "$1" ]] && source "$1"
 }
 
 # enable colors
@@ -33,17 +34,6 @@ bindkey -v '^?' backward-delete-char
 # vi mode
 bindkey -v
 export KEYTIMEOUT=1
-
-# colored man pages:
-man() {
-    LESS_TERMCAP_md=$'\e[01;31m' \
-    LESS_TERMCAP_me=$'\e[0m' \
-    LESS_TERMCAP_se=$'\e[0m' \
-    LESS_TERMCAP_so=$'\e[01;44;33m' \
-    LESS_TERMCAP_ue=$'\e[0m' \
-    LESS_TERMCAP_us=$'\e[01;32m' \
-    command man "$@"
-}
 
 # go backward and forward in history (equivalent to up/down arrow)
 bindkey "^[h" up-line-or-history # alt + h
@@ -114,8 +104,10 @@ function preexec() { # gets run at new prompt.
 zle -N zle-keymap-select
 zle -N zle-line-init
 
+
 ## Aliases
 #-------------------------------------------------------------------------------
+
 alias :q=exit
 alias :x=exit
 alias :e=$EDITOR
@@ -126,17 +118,25 @@ alias base="conda activate base"
 alias system="conda deactivate && conda deactivate"
 alias history="history 1"
 alias pip="pip --no-cache-dir"
-
-
-## Python
-#-------------------------------------------------------------------------------
-
-# enable conda commands but do not activate conda
-sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
+man() { # colored man pages:
+    LESS_TERMCAP_md=$'\e[01;31m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[01;44;33m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[01;32m' \
+    command man "$@"
+}
 
 
 ## Extensions
 #-------------------------------------------------------------------------------
+
+# conda (scientific python distribution and environments)
+sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
+
+# travis (continuous integration)
+sourcefile "$HOME/.travis/travis.sh"
 
 # broot (fuzzy file finder/jumper/...)
 sourcefile $HOME/.config/broot/launcher/bash/br
@@ -157,4 +157,3 @@ bindkey '^n' autosuggest-accept #-execute
 
 # Load zsh-syntax-highlighting; should be last.
 sourcefile $HOME/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-

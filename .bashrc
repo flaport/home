@@ -9,13 +9,13 @@
 #-------------------------------------------------------------------------------
 # I switched to zsh, so this file will not run except when running bash explicitly
 
-# source function (ignore file if file does not exist)
-function sourcefile {
-    [[ -f $1 ]] && source $1
-}
-
 ## General settings
 #-------------------------------------------------------------------------------
+
+# source function (ignore file if file does not exist)
+function sourcefile {
+    [[ -f "$1" ]] && source "$1"
+}
 
 # disable ctrl-s and ctrl-q
 stty -ixon
@@ -26,19 +26,10 @@ prompt_command() {
 }
 PROMPT_COMMAND=prompt_command
 
-# colored man pages:
-man() {
-    LESS_TERMCAP_md=$'\e[01;31m' \
-    LESS_TERMCAP_me=$'\e[0m' \
-    LESS_TERMCAP_se=$'\e[0m' \
-    LESS_TERMCAP_so=$'\e[01;44;33m' \
-    LESS_TERMCAP_ue=$'\e[0m' \
-    LESS_TERMCAP_us=$'\e[01;32m' \
-    command man "$@"
-}
 
 ## Aliases
 #-------------------------------------------------------------------------------
+
 alias :q=exit
 alias :x=exit
 alias :e=$EDITOR
@@ -48,17 +39,25 @@ alias grep="grep --color=auto"
 alias base="conda activate base"
 alias system="conda deactivate && conda deactivate"
 alias pip="pip --no-cache-dir"
-
-
-## Python
-#-------------------------------------------------------------------------------
-
-# enable conda commands but do not activate conda
-sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
+man() { # colored man pages:
+    LESS_TERMCAP_md=$'\e[01;31m' \
+        LESS_TERMCAP_me=$'\e[0m' \
+        LESS_TERMCAP_se=$'\e[0m' \
+        LESS_TERMCAP_so=$'\e[01;44;33m' \
+        LESS_TERMCAP_ue=$'\e[0m' \
+        LESS_TERMCAP_us=$'\e[01;32m' \
+        command man "$@"
+    }
 
 
 ## Extensions
 #-------------------------------------------------------------------------------
+
+# conda (scientific python distribution and environments)
+sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
+
+# travis (continuous integration)
+sourcefile "$HOME/.travis/travis.sh"
 
 # broot (fuzzy file finder/jumper/...)
 sourcefile $HOME/.config/broot/launcher/bash/br
@@ -66,6 +65,8 @@ sourcefile $HOME/.config/broot/launcher/bash/br
 # autojump
 sourcefile $HOME/.config/autojump/share/autojump/autojump.bash
 
+# my custom autojump commands (slightly different from default behavior):
+sourcefile $HOME/.scripts/autojump/autojump-improved.zsh
+
 # stderr in red:
 [ -f $HOME/.config/stderred/build/libstderred.so ] && export LD_PRELOAD="$HOME/.config/stderred/build/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
-
