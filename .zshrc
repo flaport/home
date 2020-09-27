@@ -56,7 +56,11 @@ prompt(){
     # git info
     if git rev-parse --is-inside-work-tree 2> /dev/null | grep true &> /dev/null; then
         branch_name=$(git branch --show-current | sed s/master//)
-        echo -ne "%F{magenta}%{%G%}$branch_name%f " #  
+        dirty=" "
+        if git status --porcelain 2> /dev/null | grep "^A\|^M\|^ M\|^??" > /dev/null 2> /dev/null; then
+            dirty="*"
+        fi
+        echo -ne "%F{magenta}%{%G%}$branch_name$dirty%f" #  
     fi
     # prompt symbol
     [[ $retval == 0 ]] && echo -ne "%B%F{green}%{%G❭%}%f%b " || echo -ne "%B%F{red}%{%G❭%}%f%b " # ➜ ❭
