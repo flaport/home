@@ -16,10 +16,9 @@
 #       or install additional packages by adding them to the list below.
 
 
-## Checks
+# Pre-installation checks
 #-------------------------------------------------------------------------------
 
-## pre-installation checks
 if [ "$USER" == root ]; then
     echo
     echo "'arch_install' should NOT be run as root, nor should it be run with sudo."
@@ -34,14 +33,14 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
 fi
 
 
-## Parse arguments
+# Parse arguments
 #-------------------------------------------------------------------------------
 
 [ ! -z "$2" ] && >&2 echo usage: arch_install [--force] && exit 1
 [ ! -z "$1" ] && [  "$1" = "--force" ] && FORCE=1 || FORCE=0
 
 
-## Logging
+# Logging
 #-------------------------------------------------------------------------------
 
 mkdir -p $HOME/.local/share
@@ -51,7 +50,7 @@ printf "ARCH PACKAGE INSTALL\n\n\n" > $LOG
 printf "ARCH PACKAGE INSTALL\n\n\n" > $ERR
 
 
-## User input
+# User input
 #-------------------------------------------------------------------------------
 
 # Ask for password, this will be used for all the sudo calls.:
@@ -64,7 +63,7 @@ if [ $? -ne 0 ]; then
 fi
 
 
-## Update
+# Update
 #-------------------------------------------------------------------------------
 
 ## Update arch
@@ -74,7 +73,7 @@ printf "\n\nUpdating Arch Linux...\n\n" >> $ERR
 echo $password | sudo -S pacman -Syu --noconfirm >> $LOG 2>> $ERR
 
 
-## Custom installation functions
+# Custom installation functions
 #-------------------------------------------------------------------------------
 
 echo_success(){
@@ -327,292 +326,309 @@ pacman_enable_multilib(){
 }
 
 
-## Install and configure packages
+# Build tools
 #-------------------------------------------------------------------------------
 
-## build tools
 pacman_install git
 pacman_install make
 pacman_install cmake
 
-## alternative package managers
-# yay (AUR helper)
+
+# Alternative package managers
+#-------------------------------------------------------------------------------
+
+## yay (AUR helper)
 git_install https://aur.archlinux.org/yay.git
-# npm (node package manager)
+## npm (node package manager)
 pacman_install npm
-# pip (python package manager)
+#pip (python package manager)
 pacman_install python-pip
 
-## Terminal
-# eyecandy: patch pacman config to enable Color and ILoveCandy
+
+# Terminal: tools and TUIs
+#-------------------------------------------------------------------------------
+
+## eyecandy: patch pacman config to enable Color and ILoveCandy
 echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf >> $LOG 2>> $ERR
-# disable tty tickets (giving sudo password in one terminal enables passwordless sudo in other terminals as well for 15 min)
+## disable tty tickets (giving sudo password in one terminal enables passwordless sudo in other terminals as well for 15 min)
 echo Defaults:$USER '!tty_tickets', timestamp_timeout=15 | sudo tee /etc/sudoers.d/tty_tickets
-# install scripts for bootstrapping new arch installations
+## install scripts for bootstrapping new arch installations
 pacman_install arch-install-scripts
-# alacritty: arguably the best terminal
+## alacritty: arguably the best terminal
 pacman_install alacritty
-# calcurse: a terminal calendar client
+## calcurse: a terminal calendar client
 pacman_install calcurse
-# search tool
+## search tool
 pacman_install grep
-# alternative search tool
-# pacman_install ripgrep
-# alternative search tool
-# pacman_install ack
-# fuzzy finder tool
+## alternative search tool
+#pacman_install ripgrep
+## alternative search tool
+#pacman_install ack
+## fuzzy finder tool
 pacman_install fzf
-# rsync: safe and secure copy & backup
+## rsync: safe and secure copy & backup
 pacman_install rsync
-# atool gives information about archives
-# pacman_install atool
-# zip
+## atool gives information about archives
+#pacman_install atool
+## zip
 pacman_install zip
-# unzip
+## unzip
 pacman_install unzip
-# unrar
+## unrar
 pacman_install unrar
-# universal unarchiver (executable: unar)
+## universal unarchiver (executable: unar)
 pacman_install unarchiver
-# rpm extraction shell script
-# yay_install rpmextract
-# pv: progress bars on stdout
-# pacman_install pv
-# battery information
-# pacman_install acpi
-# battery daemon (sleep on low power):
-# pacman_install acpid
-# systemctl_enable acpid
-# vifm: terminal file browser
+## rpm extraction shell script
+#yay_install rpmextract
+## pv: progress bars on stdout
+#pacman_install pv
+## battery information
+#pacman_install acpi
+## battery daemon (sleep on low power):
+#pacman_install acpid
+#systemctl_enable acpid
+## vifm: terminal file browser
 pacman_install vifm
-# dos2unix: tool to change carriage return (^M | \r) into nomal return (\n)
-# pacman_install dos2unix
-# terminal multiplexer:
+## dos2unix: tool to change carriage return (^M | \r) into nomal return (\n)
+#pacman_install dos2unix
+## terminal multiplexer:
 pacman_install tmux
-# run tmux as a systemd service:
+## run tmux as a systemd service:
 systemctl_create tmux
 systemctl_enable tmux
-# program manuals
+## program manuals
 pacman_install man
 pacman_install man-db
 pacman_install man-pages
 pacman_install texinfo
-# very useful alternative to man: show most common commands for executable
+## very useful alternative to man: show most common commands for executable
 pacman_install tldr
-# unit conversions
+## unit conversions
 pacman_install units
-# terminal music player: mplayer
-# pacman_install mplayer
-# copying and pasting from the terminal
+## terminal music player: mplayer
+#pacman_install mplayer
+## copying and pasting from the terminal
 pacman_install xclip
-# pdf conversion
+## pdf conversion
 pacman_install poppler
-# video to thumbnail conversion
+## video to thumbnail conversion
 pacman_install ffmpegthumbnailer
-# audio thumbnails with ffmpeg (heh?)
+## audio thumbnails with ffmpeg (heh?)
 yay_install ffmpegthumbnailer-mp3
-# epub thumbnailer
+## epub thumbnailer
 yay_install epub-thumbnailer-git
-# font previewer
+## font previewer
 yay_install fontpreview-git
-# check if bash script is posix complient (needs haskell -> 250mb -> disabled by default)
-# pacman_install shellcheck
-# highlight: to highlight code in the terminal (nice `cat` alternative, used in my custom scripts)
+## check if bash script is posix complient (needs haskell -> 250mb -> disabled by default)
+#pacman_install shellcheck
+## shell formatter
+#pacman_install shfmt
+## highlight: to highlight code in the terminal (nice `cat` alternative, used in my custom scripts)
 pacman_install highlight
-# mediainfo: show audio and video information in terminal
+## mediainfo: show audio and video information in terminal
 pacman_install mediainfo
-# process information
+## process information
 pacman_install htop
-# termdown: terminal timer/stopwatch
+## termdown: terminal timer/stopwatch
 pacman_install termdown
-# espeak: text to speach engine (used in my custom termdown script)
+## espeak: text to speach engine (used in my custom termdown script)
 pacman_install espeak
-# aplay: simple sound player based on alsa
-# yay_install alsaplayer-git
-# system information
+## aplay: simple sound player based on alsa
+#yay_install alsaplayer-git
+## system information
 pacman_install neofetch
-# lightweight system information
-# yay_install pfetch
-# some more eye-candy (useless music visualizer):
-# yay_install cli-visualizer
-# large ascii letters
-# pacman_install figlet
-# task spooler: queue tasks
-# pacman_install task-spooler
-# netcat: for socket communication
-# pacman_install gnu-netcat
-# sockets (needed for custom mpvcontrol script)
+## lightweight system information
+#yay_install pfetch
+## some more eye-candy (useless music visualizer):
+#yay_install cli-visualizer
+## large ascii letters
+#pacman_install figlet
+## task spooler: queue tasks
+#pacman_install task-spooler
+## netcat: for socket communication
+#pacman_install gnu-netcat
+## sockets (needed for custom mpvcontrol script)
 pacman_install socat
-# torrents: transmission cli
+## torrents: transmission cli
 pacman_install transmission-cli
-# transmission remote cli curses interface:
+## transmission remote cli curses interface:
 yay_install tremc-git
-# transmission remote cli gtk interface
-# pacman_install transmission-remote-gtk
-# add current user to the transmission group:
+## transmission remote cli gtk interface
+#pacman_install transmission-remote-gtk
+## add current user to the transmission group:
 echo $password | sudo -S usermod -a -G transmission $USER
-# make the system transmission config writable by current user:
+## make the system transmission config writable by current user:
 echo $password | sudo -S chmod -R g+rw /var/lib/transmission
-# a more beautiful ls command (I have ls remapped to lsd when no arguments given)
+## a more beautiful ls command (I have ls remapped to lsd when no arguments given)
 pacman_install lsd
-# vim / neovim: terminal text editor
+## vim / neovim: terminal text editor
 pacman_install neovim
-# link neovim to standard vim binary:
+## link neovim to standard vim binary:
 link /usr/bin/nvim /usr/bin/vim
 link /usr/bin/nvim /usr/bin/vi
-# instant-markdown-d used for instant markdown visualization in vim
+## instant-markdown-d used for instant markdown visualization in vim
 npm_install instant-markdown-d
-# eslint: javascript linter (required by COC plugin for nvim)
+## eslint: javascript linter (required by COC plugin for nvim)
 npm_install eslint
-# ctags: recommended vim dependency for jump-to-tag functionality
+## ctags: recommended vim dependency for jump-to-tag functionality
 pacman_install ctags
-# scim: terminal spreadsheet viewer/editor
+## scim: terminal spreadsheet viewer/editor
 yay_install sc-im
-# wordgrinder: terminal word processor
-# yay_install wordgrinder
-# terminal internet search: google
-# yay_install googler
-# terminal internet search: duckduckgo
-# yay_install ddgr
-# newsboat: RSS reader
+## wordgrinder: terminal word processor
+#yay_install wordgrinder
+## terminal internet search: google
+#yay_install googler
+## terminal internet search: duckduckgo
+#yay_install ddgr
+## newsboat: RSS reader
 pacman_install newsboat
-# trans: command line translation engine
+## trans: command line translation engine
 pacman_install translate-shell
-# whois information
+## whois information
 pacman_install whois
-# cronie: cron job daemon
-# pacman_install cronie
-# (pixelated) terminal image previews
+## cronie: cron job daemon
+#pacman_install cronie
+## (pixelated) terminal image previews
 yay_install viu
-# systemctl_enable cronie
-# ncmpcpp: terminal music client
+#systemctl_enable cronie
+## ncmpcpp: terminal music client
 pacman_install ncmpcpp
-# spotify-tui: terminal client for spotify (building this takes LONG)
-# yay_install spotify-tui
-# spotify daemon (dependency for spotify-tui)
+## spotify-tui: terminal client for spotify (building this takes LONG)
+#yay_install spotify-tui
+## spotify daemon (dependency for spotify-tui)
 pacman_install spotifyd
-# full spotify daemon (building this takes LONG)
-# yay_install spotifyd-full
-# playerctl: terminal client to control spotify, spotifyd, vlc, ...
+## full spotify daemon (building this takes LONG)
+#yay_install spotifyd-full
+## playerctl: terminal client to control spotify, spotifyd, vlc, ...
 pacman_install playerctl
-# media daemon
-# pacman_install mpd
-# systemctl_enable mpd
-# media control
-# pacman_install mpc
+## media daemon
+#pacman_install mpd
+#systemctl_enable mpd
+## media control
+#pacman_install mpc
+## service that checks number of packages that need updating:
+systemctl_create pacmanquery
+systemctl_enable pacmanquery
 
-## Drive and file system drivers
-# mount cifs parititions
+# Drive and file system drivers
+#-------------------------------------------------------------------------------
+
+## mount cifs parititions
 pacman_install cifs-utils
-# dosfstools: support for dos (windows) - like filesystems
+## dosfstools: support for dos (windows) - like filesystems
 pacman_install dosfstools
-# exfat-utils: access fat-drives
+## exfat-utils: access fat-drives
 pacman_install exfat-utils
-# ntfs-3g: access NTFS network drives
+## ntfs-3g: access NTFS network drives
 pacman_install ntfs-3g
-# samba shares = network volumes
+## samba shares = network volumes
 pacman_install samba
-# access media on external device (phone, ...)
+## access media on external device (phone, ...)
 pacman_install libmtp
 pacman_install fuse
 pacman_install android-file-transfer # android access
-# access ssh file system
+## access ssh file system
 pacman_install sshfs
-# access mac-formatted drives (HFS+)
-# yay_install hfsprogs
-# testdisk to figure out location HFS+ partition wrapped in 'Apple Core Storage':
-# pacman_install testdisk
+## access mac-formatted drives (HFS+)
+#yay_install hfsprogs
+## testdisk to figure out location HFS+ partition wrapped in 'Apple Core Storage':
+#pacman_install testdisk
 
 
-## Graphical server: xorg
-# install everything from xorg:
-# pacman_install xorg
-# install just the graphical server
+# Graphical desktop server: xorg
+#-------------------------------------------------------------------------------
+
+## install everything from xorg:
+#pacman_install xorg
+## install just the graphical server
 pacman_install xorg-server
-# install the xorg server development packages
-# pacman_install xorg-server-devel
-# initializing (for starting the window manager without display manager)
+## install the xorg server development packages
+#pacman_install xorg-server-devel
+## initializing (for starting the window manager without display manager)
 pacman_install xorg-xinit
-# querying window information
-# pacman_install xorg-xwininfo
-# tool for detecting window properties
+## querying window information
+#pacman_install xorg-xwininfo
+## tool for detecting window properties
 pacman_install xorg-xprop
-# tool for showing x event names
+## tool for showing x event names
 pacman_install xorg-xev
-# get info on current active windows
-# pacman_install xorg-xdpyinfo
-# enable tap-to-click on touchpads:
+## get info on current active windows
+#pacman_install xorg-xdpyinfo
+## enable tap-to-click on touchpads:
 grep 'Option "Tapping" "on"' /usr/share/X11/xorg.conf.d/40-libinput.conf &> /dev/null || echo $password | sudo -S sed -i 's|^\([^M]*\)\(MatchIsTouchpad.*\)|\1\2\n\1Option "Tapping" "on"|g' /usr/share/X11/xorg.conf.d/40-libinput.conf
-# virtual x server
+## virtual x server
 pacman_install xorg-server-xvfb
-# hide an inactive mouse
+## hide an inactive mouse
 pacman_install unclutter
-# dependency for my st fork to find urls in terminal:
+## dependency for my st fork to find urls in terminal:
 yay_install xurls
-# remap escape key:
-# yay_install xcape-git
-# viewer with synctex support, and some custom plugins
+## remap escape key:
+#yay_install xcape-git
+## viewer with synctex support, and some custom plugins
 pacman_install xdotool
-# xsettingsd: immediately apply changes in GTK theme
+## xsettingsd: immediately apply changes in GTK theme
 pacman_install xsettingsd
-# viewer with synctex support, and some custom plugins
+## viewer with synctex support, and some custom plugins
 pacman_install xdotool
-# server access control for x
+## server access control for x
 pacman_install xorg-xhost
-# sharing and viewing x-sessions on other computers
+## sharing and viewing x-sessions on other computers
 pacman_install x11vnc
-# create x11vnc systemd service:
+## create x11vnc systemd service:
 systemctl_create x11vnc
-# view x11vnc session (executable: gvncviewer)
-# pacman_install gtk-vnc
-# view x11vnc session (executable: vncviewer) <-- better framerate
+## view x11vnc session (executable: gvncviewer)
+#pacman_install gtk-vnc
+## view x11vnc session (executable: vncviewer) <-- better framerate
 pacman_install tigervnc
-# compositor (for transparent windows, blur, ...)
-# pacman_install xcompmgr
-# better compositor:
-# pacman_install picom
-# bleeding edge version of picom:
+## compositor (for transparent windows, blur, ...)
+#pacman_install xcompmgr
+## better compositor:
+#pacman_install picom
+## bleeding edge version of picom:
 yay_install picom-git
 
-# libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
-# the reason it is installed this way is because this library replaces libxft
-# requiring you to answer yes on a [y/N] question...
+## libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
+## the reason it is installed this way is because this library replaces libxft
+## requiring you to answer yes on a [y/N] question...
 pacman -Q libxft-bgra &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra >> $LOG 2>> $ERR
 
-## Desktop Environment / Window Manager
-# i3lock: screen lock for i3 and other window managers like in this case dwm.
+
+# Desktop Environment / Window Manager
+#-------------------------------------------------------------------------------
+
+## i3lock: screen lock for i3 and other window managers like in this case dwm.
 pacman_install i3lock
-# xsetroot: for status bar in dwm
+## xsetroot: for status bar in dwm
 pacman_install xorg-xsetroot
-# sxhkd: keyboard shortcuts daemon
+## sxhkd: keyboard shortcuts daemon
 pacman_install sxhkd
-# light: CLI utility to change backlight value of laptops
+## light: CLI utility to change backlight value of laptops
 pacman_install light
-# allow only users in video group to make changes to backlight
+## allow only users in video group to make changes to backlight
 groupadd video >> $LOG 2>> $ERR
 echo $password | sudo -S usermod -a -G video $USER
 echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chgrp video /sys/class/backlight/%k/brightness\"" | sudo tee /etc/udev/rules.d/backlight.rules > /dev/null 2>> $ERR
 echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chmod g+w /sys/class/backlight/%k/brightness\"" | sudo tee -a /etc/udev/rules.d/backlight.rules > /dev/null 2>> $ERR
-# xautolock to automatically lock the screen
+## xautolock to automatically lock the screen
 pacman_install xautolock
-# wallpapers
+## wallpapers
 pacman_install feh
-# moving wallpapers
-# git clone https://github.com/glouw/paperview /tmp/paperview >$LOG 2>$ERR; cd /tmp/paperview >$LOG 2>$ERR; make >$LOG 2>$ERR; mv paperview ~/.local/bin >$LOG 2>$ERR; mv scenes ~/.local/share >$LOG 2>$ERR; cd ~; rm -rf /tmp/paperview
-# dependency for moving wallpapers
-# pacman_install sdl2
-# rofi (dmenu alternative)
-# pacman_install rofi
-# albert (dmenu alternative)
-# pacman_install albert
-# xmenu (application launcher)
-# yay_install xmenu
-# conky: a system monitor
+## moving wallpapers
+#git clone https://github.com/glouw/paperview /tmp/paperview >$LOG 2>$ERR; cd /tmp/paperview >$LOG 2>$ERR; make >$LOG 2>$ERR; mv paperview ~/.local/bin >$LOG 2>$ERR; mv scenes ~/.local/share >$LOG 2>$ERR; cd ~; rm -rf /tmp/paperview
+## dependency for moving wallpapers
+#pacman_install sdl2
+## rofi (dmenu alternative)
+#pacman_install rofi
+## albert (dmenu alternative)
+#pacman_install albert
+## xmenu (application launcher)
+#yay_install xmenu
+## conky: a system monitor
 pacman_install conky
-# display manager
+## display manager
 pacman_install lightdm
-#pacman_install lightdm-gtk-greeter
-#yay_install lightdm-slick-greeter
+##pacman_install lightdm-gtk-greeter
+##yay_install lightdm-slick-greeter
 yay_install lightdm-mini-greeter
 echo $password | sudo -S mkdir -p /usr/share/xsessions
 echo $password | sudo -S cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
@@ -624,183 +640,195 @@ echo $password | sudo -S sed -i "s/^password-label-text.*=.*/password-label-text
 echo $password | sudo -S sed -i "s|^background-image.*=.*|background-image=\"$HOME/.cache/current-wallpaper\"|g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
 echo $password | sudo -S sed -i "s/F92672/2AA198/g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
 systemctl_enable lightdm
-# maybe you just want autologin instead of a display manager:
-# systemctl_create getty-auto-login
+## maybe you just want autologin instead of a display manager:
+#systemctl_create getty-auto-login
 
 
-## Desktop notifications
-# libnotify allows desktop notifications
+# Desktop notifications
+#-------------------------------------------------------------------------------
+
+## libnotify allows desktop notifications
 pacman_install libnotify
-# dunst creates desktop notifications
+## dunst creates desktop notifications
 pacman_install dunst
 
 
-## Windows compatibility & Gaming
-# patch pacman settings to include multilib
-# pacman_enable_multilib
-# wine-staging (better version of wine):
-# pacman_install wine-staging
-# wine (worse vorsion of wine)
-# pacman_install wine
-# winetricks: install dependencies and so on
-# pacman_install winetricks
-# gecko driver for wine (for programs relying on IE)
-# pacman_install wine-gecko
-# mono driver for wine
-# pacman_install wine-mono
-# better game support on linux
-# pacman_install lutris
-# steam game store
-# pacman_install steam
-# vulkan drivers
-# pacman_install vulkan-intel
-# playonlinux programs
-# pacman_install playonlinux
-# potentially useful audio drivers
-# pacman_install alsa-plugins
-# pacman_install lib32-alsa-plugins
-# pacman_install alsa-lib
-# pacman_install lib32-alsa-lib
-# pacman_install libpulse
-# pacman_install lib32-libpulse
-# other potentially useful drivers:
-# pacman_install mpg123
-# pacman_install lib32-mpg123
-# pacman_install giflib
-# pacman_install lib32-giflib
-# pacman_install libpng
-# pacman_install lib32-libpng
-# pacman_install gnutls
-# pacman_install lib32-gnutls
-# pacman_install gst-plugins-base
-# pacman_install lib32-gst-plugins-base
-# pacman_install gst-plugins-good
-# pacman_install lib32-gst-plugins-good
-# pacman_install openal
-# pacman_install lib32-openal
-# pacman_install libgl
-# pacman_install lib32-libgl
-# if you're using the nvidia driver:
-# pacman_install nvidia-utils
-# pacman_install lib32-nvidia-utils
+# Windows compatibility & gaming
+#-------------------------------------------------------------------------------
+
+## patch pacman settings to include multilib
+#pacman_enable_multilib
+## wine-staging (better version of wine):
+#pacman_install wine-staging
+## wine (worse vorsion of wine)
+#pacman_install wine
+## winetricks: install dependencies and so on
+#pacman_install winetricks
+## gecko driver for wine (for programs relying on IE)
+#pacman_install wine-gecko
+## mono driver for wine
+#pacman_install wine-mono
+## better game support on linux
+#pacman_install lutris
+## steam game store
+#pacman_install steam
+## vulkan drivers
+#pacman_install vulkan-intel
+## playonlinux programs
+#pacman_install playonlinux
+## potentially useful audio drivers
+#pacman_install alsa-plugins
+#pacman_install lib32-alsa-plugins
+#pacman_install alsa-lib
+#pacman_install lib32-alsa-lib
+#pacman_install libpulse
+#pacman_install lib32-libpulse
+## other potentially useful drivers:
+#pacman_install mpg123
+#pacman_install lib32-mpg123
+#pacman_install giflib
+#pacman_install lib32-giflib
+#pacman_install libpng
+#pacman_install lib32-libpng
+#pacman_install gnutls
+#pacman_install lib32-gnutls
+#pacman_install gst-plugins-base
+#pacman_install lib32-gst-plugins-base
+#pacman_install gst-plugins-good
+#pacman_install lib32-gst-plugins-good
+#pacman_install openal
+#pacman_install lib32-openal
+#pacman_install libgl
+#pacman_install lib32-libgl
+## if you're using the nvidia driver:
+#pacman_install nvidia-utils
+#pacman_install lib32-nvidia-utils
 
 
-## Sound
-# alsamixer
+# Sound
+#-------------------------------------------------------------------------------
+
+## alsamixer
 pacman_install alsa-utils
-# other alsa plugins
+## other alsa plugins
 pacman_install alsa-plugins
-# pulse audio
+## pulse audio
 pacman_install pulseaudio
 
 
-## Connectivity & network tools
-# network manager
+# Connectivity and network
+#-------------------------------------------------------------------------------
+
+## network manager
 pacman_install networkmanager
 systemctl_enable NetworkManager
-# use cloudflare DNS servers:
+## use cloudflare DNS servers:
 printf "[global-dns-domain-*]\nservers=1.1.1.1,1.0.0.1" | sudo tee /etc/NetworkManager/conf.d/dns-servers.conf > /dev/null 2>> $ERR
-# create network group (this might fail if the group exists already, but who cares.)
+## create network group (this might fail if the group exists already, but who cares.)
 groupadd network >> $LOG 2>> $ERR
-# create policy kit rule (everyone in network group can connect to / change networks)
+## create policy kit rule (everyone in network group can connect to / change networks)
 printf "polkit.addRule(function(action, subject) {\n  if (action.id.indexOf(\"org.freedesktop.NetworkManager.\") == 0 && subject.isInGroup(\"network\")) {\n    return polkit.Result.YES;\n  }\n});" | sudo tee /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules > /dev/null 2>> $ERR
-# add current user to network group
+## add current user to network group
 echo $password | sudo -S usermod -a -G network $USER
-# applet in the corner of the screen
+## applet in the corner of the screen
 pacman_install network-manager-applet
-# vpn: openconnect (cisco anyconnect)
+## vpn: openconnect (cisco anyconnect)
 pacman_install openconnect
-# vpn: openvpn
+## vpn: openvpn
 pacman_install openvpn
-# openvpn service that can be run in the background
+## openvpn service that can be run in the background
 systemctl_create openvpn
-# systemctl_enable openvpn
-# ssh (client and server)
+#systemctl_enable openvpn
+## ssh (client and server)
 pacman_install openssh
-# allow X-forwarding for sshd:
+## allow X-forwarding for sshd:
 echo $password | sudo -S sed -i 's|^.*X11Forwarding.*|X11Forwarding yes|g' /etc/ssh/sshd_config >> $LOG 2>> $ERR
 systemctl_enable sshd
-# autossh (for ssh daemons)
+## autossh (for ssh daemons)
 pacman_install autossh
-# access to google servers
-# yay_install google-cloud-sdk
-# bluetooth
+## access to google servers
+#yay_install google-cloud-sdk
+## bluetooth
 pacman_install bluez
 pacman_install bluez-utils
 pacman_install pulseaudio-bluetooth
-# enable bluetooth service
+## enable bluetooth service
 systemctl_enable bluetooth
-# remote desktop
+## remote desktop
 pacman_install remmina
-# add windows remote desktop protocol to remmina
+## add windows remote desktop protocol to remmina
 pacman_install freerdp
-# barrier: seemless mouse and keyboard sharing between computers (takes a while to build)
+## barrier: seemless mouse and keyboard sharing between computers (takes a while to build)
 pacman_install barrier
 pacman_install barrier-headless
 
 
-## Themes
-# gtk3
+# Themes
+#-------------------------------------------------------------------------------
+
+## gtk3
 pacman_install gtk3
-# adwaita [inkscape dependency]
+## adwaita [inkscape dependency]
 pacman_install gnome-themes-standard
-# murrine theme [inkscape dependency]
+## murrine theme [inkscape dependency]
 pacman_install gtk-engine-murrine
-# adapta theme
+## adapta theme
 pacman_install adapta-gtk-theme
-# arc theme
+## arc theme
 pacman_install arc-gtk-theme
-# dark gruvbox-inspired arc theme (default theme for now)
+## dark gruvbox-inspired arc theme (default theme for now)
 yay_install gtk-theme-arc-gruvbox-git
-# dark nord-inspired color theme
+## dark nord-inspired color theme
 yay_install nordic-theme-git
-# light nord-inspired color theme
+## light nord-inspired color theme
 yay_install nordic-polar-theme-git
-# lxappearance: tool to choose gtk themes
+## lxappearance: tool to choose gtk themes
 pacman_install lxappearance
-# gtk look-and-feel for qt (comes with kvantummanager = lxappearance for qt apps):
+## gtk look-and-feel for qt (comes with kvantummanager = lxappearance for qt apps):
 pacman_install kvantum-qt5
-# needed to enable kvantum:
+## needed to enable kvantum:
 pacman_install qt5ct
-# nord color theme for kvantum:
+## nord color theme for kvantum:
 yay_install kvantum-theme-nordic-git
-# manjaro cursor theme
-# yay_install xcursor-menda-git
-# yay_install xcursor-maia-git
-# red-had cursor theme
-# pacman_install xcursor-bluecurve
-# comix cursor theme
-# pacman_install xcursor-comix
-# flatbed cursor theme
-# pacman_install xcursor-flatbed
-# neutral cursor theme
-# pacman_install xcursor-neutral
-# simple and soft cursor theme
+## manjaro cursor theme
+#yay_install xcursor-menda-git
+#yay_install xcursor-maia-git
+## red-had cursor theme
+#pacman_install xcursor-bluecurve
+## comix cursor theme
+#pacman_install xcursor-comix
+## flatbed cursor theme
+#pacman_install xcursor-flatbed
+## neutral cursor theme
+#pacman_install xcursor-neutral
+## simple and soft cursor theme
 pacman_install xcursor-simpleandsoft
 
 
-## Web interfaces
-# syncthing: synchronization between devices
+# Web and web interfaces
+#-------------------------------------------------------------------------------
+
+## syncthing: synchronization between devices
 pacman_install syncthing
-# run syncthing as a systemd service
+## run syncthing as a systemd service
 systemctl_create syncthing
-# systemctl_enable syncthing
-# jellyfin: media center
-# yay_install jellyfin
-# systemctl_enable jellyfin
-# nextcloud: your own dropbox at home :-)
+#systemctl_enable syncthing
+## jellyfin: media center
+#yay_install jellyfin
+#systemctl_enable jellyfin
+## nextcloud: your own dropbox at home :-)
 pacman_install nextcloud-client
-# override the default general nextcloud settings
+## override the default general nextcloud settings
 [ -f $HOME/.config/Nextcloud/nextcloud.cfg ] || cp $HOME/.config/Nextcloud/nextcloud.general.cfg $HOME/.config/Nextcloud/nextcloud.cfg
-# nextcloud server (this needs quite a bit manual configuration):
-# pacman_install nextcloud
-# nginx: reverse proxy
+## nextcloud server (this needs quite a bit manual configuration):
+#pacman_install nextcloud
+## nginx: reverse proxy
 pacman_install nginx
 echo $password | sudo -S mkdir -p /var/www/html
-# patch nginx to increase types hash
+## patch nginx to increase types hash
 grep types_hash_max_size /etc/nginx/nginx.conf &> /dev/null
 [ $? -ne 0 ] && echo $password | sudo -S sed -i 's|http {.*|http {types_hash_max_size 4096;|g' /etc/nginx/nginx.conf
-# patch nginx to look into /var/www/html by default
+## patch nginx to look into /var/www/html by default
 echo $password | sudo -S sed -i 's|root.*/usr/share/nginx/html;|root /var/www/html;|g' /etc/nginx/nginx.conf
 echo $password | sudo -S cp /usr/share/nginx/html/50x.html /var/www/html/
 if [ -f "$HOME/.extra/index.html" ]; then
@@ -811,194 +839,206 @@ fi
 systemctl_enable nginx
 
 
-## Printers
-# printer system (cups @ localhost:631)
+# Printers
+#-------------------------------------------------------------------------------
+
+## printer system (cups @ localhost:631)
 pacman_install cups
-# common printer drivers
+## common printer drivers
 pacman_install gutenprint
-# for network printing
+## for network printing
 pacman_install avahi
 pacman_install nss-mdns
 systemctl_enable avahi-daemon
-# print to pdf
+## print to pdf
 pacman_install cups-pdf
-# enable cups service
+## enable cups service
 systemctl_enable org.cups.cupsd
 
 
-## Fonts
+# Fonts
+#-------------------------------------------------------------------------------
+
 # note: I block MANY fonts in ~/.config/fontconfig/conf.d/ I do this to have
 #       better control over which fonts are used on my system.  However, this
 #       means that installing a font might not automatically make it available.
 #       You might need to remove the fontconfig block.
-# fontconfig should already be installed, but just to be sure:
+
+## fontconfig should already be installed, but just to be sure:
 pacman_install fontconfig
-# dejavu font: inkscape dependency (fully blocked by my fontconfig):
+## dejavu font: inkscape dependency (fully blocked by my fontconfig):
 pacman_install ttf-dejavu
-# cantarell fonts: gtk3 dependency (partly blocked by my fontconfig):
+## cantarell fonts: gtk3 dependency (partly blocked by my fontconfig):
 pacman_install cantarell-fonts
-# adobe fonts: nemo and other GNOME apps dependency (partly blocked by my fontconfig):
+## adobe fonts: nemo and other GNOME apps dependency (partly blocked by my fontconfig):
 pacman_install adobe-source-code-pro-fonts
-# liberation fonts: chromium, firefox and mplayer dependency (partly blocked by my fontconfig):
+## liberation fonts: chromium, firefox and mplayer dependency (partly blocked by my fontconfig):
 pacman_install ttf-liberation
-# gnu free fonts: optional vlc dependency (partly blocked by my fontconfig):
+## gnu free fonts: optional vlc dependency (partly blocked by my fontconfig):
 pacman_install gnu-free-fonts
-# gnome core fontset (partly blocked by my fontconfig):
+## gnome core fontset (partly blocked by my fontconfig):
 pacman_install gsfonts
-# a nice monospace font with ligatures (partly blocked by my fontconfig):
+## a nice monospace font with ligatures (partly blocked by my fontconfig):
 pacman_install ttf-fira-code
-# a patched fira code font with nerd font glyphs (partly blocked by my fontconfig):
+## a patched fira code font with nerd font glyphs (partly blocked by my fontconfig):
 yay_install nerd-fonts-fira-code
-# bitstream vera: alternative to dejavu (not blocked by my fontconfig):
+## bitstream vera: alternative to dejavu (not blocked by my fontconfig):
 pacman_install ttf-bitstream-vera
-# nice serif (Linux Libertine) and sans-serif (Linux Biolinum) fonts (not blocked by my fontconfig):
+## nice serif (Linux Libertine) and sans-serif (Linux Biolinum) fonts (not blocked by my fontconfig):
 pacman_install ttf-linux-libertine
-# recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
+## recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
 yay_install ttf-ms-fonts
-# recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
+## recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
 yay_install ttf-vista-fonts
-# alternative nice font package (partly blocked by my fontconfig):
+## alternative nice font package (partly blocked by my fontconfig):
 pacman_install ttf-droid
-# yet another nice monospace font:
-# yay_install ttf-inconsolata-g
-# simplified chinese font (sans) which messes with korean symbols (fully blocked by my fontconfig):
-# pacman_install wqy-microhei
-# adobe simplified chinese fonts (sans):
+## yet another nice monospace font:
+#yay_install ttf-inconsolata-g
+## simplified chinese font (sans) which messes with korean symbols (fully blocked by my fontconfig):
+#pacman_install wqy-microhei
+## adobe simplified chinese fonts (sans):
 pacman_install adobe-source-han-sans-cn-fonts
-# adobe traditional chinese fonts (sans):
-# pacman_install adobe-source-han-sans-tw-fonts
-# adobe simplified chinese fonts (serif):
+## adobe traditional chinese fonts (sans):
+#pacman_install adobe-source-han-sans-tw-fonts
+## adobe simplified chinese fonts (serif):
 pacman_install adobe-source-han-serif-cn-fonts
-# adobe traditional chinese fonts (serif):
-# pacman_install adobe-source-han-serif-tw-fonts
-# awesome terminal fonts: nice icons (lsd and dwm [my build] dependency):
+## adobe traditional chinese fonts (serif):
+#pacman_install adobe-source-han-serif-tw-fonts
+## awesome terminal fonts: nice icons (lsd and dwm [my build] dependency):
 pacman_install awesome-terminal-fonts
-# hack nerd fonts: patched font with different nice icons (recommended for lsd):
+## hack nerd fonts: patched font with different nice icons (recommended for lsd):
 yay_install nerd-fonts-hack
-# Joypixels color emojis:
+## Joypixels color emojis:
 pacman_install ttf-joypixels
-# google color emojis (blocked by my fontconfig):
-# pacman_install noto-fonts-emoji
-# black and white emojis and symbols (blocked by my fontconfig):
-# yay_install ttf-symbola
-# twitter black and white emojis (blocked by my fontconfig):
-# yay_install ttf-twemoji
-# twitter color emojis (blocked by my fontconfig):
-# yay_install ttf-twemoji-color
+## google color emojis (blocked by my fontconfig):
+#pacman_install noto-fonts-emoji
+## black and white emojis and symbols (blocked by my fontconfig):
+#yay_install ttf-symbola
+## twitter black and white emojis (blocked by my fontconfig):
+#yay_install ttf-twemoji
+## twitter color emojis (blocked by my fontconfig):
+#yay_install ttf-twemoji-color
 
 
-## GUIs
-# nemo: sometimes a non-terminal file browser can be useful
+# Graphical User Interfaces
+#-------------------------------------------------------------------------------
+
+## nemo: sometimes a non-terminal file browser can be useful
 pacman_install nemo
-# nemo settings: set default terminal to st:
+## nemo settings: set default terminal to st:
 gsettings set org.cinnamon.desktop.default-applications.terminal exec st
 gsettings set org.cinnamon.desktop.default-applications.terminal exec-arg -e
-# nemo-terminal: show a small terminal window on top of the nemo windo
-# pacman_install nemo-terminal
-# screen settings: arandr (xrandr included)
+## nemo-terminal: show a small terminal window on top of the nemo windo
+#pacman_install nemo-terminal
+## screen settings: arandr (xrandr included)
 pacman_install arandr
-# best pdf reader: general document reader with vim bindings
+## best pdf reader: general document reader with vim bindings
 pacman_install zathura
-# pdf reader extension
+## pdf reader extension
 pacman_install zathura-pdf-mupdf
-# djvu reader extension
+## djvu reader extension
 pacman_install zathura-djvu
-# etcher: GUI dd alternative
-# yay_install etcher-bin
-# anki: a flashcard program
+## etcher: GUI dd alternative
+#yay_install etcher-bin
+## anki: a flashcard program
 pacman_install anki
-# pulseaudio control panel
+## pulseaudio control panel
 pacman_install pavucontrol
-# bluetooth manager (run blueman-manager)
+## bluetooth manager (run blueman-manager)
 pacman_install blueman
-# jami: blockchain-based secure chat app
-# pacman_install jami-daemon
-# pacman_install libjamiclient
-# pacman_install jami-gnome
-# 'airdrop' for linux (only works between pcs):
-# yay_install warpinator
-# natifier: make 'native' electron apps given a url
+## jami: blockchain-based secure chat app
+#pacman_install jami-daemon
+#pacman_install libjamiclient
+#pacman_install jami-gnome
+## 'airdrop' for linux (only works between pcs):
+#yay_install warpinator
+## natifier: make 'native' electron apps given a url
 npm_install nativefier
-# dragon-drag-and-drop: drag files into applications (aliassed to 'd')
+## dragon-drag-and-drop: drag files into applications (aliassed to 'd')
 yay_install dragon-drag-and-drop
-# virtualbox dependency: linux headers
-pacman_install linux-headers
-# virtualbox dependency: linux headers [for linux lts kernel only!]
-# pacman_install linux-lts-headers
-# virtualbox: virtual machines
-pacman_install virtualbox
-# virtualbox drivers for non-linux kernels:
-pacman_install virtualbox-host-dkms
-# virtualbox drivers for linux kernels:
-# pacman_install virtualbox-host-modules-arch
-# qemu: alternative virtual machine client
-pacman_install qemu
+## virtualbox dependency: linux headers
+#pacman_install linux-headers
+## virtualbox dependency: linux headers [for linux lts kernel only!]
+#pacman_install linux-lts-headers
+## virtualbox: virtual machines
+#pacman_install virtualbox
+## virtualbox drivers for non-linux kernels:
+#pacman_install virtualbox-host-dkms
+## virtualbox drivers for linux kernels:
+#pacman_install virtualbox-host-modules-arch
+## qemu: alternative virtual machine client
+#pacman_install qemu
 
 
+# Images, video and media (viewers and editors)
+#-------------------------------------------------------------------------------
 
-## Images, video and media
-# pinta: an improved ms paint clone
+## pinta: an improved ms paint clone
 yay_install pinta
-# inkscape
+## inkscape
 pacman_install inkscape
-# GIMP: the GNU Image Manipulation program, a photoshop alternative
-# pacman_install gimp
-# Krita: another photoshop alternative.
-# pacman_install krita
-# image viewer
+## GIMP: the GNU Image Manipulation program, a photoshop alternative
+#pacman_install gimp
+## Krita: another photoshop alternative.
+#pacman_install krita
+## image viewer
 pacman_install sxiv
-# imagemagick: for images, screenshots
+## imagemagick: for images, screenshots
 pacman_install imagemagick
-# scrot: alternative screenshot program [requires imagemagick]
-# pacman_install scrot
-# flameshot: arguably the best screenshot program
+## scrot: alternative screenshot program [requires imagemagick]
+#pacman_install scrot
+## flameshot: arguably the best screenshot program
 pacman_install flameshot
-# youtube-dl: download YouTube videos
+## youtube-dl: download YouTube videos
 pacman_install youtube-dl
-# YouTube-viewer
+## YouTube-viewer
 pacman_install youtube-viewer
-# vlc media player
-# pacman_install vlc
-# mpv media player
+## vlc media player
+#pacman_install vlc
+## mpv media player
 pacman_install mpv
-# ffmpeg command line tool
+## ffmpeg command line tool
 pacman_install ffmpeg
-# spotify (I prefer spotifyd + spotify-tui)
-# yay_install spotify
-# GDS viewer and editor
+## spotify (I prefer spotifyd + spotify-tui)
+#yay_install spotify
+## GDS viewer and editor
 pacman_install klayout
-# lbry: youtube alternative
-# yay_install lbry-app-bin
-# skype: video calls
-# yay_install skypeforlinux-stable-bin
-# microsoft teams: skype on steroids
-# yay_install teams
-# zoom: conference calls
-# yay_install zoom
-# jitsi meet: conference calls
-# yay_install jitsi-meet-bin
+## lbry: youtube alternative
+#yay_install lbry-app-bin
+## skype: video calls
+#yay_install skypeforlinux-stable-bin
+## microsoft teams: skype on steroids
+#yay_install teams
+## zoom: conference calls
+#yay_install zoom
+## jitsi meet: conference calls
+#yay_install jitsi-meet-bin
 
 
-## Office
-# open-source office
+# Office
+#-------------------------------------------------------------------------------
+
+## open-source office
 pacman_install libreoffice-fresh
-# pacman_install libreoffice-still
-# open-source office with MS Office look-and-feel:
-# yay_install onlyoffice-bin
-# sqlite database browser
-# pacman_install sqlitebrowser
-# tex-live (disabled by default bc heavy package)
-# pacman_install texlive-most
-# bibliographies
+#pacman_install libreoffice-still
+## open-source office with MS Office look-and-feel:
+#yay_install onlyoffice-bin
+## sqlite database browser
+#pacman_install sqlitebrowser
+## tex-live (disabled by default bc heavy package)
+#pacman_install texlive-most
+## bibliographies
 pacman_install biber
-# convert document types into each other
+## convert document types into each other
 pacman_install pandoc
-# open-source note taking app (takes a while to build)
-# yay_install joplin
+## open-source note taking app (takes a while to build)
+#yay_install joplin
 
 
-## Programming
-# code OSS (open source build of vscode)
+# Programming
+#-------------------------------------------------------------------------------
+
+## code OSS (open source build of vscode)
 pacman_install code
 if [ $? -eq 0 ]; then
     code --install-extension vscodevim.vim >> $LOG 2>> $ERR
@@ -1012,144 +1052,152 @@ if [ $? -eq 0 ]; then
     code --install-extension richie5um2.vscode-sort-json >> $LOG 2>> $ERR
     code --install-extension pkief.material-icon-theme >> $LOG 2>> $ERR
 fi
-# Python programming language:
+## Python programming language:
 pacman_install python
-# Scientific computing octave (Matlab alternative)
-# pacman_install octave
+## Scientific computing with octave (Matlab alternative)
+pacman_install octave
 
 
-## Browsers
-# waterfox (like firefox, but better defaults)
-# yay_install waterfox-current-bin
-# firefox (like waterfox, but the original ;-) )
+# Browsers
+#-------------------------------------------------------------------------------
+
+## waterfox (like firefox, but better defaults)
+#yay_install waterfox-current-bin
+## firefox (like waterfox, but the original ;-) )
 pacman_install firefox
-# patch firefox and waterfox to work with some legacy extensions (like vimfx)
+## patch firefox and waterfox to work with some legacy extensions (like vimfx)
 submodule_install legacyfox
-# chromium
-# pacman_install chromium
-# ungoogled-chromium: the name says it all (note: compiling takes HOURS!):
-# yay_install ungoogled-chromium
-# alternatively: install ungoogled-chromium from archlinuxcn repositories:
-# pacman_enable_archlinuxcn && pacman_install ungoogled-chromium
+## chromium
+#pacman_install chromium
+## ungoogled-chromium: the name says it all (note: compiling takes HOURS!):
+#yay_install ungoogled-chromium
+## alternatively: install ungoogled-chromium from archlinuxcn repositories:
+#pacman_enable_archlinuxcn && pacman_install ungoogled-chromium
 
-# vimb: vim-like browser
-# pacman_install vimb
-# qutebrowser: another vim-like browser
-# pacman_install qutebrowser
-# surf
-# pacman_install webkit2gtk # surf build dependency
-# pacman_install gcr # surf build dependency
-# pacman_install xorg-xprop # surf build dependency
-# pacman_install surf
-# brave
-# yay_install brave-bin
+## vimb: vim-like browser
+#pacman_install vimb
+## qutebrowser: another vim-like browser
+#pacman_install qutebrowser
+## surf
+#pacman_install webkit2gtk # surf build dependency
+#pacman_install gcr # surf build dependency
+#pacman_install xorg-xprop # surf build dependency
+#pacman_install surf
+## brave
+#yay_install brave-bin
 
 
-## Email
-# send email
+# Email
+#-------------------------------------------------------------------------------
+
+## send email
 pacman_install msmtp
-# mbsync: sync email (isync is the distribution, mbsync is the executable)
+## mbsync: sync email (isync is the distribution, mbsync is the executable)
 pacman_install isync
-# mutt email client
+## mutt email client
 pacman_install neomutt
 link /usr/bin/neomutt /usr/bin/mutt
-# notmuch: email indexing
+## notmuch: email indexing
 pacman_install notmuch
-# html email view (also browser!)
-# pacman_install w3m
+## html email view (also browser!)
+#pacman_install w3m
 pacman_install lynx
-# mutt wizard (disabled; manual configuration preferred)
-# yay_install mutt-wizard
+## mutt wizard (disabled; manual configuration preferred)
+#yay_install mutt-wizard
 
 
-## Hardware acceleration
+# Hardware acceleration
+#-------------------------------------------------------------------------------
 
-# general settings:
+## general settings:
 pacman_install libva-utils
 pacman_install gstreamer-vaapi
 pacman_install vdpauinfo
 pacman_install intel-gpu-tools
 
-# option 0: do nothing
+## option 0: do nothing
 
-# option 1: intel integrated graphics (recommended on most systems):
-# pacman_install intel-media-driver
-# pacman_install libvdpau-va-gl
-# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+## option 1: intel integrated graphics (recommended on most systems):
+##pacman_install intel-media-driver
+##pacman_install libvdpau-va-gl
+##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 
-# option 2: older intel integrated graphics:
-# pacman_install libva-intel-driver  # OR: yay_install libva-intel-driver-g45-h264
-# pacman_install libvdpau-va-gl
-# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+## option 2: older intel integrated graphics:
+##pacman_install libva-intel-driver  # OR: yay_install libva-intel-driver-g45-h264
+##pacman_install libvdpau-va-gl
+##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 
-# option 3: nvidia proprietary drivers and acceleration:
-# pacman_install nvidia
-# pacman_install nvidia-utils
-# pacman_install nvtop
-# pacman_install nvidia-settings
-# pacman_install cuda-toolkit
-# pacman_install opencl-nvidia
-# yay_install optimus-manager
-# echo $password | sudo -S cp $HOME/.install/config/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
-# systemctl_enable optimus-manager
-# pacman_install libva-vdpau-driver # OR: yay_install libva-vdpau-driver-chromium
-# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nvidia" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# force 96 dpi in Xorg when nvidia driver is in use:
-# grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
+## option 3: nvidia proprietary drivers and acceleration:
+##pacman_install nvidia
+##pacman_install nvidia-utils
+##pacman_install nvtop
+##pacman_install nvidia-settings
+##pacman_install cuda-toolkit
+##pacman_install opencl-nvidia
+##yay_install optimus-manager
+##echo $password | sudo -S cp $HOME/.install/config/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
+##systemctl_enable optimus-manager
+##pacman_install libva-vdpau-driver # OR: yay_install libva-vdpau-driver-chromium
+##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nvidia" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+## force 96 dpi in Xorg when nvidia driver is in use:
+##grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
 
-# option 4: open source nvidia-driver [nouveau]
-# sudo pacman -Rns --noconfirm nvidia >> $LOG 2>> $ERR
-# pacman_install libva-mesa-driver
-# pacman_install mesa-vdpau
-# yay_install nouveau-fw
-# grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-# grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+## option 4: open source nvidia-driver [nouveau]
+##sudo pacman -Rns --noconfirm nvidia >> $LOG 2>> $ERR
+##pacman_install libva-mesa-driver
+##pacman_install mesa-vdpau
+##yay_install nouveau-fw
+##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 
-# chromium-vaapi: chromium with libva support (does not work for option 0):
-# yay_install chromium-vaapi
-# alternatively: install chromium-vaapi from archlinuxcn repositories:
-# pacman_enable_archlinuxcn && pacman_install chromium-vaapi
+## chromium-vaapi: chromium with libva support (does not work for option 0):
+##yay_install chromium-vaapi
+##alternatively: install chromium-vaapi from archlinuxcn repositories:
+##pacman_enable_archlinuxcn && pacman_install chromium-vaapi
 
-## Resources
-# a collection of very nice wallpapers:
+
+# Resources
+#-------------------------------------------------------------------------------
+
+## a collection of very nice wallpapers:
 if [ ! -d "$HOME/.local/share/wallpapers" ]; then
     echo "cloning a full repo of very nice wallpapers..."
     git clone https://gitlab.com/dwt1/wallpapers $HOME/.local/share/wallpapers >> $LOG 2>> $ERR
 fi
 
-## Other Services
-# run a service in the background that checks how many packages can be updated
-systemctl_create pacmanquery
-systemctl_enable pacmanquery
 
-## Personal forks (placed at the end so all dependencies are already installed)
-# my dwm fork [window manager]
+# Personal builds and forks  (placed at the end so all dependencies are installed)
+#-------------------------------------------------------------------------------
+
+## my dwm fork [window manager]
 submodule_install dwm
-# my dmenu fork [application launcher]
+## my dmenu fork [application launcher]
 submodule_install dmenu
-# my st fork [terminal]
+## my st fork [terminal]
 submodule_install st
-# my scroll fork [scroll] (implements scrollback in st)
+## my scroll fork [scroll] (implements scrollback in st)
 submodule_install scroll
 
 
-## Python
-# simple guis
+# Python
+#-------------------------------------------------------------------------------
+
+## simple guis
 pacman_install tk
-# python style guide checker
+## python style guide checker
 pacman_install yapf
-# python package manager
+## python package manager
 pacman_install python-pip
-# progress bars
+## progress bars
 pacman_install python-tqdm
-# numerical calculations
+## numerical calculations
 pacman_install python-numpy
-# plotting
+## plotting
 pacman_install python-matplotlib
-# linters & formatters (recommended for vim)
+## linters & formatters (recommended for vim)
 pacman_install python-pylint
 pacman_install autopep8
 pacman_install flake8
@@ -1157,62 +1205,74 @@ pacman_install python-pyflakes
 pacman_install python-isort
 pacman_install python-black
 pacman_install python-pywal
-# connectivity (requirement for calcurse-caldav synchronization)
+## connectivity (requirement for calcurse-caldav synchronization)
 pacman_install python-httplib2
-# python-neovim integration
+## python-neovim integration
 pacman_install python-neovim
-# image processing in python
+## image processing in python
 pacman_install python-pillow
-# sockets
-# pacman_install python-websockets
+## sockets
+#pacman_install python-websockets
 pacman_install flake8
-# jedi: linting and more (disabled in favor of pip-install)
-# pacman_install python-jedi
-# requests (castero dependency)
+## jedi: linting and more (disabled in favor of pip-install)
+#pacman_install python-jedi
+## requests (castero dependency)
 pacman_install python-requests
-# pytest (castero dependency)
+## pytest (castero dependency)
 pacman_install python-pytest
-# cjkwrap (castero dependency)
+## cjkwrap (castero dependency)
 pacman_install python-cjkwrap
-# coverage (castero dependency)
+## coverage (castero dependency)
 pacman_install python-coverage
-# beautifulsoup4 (castero dependency)
+## beautifulsoup4 (castero dependency)
 pacman_install python-beautifulsoup4
-# python mpv (castero dependency)
+## python mpv (castero dependency)
 yay_install python-mpv
-# pylatexenc: latex -> unicode conversion
+## pylatexenc: latex -> unicode conversion
 yay_install python-pylatexenc
-# castero: tui podcast client
+## castero: tui podcast client
 yay_install castero
-# jedi: linting and more (newer version than via pacman)
+## jedi: linting and more (newer version than via pacman)
 pip3_install jedi
-# neovim-remote needed for synctex
+## neovim-remote needed for synctex
 pip3_install neovim-remote
-# dependency for neovim-remote:
+## dependency for neovim-remote:
 pacman_install python-psutil
-# image previews (overlays) in terminal (very difficult to configure)
+## image previews (overlays) in terminal (very difficult to configure)
 pacman_install python-xlib # install this BEFORE ueberzug
 pip3_install ueberzug
-# automate GUI tasks with pyautogui
+## automate GUI tasks with pyautogui
 pip3_install pyautogui
-# markdown <-> ipynb conversion
+## markdown <-> ipynb conversion
 pip3_install notedown
-# google cloud apis
-# pip3_install google-api-python-client
-# pip3_install google-auth-httplib2
-# pip3_install google-auth-oauthlib
-# smdv: simple markdown viewer
-# pip3_install smdv
-# run jupyterlab as a systemd service:
+## google cloud apis
+#pip3_install google-api-python-client
+#pip3_install google-auth-httplib2
+#pip3_install google-auth-oauthlib
+## smdv: simple markdown viewer
+#pip3_install smdv
+## run jupyterlab as a systemd service:
 systemctl_create jupyterhub
-# systemctl_enable jupyterhub
+#systemctl_enable jupyterhub
 
 
-## System settings
+# Password manager
 #-------------------------------------------------------------------------------
-# set correct date/time
+
+pacman_install gnupg # gpg --full-gen-key (generate gpg key)
+pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
+#yay_install passff-host  # host for the pass "passFF" firefox extension
+pacman_install browserpass # host for the pass "browserpass" chromium/firefox extension
+pacman_install browserpass-firefox # host for the pass "browserpass" firefox extension
+pacman_install browserpass-chromium # host for the pass "browserpass" chromium extension
+
+
+# System settings
+#-------------------------------------------------------------------------------
+
+## set correct date/time
 echo $password | sudo -S timedatectl set-local-rtc 1 >> $LOG 2>> $ERR
-# make sure everyone can mount in /mnt
+## make sure everyone can mount in /mnt
 echo $password | sudo -S chmod a+rwx /mnt >> $LOG 2>> $ERR
 if [ ! -f $HOME/.Xresources ]; then
     # copy preferred theme to ~/.Xresources -> default color scheme
@@ -1223,47 +1283,37 @@ if [ ! -f $HOME/.Xresources ]; then
     # run it to apply colorscheme to currently open windows:
     xcs current >> $LOG 2>> $ERR
 fi
-# make sure everyone can create folders in /opt
+## make sure everyone can create folders in /opt
 echo $password | sudo -S chmod a+rwx /opt >> $LOG 2>> $ERR
 
 
-## Password manager
-#-------------------------------------------------------------------------------
-pacman_install gnupg # gpg --full-gen-key (generate gpg key)
-pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
-# yay_install passff-host  # host for the pass "passFF" firefox extension
-pacman_install browserpass # host for the pass "browserpass" chromium/firefox extension
-pacman_install browserpass-firefox # host for the pass "browserpass" firefox extension
-pacman_install browserpass-chromium # host for the pass "browserpass" chromium extension
-
-
-## Shells and extensions
+# Shells and extensions
 #-------------------------------------------------------------------------------
 
-# dash: a minimal implementation of sh:
+## dash: a minimal implementation of sh:
 pacman_install dash
-# we'll make sh point to dash in stead to bash
+## we'll make sh point to dash in stead to bash
 link /usr/bin/dash /bin/sh
-# make dash the default shell:
-# echo $password | chsh -s /bin/dash 2>> $LOG >> $ERR
+## make dash the default shell:
+#echo $password | chsh -s /bin/dash 2>> $LOG >> $ERR
 
-# bash: should already have been installed:
-# pacman_install bash
-# make bash the default shell:
-# echo $password | chsh -s /bin/bash 2>> $LOG >> $ERR
+## bash: should already have been installed:
+#pacman_install bash
+## make bash the default shell:
+#echo $password | chsh -s /bin/bash 2>> $LOG >> $ERR
 
-# fish: alternative shell. It's not posix compliant, but friendly and interactive ;)
-# pacman_install fish
-# make fish the default shell:
-# echo $password | chsh -s /usr/bin/fish 2>> $LOG >> $ERR
+## fish: alternative shell. It's not posix compliant, but friendly and interactive ;)
+#pacman_install fish
+## make fish the default shell:
+#echo $password | chsh -s /usr/bin/fish 2>> $LOG >> $ERR
 
-# zsh: another alternative shell. In contrast to fish, it is posix compliant + extras
-# it's my preferred shell.
+## zsh: another alternative shell. In contrast to fish, it is posix compliant + extras
+## it's my preferred shell.
 pacman_install zsh
-# make zsh the default shell:
+## make zsh the default shell:
 echo $password | chsh -s /usr/bin/zsh >> $LOG 2>> $ERR
 
-# autojump extension for bash/zsh/fish
+## autojump extension for bash/zsh/fish
 mkdir -p $HOME/.cache
 rm -rf $HOME/.cache/autojump
 git clone https://github.com/wting/autojump $HOME/.cache/autojump 2>> $LOG >> $ERR
@@ -1272,25 +1322,25 @@ python install.py -d $HOME/.config/autojump 2>> $LOG >> $ERR
 sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $HOME/.config/autojump/bin/autojump >> $LOG 2>> $ERR
 ln -sf $HOME/.config/autojump/bin/autojump $HOME/.local/bin
 
-# stderred extension for bash/zsh: show stderr messages in red:
+## stderred extension for bash/zsh: show stderr messages in red:
 rm -rf $HOME/.config/stderred
 git clone https://github.com/sickill/stderred $HOME/.config/stderred 2>> $LOG >> $ERR
 cd $HOME/.config/stderred 2>> $LOG >> $ERR
 make 2>> $LOG >> $ERR
 
-# fish-like autosuggestions for zsh:
+## fish-like autosuggestions for zsh:
 rm -rf $HOME/.config/zsh/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/zsh-autosuggestions 2>> $LOG >> $ERR
 
-# syntax highlighting for zsh:
+## syntax highlighting for zsh:
 rm -rf $HOME/.config/zsh/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.config/zsh/zsh-syntax-highlighting 2>> $LOG >> $ERR
 
-# zsh package manager (i do not really recommend this):
-# yay_install oh-my-zsh-git
+## zsh package manager (i do not really recommend this):
+#yay_install oh-my-zsh-git
 
 
-## Finished
+# Finished
 #-------------------------------------------------------------------------------
 
 printf "\n\n\n\n\n"
