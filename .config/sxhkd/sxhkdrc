@@ -255,11 +255,11 @@ super + Return
 
 # new floating terminal
 super + shift + Return
-    cd $HOME; $TERMINAL -n float
+    cd $HOME; st -n float
 
 # new floating ipython shell
 super + control + Return
-    cd $HOME; $TERMINAL -n float -e $HOME/.anaconda/bin/ipython
+    cd $HOME; st -n float -e $HOME/.anaconda/bin/ipython
 
 # toggle pause / play
 super + shift + equal
@@ -541,5 +541,5 @@ shift + XF86Search
 
 # new floating ipython shell
 XF86Calculator
-    cd $HOME; $TERMINAL -n float -e $HOME/.anaconda/bin/ipython
+    cd $HOME; st -n float -e $HOME/.anaconda/bin/ipython
 
