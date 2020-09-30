@@ -11,7 +11,12 @@
 
 " enable different behavior for different filetypes:
 set nocompatible
+
+" define custom filetypes
 filetype plugin on
+autocmd BufNewFile,BufRead *.vim set filetype=vim
+autocmd BufNewFile,BufRead *.tex,*.sty set filetype=tex
+autocmd BufNewFile,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
 
 " set leader key
 let mapleader = " "
@@ -26,88 +31,15 @@ source ~/.config/nvim/snippets/snippets.vim
 "" Settings
 "-------------------------------------------------------------------------------
 
-" automatically cd into folder of current file
+" automatically cd into folder of current file (disabled, but mapped to <leader>cd)
 " autocmd BufEnter * silent! lcd %:p:h
 
-" when searching, search down into all subfolders
-set path+=**
+" when scrolling, keep cursor in the middle of the page (disabled, use zz to center)
+" set scrolloff=1000
+set scrolloff=10
 
-" for navigating buffers/files/etc
-set wildmenu
-
-" tell vim where to find the ctags
-set tags=./.tags;,.tags;
-
-" enable mouse clicks
-set mouse=a
-
-" spell check, set default to en_us and turn it off by default
-setlocal spell spelllang=en_us
-setlocal spell!
-
-" underline current line if in insert mode
-autocmd InsertEnter * set cul
-
-" remove underline when in normal mode
-autocmd InsertLeave * set nocul
-
-" clear trailing spaces in python files at saving
-function! DoOnSave()
-    " set a mark to return to original position after removing trailing spaces
-    normal mm
-    exec '%s/\s\+$//e'
-    normal `m
-    normal mm
-endfunction
-autocmd BufWritePre * :call DoOnSave()
-
-" save on focus lost
-function! MaybeSave()
-    if bufname('%') != ''
-        exec "wa"
-    endif
-endfunction
-au FocusLost * :silent call MaybeSave()
-
-" enable syntax highlighting
-syntax enable
-
-" enable all Python syntax highlighting features
-let python_highlight_all = 1
-
-" enable undo after file save
-set undofile
-set undodir=$HOME/.local/share/nvim/undo
-
-" save as sudo (make sure SUDO_ASKPASS is set to a password asking program)
-ca w!! w !sudo -A tee '%' &> /dev/null
-
-" fix problems with uncommon shells (fish, zsh, xonsh, ...) and plugins
-" running shell commands (neomake, ...)
-set shell=/usr/bin/zsh
-
-" set a column at 90 characters
-set colorcolumn=90
-autocmd BufRead,BufNewFile /tmp/neomutt-* set colorcolumn=0
-
-" disable line wrapping
-set nowrap
-autocmd BufRead,BufNewFile /tmp/neomutt-* set wrap
-
-" allow pattern matching with special characters
+" allow pattern matching with special characters during search
 set magic
-
-" relative line numbering
-set relativenumber
-
-" new vertical splits appear on the right
-set splitright
-
-" new horizontal splits appear below
-set splitbelow
-
-" enable unicode
-set encoding=utf-8
 
 " case insensitive search when searching with lower case characters
 set ignorecase
@@ -115,11 +47,32 @@ set ignorecase
 " case sensitive search when searching with upper case characters
 set smartcase
 
+" enable unicode
+set encoding=utf-8
+
+" when searching, search down into all subfolders
+set path+=**
+
+" allow opening a new buffer without saving the current one
+set hidden
+
+" new vertical splits appear on the right
+set splitright
+
+" new horizontal splits appear below
+set splitbelow
+
+" tell vim where to find the ctags
+set tags=./.tags;,.tags;
+
+" enable mouse clicks
+set mouse=a
+
 " copy to star register by default (selection copy)
 set clipboard^=unnamed
 
-" show line numbers
-set number
+" replace tabs by spaces
+set expandtab
 
 " set tabs to have a width of 4 spaces
 set tabstop=4
@@ -130,57 +83,126 @@ set softtabstop=4
 " set the shift operators (`<<` and `>>`) to insert 4 spaces
 set shiftwidth=4
 
-" replace tabs by spaces
-set expandtab
-
-" disable automatic indent when moving to the next line while writing code
-set noautoindent
-
-" show the matching part of the pair for [] {} and ()
-set showmatch
-
-" when scrolling, keep cursor in the middel of the page
-set scrolloff=1000
-
 " code folding
 " zM: fold all; zR: unfold all; za: toggle fold, zv: unfold one; zc: fold one
 set foldmethod=indent
 
-" allow opening a new buffer without saving the current one
-set hidden
+" show the matching part of the pair for [] {} and ()
+set showmatch
 
-" left margin
-hi FoldColumn ctermbg=NONE
-set foldcolumn=2
+" fix problems with uncommon shells (fish, zsh, xonsh, ...) and plugins
+" running shell commands (neomake, ...)
+set shell=/usr/bin/zsh
 
 " lower updatetime (for vim signify)
 set updatetime=200
 
 " better autocomplete:
-set wildmode=longest,list,full
+set wildmenu
 
-" show status bar (variable is for toggle functionality <leader>b)
-let s:status_hidden = 0
-set showmode
-set ruler
-set laststatus=2
-set showcmd
+" some say this results in an improved wildmenu. I disagree...
+" set wildmode=longest,longest,full
 
-" tex / latex / xelatex / markdown
-autocmd BufNewFile,BufRead *.tex set filetype=tex
-autocmd BufRead,BufNewFile *.md,/tmp/neomutt*,/tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
-autocmd FileType tex,markdown setlocal spell spelllang=en_us
-autocmd FileType tex,markdown set nonumber
-autocmd FileType tex,markdown set norelativenumber
+" set the maximum textwidth (at this point a return is inserted if nowrap is set)
+set textwidth=90
 autocmd FileType tex,markdown set textwidth=70
-autocmd FileType tex,markdown set foldcolumn=8
+
+" set a column at 90 characters
+set colorcolumn=90
 autocmd FileType tex,markdown set colorcolumn=0
-autocmd FileType tex,markdown let s:status_hidden = 1
-autocmd FileType tex,markdown set noshowmode
+
+" disable line wrapping
+set nowrap
+autocmd FileType markdown set wrap linebreak
+
+" disable automatic indent when moving to the next line while writing code
+set noautoindent
+autocmd FileType python set autoindent
+
+" enable unlimited undo
+set undofile
+set undodir=$HOME/.local/share/nvim/undo
+
+" show line numbers
+set number
+autocmd FileType tex,markdown set nonumber
+
+" relative line numbering
+set relativenumber
+autocmd FileType tex,markdown set norelativenumber
+
+" spell check, set default to en_us and turn it off by default
+setlocal spell spelllang=en_us
+setlocal spell!
+autocmd FileType tex,markdown setlocal spell spelllang=en_us
+
+" left margin width (max 12)
+set foldcolumn=2
+autocmd FileType tex,markdown set foldcolumn=12
+
+" show mode currently in (normal, insert, ...)
+set noshowmode
+autocmd FileType vim set showmode
+
+" show where you are in the document in status bar (e.g. 143,61, 20%)
+set ruler
 autocmd FileType tex,markdown set noruler
+
+" show status bar (0=disabled, 1=show half status bar, 2=show full status bar)
+set laststatus=2
 autocmd FileType tex,markdown set laststatus=0
+
+" don't show last command executed
+set noshowcmd
 autocmd FileType tex,markdown set noshowcmd
 
+" enable syntax highlighting
+syntax enable
+
+" underline current line if in insert mode
+autocmd InsertEnter * set cul
+
+" remove underline when in normal mode
+autocmd InsertLeave * set nocul
+
+
+"" Saving
+"-------------------------------------------------------------------------------
+
+" clear trailing spaces on saving
+function! DoOnSave()
+    delmarks m
+    normal mm
+    exec '%s/\s\+$//e'
+    normal `m
+    delmarks m
+endfunction
+autocmd BufWritePre * :silent call DoOnSave()
+
+" save on focus lost
+function! MaybeSave()
+    if bufname('%') != ''
+        exec "wa"
+    endif
+endfunction
+autocmd FocusLost * :silent call MaybeSave()
+
+" save as sudo (make sure SUDO_ASKPASS is set to a password asking program)
+function! SaveAsSudo()
+    execute 'silent write !sudo -A tee % >/dev/null' | edit!
+endfunction
+ca w!! call SaveAsSudo()
+
+" open as sudo (make sure SUDO_ASKPASS is set to a password asking program)
+function! OpenAsSudo()
+    let numbuffers = len(getbufinfo({'buflisted':1}))
+    if numbuffers > 1
+	execute 'echo "cannot open as sudo if more than 1 buffer open.\nYou have '.numbuffers.' buffers open."'
+    endif
+    call SaveAsSudo()
+    execute 'silent write !nvim_close_and_open_as_sudo % & disown' | edit!
+endfunction
+ca e!! call OpenAsSudo()
 
 "" Custom commands
 "-------------------------------------------------------------------------------
@@ -193,8 +215,8 @@ command! -nargs=* VT vsplit | terminal <args>
 "" Special keyboard shortcuts
 "-------------------------------------------------------------------------------
 
-" back to normal mode
-inoremap jj <Esc>
+" back to normal mode (just use escape, man...)
+" inoremap jj <Esc>
 
 " go to edit mode in terminal emulator:
 " the backtick is there to not interfere with the <Esc> of the shell itself.
@@ -389,7 +411,7 @@ nnoremap <leader>cd :lcd %:p:h<CR>
 
 "<leader>i: more information (toggle status bar)
 function! ToggleStatusBar()
-    if s:status_hidden  == 0
+    if (&laststatus == 2)
         let s:status_hidden = 1
         set noshowmode
         set noruler
@@ -407,20 +429,17 @@ nnoremap <leader>i :call ToggleStatusBar()<CR>
 
 " toggle relative line numbers
 function! RelativeNumberToggle()
-  if(&rnu == 1)
-    set norelativenumber
-    set nonumber
-  else
-    set relativenumber
-  endif
+    if(&rnu == 1)
+        set norelativenumber
+        set nonumber
+    else
+        set relativenumber
+    endif
 endfunc
 nnoremap <leader>l :call RelativeNumberToggle()<CR>
 
 " toggle visible marks
 " <leader>m " from vim-signature
-
-" find ocurrences (only for python)
-" <leader>o " from jedi plugin
 
 " show only current buffer (overrides above)
 nnoremap <leader>o :only<CR>
@@ -428,28 +447,6 @@ nnoremap <leader>o :only<CR>
 " paste from clipboard in stead of selection
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
-
-function! ChooseCommandFunc()
-    let str = system("nvim_commands")
-    exec str
-endfunc
-nnoremap <leader><F1> :redir! > /tmp/nvim_map \| silent nnoremap \| redir END<CR>:call ChooseCommandFunc()<CR>
-
-function! ClipboardImageFunc(...)
-    let str = a:0 >= 1 ? a:1 : ""
-    exec "let @i = system(\"nvim_clipboard_image ".str."\")"
-    exec "normal a\<C-R>i"
-endfunc
-command! -nargs=* ClipboardImage :call ClipboardImageFunc(<f-args>)
-command! -nargs=0 ClipboardImageBase64 :call ClipboardImageFunc("--base64")
-nnoremap "ip :ClipboardImage<Space>
-nnoremap "hp :ClipboardImageBase64<Return>
-
-" rename variable (only for python)
-" <leader>r " from jedi plugin
-
-"<leader>S: open current file as sudo (requires xdotool)
-nnoremap <leader>S ggVG"+ygg<CR>:!nvim_close_and_open_as_sudo '%' & disown<CR>
 
 "<leader>s: latex synctex tex->pdf
 function! SyncTex()
@@ -473,7 +470,7 @@ nnoremap <leader>tf :set filetype=<CR>:source ~/.config/nvim/init.vim<CR>:set fi
 " Move currently active buffer to the 'main' split.
 " adapted from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946
 function! MoveToMainSplit()
-    let g:markedWinNum = 1
+  let g:markedWinNum = 1
     "Mark destination
     let curNum = winnr()
     let curBuf = bufnr( "%" )
@@ -493,7 +490,6 @@ nnoremap <leader>z :call MoveToMainSplit()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w
 
 "" Function key keyboard shortcuts
 "-------------------------------------------------------------------------------
-
 
 " enable spell checker:
 nnoremap <F3> <Esc>:setlocal spell!<CR>
@@ -564,12 +560,13 @@ endif
 
 "" Theme / colorscheme
 "-------------------------------------------------------------------------------
-
 " use 256 colors when possible
-" set notermguicolors
+set notermguicolors
 " set termguicolors
-" highlight clear
+highlight clear
 
 " custom colorscheme using only colors from ~/.Xresources.
 colorscheme xresources
 
+" override colors:
+hi FoldColumn ctermbg=NONE

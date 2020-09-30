@@ -29,19 +29,17 @@ endif
 
 " Run :PlugInstall to install extra packages after adding them to the list below
 " Run :UpdateRemotePlugins to update dependencies
+
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
 Plug 'christoomey/vim-tmux-navigator' " tmux navigation
-" Plug 'davidhalter/jedi-vim' " python go-to-definition (disabled in favor of CoC)
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
 Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
 Plug 'junegunn/goyo.vim', " distraction free writing.
-" Plug 'ctrlpvim/ctrlp.vim' " alternative fuzzy file finder (disabled in favor of fzf)
 Plug 'kshenoy/vim-signature' " show marks in margin
 Plug 'lilydjwg/colorizer' " paint css colors with the real color
 Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
-" Plug 'neomake/neomake' " linters (disabled in favor of CoC)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'psf/black' " black python plugin
 Plug 'voldikss/vim-floaterm' " floating terminal
@@ -57,9 +55,7 @@ Plug 'valloric/MatchTagAlways' " highlight matching html tags
 Plug 'vim-airline/vim-airline' " better status bar
 Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
-" Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --all' } " vim autocomplete (disabled in favor of CoC)
 call plug#end() " stop loading plugins
-
 
 
 "" Install Plugins
@@ -73,26 +69,6 @@ endif
 
 "" Plugin Settings
 "-------------------------------------------------------------------------------
-
-" davidhalter/jedi-vim ---------------------------
-" default configuration of jedi-vim kinda sucks. A lot of settings mess with
-" the default vim completion and make it work not like expected. The
-" configuration below tries to disable those insensible defaults.
-" let g:jedi#auto_initialization = 1 " initialize normally
-" let g:jedi#completions_command = '' " just default omicompletion: <C-x><C-o>
-" let g:jedi#smart_auto_mappings = 0 " this is incredibly annoying hence disabled
-" let g:jedi#auto_vim_configuration = 0 " don't let the plugin mess with the default completion settings
-" let g:jedi#popup_select_first = 0 " don't let the plugin mess with the default completion settings
-" let g:jedi#show_call_signatures = 1 " show call signatures inline
-" let g:jedi#squelch_py_warning = 1 " no warning when python not available
-" let g:jedi#completions_enabled = 1 " enable python completions
-" let g:jedi#goto_command = '' " goto python definition (disbled in favor of YCM)
-" let g:jedi#rename_command = '' " rename python variable (disabled in favor of YCM)
-" let g:jedi#usages_command = '' " '<leader>o'  find ocurrences (disabled)
-" let g:jedi#documentation_command = 'K' " show python docstring
-" let g:jedi#popup_on_dot = 0 " only after first letter
-" let g:jedi#goto_assignments_command = '' " not used (partially covered by goto_command)
-" let g:jedi#goto_definitions_command = '' " not used (partially covered by goto_command)
 
 " jremmen/vim-ripgrep ----------------------------
 " default settings when ripgrep is available
@@ -119,10 +95,6 @@ nnoremap <leader>t :Tag<CR>
 " toggle Goyo
 nnoremap <leader>G :Goyo<CR>
 
-" kien/ctrlp.vim ---------------------------------
-" let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-" let g:ctrlp_use_caching = 0
-
 " kshenoy/vim-signature --------------------------
 " add a way to disable this for less wide margins
 nnoremap <leader>m :SignatureToggleSigns<CR>
@@ -140,14 +112,6 @@ nnoremap <leader>u :UndotreeShow<CR><C-w>h
 let g:signify_disable_by_default = 1
 " but make a keyboard shortcut to show it when interested
 nnoremap <leader>g :SignifyToggle<CR>
-
-" neomake/neomake --------------------------------
-" run python linter on write
-" autocmd! BufWritePost *.py Neomake
-" check code as python3 by default
-" let g:neomake_python_python_maker = neomake#makers#ft#python#python()
-" use flake8 to check python code
-" let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
 
 " neoclide/coc.nvim ------------------------------
 source ~/.config/nvim/coc-settings.vim
@@ -193,13 +157,3 @@ let g:airline_theme="xresources_airline"
 " wikitopian/hardmode ----------------------------
 " enable hard mode (for practice purposes)
 nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
-
-" ycm-core/YouCompleteMe -------------------------
-" nnoremap <leader>d :YcmCompleter GoTo<CR>
-" nnoremap <leader>r :YcmCompleter RefactorRename<space>
-" nnoremap <leader>r :YcmCompleter GoToReferences<CR>
-" let g:ycm_min_num_of_chars_for_completion = 1
-" let g:ycm_max_num_candidates = 6
-" let g:ycm_auto_trigger = 1
-" let g:ycm_confirm_extra_conf = 0
-" let g:ycm_filetype_blacklist = ['python']
