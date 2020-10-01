@@ -13,15 +13,14 @@
 set nocompatible
 
 " define custom filetypes
-" autocmd BufNewFile,BufEnter,BufRead * filetype on
-" autocmd BufNewFile,BufEnter,BufRead * filetype plugin on
-" autocmd BufNewFile,BufEnter,BufRead * filetype indent on
-" autocmd BufNewFile,BufEnter,BufRead *.vim set filetype=vim
-" autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty set filetype=tex
-" autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
+autocmd BufNewFile,BufEnter,BufRead * filetype on
+autocmd BufNewFile,BufEnter,BufRead * filetype plugin on
+autocmd BufNewFile,BufEnter,BufRead * filetype indent on
+autocmd BufNewFile,BufEnter,BufRead *.vim set filetype=vim
+autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty set filetype=tex
+autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
 " automatically cd into folder of current file (disabled, but mapped to <leader>cd)
 " autocmd BufEnter * silent! lcd %:p:h
-
 
 " set leader key
 let mapleader = " "
@@ -283,7 +282,7 @@ endfunction
 cabbrev e!! call OpenAsSudo()
 
 
-"" Custom Terminal Commands
+"" Custom Commands
 "-------------------------------------------------------------------------------
 " these commands may change depending on the filetype or active extension
 
@@ -313,15 +312,15 @@ function! NewVerticalTerminal(shell)
     execute "normal G\<C-w>k"
 endfunction
 
-function! DefaultCustomTerminalCommands()
-    " functions to spaw new terminals
+function! DefaultCustomCommands()
+    " functions to spawn new terminals
     command! T call NewTerminal("")
     command! HT call NewHorizontalTerminal("")
     command! VT call NewVerticalTerminal("")
 endfunction
 
-function! PythonCustomTerminalCommands()
-    " functions to spaw new ipython shells
+function! PythonCustomCommands()
+    " functions to spawn new ipython shells
     command! T call NewTerminal("ipython")
     command! HT call NewHorizontalTerminal("ipython")
     command! VT call NewVerticalTerminal("ipython")
@@ -329,10 +328,10 @@ endfunction
 
 
 " enable default commands:
-call DefaultCustomTerminalCommands()
+call DefaultCustomCommands()
 
 " enable special commands according to filetype:
-autocmd FileType python silent call PythonCustomTerminalCommands()
+autocmd FileType python silent call PythonCustomCommands()
 
 
 "" Fixed Keyboard Shortcuts
@@ -345,6 +344,13 @@ autocmd FileType python silent call PythonCustomTerminalCommands()
 " go to edit mode in terminal emulator:
 " the backtick is there to not interfere with the <Esc> of the shell itself.
 tnoremap `<Esc> <C-\><C-n>
+
+" Use K to show documentation in preview window (reqruires neoclide/coc.nvim)
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Use `[g` and `]g` to navigate diagnostics (requires neoclide/coc.nvim)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " go to next misspelled word (enable spell checker with F3)
 " ]s " standard vim keybinding
@@ -477,8 +483,8 @@ endif
 " jump backward in cursor position stack (opposite of <C-i> or TAB)
 " <C-o> " standard vim keybinding
 
-" fuzzy open file with fzf
-" <C-p> " inherited from fzf plugin
+" fuzzy open file with fzf (requires fzf plugin)
+nnoremap <C-P> :Files<CR>
 
 " save and exit
 inoremap <C-q> <Esc>:wqa<CR>
@@ -536,11 +542,11 @@ function! DefaultLeaderShortcuts()
     " open previous buffer
     nnoremap <leader>[ :bprevious<CR>
 
-    " fuzzy find in current file
-    " <leader>/ " from fzf plugin
+    " fuzzy find content in current buffer (requires junegunn/fzf)
+    nnoremap <leader>/ :BLines<CR>
 
-    " jump to other/closing tag
-    " <leader>. " from MatchTagAlways plugin
+    " jump to other/closing tag (requires valloric/MatchTagAlways)
+    nnoremap <leader>. :MtaJumpToOtherTag<cr>
 
     " noop
     nnoremap <leader>a :echo "\<leader\>a"<cr>
@@ -549,6 +555,21 @@ function! DefaultLeaderShortcuts()
     " noop
     nnoremap <leader>b :echo "\<leader\>b"<cr>
     nnoremap <leader>B :echo "\<leader\>B"<cr>
+
+    " Show all diagnostics (requires neoclide/coc.nvim)
+    nnoremap <silent> <leader>ca  :<C-u>CocList diagnostics<cr>
+
+    " Manage CoC extensions (requires neoclide/coc.nvim)
+    nnoremap <silent> <leader>ce  :<C-u>CocList extensions<cr>
+
+    " Show CoC commands (requires neoclide/coc.nvim)
+    nnoremap <silent> <leader>cm  :<C-u>CocList commands<cr>
+
+    " Find symbol of current document (requires neoclide/coc.nvim)
+    nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
+
+    " Search workspace symbols (requires neoclide/coc.nvim)
+    nnoremap <silent> <leader>ci  :<C-u>CocList -I symbols<cr>
 
     " edit one of the vim config files (requires set hidden)
     nnoremap <leader>cc :e ~/.config/nvim/init.vim<CR>
@@ -561,30 +582,36 @@ function! DefaultLeaderShortcuts()
     " noop
     nnoremap <leader>C :echo "\<leader\>C"<cr>
 
-    " noop
-    nnoremap <leader>d :echo "\<leader\>d"<cr>
-    nnoremap <leader>D :echo "\<leader\>D"<cr>
+    " go to definition (requires neoclide/coc.nvim)
+    nmap <silent> <leader>d <Plug>(coc-definition)
 
-    " fuzzy open file
-    " <leader>e " from fzf plugin
+    " noop
+    nnoremap <leader>D :echo "\<leader\>D"<cr>
 
     " noop
     nnoremap <leader>E :echo "\<leader\>E"<cr>
 
-    " fuzzy find in all files in tree
-    " <leader>f " from fzf plugin
+    " fuzzy find content in all files in tree  (requires junegunn/fzf)
+    nnoremap <leader>f :Lines<CR>
 
-    " set filetype
-    nnoremap <leader>F :set filetype=<CR>:source ~/.config/nvim/init.vim<CR>:set filetype=
+    " autoformat code (requires neoclide/coc.nvim)
+    xmap <leader>F <Plug>(coc-format-selected)
+    nmap <leader>F :Format<CR>
 
-    " Toggle (git) diff bar
-    " <leader>g " from signify plugin
+    " Toggle (git) diff bar (requires mhinz/vim-signify)
+    nnoremap <leader>g :SignifyToggle<CR>
+
+    " go to definition and similar (requires neoclide/coc.nvim)
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
 
     " Toggle Goyo
-    " <leader>G
+    nnoremap <leader>G :Goyo<CR>
 
-    " enable hard mode (for practice purposes)
-    " <leader>h " from hard mode plugin
+    " enable hard mode for training purposes (requires wikitopian/hardmode)
+    nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
 
     " noop
     nnoremap <leader>H :echo "\<leader\>H"<cr>
@@ -597,11 +624,15 @@ function! DefaultLeaderShortcuts()
 
     " noop
     nnoremap <leader>j :echo "\<leader\>j"<cr>
-    nnoremap <leader>J :echo "\<leader\>J"<cr>
+
+    " do default action for next item (requires neoclide/coc.nvim)
+    nnoremap <silent> <leader>J  :<C-u>CocNext<CR>
 
     " noop
     nnoremap <leader>k :echo "\<leader\>k"<cr>
-    nnoremap <leader>K :echo "\<leader\>K"<cr>
+
+    " do default action for previous item (requires neoclide/coc.nvim)
+    nnoremap <silent> <leader>K  :<C-u>CocPrev<CR>
 
     " toggle relative line numbers
     nnoremap <leader>l :call RelativeNumberToggle()<CR>
@@ -609,8 +640,8 @@ function! DefaultLeaderShortcuts()
     " toggle absolute line numbers
     nnoremap <leader>L :call AbsoluteNumberToggle()<CR>
 
-    " toggle visible marks
-    " <leader>m " from vim-signature
+    " toggle visible marks (requires vim-signature)
+    nnoremap <leader>m :SignatureToggleSigns<CR>
 
     " noop
     nnoremap <leader>M :echo "\<leader\>M"<cr>
@@ -627,14 +658,18 @@ function! DefaultLeaderShortcuts()
 
     " paste from clipboard in stead of selection
     nnoremap <leader>p "+p
-    nnoremap <leader>P "+P
+
+    " resume latest CoC list (requires neoclide/coc.nvim)
+    nnoremap <silent> <leader>P  :<C-u>CocListResume<CR>
 
     " noop
     nnoremap <leader>q :echo "\<leader\>q"<cr>
     nnoremap <leader>Q :echo "\<leader\>Q"<cr>
 
+    " rename symbol (requires neoclide/coc.nvim)
+    nmap <leader>r <Plug>(coc-rename)
+
     " noop
-    nnoremap <leader>r :echo "\<leader\>r"<cr>
     nnoremap <leader>R :echo "\<leader\>R"<cr>
 
     "<leader>s: sort (visual mode)
@@ -643,14 +678,16 @@ function! DefaultLeaderShortcuts()
     " <buffer> noop
     nnoremap <leader>S :echo "\<leader\>S"<cr>
 
+    " browse through tags (requires FZF plugin)
+    nnoremap <leader>t :Tag<CR>
+
     " create tags
-    nnoremap <leader>t :silent !ctags -f .tags -R .<CR>
+    nnoremap <leader>T :silent !ctags -f .tags -R .<CR>
+
+    " show undotree (requires mbbill/undotree)
+    nnoremap <leader>u :UndotreeShow<CR><C-w>h
 
     " noop
-    nnoremap <leader>T :echo "\<leader\>T"<cr>
-
-    " noop
-    nnoremap <leader>u :echo "\<leader\>u"<cr>
     nnoremap <leader>U :echo "\<leader\>U"<cr>
 
     " noop
@@ -678,9 +715,8 @@ function! DefaultLeaderShortcuts()
 endfunction
 
 function PythonLeaderShortcuts()
-    " black python formatting
-    nnoremap <buffer> <leader>b :Black<CR>
-    vnoremap <buffer> <leader>b :!black - 2>/dev/null<CR>
+    " black python formatting for visual selection
+    xmap <buffer> <leader>F :!black - 2>/dev/null<CR>
 
     " go to definition (python only) -- inherited from plugins
     " <leader>d
@@ -873,9 +909,10 @@ autocmd FileType markdown silent call MarkdownFunctionKeyShortcuts()
 "-------------------------------------------------------------------------------
 
 function! Edit()
-    if bufname('%') != ''
+    try
         edit
-    endif
+    catch
+    endtry
 endfunction
 autocmd BufEnter * call Edit()
 
