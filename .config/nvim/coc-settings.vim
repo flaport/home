@@ -2,7 +2,23 @@
 let g:coc_node_path = '/usr/bin/node'
 
 " we need following CoC extensions
-let g:coc_global_extensions = ['coc-python', 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-prettier', 'coc-snippets', 'coc-vimlsp', 'coc-html', 'coc-css', 'coc-cmake']
+let g:coc_global_extensions = [
+    \'coc-ccls',
+    \'coc-cmake',
+    \'coc-css',
+    \'coc-eslint',
+    \'coc-html',
+    \'coc-json',
+    \'coc-prettier',
+    \'coc-python',
+    \'coc-sh',
+    \'coc-snippets',
+    \'coc-tsserver',
+    \'coc-vimlsp',
+\]
+
+" there's a problem with coc-ccls, it doesn't property link its libraries. Let's do this manually...
+silent !ln -sf $HOME/.config/coc/extensions/node_modules/coc-ccls/node_modules/ws/lib $HOME/.config/coc/extensions/node_modules/coc-ccls/lib
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -51,7 +67,7 @@ else
 endif
 
 " show documentation of word under cursor
-function! s:show_documentation()
+function! ShowDocumentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else

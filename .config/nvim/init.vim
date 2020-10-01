@@ -346,7 +346,7 @@ autocmd FileType python silent call PythonCustomCommands()
 tnoremap `<Esc> <C-\><C-n>
 
 " Use K to show documentation in preview window (reqruires neoclide/coc.nvim)
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> K :call ShowDocumentation()<CR>
 
 " Use `[g` and `]g` to navigate diagnostics (requires neoclide/coc.nvim)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -583,7 +583,7 @@ function! DefaultLeaderShortcuts()
     nnoremap <leader>C :echo "\<leader\>C"<cr>
 
     " go to definition (requires neoclide/coc.nvim)
-    nmap <silent> <leader>d <Plug>(coc-definition)
+    nmap <silent> <leader>d :w<CR><Plug>(coc-definition)
 
     " noop
     nnoremap <leader>D :echo "\<leader\>D"<cr>

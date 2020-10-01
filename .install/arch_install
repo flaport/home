@@ -468,6 +468,10 @@ link /usr/bin/nvim /usr/bin/vim
 link /usr/bin/nvim /usr/bin/vi
 ## instant-markdown-d used for instant markdown visualization in vim
 npm_install instant-markdown-d
+## ccls: C language server (required by CoC plugin for nvim)
+pacman_install ccls
+## bash language server (required by CoC plugin for nvim)
+pacman_install bash-language-server
 ## eslint: javascript linter (required by COC plugin for nvim)
 npm_install eslint
 ## ctags: recommended vim dependency for jump-to-tag functionality

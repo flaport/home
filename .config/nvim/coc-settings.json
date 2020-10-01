@@ -24,11 +24,35 @@
   "html.format.enable": true,
   "json.format.enable": true,
   "python.autoComplete.addBrackets": true,
-  "python.formatting.provider":"black",
+  "python.formatting.provider": "black",
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
   "suggest.autoTrigger": "always",
   "suggest.echodocSupport": true,
   "suggest.maxCompleteItemCount": 10,
-  "suggest.noselect": true
+  "suggest.noselect": true,
+  "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    },
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [
+        ".ccls",
+        "compile_commands.json",
+        ".vim/",
+        ".git/",
+        ".hg/"
+      ],
+      "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
+        }
+      }
+    }
+  }
 }
