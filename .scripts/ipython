@@ -1,0 +1,9 @@
+#!/bin/sh
+
+IPYTHON=$(which python | sed 's/python$/ipython/g' )
+
+if [ ! -x "$IPYTHON" ]; then
+    IPYTHON="$HOME/.anaconda/bin/ipython"
+fi
+
+"$IPYTHON" "$@"

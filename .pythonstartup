@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import warnings
+import importlib
 import contextlib
 from shutil import move, move as mv, copy, copy as cp
 
@@ -16,22 +17,35 @@ def nostdout():
         sys.stdout, sys.stderr = oldstdout, oldstderr
         file.close()
 
-with nostdout():
-    try:
-        import matplotlib.pyplot as plt
-    except ImportError:
-        pass
+class LazyModule:
+    """ Import module on first attribute access
 
-    try:
-        import torch
-        import torch.nn as nn
-        import torch.nn.functional as F
-    except ImportError:
-        pass
+        - for faster REPL loadtimes
+        - to prevent ImportErrors
+    """
+    def __init__(self, name="", fullname=""):
+        self.name = name
+        self.fullname = fullname
+    def _import(self):
+        module = importlib.import_module(self.fullname)
+        globals()[self.name] = module
+        return module
+    def __getattr__(self, attr):
+        module = self._import()
+        attr = getattr(module, attr)
+        return attr
+    def __repr__(self):
+        module = self._import()
+        return repr(module)
+    def __str__(self):
+        module = self._import()
+        return str(module)
 
-    try:
-        import numpy as np
-    except ImportError:
-        pass
+np = LazyModule(name="np", fullname="numpy")
+sp = LazyModule(name="sp", fullname="scipy")
+nn = LazyModule(name="nn", fullname="torch.nn")
+torch = LazyModule(name="torch", fullname="torch")
+F = LazyModule(name="F", fullname="torch.nn.functional")
+plt = LazyModule(name="plt", fullname="matplotlib.pyplot")
+plt = LazyModule(name="plt", fullname="matplotlib.pyplot")
 
-del nostdout

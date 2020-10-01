@@ -1,3 +1,5 @@
+"    _____ _     ____  ____  ____  ____  _____
+"   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
 "   |  __\| |   | / \||  \/|| / \||  \/|  / \
 "   | |   | |_/\| |-|||  __/| \_/||    /  | |
 "   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
@@ -33,6 +35,8 @@ endif
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
 Plug 'christoomey/vim-tmux-navigator' " tmux navigation
+Plug 'hanschen/vim-ipython-cell' " better integration with ipython (requires slime)
+Plug 'jpalardy/vim-slime' " better integration between text and terminal buffers
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
 Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
 Plug 'junegunn/goyo.vim', " distraction free writing.
@@ -42,7 +46,6 @@ Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'psf/black' " black python plugin
-Plug 'voldikss/vim-floaterm' " floating terminal
 Plug 'Shougo/context_filetype.vim' " completion from other opened files
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'szymonmaszke/vimpyter' " edit jupyter notebooks
@@ -54,6 +57,7 @@ Plug 'tpope/vim-surround' " easily surround word with quotes or tags
 Plug 'valloric/MatchTagAlways' " highlight matching html tags
 Plug 'vim-airline/vim-airline' " better status bar
 Plug 'vim-utils/vim-man' " man pages in vim
+Plug 'voldikss/vim-floaterm' " floating terminal
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
 call plug#end() " stop loading plugins
 
@@ -69,6 +73,21 @@ endif
 
 "" Plugin Settings
 "-------------------------------------------------------------------------------
+
+
+" hanschen/vim-ipython-cell ----------------------
+
+
+
+" jpalardy/vim-slime -----------------------------
+let g:slime_no_mappings = 1
+let g:slime_target = "neovim"
+let g:slime_python_ipython = 1
+let g:slime_dont_ask_default = 1
+let g:slime_cell_delimiter = "##"
+let g:slime_paste_file = "$HOME/.config/nvim/slime_paste"
+let g:slime_default_config = [5]
+
 
 " jremmen/vim-ripgrep ----------------------------
 " default settings when ripgrep is available
