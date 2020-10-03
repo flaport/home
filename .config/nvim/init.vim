@@ -321,9 +321,9 @@ endfunction
 
 function! PythonCustomCommands()
     " functions to spawn new ipython shells
-    command! T call NewTerminal("ipython")
-    command! HT call NewHorizontalTerminal("ipython")
-    command! VT call NewVerticalTerminal("ipython")
+    command! T call NewTerminal("ipython --matplotlib")
+    command! HT call NewHorizontalTerminal("ipython --matplotlib")
+    command! VT call NewVerticalTerminal("ipython --matplotlib")
 endfunction
 
 
@@ -860,6 +860,8 @@ function! MarkdownFunctionKeyShortcuts()
     " view markdown preview
     nnoremap <buffer> <F5> :InstantMarkdownPreview<CR>
     nnoremap <buffer> <F5><F5> :InstantMarkdownPreview<CR>:execute 'silent !'.g:instant_markdown_browser.' localhost:'.g:instant_markdown_port<CR>
+    " run python code cell (marked by '```' or '```python')
+    nnoremap <buffer> <CR> :call RunPython("cellstay")<cr>
 endfunction
 
 function! RunPython(type)
@@ -867,14 +869,13 @@ function! RunPython(type)
         let b:slime_config = [g:last_terminal_job_id]
         if (a:type == "celljump")
             IPythonCellExecuteCellJump
-            normal j
         elseif (a:type == "cellstay")
             IPythonCellExecuteCell
         elseif (a:type == "all")
             IPythonCellRunTime
         endif
     else
-        call NewHorizontalTerminal("ipython")
+        call NewHorizontalTerminal("ipython --matplotlib")
         if exists("g:last_terminal_job_id")
             sleep 1
             call RunPython(a:type)

@@ -74,6 +74,12 @@ endif
 " Plugin settings are defined here. Keyboard shortcuts are defined in init.vim.
 
 
+" hanschen/vim-ipython-cell ----------------------
+
+let g:ipython_cell_tag = ['##+', '```', '```python', '```py']
+let g:ipython_cell_regex=1
+
+
 " jpalardy/vim-slime -----------------------------
 
 let g:slime_no_mappings = 1
