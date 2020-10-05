@@ -872,30 +872,32 @@ systemctl_enable org.cups.cupsd
 pacman_install fontconfig
 ## dejavu font: inkscape dependency (fully blocked by my fontconfig):
 pacman_install ttf-dejavu
-## cantarell fonts: gtk3 dependency (partly blocked by my fontconfig):
+## cantarell fonts: gtk3 dependency (fully blocked by my fontconfig):
 pacman_install cantarell-fonts
-## adobe fonts: nemo and other GNOME apps dependency (partly blocked by my fontconfig):
+## adobe fonts: nemo and other GNOME apps dependency (fully blocked by my fontconfig):
 pacman_install adobe-source-code-pro-fonts
-## liberation fonts: chromium, firefox and mplayer dependency (partly blocked by my fontconfig):
+## liberation fonts: chromium, firefox and mplayer dependency (fully blocked by my fontconfig):
 pacman_install ttf-liberation
+## ubuntu fonts: a beautiful mono and sans font (my default mono font)
+pacman_install ttf-ubuntu-font-family
 ## gnu free fonts: optional vlc dependency (partly blocked by my fontconfig):
-pacman_install gnu-free-fonts
+#pacman_install gnu-free-fonts
 ## gnome core fontset (partly blocked by my fontconfig):
-pacman_install gsfonts
+#pacman_install gsfonts
 ## a nice monospace font with ligatures (partly blocked by my fontconfig):
-pacman_install ttf-fira-code
+#pacman_install ttf-fira-code
 ## a patched fira code font with nerd font glyphs (partly blocked by my fontconfig):
-yay_install nerd-fonts-fira-code
+#yay_install nerd-fonts-fira-code
 ## bitstream vera: alternative to dejavu (not blocked by my fontconfig):
-pacman_install ttf-bitstream-vera
+#pacman_install ttf-bitstream-vera
 ## nice serif (Linux Libertine) and sans-serif (Linux Biolinum) fonts (not blocked by my fontconfig):
 pacman_install ttf-linux-libertine
 ## recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
-yay_install ttf-ms-fonts
+#yay_install ttf-ms-fonts
 ## recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
-yay_install ttf-vista-fonts
+#yay_install ttf-vista-fonts
 ## alternative nice font package (partly blocked by my fontconfig):
-pacman_install ttf-droid
+#pacman_install ttf-droid
 ## yet another nice monospace font:
 #yay_install ttf-inconsolata-g
 ## simplified chinese font (sans) which messes with korean symbols (fully blocked by my fontconfig):
