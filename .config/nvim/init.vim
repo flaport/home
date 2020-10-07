@@ -878,8 +878,10 @@ function! MarkdownFunctionKeyShortcuts()
     " view markdown preview
     nnoremap <buffer> <F5> :InstantMarkdownPreview<CR>
     nnoremap <buffer> <F5><F5> :InstantMarkdownPreview<CR>:execute 'silent !'.g:instant_markdown_browser.' localhost:'.g:instant_markdown_port<CR>
-    " run python code cell (marked by '```' or '```python')
-    nnoremap <buffer> <CR> :call RunPython("cellstay")<cr>
+    " run python code cell (marked by '```' or '```python') [disabled in vimwiki]
+    if fnamemodify(expand('%'), ':p:h') != expand('~/VimWiki')
+        nnoremap <buffer> <CR> :call RunPython("cellstay")<cr>
+    endif
 endfunction
 
 function! RunPython(type)

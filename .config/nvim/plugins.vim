@@ -55,6 +55,7 @@ Plug 'tpope/vim-surround' " easily surround word with quotes or tags
 Plug 'valloric/MatchTagAlways' " highlight matching html tags
 Plug 'vim-airline/vim-airline' " better status bar
 Plug 'vim-utils/vim-man' " man pages in vim
+Plug 'vimwiki/vimwiki' " note taking in vim
 Plug 'voldikss/vim-floaterm' " floating terminal
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
 call plug#end() " stop loading plugins
@@ -151,10 +152,19 @@ let g:markdown_syntax_conceal = 1
 let g:markdown_minlines = 100
 
 
-" vim airline ------------------------------------
+" vim-airline/vim-airline ------------------------
 
 " enable powerline fonts for vim airline
 let g:airline_powerline_fonts = 1
-" let g:airline_theme="base16_gruvbox_dark_hard"
 let g:airline_theme="xresources_airline"
+
+" vimwiki/vimwiki --------------------------------
+
+let g:vimwiki_list = [
+    \ {
+    \    'path': '~/VimWiki/',
+    \    'syntax': 'markdown',
+    \    'ext': '.md'
+    \ }
+\ ]
 
