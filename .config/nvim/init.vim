@@ -420,6 +420,9 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 " increase number
 " <C-a> " standard vim keybinding
 
+" scroll page backward
+" <C-b> " standard vim keybinding
+
 " exit current buffer without saving
 function! CloseBuffer()
     let numbuffers = len(getbufinfo({'buflisted':1}))
@@ -593,7 +596,14 @@ function! DefaultLeaderShortcuts()
     nnoremap <leader>E :echo "\<leader\>E"<cr>
 
     " fuzzy find content in all files in tree  (requires junegunn/fzf)
-    nnoremap <leader>f :Lines<CR>
+    nnoremap <leader>fb :Buffers<CR>
+    nnoremap <leader>fc :Commands<CR>
+    nnoremap <leader>ff :Files<CR>
+    nnoremap <leader>fl :Lines<CR>
+    nnoremap <leader>fL :BLines<CR>
+    nnoremap <leader>fm :Marks<CR>
+    nnoremap <leader>fM :Maps<CR>
+    nnoremap <leader>ft :Tags<CR>
 
     " autoformat code (requires neoclide/coc.nvim)
     xmap <leader>F <Plug>(coc-format-selected)
