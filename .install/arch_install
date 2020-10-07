@@ -922,9 +922,9 @@ pacman_install ttf-ubuntu-font-family
 #pacman_install ttf-bitstream-vera
 ## nice serif (Linux Libertine) and sans-serif (Linux Biolinum) fonts (not blocked by my fontconfig):
 pacman_install ttf-linux-libertine
-## recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
+## recommended font package for compatibility with MS Office (fully blocked and partly aliased by my fontconfig):
 #yay_install ttf-ms-fonts
-## recommended font package for compatibility with MS Office (partly blocked by my fontconfig):
+## recommended font package for compatibility with MS Office (fully blocked and partly aliased by my fontconfig):
 #yay_install ttf-vista-fonts
 ## alternative nice font package (partly blocked by my fontconfig):
 #pacman_install ttf-droid

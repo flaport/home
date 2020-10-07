@@ -113,6 +113,7 @@ for option in options:
         file.write("#!/usr/bin/env bash\n")
         file.write(" ".join(command)+"\n")
         file.write("xset r rate 200 45\n") # reset keystroke repeat rate
+        file.write("wallpaper current &\n")
         file.write(f'cat "{filename}" > {os.path.join(os.path.dirname(filename), "last")}')
 
     # make executable for user and group
@@ -134,7 +135,9 @@ if __name__ == "__main__":
 
     with open(filename, "w") as file:
         file.write("#!/usr/bin/env bash\n")
-        file.write(" ".join(command))
+        file.write(" ".join(command)+"\n")
+        file.write("xset r rate 200 45\n") # reset keystroke repeat rate
+        file.write("wallpaper current &\n")
     os.chmod(filename, stat.S_IRWXU | stat.S_IRWXG)
 
     call(command)
@@ -149,3 +152,5 @@ if __name__ == "__main__":
         if picom and call(["pidof", "picom"], stdout=file, stderr=file):
             Popen(["picom", "--experimental-backends"], stdout=file, stderr=file)
 
+    # set wallpaper again
+    Popen(["wallpaper", "current"])
