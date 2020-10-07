@@ -5,7 +5,6 @@
 "   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 "
 
-
 "" Plugins
 "-------------------------------------------------------------------------------
 
@@ -17,8 +16,10 @@ autocmd BufNewFile,BufEnter,BufRead * filetype on
 autocmd BufNewFile,BufEnter,BufRead * filetype plugin on
 autocmd BufNewFile,BufEnter,BufRead * filetype indent on
 autocmd BufNewFile,BufEnter,BufRead *.vim set filetype=vim
+autocmd BufNewFile,BufEnter,BufRead *.ipynb set filetype=ipynb
 autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty set filetype=tex
 autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
+
 " automatically cd into folder of current file (disabled, but mapped to <leader>cd)
 " autocmd BufEnter * silent! lcd %:p:h
 
@@ -850,6 +851,13 @@ function! PythonFunctionKeyShortcuts()
     nnoremap <buffer> <F5> :call RunPython("all")<cr>
 endfunction
 
+function! JupyterFunctionKeyShortcuts()
+    " run cell and jump to next cell (use '##' to mark a cell)
+    nnoremap <buffer> <CR> :call RunPython("celljump")<cr>
+    " run cell and stay (use '##' to mark a cell)
+    nnoremap <buffer> <leader><CR> :call RunPython("cellstay")<cr>
+endfunction
+
 function! LatexFunctionKeyShortcuts()
     " build latex document
     nnoremap <buffer> <F5> :call LatexBuild("")<CR>
@@ -901,8 +909,9 @@ endfunction
 call DefaultFunctionKeyShortcuts()
 
 " enable special keyboard shortcuts according to filetype:
-autocmd FileType python silent call PythonFunctionKeyShortcuts()
 autocmd FileType tex silent call LatexFunctionKeyShortcuts()
+autocmd FileType ipynb silent call JupyterFunctionKeyShortcuts()
+autocmd FileType python silent call PythonFunctionKeyShortcuts()
 autocmd FileType markdown silent call MarkdownFunctionKeyShortcuts()
 
 

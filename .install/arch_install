@@ -218,12 +218,12 @@ submodule_install(){ # will only install the first argument!
 }
 
 pip3_install() {
-    printf "[ pip  ] install $1... "
-    printf "\n\n\n[ pip  ] install $1\n" >> $LOG
-    printf "\n\n\n[ pip  ] install $1\n" >> $ERR
+    printf "[ pip3 ] install $1... "
+    printf "\n\n\n[ pip3 ] install $1\n" >> $LOG
+    printf "\n\n\n[ pip3 ] install $1\n" >> $ERR
 
     # check if package is already installed...
-    /usr/bin/python -c "import $1" >/dev/null 2>/dev/null
+    /usr/bin/python3 -c "import $1" >/dev/null 2>/dev/null
     if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
         printf "already installed.\n" >> $LOG
@@ -234,6 +234,28 @@ pip3_install() {
     printf "sudo /usr/bin/python3 -m pip install $1\n" >> $LOG
     printf "sudo /usr/bin/python3 -m pip install $1\n" >> $ERR
     echo $password | sudo -S /usr/bin/python3 -m pip install $1 >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+pip2_install() {
+    printf "[ pip2 ] install $1... "
+    printf "\n\n\n[ pip2 ] install $1\n" >> $LOG
+    printf "\n\n\n[ pip2 ] install $1\n" >> $ERR
+
+    # check if package is already installed...
+    /usr/bin/python2 -c "import $1" >/dev/null 2>/dev/null
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
+        printf "already installed.\n"
+        printf "already installed.\n" >> $LOG
+        printf "already installed.\n" >> $ERR
+        return 1
+    fi
+
+    printf "sudo /usr/bin/python2 -m pip install $1\n" >> $LOG
+    printf "sudo /usr/bin/python2 -m pip install $1\n" >> $ERR
+    echo $password | sudo -S /usr/bin/python2 -m pip install $1 >> $LOG 2>> $ERR
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -343,6 +365,7 @@ git_install https://aur.archlinux.org/yay.git
 pacman_install npm
 #pip (python package manager)
 pacman_install python-pip
+pacman_install python2-pip
 
 
 # Terminal: tools and TUIs
@@ -463,6 +486,13 @@ echo $password | sudo -S chmod -R g+rw /var/lib/transmission
 pacman_install lsd
 ## vim / neovim: terminal text editor
 pacman_install neovim
+## pynvim: better integration of python with neovim:
+pacman_install python-pynvim
+pip2_install pynvim
+## ruby-neovim: better integration of ruby with neovim:
+yay_install ruby-neovim
+## node-neovim: better integration of nodejs with neovim:
+npm_install neovim
 ## link neovim to standard vim binary:
 link /usr/bin/nvim /usr/bin/vim
 link /usr/bin/nvim /usr/bin/vi
@@ -1060,6 +1090,9 @@ if [ $? -eq 0 ]; then
 fi
 ## Python programming language:
 pacman_install python
+pacman_install ipython
+pip2_install ipython
+
 ## Scientific computing with octave (Matlab alternative)
 pacman_install octave
 
