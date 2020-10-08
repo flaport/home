@@ -44,7 +44,7 @@ Plug 'lilydjwg/colorizer' " paint css colors with the real color
 Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'Shougo/context_filetype.vim' " completion from other opened files
+Plug 'shougo/context_filetype.vim' " completion from other opened files
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'szymonmaszke/vimpyter' " edit jupyter notebooks
 Plug 'tpope/vim-commentary' " easy comment
@@ -137,7 +137,9 @@ let g:instant_markdown_autostart = 0
 " obviously, enable markdown autoscroll
 let g:instant_markdown_autoscroll = 1
 " don't use the python server (requires npm package: `npm -g install instant-markdown-d`)
-let g:instant_markdown_python = 0
+" let g:instant_markdown_python = 0
+" use python server (requires python package: `pip install smdv`)
+let g:instant_markdown_python = 1
 " use custom webapp script to open browser:
 let g:instant_markdown_browser = "webapp -f"
 
@@ -163,8 +165,23 @@ let g:airline_theme="xresources_airline"
 let g:vimwiki_list = [
     \ {
     \    'path': '~/VimWiki/',
+    \    'template_path': '~/VimWiki/templates',
+    \    'template_default': 'default',
     \    'syntax': 'markdown',
-    \    'ext': '.md'
+    \    'ext': '.md',
+    \    'path_html': '~/VimWiki/html',
+    \    'custom_wiki2html': 'vimwiki_markdown',
+    \    'template_ext': '.tpl'
     \ }
 \ ]
-
+function! FormatPandocMarkdown()
+    delmarks m
+    normal mm
+    execute 'silent %!format_pandoc_markdown'
+    normal `m
+    delmarks m
+endfunction
+function! SetVimWikiPandocFormatter()
+    autocmd BufWritePre *.md :call FormatPandocMarkdown()
+endfunction
+autocmd FileType vimwiki silent call SetVimWikiPandocFormatter()

@@ -486,6 +486,9 @@ echo $password | sudo -S chmod -R g+rw /var/lib/transmission
 pacman_install lsd
 ## vim / neovim: terminal text editor
 pacman_install neovim
+## link neovim to standard vim binary:
+link /usr/bin/nvim /usr/bin/vim
+link /usr/bin/nvim /usr/bin/vi
 ## pynvim: better integration of python with neovim:
 pacman_install python-pynvim
 pip2_install pynvim
@@ -493,9 +496,8 @@ pip2_install pynvim
 yay_install ruby-neovim
 ## node-neovim: better integration of nodejs with neovim:
 npm_install neovim
-## link neovim to standard vim binary:
-link /usr/bin/nvim /usr/bin/vim
-link /usr/bin/nvim /usr/bin/vi
+## vimwiki-markdown: better integration for mardown files in vimwiki:
+pip3_install vimwiki-markdown
 ## instant-markdown-d used for instant markdown visualization in vim
 npm_install instant-markdown-d
 ## ccls: C language server (required by CoC plugin for nvim)

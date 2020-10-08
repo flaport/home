@@ -1,0 +1,12 @@
+#!/bin/sh
+
+pandoc=$(which pandoc 2> /dev/null)
+content=$(cat -)
+
+if [ -x "$pandoc" ]; then
+    printf "$content" | "$pandoc" --from markdown --to markdown
+    exit 0
+fi
+
+printf "$content"
+exit 1
