@@ -251,7 +251,7 @@ appointments1(){
     notify-send "📅 Appointment:" "$apt1$apt2\n\n[ middle click to open calcurse. ]"
 }
 appointments2(){
-    $TERMINAL -e calcurse
+    st -e calcurse
 }
 
 # -----------
@@ -459,7 +459,7 @@ pacmanstatus1(){ # pacman
     notify-send "📦 pacman" "$num packages can be updated\n\n[ middle click to update with \"pacman -Syu\" ]"
 }
 pacmanstatus2(){ # update packages
-    sudo -A -p "[sudo] password for 'pacman -Syu'" "$TERMINAL" -n float -e pacman -Syu
+    sudo -A -p "[sudo] password for 'pacman -Syu'" st -n float -e pacman -Syu
 }
 
 # -----------
@@ -582,7 +582,7 @@ transmission1(){
     notify-send "$title" "$msg"
 }
 transmission2(){
-    $TERMINAL -e "$HOME/.local/bin/transmission"
+    st -e "$HOME/.local/bin/transmission"
 }
 transmission3(){
     kill -SIGTERM "$(pidof transmission-daemon)"
@@ -617,7 +617,7 @@ weather1(){ # mouse-button 1 action for weather widget
     notify-send "⛅ weather" "$(weather)\n$report\n\n[ middle click for full report ]"
 }
 weather2(){
-    $TERMINAL -n float -f mono:12 -g 130x40+1130 -e update_weather --block
+    st -n float -f mono:12 -g 130x40+1130 -e update_weather --block
 }
 
 # -----------
