@@ -1,12 +1,19 @@
 #!/bin/sh
 
 pandoc=$(which pandoc 2> /dev/null)
-content=$(cat -)
 
 if [ -x "$pandoc" ]; then
-    printf "$content" | "$pandoc" --from markdown --to markdown
+    cat - \
+        | "$pandoc" --from markdown --to markdown \
+        | sed 's/-   \[ \]/- \[ \]/g' \
+        | sed 's/-   \\\[ \\\]/- \[ \]/g' \
+        | sed 's/-   \\\[\.\\\]/- \[\.\]/g' \
+        | sed 's/-   \\\[o\\\]/- \[o\]/g' \
+        | sed 's/-   \\\[O\\\]/- \[O\]/g' \
+        | sed 's/-   \[x\]/- \[X\]/g' \
+
     exit 0
 fi
 
-printf "$content"
+cat -
 exit 1

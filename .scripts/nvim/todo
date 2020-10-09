@@ -1,0 +1,16 @@
+#!/bin/sh
+
+vimwiki="$HOME/VimWiki"
+
+show() {
+    if [ ! -z "$1" ]; then
+        short() {
+            python -c "c=open('$vimwiki/todo.md').read(); print('\n'.join(c.split('---')[0].split('\n')[2:-2]))"
+        }
+        "$@"
+    else
+        /usr/bin/cat $vimwiki/todo.md
+    fi
+}
+
+"$@"
