@@ -137,9 +137,9 @@ let g:instant_markdown_autostart = 0
 " obviously, enable markdown autoscroll
 let g:instant_markdown_autoscroll = 1
 " don't use the python server (requires npm package: `npm -g install instant-markdown-d`)
-" let g:instant_markdown_python = 0
+let g:instant_markdown_python = 0
 " use python server (requires python package: `pip install smdv`)
-let g:instant_markdown_python = 1
+" let g:instant_markdown_python = 1
 " use custom webapp script to open browser:
 let g:instant_markdown_browser = "webapp -f"
 
