@@ -672,13 +672,17 @@ function! DefaultLeaderShortcuts()
         try
             normal "+p
         catch
+            let cwd = getcwd()
+            lcd %:p:h
             let description = expand('<cWORD>')
             let filename = system('nvim_clipboard_image img/'.description)
-            normal diWD
+            let @a = " "
+            normal "_diW"aD
             let line = "![".description."](".filename.")"
             put =line
-            put "
+            put a
             normal kkJJ
+            execute 'lcd '.cwd
         endtry
     endfunction
     nnoremap <leader>p :call Paste()<CR>

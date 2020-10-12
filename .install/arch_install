@@ -1292,7 +1292,7 @@ pip3_install notedown
 #pip3_install google-auth-httplib2
 #pip3_install google-auth-oauthlib
 ## smdv: simple markdown viewer
-#pip3_install smdv
+pip3_install smdv
 ## run jupyterlab as a systemd service:
 systemctl_create jupyterhub
 #systemctl_enable jupyterhub
