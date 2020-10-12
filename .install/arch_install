@@ -1092,8 +1092,9 @@ if [ $? -eq 0 ]; then
 fi
 ## Python programming language:
 pacman_install python
-pacman_install ipython
 pip2_install ipython
+sudo move /usr/bin/ipython /usr/bin/ipython2
+pacman_install ipython
 
 ## Scientific computing with octave (Matlab alternative)
 pacman_install octave

@@ -259,7 +259,7 @@ super + shift + Return
 
 # new floating ipython shell
 super + control + Return
-    cd $HOME; st -n float -e $HOME/.anaconda/bin/ipython
+    cd $HOME; st -n float -e $HOME/.anaconda/bin/ipython3
 
 # toggle pause / play
 super + shift + equal
