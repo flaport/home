@@ -668,7 +668,20 @@ function! DefaultLeaderShortcuts()
     nnoremap <leader>O :echo "\<leader\>O"<cr>
 
     " paste from clipboard in stead of selection
-    nnoremap <leader>p "+p
+    function! Paste()
+        try
+            normal "+p
+        catch
+            let description = expand('<cWORD>')
+            let filename = system('nvim_clipboard_image img/'.description)
+            normal diWD
+            let line = "![".description."](".filename.")"
+            put =line
+            put "
+            normal kkJJ
+        endtry
+    endfunction
+    nnoremap <leader>p :call Paste()<CR>
 
     " resume latest CoC list (requires neoclide/coc.nvim)
     nnoremap <silent> <leader>P  :<C-u>CocListResume<CR>

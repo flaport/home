@@ -17,6 +17,25 @@ If more than one argument is given, this script errors out.
 If "--base64" option is given, no filename should be supplied and the
 base64 png-representation will be print out in stead of the filename.
 
+
+recommended vim-mapping::
+
+    function! Paste()
+        try
+            normal "+p
+        catch
+            let description = expand('<cWORD>')
+            let filename = system('nvim_clipboard_image img/'.description)
+            normal diWD
+            let line = "![".description."](".filename.")"
+            put =line
+            put "
+            normal kkJJ
+        endtry
+    endfunction
+    nnoremap <leader>p :call Paste()<CR>
+
+
 """
 
 # imports
@@ -31,9 +50,10 @@ def eprint(*args, **kwargs):
     kwargs["file"] = sys.stderr
     print(*args, **kwargs)
 
+
 def parse_args():
     if len(sys.argv) > 2:
-        eprint("usage: nvim_clipboard_image [filename.png]")
+        eprint("usage: nvim_clipboard_image [filename.png]", end="")
         exit(1)
     filename = "."
     if len(sys.argv) == 2:
@@ -41,26 +61,35 @@ def parse_args():
     if os.path.isdir(filename):
         filename = os.path.join(filename, random_filename())
     if filename != "--base64":
+        os.makedirs(
+            os.path.dirname(os.path.abspath(os.path.expanduser(filename))),
+            exist_ok=True,
+        )
         if not filename.endswith(".png"):
             filename = f"{filename}.png"
         if os.path.exists(filename):
-            eprint(f"error: file '{filename}' already exists")
+            eprint(f"error: file '{filename}' already exists", end="")
             exit(1)
     return filename
+
 
 def check_xclip():
     with open(os.devnull, "w") as file:
         exit_code = subprocess.call(["which", "xclip"], stdout=file, stderr=file)
     if exit_code != 0:
-        eprint("error: xclip not installed")
+        eprint("error: xclip not installed", end="")
         exit(exit_code)
 
+
 def get_png_from_clipboard():
-    return subprocess.check_output(["xclip", "-selection", "clipboard", "-target", "image/png", "-o"])
+    return subprocess.check_output(
+        ["xclip", "-selection", "clipboard", "-target", "image/png", "-o"]
+    )
+
 
 def save_bytes_as_png(b, filename=""):
     if not filename:
-        filename=random_filename()
+        filename = random_filename()
     if filename == "--base64":
         b64img = base64.b64encode(b).decode()
         filename = f"data:image/png;base64,{b64img}"
@@ -71,9 +100,11 @@ def save_bytes_as_png(b, filename=""):
         file.write(b)
     return filename
 
+
 def save_png_from_clipboard(filename=""):
     b = get_png_from_clipboard()
     return save_bytes_as_png(b, filename)
+
 
 def random_filename(length=10):
     letters = "abcdefghijklmnopqrstuvwxyz"
@@ -87,9 +118,5 @@ if __name__ == "__main__":
         filename = save_png_from_clipboard(filename)
         print(filename, end="")
     except Exception as e:
-        eprint("error: something went wrong")
+        eprint("error: something went wrong", end="")
         exit(1)
-
-
-
-
