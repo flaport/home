@@ -263,7 +263,7 @@ function! MaybeSave()
         exec "wa"
     endif
 endfunction
-autocmd FocusLost * :silent call MaybeSave()
+" autocmd FocusLost * :silent call MaybeSave()
 
 " save as sudo (make sure SUDO_ASKPASS is set to a password asking program)
 function! SaveAsSudo()
@@ -936,5 +936,35 @@ function! Edit()
     catch
     endtry
 endfunction
-autocmd BufEnter * call Edit()
+" autocmd BufEnter * call Edit()
 
+let g:last_neovim_buffername = expand('%:p')
+function! SmdvPutBufferName()
+    if g:last_neovim_buffername != expand('%:p')
+        let g:last_neovim_buffername = expand('%:p')
+        let content = '{"filename": "'.g:last_neovim_buffername.'"}'
+        let pid = jobstart("curl -X PUT -T - localhost:9876")
+        call chansend(pid, content)
+        call chanclose(pid, 'stdin')
+    endif
+endfunction
+function! SmdvPutBufferContent()
+    let lines = getline(1, '$')
+    let row_num = max([0, line(".") - 1])
+    let lines[row_num] = join([lines[row_num], '\n<span id="marker"></span>'], ' ')
+    let content = join(lines, "\n")
+    let pid = jobstart("curl -X PUT -T - localhost:9876")
+    call chansend(pid, content)
+    call chanclose(pid, 'stdin')
+endfunction
+function! StopSmdv()
+    call system("curl -X DELETE localhost:9876")
+endfunction
+function! StartSmdv()
+    call StopSmdv()
+    call jobstart("smdv --nvim-address ".v:servername." ".expand('%:p'))
+    autocmd BufEnter * call SmdvPutBufferName()
+    autocmd FileType markdown,vimwiki autocmd CursorHold,CursorHoldI,CursorMoved,CursorMovedI <buffer> call SmdvPutBufferContent()
+endfunction
+command! Smdv call StartSmdv()
+command! SmdvStop call StopSmdv()
