@@ -33,7 +33,6 @@ endif
 
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
-Plug 'christoomey/vim-tmux-navigator' " tmux navigation
 Plug 'hanschen/vim-ipython-cell' " better integration with ipython (requires slime)
 Plug 'jpalardy/vim-slime' " better integration between text and terminal buffers
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
@@ -45,6 +44,7 @@ Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'shougo/context_filetype.vim' " completion from other opened files
+Plug 'spolu/dwm.vim' " dynamic window manager for vim
 Plug 'szymonmaszke/vimpyter' " edit jupyter notebooks
 Plug 'tpope/vim-commentary' " easy comment
 Plug 'tpope/vim-markdown' " markdown syntax highlighting
@@ -118,7 +118,7 @@ let g:signify_disable_by_default = 1
 source ~/.config/nvim/coc-settings.vim
 
 
-" Shougo/context_filetype.vim --------------------
+" shougo/context_filetype.vim --------------------
 
 " complete with words from any opened file
 let g:context_filetype#same_filetypes = {}

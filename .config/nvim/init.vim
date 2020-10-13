@@ -432,8 +432,9 @@ function! CloseBuffer()
         exec "qa!"
     endif
 endfunction
-inoremap <C-c> <Esc>:call CloseBuffer()<CR>
-nnoremap <C-c> <Esc>:call CloseBuffer()<CR>
+" inoremap <C-c> <Esc>:call CloseBuffer()<CR>
+" nnoremap <C-c> <Esc>:call CloseBuffer()<CR>
+nmap <C-c> <Plug>DWMClose
 
 " down half screen
 " <C-d> " standard vim keybinding
@@ -450,39 +451,39 @@ tnoremap <C-e> <C-\><C-N>
 " show status
 " <C-g> " standard vim keybinding
 
-" move to split left of current split (also when in terminal mode)
-nnoremap <C-h> <C-w>h
-tnoremap <C-h> <C-\><C-N><C-w>h
-if exists("$TMUX")
-    nnoremap <C-h> :TmuxNavigateLeft<CR>
-endif
 
-" jump forward in cursor position stack (same as TAB; opposite of <C-o>)
+" increase master area (requires dwm.vim)
+nmap <C-h> <Plug>DWMShrinkMaster
+" DISABLED: move to split left of current split (also when in terminal mode)
+" nnoremap <C-h> <C-w>h
+" tnoremap <C-h> <C-\><C-N><C-w>h
+
+" DISABLED: jump forward in cursor position stack (same as TAB; opposite of <C-o>)
 " <C-i> = TAB " standard vim keybinding
 
-" move to split below of current split (also when in terminal mode)
-nnoremap <C-j> <C-w>j
-tnoremap <C-j> <C-\><C-N><C-w>j
-if exists("$TMUX")
-    nnoremap <C-j> :TmuxNavigateDown<CR>
-endif
+" move to next split in clockwise direction (requires dwm.vim)
+nmap <C-j> <C-w>w
+" DISABLED: move to split below of current split (also when in terminal mode)
+" nnoremap <C-j> <C-w>j
+" tnoremap <C-j> <C-\><C-N><C-w>j
 
-" move to split above of current split (also when in terminal mode)
-nnoremap <C-k> <C-w>k
-tnoremap <C-k> <C-\><C-N><C-w>k
-if exists("$TMUX")
-    nnoremap <C-k> :TmuxNavigateUp<CR>
-endif
+" move to previous split in anticlockwise direction (requires dwm.vim)
+nmap <C-k> <C-w>W
+" DISABLED: move to split above of current split (also when in terminal mode)
+" nnoremap <C-k> <C-w>k
+" tnoremap <C-k> <C-\><C-N><C-w>k
 
-" move to split right of current split (also when in terminal mode)
-nnoremap <C-l> <C-w>l
-tnoremap <C-l> <C-\><C-N><C-w>l
-if exists("$TMUX")
-    nnoremap <C-l> :TmuxNavigateRight<CR>
-endif
+" decrease master area (requires dwm.vim)
+nmap <C-l> <Plug>DWMGrowMaster
+" DISABLED: move to split right of current split (also when in terminal mode)
+" nnoremap <C-l> <C-w>l
+" tnoremap <C-l> <C-\><C-N><C-w>l
 
 " move to first non-whitespace of next line
 " <C-m> " standard vim keybinding
+
+" create new split in master area (requires dwm.vim)
+nmap <C-n> <Plug>DWMNew
 
 " jump backward in cursor position stack (opposite of <C-i> or TAB)
 " <C-o> " standard vim keybinding
@@ -734,9 +735,8 @@ function! DefaultLeaderShortcuts()
     nnoremap <leader>y :echo "\<leader\>y"<cr>
     nnoremap <leader>Y :echo "\<leader\>Y"<cr>
 
-    " Move currently active buffer to the 'main' split.
-    " zoom split and go to main split (should eventually get rid of this hacky line...):
-    nnoremap <leader>z :call MoveToMainSplit()<CR><C-w>h<C-w>h<C-w>h<C-w>k<C-w>k<C-w>k
+    " focus current split in master area (requires dwm.vim)
+    nmap <C-space> <Plug>DWMFocus
 
     " noop
     nnoremap <leader>Z :echo "\<leader\>Z"<cr>
@@ -793,23 +793,6 @@ function! SyncTex()
     " or do synctex on the pdf with the same base name as the current tex file if
     " the environment variable $TEXBASE does not exist.
     exec "silent !test -z $TEXBASE && TEXBASE=%:p:r; zathura --synctex-editor-command 'nvr --servername ".v:servername." +\\%{line} \\%{input}' --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf &"
-endfunction
-
-function! MoveToMainSplit()
-    " adapted from https://stackoverflow.com/questions/2586984/how-can-i-swap-positions-of-two-open-files-in-splits-in-vim#2591946
-    let g:markedWinNum = 1
-    "Mark destination
-    let curNum = winnr()
-    let curBuf = bufnr( "%" )
-    exe g:markedWinNum . "wincmd w"
-    "Switch to source and shuffle dest->source
-    let markedBuf = bufnr( "%" )
-    "Hide and open so that we aren't prompted and keep history
-    exe 'hide buf' curBuf
-    "Switch to dest and shuffle source->dest
-    exe curNum . "wincmd w"
-    "Hide and open so that we aren't prompted and keep history
-    exe 'hide buf' markedBuf
 endfunction
 
 " enable default keyboard shortcuts:
@@ -981,7 +964,7 @@ function! StartSmdv()
     call StopSmdv()
     call jobstart("smdv --nvim-address ".v:servername." ".expand('%:p'))
     autocmd BufEnter * call SmdvPutBufferName()
-    autocmd FileType markdown,vimwiki autocmd CursorHold,CursorHoldI,CursorMoved,CursorMovedI <buffer> call SmdvPutBufferContent()
+    autocmd FileType markdown,vimwiki autocmd CursorMoved,CursorMovedI <buffer> call SmdvPutBufferContent()
 endfunction
 command! Smdv call StartSmdv()
 command! SmdvStop call StopSmdv()
