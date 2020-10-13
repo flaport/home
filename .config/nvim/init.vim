@@ -8,34 +8,37 @@
 "" Plugins
 "-------------------------------------------------------------------------------
 
-" enable different behavior for different filetypes:
-set nocompatible
-
-" define custom filetypes
-autocmd BufNewFile,BufEnter,BufRead * filetype on
-autocmd BufNewFile,BufEnter,BufRead * filetype plugin on
-autocmd BufNewFile,BufEnter,BufRead * filetype indent on
-autocmd BufNewFile,BufEnter,BufRead *.vim set filetype=vim
-autocmd BufNewFile,BufEnter,BufRead *.ipynb set filetype=ipynb
-autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty set filetype=tex
-autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
-
-" automatically cd into folder of current file (disabled, but mapped to <leader>cd)
-" autocmd BufEnter * silent! lcd %:p:h
-
-" set leader key
-let mapleader = " "
-
-" loader plugins
 source ~/.config/nvim/plugins.vim
 
-" load snippets
+
+"" Snippets
+"-------------------------------------------------------------------------------
+
 source ~/.config/nvim/snippets/snippets.vim
+
+
+"" Filetypes
+"-------------------------------------------------------------------------------
+
+" define custom filetypes
+augroup filetypes
+    autocmd!
+    autocmd BufNewFile,BufEnter,BufRead * filetype on
+    autocmd BufNewFile,BufEnter,BufRead * filetype plugin on
+    autocmd BufNewFile,BufEnter,BufRead * filetype indent on
+    autocmd BufNewFile,BufEnter,BufRead *.vim set filetype=vim
+    autocmd BufNewFile,BufEnter,BufRead *.ipynb set filetype=ipynb
+    autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty set filetype=tex
+    autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/*,/tmp/neomutt* set filetype=markdown
+augroup end
 
 
 "" Fixed Settings
 "-------------------------------------------------------------------------------
 " these settings won't change, no matter the filetype or active extension
+
+" set leader key
+let mapleader = " "
 
 " when scrolling, keep cursor in the middle of the page (disabled, use zz to center)
 " set scrolloff=1000
@@ -124,128 +127,142 @@ hi FoldColumn ctermbg=NONE
 " enable syntax highlighting
 syntax enable
 
-" underline current line if in insert mode
-autocmd InsertEnter * set cul
-
-" remove underline when in normal mode
-autocmd InsertLeave * set nocul
-
 " disable netrw banner
 let g:netrw_banner=0
 
 " enable netrw tree view
 let g:netrw_liststyle=3
 
+augroup fixedsettings
+    autocmd!
+
+    " underline current line if in insert mode
+    autocmd InsertEnter * set cul
+
+    " remove underline when in normal mode
+    autocmd InsertLeave * set nocul
+
+
+    " disable automatic commenting on newline:
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+    " automatically cd into folder of current file (disabled, but mapped to <leader>cd)
+    "autocmd BufEnter * silent! lcd %:p:h
+augroup end
+
 
 "" Default Variable Settings
 "-------------------------------------------------------------------------------
 " these settings may change depending on the filetype or active extension
 
-function! DefaultVariableSettings()
+" set the maximum textwidth (at this point a return is inserted if nowrap is set)
+set textwidth=90
+
+" set a column at 90 characters
+set colorcolumn=90
+
+" disable line wrapping
+set nowrap
+
+" disable automatic indent when moving to the next line while writing code
+set noautoindent
+
+" show line numbers
+set number
+
+" relative line numbering
+set relativenumber
+
+" spell check, set default to en_us...
+set spell spelllang=en_us
+
+" ...and turn it off by default
+set nospell
+
+" left margin width (max 12)
+set foldcolumn=2
+
+" show mode currently in (normal, insert, ...)
+set noshowmode
+
+" show where you are in the document in status bar (e.g. 143,61, 20%)
+set ruler
+
+" show status bar (0=disabled, 1=show half status bar, 2=show full status bar)
+set laststatus=2
+
+" don't show last command executed
+set noshowcmd
+
+augroup latexmarkdownvariablesettings
+    autocmd!
+
     " set the maximum textwidth (at this point a return is inserted if nowrap is set)
-    set textwidth=90
-
-    " set a column at 90 characters
-    set colorcolumn=90
-
-    " disable line wrapping
-    set nowrap
-
-    " disable automatic indent when moving to the next line while writing code
-    set noautoindent
-
-    " show line numbers
-    set number
-
-    " relative line numbering
-    set relativenumber
-
-    " spell check, set default to en_us...
-    set spell spelllang=en_us
-
-    " ...and turn it off by default
-    set nospell
-
-    " left margin width (max 12)
-    set foldcolumn=2
-
-    " show mode currently in (normal, insert, ...)
-    set noshowmode
-
-    " show where you are in the document in status bar (e.g. 143,61, 20%)
-    set ruler
-
-    " show status bar (0=disabled, 1=show half status bar, 2=show full status bar)
-    set laststatus=2
-
-    " don't show last command executed
-    set noshowcmd
-
-endfunction
-
-function! LatexVariableSettings()
-    " set the maximum textwidth (at this point a return is inserted if nowrap is set)
-    setlocal textwidth=80
+    autocmd FileType tex setlocal textwidth=80
 
     " disable color column
-    setlocal colorcolumn=0
+    autocmd FileType tex setlocal colorcolumn=0
 
     " show line numbers
-    setlocal nonumber
+    autocmd FileType tex setlocal nonumber
 
     " relative line numbering
-    setlocal norelativenumber
+    autocmd FileType tex setlocal norelativenumber
 
     " spell check, set default to en_us
-    setlocal spell spelllang=en_us
+    autocmd FileType tex setlocal spell spelllang=en_us
 
     " left margin width (max 12)
-    setlocal foldcolumn=12
+    autocmd FileType tex setlocal foldcolumn=12
 
     " show where you are in the document in status bar (e.g. 143,61, 20%)
-    setlocal noruler
+    autocmd FileType tex setlocal noruler
 
     " show status bar (0=disabled, 1=show half status bar, 2=show full status bar)
-    setlocal laststatus=0
+    autocmd FileType tex setlocal laststatus=0
 
     " don't show last command executed
-    setlocal noshowcmd
-endfunction
+    autocmd FileType tex setlocal noshowcmd
+augroup end
 
-function! MarkdownVariableSettings()
-    " use the LatexSettings as a starting point:
-    call LatexVariableSettings()
+augroup markdownvariablesettings
+    autocmd!
+
+    " disable color column
+    autocmd FileType markdown setlocal colorcolumn=0
 
     " disable line wrapping
-    setlocal wrap linebreak
-endfunction
+    autocmd FileType markdown setlocal wrap linebreak
+augroup end
 
-function! PythonVariableSettings()
+augroup pythonvariablesettings
+    autocmd!
+
     " enable autoindent
-    setlocal autoindent
-endfunction
+    autocmd FileType python setlocal autoindent
+augroup end
 
-function! VimVariableSettings()
+augroup vimvariablesettings
+    autocmd!
+
     " disable color column
-    setlocal colorcolumn=0
+    autocmd FileType vim setlocal colorcolumn=0
 
     " more info in status bar:
-    setlocal showmode
-endfunction
-
-" enable default settings:
-call DefaultVariableSettings()
-
-" enable special settings according to filetype:
-autocmd FileType vim silent call VimVariableSettings()
-autocmd FileType tex silent call LatexVariableSettings()
-autocmd FileType markdown silent call MarkdownVariableSettings()
-autocmd FileType python silent call PythonVariableSettings()
+    autocmd FileType vim setlocal showmode
+augroup end
 
 
 "" Saving
 "-------------------------------------------------------------------------------
 " these settings won't change, no matter the filetype or active extension
+
+augroup saving
+    autocmd!
+
+    autocmd BufWritePre * :silent call DoOnSave()
+    " autocmd FocusLost * :silent call MaybeSave()
+augroup end
 
 function! DoOnSave()
     delmarks m
@@ -255,7 +272,6 @@ function! DoOnSave()
     normal `m
     delmarks m
 endfunction
-autocmd BufWritePre * :silent call DoOnSave()
 
 " save on focus lost
 function! MaybeSave()
@@ -263,7 +279,6 @@ function! MaybeSave()
         exec "wa"
     endif
 endfunction
-" autocmd FocusLost * :silent call MaybeSave()
 
 " save as sudo (make sure SUDO_ASKPASS is set to a password asking program)
 function! SaveAsSudo()
@@ -287,6 +302,24 @@ cabbrev e!! call OpenAsSudo()
 "-------------------------------------------------------------------------------
 " these commands may change depending on the filetype or active extension
 
+command! T call NewTerminal("")
+command! HT call NewHorizontalTerminal("")
+command! VT call NewVerticalTerminal("")
+
+augroup terminal
+  autocmd!
+  autocmd TermOpen * call OnTerminalOpen()
+  autocmd TermClose * call OnTerminalClose()
+augroup end
+
+augroup pythonterminal
+    autocmd!
+
+    autocmd FileType python command! T call NewTerminal("ipython --matplotlib")
+    autocmd FileType python command! HT call NewHorizontalTerminal("ipython --matplotlib")
+    autocmd FileType python command! VT call NewVerticalTerminal("ipython --matplotlib")
+augroup end
+
 function! OnTerminalOpen()
     let g:last_terminal_job_id = b:terminal_job_id
 endfunction
@@ -295,11 +328,6 @@ function! OnTerminalClose()
         unlet g:last_terminal_job_id
     endif
 endfunction
-augroup Terminal
-  autocmd!
-  autocmd TermOpen * call OnTerminalOpen()
-  autocmd TermClose * call OnTerminalClose()
-augroup END
 
 function! NewTerminal(shell)
     execute "terminal ".a:shell
@@ -312,27 +340,6 @@ function! NewVerticalTerminal(shell)
     execute "vsplit | terminal ".a:shell
     execute "normal G\<C-w>k"
 endfunction
-
-function! DefaultCustomCommands()
-    " functions to spawn new terminals
-    command! T call NewTerminal("")
-    command! HT call NewHorizontalTerminal("")
-    command! VT call NewVerticalTerminal("")
-endfunction
-
-function! PythonCustomCommands()
-    " functions to spawn new ipython shells
-    command! T call NewTerminal("ipython --matplotlib")
-    command! HT call NewHorizontalTerminal("ipython --matplotlib")
-    command! VT call NewVerticalTerminal("ipython --matplotlib")
-endfunction
-
-
-" enable default commands:
-call DefaultCustomCommands()
-
-" enable special commands according to filetype:
-autocmd FileType python silent call PythonCustomCommands()
 
 
 "" Fixed Keyboard Shortcuts
@@ -537,224 +544,227 @@ nnoremap <C-s> <Esc>:w<CR>
 "-------------------------------------------------------------------------------
 " these settings may change depending on the filetype or active extension
 
-function! DefaultLeaderShortcuts()
-    " turn of highlighting
-    nnoremap <leader><leader> :noh<cr>
+" turn of highlighting
+nnoremap <leader><leader> :noh<cr>
 
-    " open next buffer
-    nnoremap <leader>] :bnext<CR>
+" open next buffer
+nnoremap <leader>] :bnext<CR>
 
-    " open previous buffer
-    nnoremap <leader>[ :bprevious<CR>
+" open previous buffer
+nnoremap <leader>[ :bprevious<CR>
 
-    " fuzzy find content in current buffer (requires junegunn/fzf)
-    nnoremap <leader>/ :BLines<CR>
+" fuzzy find content in current buffer (requires junegunn/fzf)
+nnoremap <leader>/ :BLines<CR>
 
-    " jump to other/closing tag (requires valloric/MatchTagAlways)
-    nnoremap <leader>. :MtaJumpToOtherTag<cr>
+" jump to other/closing tag (requires valloric/MatchTagAlways)
+nnoremap <leader>. :MtaJumpToOtherTag<cr>
 
-    " noop
-    nnoremap <leader>a :echo "\<leader\>a"<cr>
-    nnoremap <leader>A :echo "\<leader\>A"<cr>
+" noop
+nnoremap <leader>a :echo "\<leader\>a"<cr>
+nnoremap <leader>A :echo "\<leader\>A"<cr>
 
-    " noop
-    nnoremap <leader>b :echo "\<leader\>b"<cr>
-    nnoremap <leader>B :echo "\<leader\>B"<cr>
+" noop
+nnoremap <leader>b :echo "\<leader\>b"<cr>
+nnoremap <leader>B :echo "\<leader\>B"<cr>
 
-    " Show all diagnostics (requires neoclide/coc.nvim)
-    nnoremap <silent> <leader>ca  :<C-u>CocList diagnostics<cr>
+" Show all diagnostics (requires neoclide/coc.nvim)
+nnoremap <silent> <leader>ca  :<C-u>CocList diagnostics<cr>
 
-    " Manage CoC extensions (requires neoclide/coc.nvim)
-    nnoremap <silent> <leader>ce  :<C-u>CocList extensions<cr>
+" Manage CoC extensions (requires neoclide/coc.nvim)
+nnoremap <silent> <leader>ce  :<C-u>CocList extensions<cr>
 
-    " Show CoC commands (requires neoclide/coc.nvim)
-    nnoremap <silent> <leader>cm  :<C-u>CocList commands<cr>
+" Show CoC commands (requires neoclide/coc.nvim)
+nnoremap <silent> <leader>cm  :<C-u>CocList commands<cr>
 
-    " Find symbol of current document (requires neoclide/coc.nvim)
-    nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
+" Find symbol of current document (requires neoclide/coc.nvim)
+nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
 
-    " Search workspace symbols (requires neoclide/coc.nvim)
-    nnoremap <silent> <leader>ci  :<C-u>CocList -I symbols<cr>
+" Search workspace symbols (requires neoclide/coc.nvim)
+nnoremap <silent> <leader>ci  :<C-u>CocList -I symbols<cr>
 
-    " edit one of the vim config files (requires set hidden)
-    nnoremap <leader>cc :e ~/.config/nvim/init.vim<CR>
-    nnoremap <leader>cp :e ~/.config/nvim/plugins.vim<CR>
-    nnoremap <leader>cs :e ~/.config/nvim/snippets/snippets.vim<CR>
+" edit one of the vim config files (requires set hidden)
+nnoremap <leader>cc :e ~/.config/nvim/init.vim<CR>
+nnoremap <leader>cp :e ~/.config/nvim/plugins.vim<CR>
+nnoremap <leader>cs :e ~/.config/nvim/snippets/snippets.vim<CR>
+nnoremap <leader>coc :e ~/.config/nvim/coc-settings.vim<CR>
+nnoremap <leader>coj :e ~/.config/nvim/coc-settings.json<CR>
 
-    " cd into folder containing current file
-    nnoremap <leader>cd :lcd %:p:h<CR>
+" cd into folder containing current file
+nnoremap <leader>cd :lcd %:p:h<CR>
 
-    " noop
-    nnoremap <leader>C :echo "\<leader\>C"<cr>
+" noop
+nnoremap <leader>C :echo "\<leader\>C"<cr>
 
-    " go to definition (requires neoclide/coc.nvim)
-    nmap <silent> <leader>d :w<CR><Plug>(coc-definition)
+" go to definition (requires neoclide/coc.nvim)
+nmap <silent> <leader>d :w<CR><Plug>(coc-definition)
 
-    " noop
-    nnoremap <leader>D :echo "\<leader\>D"<cr>
+" noop
+nnoremap <leader>D :echo "\<leader\>D"<cr>
 
-    " noop
-    nnoremap <leader>E :echo "\<leader\>E"<cr>
+" noop
+nnoremap <leader>E :echo "\<leader\>E"<cr>
 
-    " fuzzy find content in all files in tree  (requires junegunn/fzf)
-    nnoremap <leader>fb :Buffers<CR>
-    nnoremap <leader>fc :Commands<CR>
-    nnoremap <leader>ff :Files<CR>
-    nnoremap <leader>fl :Lines<CR>
-    nnoremap <leader>fL :BLines<CR>
-    nnoremap <leader>fm :Marks<CR>
-    nnoremap <leader>fM :Maps<CR>
-    nnoremap <leader>ft :Tags<CR>
+" fuzzy find content in all files in tree  (requires junegunn/fzf)
+nnoremap <leader>fb :Buffers<CR>
+nnoremap <leader>fc :Commands<CR>
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fl :Lines<CR>
+nnoremap <leader>fL :BLines<CR>
+nnoremap <leader>fm :Marks<CR>
+nnoremap <leader>fM :Maps<CR>
+nnoremap <leader>ft :Tags<CR>
 
-    " autoformat code (requires neoclide/coc.nvim)
-    xmap <leader>F <Plug>(coc-format-selected)
-    nmap <leader>F :Format<CR>
+" autoformat code (requires neoclide/coc.nvim)
+xmap <leader>F <Plug>(coc-format-selected)
+nmap <leader>F :Format<CR>
 
-    " Toggle (git) diff bar (requires mhinz/vim-signify)
-    nnoremap <leader>g :SignifyToggle<CR>
+" Toggle (git) diff bar (requires mhinz/vim-signify)
+nnoremap <leader>g :SignifyToggle<CR>
 
-    " go to definition and similar (requires neoclide/coc.nvim)
-    nmap <silent> gd <Plug>(coc-definition)
-    nmap <silent> gy <Plug>(coc-type-definition)
-    nmap <silent> gi <Plug>(coc-implementation)
-    nmap <silent> gr <Plug>(coc-references)
+" go to definition and similar (requires neoclide/coc.nvim)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-    " Toggle Goyo
-    nnoremap <leader>G :Goyo<CR>
+" Toggle Goyo
+nnoremap <leader>G :Goyo<CR>
 
-    " enable hard mode for training purposes (requires wikitopian/hardmode)
-    nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+" enable hard mode for training purposes (requires wikitopian/hardmode)
+nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
 
-    " noop
-    nnoremap <leader>H :echo "\<leader\>H"<cr>
+" noop
+nnoremap <leader>H :echo "\<leader\>H"<cr>
 
-    "<leader>i: more information (toggle status bar)
-    nnoremap <leader>i :call ToggleStatusBar()<CR>
+"<leader>i: more information (toggle status bar)
+nnoremap <leader>i :call ToggleStatusBar()<CR>
 
-    " noop
-    nnoremap <leader>I :echo "\<leader\>I"<cr>
+" noop
+nnoremap <leader>I :echo "\<leader\>I"<cr>
 
-    " noop
-    nnoremap <leader>j :echo "\<leader\>j"<cr>
+" noop
+nnoremap <leader>j :echo "\<leader\>j"<cr>
 
-    " do default action for next item (requires neoclide/coc.nvim)
-    nnoremap <silent> <leader>J  :<C-u>CocNext<CR>
+" do default action for next item (requires neoclide/coc.nvim)
+nnoremap <silent> <leader>J  :<C-u>CocNext<CR>
 
-    " noop
-    nnoremap <leader>k :echo "\<leader\>k"<cr>
+" noop
+nnoremap <leader>k :echo "\<leader\>k"<cr>
 
-    " do default action for previous item (requires neoclide/coc.nvim)
-    nnoremap <silent> <leader>K  :<C-u>CocPrev<CR>
+" do default action for previous item (requires neoclide/coc.nvim)
+nnoremap <silent> <leader>K  :<C-u>CocPrev<CR>
 
-    " toggle relative line numbers
-    nnoremap <leader>l :call RelativeNumberToggle()<CR>
+" toggle relative line numbers
+nnoremap <leader>l :call RelativeNumberToggle()<CR>
 
-    " toggle absolute line numbers
-    nnoremap <leader>L :call AbsoluteNumberToggle()<CR>
+" toggle absolute line numbers
+nnoremap <leader>L :call AbsoluteNumberToggle()<CR>
 
-    " toggle visible marks (requires vim-signature)
-    nnoremap <leader>m :SignatureToggleSigns<CR>
+" toggle visible marks (requires vim-signature)
+nnoremap <leader>m :SignatureToggleSigns<CR>
 
-    " noop
-    nnoremap <leader>M :echo "\<leader\>M"<cr>
+" noop
+nnoremap <leader>M :echo "\<leader\>M"<cr>
 
-    " noop
-    nnoremap <leader>n :echo "\<leader\>n"<cr>
-    nnoremap <leader>N :echo "\<leader\>N"<cr>
+" noop
+nnoremap <leader>n :echo "\<leader\>n"<cr>
+nnoremap <leader>N :echo "\<leader\>N"<cr>
 
-    " show only current buffer (overrides above)
-    nnoremap <leader>o :only<CR>
+" show only current buffer (overrides above)
+nnoremap <leader>o :only<CR>
 
-    " noop
-    nnoremap <leader>O :echo "\<leader\>O"<cr>
+" noop
+nnoremap <leader>O :echo "\<leader\>O"<cr>
 
-    " paste from clipboard in stead of selection
-    function! Paste()
-        try
-            normal "+p
-        catch
-            let cwd = getcwd()
-            lcd %:p:h
-            let description = expand('<cWORD>')
-            let filename = system('nvim_clipboard_image img/'.description)
-            let @a = " "
-            normal "_diW"aD
-            let line = "![".description."](".filename.")"
-            put =line
-            put a
-            normal kkJJ
-            execute 'lcd '.cwd
-        endtry
-    endfunction
-    nnoremap <leader>p :call Paste()<CR>
-
-    " resume latest CoC list (requires neoclide/coc.nvim)
-    nnoremap <silent> <leader>P  :<C-u>CocListResume<CR>
-
-    " noop
-    nnoremap <leader>q :echo "\<leader\>q"<cr>
-    nnoremap <leader>Q :echo "\<leader\>Q"<cr>
-
-    " rename symbol (requires neoclide/coc.nvim)
-    nmap <leader>r <Plug>(coc-rename)
-
-    " noop
-    nnoremap <leader>R :echo "\<leader\>R"<cr>
-
-    "<leader>s: sort (visual mode)
-    vnoremap <leader>s :!sort<CR>
-
-    " <buffer> noop
-    nnoremap <leader>S :echo "\<leader\>S"<cr>
-
-    " browse through tags (requires FZF plugin)
-    nnoremap <leader>t :Tag<CR>
-
-    " create tags
-    nnoremap <leader>T :silent !ctags -f .tags -R .<CR>
-
-    " show undotree (requires mbbill/undotree)
-    nnoremap <leader>u :UndotreeShow<CR><C-w>h
-
-    " noop
-    nnoremap <leader>U :echo "\<leader\>U"<cr>
-
-    " noop
-    nnoremap <leader>v :echo "\<leader\>v"<cr>
-    nnoremap <leader>V :echo "\<leader\>V"<cr>
-
-    " noop
-    nnoremap <leader>w :echo "\<leader\>w"<cr>
-    nnoremap <leader>W :echo "\<leader\>W"<cr>
-
-    " noop
-    nnoremap <leader>x :echo "\<leader\>x"<cr>
-    nnoremap <leader>X :echo "\<leader\>X"<cr>
-
-    " noop
-    nnoremap <leader>y :echo "\<leader\>y"<cr>
-    nnoremap <leader>Y :echo "\<leader\>Y"<cr>
-
-    " focus current split in master area (requires dwm.vim)
-    nmap <C-space> <Plug>DWMFocus
-
-    " noop
-    nnoremap <leader>Z :echo "\<leader\>Z"<cr>
+" paste from clipboard in stead of selection
+function! Paste()
+    try
+        normal "+p
+    catch
+        let cwd = getcwd()
+        lcd %:p:h
+        let description = expand('<cWORD>')
+        let filename = system('nvim_clipboard_image img/'.description)
+        let @a = " "
+        normal "_diW"aD
+        let line = "![".description."](".filename.")"
+        put =line
+        put a
+        normal kkJJ
+        execute 'lcd '.cwd
+    endtry
 endfunction
+nnoremap <leader>p :call Paste()<CR>
 
-function PythonLeaderShortcuts()
+" resume latest CoC list (requires neoclide/coc.nvim)
+nnoremap <silent> <leader>P  :<C-u>CocListResume<CR>
+
+" noop
+nnoremap <leader>q :echo "\<leader\>q"<cr>
+nnoremap <leader>Q :echo "\<leader\>Q"<cr>
+
+" rename symbol (requires neoclide/coc.nvim)
+nmap <leader>r <Plug>(coc-rename)
+
+" noop
+nnoremap <leader>R :echo "\<leader\>R"<cr>
+
+"<leader>s: sort (visual mode)
+vnoremap <leader>s :!sort<CR>
+
+" <buffer> noop
+nnoremap <leader>S :echo "\<leader\>S"<cr>
+
+" browse through tags (requires FZF plugin)
+nnoremap <leader>t :Tag<CR>
+
+" create tags
+nnoremap <leader>T :silent !ctags -f .tags -R .<CR>
+
+" show undotree (requires mbbill/undotree)
+nnoremap <leader>u :UndotreeShow<CR><C-w>h
+
+" noop
+nnoremap <leader>U :echo "\<leader\>U"<cr>
+
+" noop
+nnoremap <leader>v :echo "\<leader\>v"<cr>
+nnoremap <leader>V :echo "\<leader\>V"<cr>
+
+" noop
+nnoremap <leader>w :echo "\<leader\>w"<cr>
+nnoremap <leader>W :echo "\<leader\>W"<cr>
+
+" noop
+nnoremap <leader>x :echo "\<leader\>x"<cr>
+nnoremap <leader>X :echo "\<leader\>X"<cr>
+
+" noop
+nnoremap <leader>y :echo "\<leader\>y"<cr>
+nnoremap <leader>Y :echo "\<leader\>Y"<cr>
+
+" focus current split in master area (requires dwm.vim)
+nmap <C-space> <Plug>DWMFocus
+
+" noop
+nnoremap <leader>Z :echo "\<leader\>Z"<cr>
+
+augroup pythonleadershortcuts
+    autocmd!
+
     " black python formatting for visual selection
-    xmap <buffer> <leader>F :!black - 2>/dev/null<CR>
+    autocmd FileType python xmap <buffer> <leader>F :!black - 2>/dev/null<CR>
 
     " go to definition (python only) -- inherited from plugins
     " <leader>d
-endfunction
+augroup end
 
-function LatexLeaderShortcuts()
-    nnoremap <buffer> <leader>s :call SyncTex()<CR>
+augroup latexleadershortcuts
+    autocmd!
+
+    autocmd FileType tex nnoremap <buffer> <leader>s :call SyncTex()<CR>
     "FYI: Ctrl-Click  --> latex synctex zathura pdf->tex
-endfunction
-
+augroup end
 
 function! ToggleStatusBar()
     if (&laststatus == 2)
@@ -795,94 +805,84 @@ function! SyncTex()
     exec "silent !test -z $TEXBASE && TEXBASE=%:p:r; zathura --synctex-editor-command 'nvr --servername ".v:servername." +\\%{line} \\%{input}' --synctex-forward ".line(".").":".col(".").":%:p $TEXBASE.pdf &"
 endfunction
 
-" enable default keyboard shortcuts:
-call DefaultLeaderShortcuts()
-
-" enable special keyboard shortcuts according to filetype:
-autocmd FileType python silent call PythonLeaderShortcuts()
-autocmd FileType tex silent call LatexLeaderShortcuts()
-
 
 "" Variable Function Key Shortcuts
 "-------------------------------------------------------------------------------
 " these settings may change depending on the filetype or active extension
 
-function! DefaultFunctionKeyShortcuts()
-    " show vim help
-    " <F1> " standard vim keybinding
+" show vim help
+" <F1> " standard vim keybinding
 
-    " noop
-    nnoremap <F2> :echo "\<F2\>"<cr>
+" noop
+nnoremap <F2> :echo "\<F2\>"<cr>
 
-    " toggle spell checker:
-    nnoremap <F3> <Esc>:setlocal spell!<CR>
-    inoremap <F3> <Esc>:setlocal spell!<CR>
+" toggle spell checker:
+nnoremap <F3> <Esc>:setlocal spell!<CR>
+inoremap <F3> <Esc>:setlocal spell!<CR>
 
-    " choose spell checker language and enable
-    nnoremap <F3><F3> <Esc>:setlocal spell spelllang=
-    inoremap <F3><F3> <Esc>:setlocal spell spelllang=
+" choose spell checker language and enable
+nnoremap <F3><F3> <Esc>:setlocal spell spelllang=
+inoremap <F3><F3> <Esc>:setlocal spell spelllang=
 
-    " source init.vim again.
-    nnoremap <F4> <Esc>:source ~/.config/nvim/init.vim<CR>:edit<CR>
-    inoremap <F4> <Esc>:source ~/.config/nvim/init.vim<CR>:edit<CR>
+" source init.vim again.
+nnoremap <F4> <Esc>:source ~/.config/nvim/init.vim<CR>:edit<CR>
+inoremap <F4> <Esc>:source ~/.config/nvim/init.vim<CR>:edit<CR>
 
-    " noop
-    nnoremap <F5> :echo "\<F5\>"<cr>
+" noop
+nnoremap <F5> :echo "\<F5\>"<cr>
 
-    " noop
-    nnoremap <F6> :echo "\<F6\>"<cr>
+" noop
+nnoremap <F6> :echo "\<F6\>"<cr>
 
-    " noop
-    nnoremap <F7> :echo "\<F7\>"<cr>
+" noop
+nnoremap <F7> :echo "\<F7\>"<cr>
 
-    " noop
-    nnoremap <F8> :echo "\<F8\>"<cr>
+" noop
+nnoremap <F8> :echo "\<F8\>"<cr>
 
-    " noop
-    nnoremap <F9> :echo "\<F9\>"<cr>
+" noop
+nnoremap <F9> :echo "\<F9\>"<cr>
 
-    " noop
-    nnoremap <F10> :echo "\<F10\>"<cr>
+" noop
+nnoremap <F10> :echo "\<F10\>"<cr>
 
-    " noop
-    nnoremap <F11> :echo "\<F11\>"<cr>
+" noop
+nnoremap <F11> :echo "\<F11\>"<cr>
 
-    " noop
-    nnoremap <F12> :echo "\<F12\>"<cr>
+" noop
+nnoremap <F12> :echo "\<F12\>"<cr>
 
-endfunction
-
-function! PythonFunctionKeyShortcuts()
+augroup pythonfunctionkeyshortcuts
+    autocmd!
     " run cell and jump to next cell (use '##' to mark a cell)
-    nnoremap <buffer> <CR> :call RunPython("celljump")<cr>
+    autocmd FileType python nnoremap <buffer> <CR> :call RunPython("celljump")<cr>
     " run cell and stay (use '##' to mark a cell)
-    nnoremap <buffer> <leader><CR> :call RunPython("cellstay")<cr>
+    autocmd FileType python nnoremap <buffer> <leader><CR> :call RunPython("cellstay")<cr>
     " run full script and show execution time
-    nnoremap <buffer> <F5> :call RunPython("all")<cr>
-endfunction
+    autocmd FileType python nnoremap <buffer> <F5> :call RunPython("all")<cr>
+augroup end
 
-function! JupyterFunctionKeyShortcuts()
+augroup jupyterfunctionkeyshortcuts
+    autocmd!
     " run cell and jump to next cell (use '##' to mark a cell)
-    nnoremap <buffer> <CR> :call RunPython("celljump")<cr>
+    autocmd FileType ipynb nnoremap <buffer> <CR> :call RunPython("celljump")<cr>
     " run cell and stay (use '##' to mark a cell)
-    nnoremap <buffer> <leader><CR> :call RunPython("cellstay")<cr>
-endfunction
+    autocmd FileType ipynb nnoremap <buffer> <leader><CR> :call RunPython("cellstay")<cr>
+augroup end
 
-function! LatexFunctionKeyShortcuts()
+augroup latexfunctionkeyshortcuts
+    autocmd!
     " build latex document
-    nnoremap <buffer> <F5> :call LatexBuild("")<CR>
-    nnoremap <buffer> <F5><F5> :call LatexBuild("-f")<CR>
-endfunction
+    autocmd FileType tex nnoremap <buffer> <F5> :call LatexBuild("")<CR>
+    autocmd FileType tex nnoremap <buffer> <F5><F5> :call LatexBuild("-f")<CR>
+augroup end
 
-function! MarkdownFunctionKeyShortcuts()
-    " view markdown preview
-    nnoremap <buffer> <F5> :InstantMarkdownPreview<CR>
-    nnoremap <buffer> <F5><F5> :InstantMarkdownPreview<CR>:execute 'silent !'.g:instant_markdown_browser.' localhost:'.g:instant_markdown_port<CR>
-    " run python code cell (marked by '```' or '```python') [disabled in vimwiki]
+augroup markdownfunctionkeyshortcuts
+    autocmd!
     if fnamemodify(expand('%'), ':p:h') != expand('~/VimWiki')
-        nnoremap <buffer> <CR> :call RunPython("cellstay")<cr>
+        " autocmd FileType markdown nnoremap <buffer> <CR> :call RunPython("cellstay")<cr>
     endif
-endfunction
+augroup end
 
 function! RunPython(type)
     if exists("g:last_terminal_job_id")
@@ -917,26 +917,9 @@ function! LatexBuild(force)
     execute "normal G\<C-w>k"
 endfunction
 
-" enable default keyboard shortcuts:
-call DefaultFunctionKeyShortcuts()
 
-" enable special keyboard shortcuts according to filetype:
-autocmd FileType tex silent call LatexFunctionKeyShortcuts()
-autocmd FileType ipynb silent call JupyterFunctionKeyShortcuts()
-autocmd FileType python silent call PythonFunctionKeyShortcuts()
-autocmd FileType markdown silent call MarkdownFunctionKeyShortcuts()
-
-
-"" Force Filetype Plugin Reload
+"" SMDV Settings
 "-------------------------------------------------------------------------------
-
-function! Edit()
-    try
-        edit
-    catch
-    endtry
-endfunction
-" autocmd BufEnter * call Edit()
 
 let g:last_neovim_buffername = expand('%:p')
 function! SmdvPutBufferName()
@@ -961,10 +944,13 @@ function! StopSmdv()
     call system("curl -X DELETE localhost:9876")
 endfunction
 function! StartSmdv()
-    call StopSmdv()
-    call jobstart("smdv --nvim-address ".v:servername." ".expand('%:p'))
-    autocmd BufEnter * call SmdvPutBufferName()
-    autocmd FileType markdown,vimwiki autocmd CursorMoved,CursorMovedI <buffer> call SmdvPutBufferContent()
+    " call StopSmdv()
+    " call jobstart("smdv --nvim-address ".v:servername." ".expand('%:p'))
+    augroup startsmdv
+        autocmd!
+        autocmd BufEnter * call SmdvPutBufferName()
+        autocmd FileType markdown,vimwiki autocmd CursorMoved,CursorMovedI <buffer> call SmdvPutBufferContent()
+    augroup end
 endfunction
 command! Smdv call StartSmdv()
 command! SmdvStop call StopSmdv()

@@ -8,8 +8,13 @@
 "" Plugin installer
 "-------------------------------------------------------------------------------
 
-" From https://github.com/fisadev/fisa-nvim-config/blob/master/init.vim
+" enable different behavior for different filetypes:
+set nocompatible
+filetype on
+filetype plugin on
+filetype indent on
 
+" From https://github.com/fisadev/fisa-nvim-config/blob/master/init.vim
 let vim_plug_just_installed = 0
 let vim_plug_path = expand('~/.config/nvim/autoload/plug.vim')
 if !filereadable(vim_plug_path)
@@ -57,6 +62,7 @@ Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'vimwiki/vimwiki' " note taking in vim
 Plug 'voldikss/vim-floaterm' " floating terminal
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
+Plug 'vim-pandoc/vim-pandoc' " pandoc-style markdown in vim
 call plug#end() " stop loading plugins
 
 
@@ -160,11 +166,22 @@ let g:vimwiki_list = [
 function! FormatPandocMarkdown()
     delmarks m
     normal mm
-    execute 'silent %!format_pandoc_markdown'
+    execute 'CocCommand prettier.formatFile'
     normal `m
     delmarks m
 endfunction
-function! SetVimWikiPandocFormatter()
-    autocmd BufWritePre *.md :call FormatPandocMarkdown()
+function! FormatVimWikiMarkdown()
+    setlocal filetype=markdown
+    call FormatPandocMarkdown()
+    setlocal filetype=vimwiki
 endfunction
-autocmd FileType vimwiki silent call SetVimWikiPandocFormatter()
+function! SetVimWikiPandocFormatter()
+    augroup vimwikipandocformatter
+        autocmd!
+        autocmd BufWritePre *.md call FormatVimWikiMarkdown()
+    augroup end
+endfunction
+augroup vimwiki
+    autocmd!
+    autocmd FileType vimwiki call SetVimWikiPandocFormatter()
+augroup end
