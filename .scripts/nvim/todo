@@ -1,16 +1,57 @@
-#!/bin/sh
+#!/usr/bin/python3
 
-vimwiki="$HOME/VimWiki"
+import os
+import sys
+import sqlite3
+import argparse
+import subprocess
+from datetime import datetime, timedelta
 
-show() {
-    if [ ! -z "$1" ]; then
-        short() {
-            python -c "c=open('$vimwiki/todo.md').read(); print('\n'.join(c.split('---')[0].split('\n')[2:-2]))"
-        }
-        "$@"
-    else
-        /usr/bin/cat $vimwiki/todo.md
-    fi
-}
+def eprint(*args, **kwargs):
+    if not ARGS.suppress_errors:
+        print(*args, file=sys.stderr, **kwargs)
 
-"$@"
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("command", choices=["show", "apts"], help="show: show joplin todo list; apts: show calcurse appointments")
+    parser.add_argument("-c", "--calcurse-path", default="~/.calcurse", help="path of the calcurse config folder (default '~/.calcurse')")
+    parser.add_argument("-p", "--path", default="~/VimWiki/todo.md", help="path of the todo list (default '~/VimWiki/todo.md)")
+    parser.add_argument("-l", "--line-length", default=100, type=int, help="maximum line length (characters)")
+    parser.add_argument("-n", "--num-lines", default=10, type=int, help="maximum number of lines")
+    parser.add_argument("-S", "--suppress-errors", action="store_true", help="suppress error messages")
+    ARGS = parser.parse_args()
+    return ARGS
+
+def show():
+    try:
+        lines = []
+        with open(os.path.abspath(os.path.expanduser(ARGS.path)), "r") as file:
+            for line in file:
+                if line.startswith("## "):
+                    break
+                if line.strip() != "":
+                    lines.append(line.strip())
+        lines = [line for line in lines if not line.startswith("# ")]
+        lines = [line[:ARGS.line_length] for line in lines]
+        lines = lines[:ARGS.num_lines]
+        todo = "\n".join(lines)
+        print(todo)
+    except Exception as e:
+        eprint(f"failed to load todo list.")
+
+def apts():
+    today = datetime.today()
+    apts = os.path.expanduser(os.path.join(ARGS.calcurse_path, "apts"))
+    with open(apts, "r") as file:
+        lines = file.read().split("\n")
+    dates = [datetime.strptime(line.split(" ")[0],"%m/%d/%Y") for line in lines]
+    dates, lines = zip(*sorted(zip(dates, lines)))
+    lines = [line for line, date in zip(lines, dates) if date - today > timedelta(0)]
+    content = "\n".join(lines[:5]).replace("|", " | ")
+    print(content)
+
+
+if __name__ == "__main__":
+    ARGS = parse_args()
+    eval(ARGS.command)()
+
