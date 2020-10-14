@@ -21,58 +21,62 @@ if [ -L "$FILENAME" ] 2> /dev/null; then
     exit
 fi
 
-if [[ $FILENAME == *.py ]]; then
-    highlight $FILENAME --src-lang=python -O ansi --force 2> /dev/null
+if [ -f "$FILENAME" ]; then
+    if [[ $FILENAME == *.py ]]; then
+        highlight $FILENAME --src-lang=python -O ansi --force 2> /dev/null
+        exit
+    fi
+
+    if [[ $FILENAME == *.ipynb ]]; then
+        jupyter nbconvert $FILENAME --to python --stdout 2> /dev/null | highlight -O ansi --force 2> /dev/null
+        exit
+    fi
+
+    if [[ $FILENAME == *.htm* ]]; then
+        highlight $FILENAME --src-lang=html -O ansi --force 2> /dev/null
+        exit
+    fi
+
+    if [[ $FILENAME == *.md ]]; then
+        highlight $FILENAME --src-lang=markdown -O ansi --force 2> /dev/null
+        exit
+    fi
+
+    if [[ $FILENAME == *.pdf ]]; then
+        pdftotext -q "$FILENAME" - 2> /dev/null
+        exit
+    fi
+
+    if [[ $FILENAME == *.bash ||  $FILENAME == *.sh ]]; then
+        cat $FILENAME | highlight --src-lang=bash -O ansi --force 2> /dev/null
+        exit
+    fi
+
+    if [[ $FILENAME == *.png || $FILENAME == *.PNG ]]; then
+        viu $FILENAME
+        exit
+    fi
+
+    if [[ $FILENAME == *.jpg || $FILENAME == *.jpeg || $FILENAME == *.JPG || $FILENAME == *.JPEG ]]; then
+        viu $FILENAME
+        exit
+    fi
+
+    if [[ $FILENAME == *.svg ]]; then
+        inkscape "$FILENAME" -e /tmp/fzf-ubz-preview.png &> /dev/null
+        viu /tmp/fzf-ubz-preview.png
+        exit
+    fi
+
+    if [[ $FILENAME == *.mp4 ]]; then
+        ffmpeg -y -i $FILENAME -ss 00:00:01.000 -vframes 1 /tmp/fzf-ubz-preview.png &> /dev/null
+        viu /tmp/fzf-ubz-preview.png
+        exit
+    fi
+
+    # if all else fails:
+    /usr/bin/cat "$FILENAME"
     exit
 fi
 
-if [[ $FILENAME == *.ipynb ]]; then
-    jupyter nbconvert $FILENAME --to python --stdout 2> /dev/null | highlight -O ansi --force 2> /dev/null
-    exit
-fi
-
-if [[ $FILENAME == *.htm* ]]; then
-    highlight $FILENAME --src-lang=html -O ansi --force 2> /dev/null
-    exit
-fi
-
-if [[ $FILENAME == *.md ]]; then
-    highlight $FILENAME --src-lang=markdown -O ansi --force 2> /dev/null
-    exit
-fi
-
-if [[ $FILENAME == *.pdf ]]; then
-    pdftotext -q "$FILENAME" - 2> /dev/null
-    exit
-fi
-
-if [[ $FILENAME == *.bash ||  $FILENAME == *.sh ]]; then
-    cat $FILENAME | highlight --src-lang=bash -O ansi --force 2> /dev/null
-    exit
-fi
-
-if [[ $FILENAME == *.png || $FILENAME == *.PNG ]]; then
-    viu $FILENAME
-    exit
-fi
-
-if [[ $FILENAME == *.jpg || $FILENAME == *.jpeg || $FILENAME == *.JPG || $FILENAME == *.JPEG ]]; then
-    viu $FILENAME
-    exit
-fi
-
-if [[ $FILENAME == *.svg ]]; then
-    inkscape "$FILENAME" -e /tmp/fzf-ubz-preview.png &> /dev/null
-    viu /tmp/fzf-ubz-preview.png
-    exit
-fi
-
-if [[ $FILENAME == *.mp4 ]]; then
-    ffmpeg -y -i $FILENAME -ss 00:00:01.000 -vframes 1 /tmp/fzf-ubz-preview.png &> /dev/null
-    viu /tmp/fzf-ubz-preview.png
-    exit
-fi
-
-# if all else fails:
-/usr/bin/cat "$FILENAME"
-
+echo \<no preview\>
