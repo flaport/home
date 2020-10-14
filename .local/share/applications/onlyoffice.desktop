@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=OnlyOffice Desktop
+Terminal=false
+Type=Application
+Version=1.0
+Exec=/usr/bin/onlyoffice-desktopeditors %F
+Icon=onlyoffice-desktopeditors

@@ -42,6 +42,10 @@ x-scheme-handler/rdp=org.remmina.Remmina.desktop
 x-scheme-handler/remmina=org.remmina.Remmina.desktop
 x-scheme-handler/spice=org.remmina.Remmina.desktop
 x-scheme-handler/vnc=org.remmina.Remmina.desktop
+application/vnd.oasis.opendocument.text=onlyoffice.desktop
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=onlyoffice.desktop
+application/vnd.openxmlformats-officedocument.presentationml.presentation=onlyoffice.desktop
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=onlyoffice.desktop
 
 [Added Associations]
 application/octet-stream=fdtd-solutions.desktop;klayout.desktop;interconnect.desktop;open-octet-stream.desktop
@@ -88,3 +92,7 @@ x-scheme-handler/rdp=org.remmina.Remmina.desktop;
 x-scheme-handler/remmina=org.remmina.Remmina.desktop;
 x-scheme-handler/spice=org.remmina.Remmina.desktop;
 x-scheme-handler/vnc=org.remmina.Remmina.desktop;
+application/vnd.oasis.opendocument.text=onlyoffice.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=onlyoffice.desktop;
+application/vnd.openxmlformats-officedocument.presentationml.presentation=onlyoffice.desktop;
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=onlyoffice.desktop;

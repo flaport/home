@@ -1057,10 +1057,10 @@ pacman_install klayout
 #-------------------------------------------------------------------------------
 
 ## open-source office
-pacman_install libreoffice-fresh
+#pacman_install libreoffice-fresh
 #pacman_install libreoffice-still
 ## open-source office with MS Office look-and-feel:
-#yay_install onlyoffice-bin
+yay_install onlyoffice-bin
 ## sqlite database browser
 #pacman_install sqlitebrowser
 ## tex-live (disabled by default bc heavy package)
