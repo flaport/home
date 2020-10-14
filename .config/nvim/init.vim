@@ -355,7 +355,7 @@ function! NewHorizontalTerminal(shell)
 endfunction
 function! NewVerticalTerminal(shell)
     execute "vsplit | terminal ".a:shell
-    execute "normal G\<C-w>k"
+    execute "normal G\<C-w>h"
 endfunction
 
 
@@ -460,7 +460,6 @@ function! CloseBuffer()
             exec "bd!"
         else
             let numbuffers = len(getbufinfo({'buflisted':1}))
-            echo numbuffers
             if numbuffers > 1
                 exec "bd!"
             else
