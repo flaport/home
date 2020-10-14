@@ -61,7 +61,6 @@ Plug 'valloric/MatchTagAlways' " highlight matching html tags
 Plug 'vim-airline/vim-airline' " better status bar
 Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'vimwiki/vimwiki' " note taking in vim
-Plug 'voldikss/vim-floaterm' " floating terminal
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
 call plug#end() " stop loading plugins
 
@@ -105,6 +104,17 @@ if executable('rg')
     set grepformat=%f:%l:%c:%m
     let g:rg_derive_root='true'
 endif
+
+
+" junegunn/fzf.vim -------------------------------
+
+let g:fzf_layout = {
+    \ 'window' : {
+        \ 'width': 0.8,
+        \ 'height': 0.6,
+        \ 'highlight': 'Comment'
+    \}
+\}
 
 
 " lilydjwg/colorizer -----------------------------

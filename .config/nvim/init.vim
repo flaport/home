@@ -524,7 +524,7 @@ nmap <C-n> <Plug>DWMNew
 " <C-o> " standard vim keybinding
 
 " fuzzy open file with fzf (requires fzf plugin)
-nnoremap <C-P> :Files<CR>
+nnoremap <C-p> :Files<CR>
 
 " save and exit
 inoremap <C-q> <Esc>:wqa<CR>
