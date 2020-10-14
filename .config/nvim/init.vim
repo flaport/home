@@ -4,17 +4,25 @@
 "   | |   | |_/\| |-|||  __/| \_/||    /  | |
 "   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 "
+" jump to this file from anywhere: <leader>cc
+
 
 "" Plugins
 "-------------------------------------------------------------------------------
+" jump to plugins file from anywhere: <leader>cp
 
-source ~/.config/nvim/plugins.vim
+if filereadable(expand("~/.config/nvim/plugins.vim"))
+    source ~/.config/nvim/plugins.vim
+endif
 
 
 "" Snippets
 "-------------------------------------------------------------------------------
+" jump to snippets file from anywhere: <leader>cs
 
-source ~/.config/nvim/snippets/snippets.vim
+if filereadable(expand("~/.config/nvim/snippets.vim"))
+    source ~/.config/nvim/snippets/snippets.vim
+endif
 
 
 "" Filetypes
@@ -26,11 +34,18 @@ augroup filetypes
     autocmd BufNewFile,BufEnter,BufRead * filetype on
     autocmd BufNewFile,BufEnter,BufRead * filetype plugin on
     autocmd BufNewFile,BufEnter,BufRead * filetype indent on
-    autocmd BufNewFile,BufEnter,BufRead *.vim set filetype=vim
-    autocmd BufNewFile,BufEnter,BufRead *.ipynb set filetype=ipynb
-    autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty set filetype=tex
-    autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/*,/tmp/neomutt* set filetype=markdown
+    autocmd BufNewFile,BufEnter,BufRead *.vim setlocal filetype=vim
+    autocmd BufNewFile,BufEnter,BufRead *.ipynb setlocal filetype=ipynb
+    autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty setlocal filetype=tex
+    autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/*,/tmp/neomutt* call SetFiletypeMarkdownLike()
 augroup end
+function! SetFiletypeMarkdownLike()
+    if fnamemodify(expand('%'), ':p:h') == expand('~/VimWiki')
+        setlocal filetype=vimwiki
+    else
+        setlocal filetype=markdown
+    endif
+endfunction
 
 
 "" Fixed Settings
@@ -130,9 +145,6 @@ syntax enable
 " disable netrw banner
 let g:netrw_banner=0
 
-" enable netrw tree view
-let g:netrw_liststyle=3
-
 augroup fixedsettings
     autocmd!
 
@@ -198,41 +210,38 @@ augroup latexmarkdownvariablesettings
     autocmd!
 
     " set the maximum textwidth (at this point a return is inserted if nowrap is set)
-    autocmd FileType tex setlocal textwidth=80
+    autocmd FileType tex,markdown,vimwiki setlocal textwidth=80
 
     " disable color column
-    autocmd FileType tex setlocal colorcolumn=0
+    autocmd FileType tex,markdown,vimwiki setlocal colorcolumn=0
 
     " show line numbers
-    autocmd FileType tex setlocal nonumber
+    autocmd FileType tex,markdown,vimwiki setlocal nonumber
 
     " relative line numbering
-    autocmd FileType tex setlocal norelativenumber
+    autocmd FileType tex,markdown,vimwiki setlocal norelativenumber
 
     " spell check, set default to en_us
-    autocmd FileType tex setlocal spell spelllang=en_us
+    autocmd FileType tex,markdown,vimwiki setlocal spell spelllang=en_us
 
     " left margin width (max 12)
-    autocmd FileType tex setlocal foldcolumn=12
+    autocmd FileType tex,markdown,vimwiki setlocal foldcolumn=12
 
     " show where you are in the document in status bar (e.g. 143,61, 20%)
-    autocmd FileType tex setlocal noruler
+    autocmd FileType tex,markdown,vimwiki setlocal noruler
 
     " show status bar (0=disabled, 1=show half status bar, 2=show full status bar)
-    autocmd FileType tex setlocal laststatus=0
+    autocmd FileType tex,markdown,vimwiki setlocal laststatus=0
 
     " don't show last command executed
-    autocmd FileType tex setlocal noshowcmd
+    autocmd FileType tex,markdown,vimwiki setlocal noshowcmd
 augroup end
 
 augroup markdownvariablesettings
     autocmd!
 
-    " disable color column
-    autocmd FileType markdown setlocal colorcolumn=0
-
     " disable line wrapping
-    autocmd FileType markdown setlocal wrap linebreak
+    autocmd FileType markdown,vimwiki setlocal wrap linebreak
 augroup end
 
 augroup pythonvariablesettings
@@ -259,9 +268,8 @@ augroup end
 
 augroup saving
     autocmd!
-
     autocmd BufWritePre * :silent call DoOnSave()
-    " autocmd FocusLost * :silent call MaybeSave()
+    autocmd FocusLost * :silent call MaybeSave()
 augroup end
 
 function! DoOnSave()
@@ -269,13 +277,22 @@ function! DoOnSave()
     normal mm
     " clear trailing spaces on saving:
     exec '%s/\s\+$//e'
+    " format markdown files on save:
+    if &filetype == "markdown"
+        execute 'CocCommand prettier.formatFile'
+    endif
+    if &filetype == "vimwiki"
+        setlocal filetype=markdown
+        execute 'CocCommand prettier.formatFile'
+        setlocal filetype=vimwiki
+    endif
     normal `m
     delmarks m
 endfunction
 
 " save on focus lost
 function! MaybeSave()
-    if bufname('%') != ''
+    if bufname('%') != '' && &filetype != 'nerdtree' && &filetype != 'netrw'
         exec "wa"
     endif
 endfunction
@@ -353,8 +370,12 @@ endfunction
 " the backtick is there to not interfere with the <Esc> of the shell itself.
 tnoremap `<Esc> <C-\><C-n>
 
-" Use K to show documentation in preview window (reqruires neoclide/coc.nvim)
+" use K to show documentation in preview window (reqruires neoclide/coc.nvim)
 nnoremap <silent> K :call ShowDocumentation()<CR>
+
+" remap 'n' and 'N' to center screen after jumping to next match
+nnoremap n nzz
+nnoremap N Nzz
 
 " Use `[g` and `]g` to navigate diagnostics (requires neoclide/coc.nvim)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -432,16 +453,24 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " exit current buffer without saving
 function! CloseBuffer()
-    let numbuffers = len(getbufinfo({'buflisted':1}))
-    if numbuffers > 1
-        exec "bd!"
-    else
-        exec "qa!"
-    endif
+    try
+        exec DWMClose()
+    catch
+        if &filetype == "netrw"
+            exec "bd!"
+        else
+            let numbuffers = len(getbufinfo({'buflisted':1}))
+            echo numbuffers
+            if numbuffers > 1
+                exec "bd!"
+            else
+                exec "qa!"
+            endif
+        endif
+    endtry
 endfunction
-" inoremap <C-c> <Esc>:call CloseBuffer()<CR>
-" nnoremap <C-c> <Esc>:call CloseBuffer()<CR>
-nmap <C-c> <Plug>DWMClose
+inoremap <C-c> <Esc>:call CloseBuffer()<CR>
+nnoremap <C-c> <Esc>:call CloseBuffer()<CR>
 
 " down half screen
 " <C-d> " standard vim keybinding
@@ -944,8 +973,8 @@ function! StopSmdv()
     call system("curl -X DELETE localhost:9876")
 endfunction
 function! StartSmdv()
-    " call StopSmdv()
-    " call jobstart("smdv --nvim-address ".v:servername." ".expand('%:p'))
+    call StopSmdv()
+    call jobstart("smdv --nvim-address ".v:servername." ".expand('%:p'))
     augroup startsmdv
         autocmd!
         autocmd BufEnter * call SmdvPutBufferName()

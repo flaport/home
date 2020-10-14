@@ -4,6 +4,7 @@
 "   | |   | |_/\| |-|||  __/| \_/||    /  | |
 "   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 "
+" jump to plugins file from anywhere: <leader>cp
 
 "" Plugin installer
 "-------------------------------------------------------------------------------
@@ -62,7 +63,6 @@ Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'vimwiki/vimwiki' " note taking in vim
 Plug 'voldikss/vim-floaterm' " floating terminal
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
-Plug 'vim-pandoc/vim-pandoc' " pandoc-style markdown in vim
 call plug#end() " stop loading plugins
 
 
@@ -120,8 +120,12 @@ let g:signify_disable_by_default = 1
 
 
 " neoclide/coc.nvim ------------------------------
+" jump to CoC settings file from anywhere: <leader>coc
+" jump to CoC settings json file from anywhere: <leader>coj
 
-source ~/.config/nvim/coc-settings.vim
+if filereadable(expand("~/.config/nvim/coc-settings.vim"))
+    source ~/.config/nvim/coc-settings.vim
+endif
 
 
 " shougo/context_filetype.vim --------------------
@@ -131,6 +135,12 @@ let g:context_filetype#same_filetypes = {}
 
 " set underscore
 let g:context_filetype#same_filetypes._ = '_'
+
+
+" spolu/dwm.vim ----------------------------------
+
+" don't automatically map the keys (we do this ourselves in init.vim)
+let g:dwm_map_keys = 0
 
 
 " tpope/vim-markdown -----------------------------
@@ -163,25 +173,3 @@ let g:vimwiki_list = [
     \    'template_ext': '.tpl'
     \ }
 \ ]
-function! FormatPandocMarkdown()
-    delmarks m
-    normal mm
-    execute 'CocCommand prettier.formatFile'
-    normal `m
-    delmarks m
-endfunction
-function! FormatVimWikiMarkdown()
-    setlocal filetype=markdown
-    call FormatPandocMarkdown()
-    setlocal filetype=vimwiki
-endfunction
-function! SetVimWikiPandocFormatter()
-    augroup vimwikipandocformatter
-        autocmd!
-        autocmd BufWritePre *.md call FormatVimWikiMarkdown()
-    augroup end
-endfunction
-augroup vimwiki
-    autocmd!
-    autocmd FileType vimwiki call SetVimWikiPandocFormatter()
-augroup end

@@ -2,7 +2,6 @@
 xdotool type :q!
 xdotool key Return
 xdotool key Return
-echo "sudo XDG_CONFIG_HOME=$HOME/.config nvim $1" > /tmp/suvi
-xdotool type ". /tmp/suvi"
+echo "sudo XDG_CONFIG_HOME=$HOME/.config nvim $1" > /tmp/suvi && xdotool type ". /tmp/suvi"
 xdotool key Return
 sleep 1 && rm /tmp/suvi &

@@ -1,3 +1,6 @@
+" jump to this CoC settings file from anywhere: <leader>coc
+
+
 " Custom node path
 let g:coc_node_path = '/usr/bin/node'
 
