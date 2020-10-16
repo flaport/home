@@ -27,6 +27,8 @@
   "python.formatting.provider": "black",
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
+  "python.condaPath": "conda",
+  "python.pythonPath": "python",
   "suggest.autoTrigger": "always",
   "suggest.echodocSupport": true,
   "suggest.maxCompleteItemCount": 10,
