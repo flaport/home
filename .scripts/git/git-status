@@ -28,7 +28,7 @@ def fzf(list_in, prompt):
                 "--height=60%",
                 f"--header={prompt}",
                 "--bind=j:down,k:up,l:toggle,h:toggle,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up",
-                "--preview-window=right:wrap",
+                "--preview-window=right",
                 '--preview=git-status preview "{}"',
             ],
             stdin=fzf_in,
