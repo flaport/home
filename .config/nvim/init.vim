@@ -969,15 +969,14 @@ function! SmdvPutBufferContent()
     call chanclose(pid, 'stdin')
 endfunction
 function! StopSmdv()
-    call system("curl -X DELETE localhost:9876")
+    call jobstart("curl -X DELETE localhost:9876")
 endfunction
 function! StartSmdv()
-    call StopSmdv()
-    call jobstart("smdv --nvim-address ".v:servername." ".expand('%:p'))
+    call jobstart("smdv ".expand('%:p')." --nvim-address ".v:servername." &> /home/flaport/smdv.log")
     augroup startsmdv
         autocmd!
         autocmd BufEnter * call SmdvPutBufferName()
-        autocmd FileType markdown,vimwiki autocmd CursorMoved,CursorMovedI <buffer> call SmdvPutBufferContent()
+        autocmd FileType markdown,vimwiki autocmd TextChanged,TextChangedI <buffer> call SmdvPutBufferContent()
     augroup end
 endfunction
 command! Smdv call StartSmdv()
