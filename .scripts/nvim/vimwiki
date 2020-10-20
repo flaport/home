@@ -4,4 +4,15 @@
 #   |  __\| |   | / \||  \/|| / \||  \/|  / \
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
-/usr/bin/nvim -c VimwikiIndex
+
+if [ ! -d "$HOME/VimWiki" ]; then
+    mkdir $HOME/VimWiki
+fi
+cd $HOME/VimWiki
+git pull >/dev/null 2>&1 &
+if [ ! -z "$1" ]; then
+    filename=$(find . -type f -name "*$1*" | head -1)
+    /usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'" -c "execute \"e $filename\""
+else
+    /usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'"
+fi
