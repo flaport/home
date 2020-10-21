@@ -1012,6 +1012,8 @@ yay_install dragon-drag-and-drop
 #pacman_install acsccid
 ## pcsc-tools: pc smartcard tools (dependency of eid-mw)
 #pacman_install pcsc-tools
+## enable pcsd daemon
+#systemctl_enable pcscd
 ## eid-mw: belgian e-id middleware
 #yay_install eid-mw
 
