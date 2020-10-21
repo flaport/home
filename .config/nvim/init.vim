@@ -646,8 +646,16 @@ nnoremap <leader>ft :Tags<CR>
 xmap <leader>F <Plug>(coc-format-selected)
 nmap <leader>F :Format<CR>
 
-" Toggle (git) diff bar (requires mhinz/vim-signify)
-nnoremap <leader>g :SignifyToggle<CR>
+" Toggle (git) diff bar (requires tpope/vim-fugitive and mhinz/vim-signify)
+" in 's' to stage, 'u' to unstage
+nnoremap <leader>gg :Git<CR>
+nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gv :Gvdiffsplit!<CR><C-w>L<C-w>h<C-w>L<C-w>h
+nnoremap <leader>gu :diffget //2<CR>
+nnoremap <leader>gh :diffget //3<CR>
+nnoremap <leader>gt :SignifyToggle<CR>
 
 " go to definition and similar (requires neoclide/coc.nvim)
 nmap <silent> gd <Plug>(coc-definition)

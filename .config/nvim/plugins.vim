@@ -54,6 +54,7 @@ Plug 'spolu/dwm.vim' " dynamic window manager for vim
 Plug 'suan/vim-instant-markdown'
 Plug 'szymonmaszke/vimpyter' " edit jupyter notebooks
 Plug 'tpope/vim-commentary' " easy comment
+Plug 'tpope/vim-fugitive' " better git integration
 Plug 'tpope/vim-markdown' " markdown syntax highlighting
 Plug 'tpope/vim-repeat' " easily repeat plugin commands with .
 Plug 'tpope/vim-speeddating' " increase date with <C-A>
