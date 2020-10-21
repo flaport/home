@@ -1006,6 +1006,14 @@ yay_install dragon-drag-and-drop
 #pacman_install virtualbox-host-modules-arch
 ## qemu: alternative virtual machine client
 #pacman_install qemu
+## ccid: usb smartcard reader drivers (dependency of eid-mw)
+#pacman_install ccid
+## acsccid: smartcard reader drivers (dependency of eid-mw)
+#pacman_install acsccid
+## pcsc-tools: pc smartcard tools (dependency of eid-mw)
+#pacman_install pcsc-tools
+## eid-mw: belgian e-id middleware
+#yay_install eid-mw
 
 
 # Images, video and media (viewers and editors)
