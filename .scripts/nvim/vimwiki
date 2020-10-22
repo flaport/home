@@ -11,7 +11,7 @@ fi
 
 
 cd $HOME/VimWiki
-git pull >/dev/null 2>&1 &
+
 if [ ! -z "$1" ]; then
     if [ "$1" = "push" ]; then
         echo push
@@ -20,9 +20,9 @@ if [ ! -z "$1" ]; then
         git push
     else
         filename=$(find . -type f -name "*$1*" | head -1)
-        /usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'" -c "execute \"e $filename\""
+        /usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'" -c Gpull -c "execute \"e $filename\""
     fi
     exit
 fi
 
-/usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'"
+/usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'" -c Gpull
