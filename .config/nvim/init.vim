@@ -37,7 +37,8 @@ augroup filetypes
     autocmd BufNewFile,BufEnter,BufRead *.vim setlocal filetype=vim
     autocmd BufNewFile,BufEnter,BufRead *.ipynb setlocal filetype=ipynb
     autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty setlocal filetype=tex
-    autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/*,/tmp/neomutt* call SetFiletypeMarkdownLike()
+    autocmd BufNewFile,BufEnter,BufRead *.txt,/tmp/neomutt* setlocal filetype=text
+    autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/* call SetFiletypeMarkdownLike()
 augroup end
 function! SetFiletypeMarkdownLike()
     if fnamemodify(expand('%'), ':p:h') == expand('~/VimWiki')
@@ -167,14 +168,8 @@ augroup end
 "-------------------------------------------------------------------------------
 " these settings may change depending on the filetype or active extension
 
-" set the maximum textwidth (at this point a return is inserted if nowrap is set)
-set textwidth=90
-
-" set a column at 90 characters
-set colorcolumn=90
-
-" disable line wrapping
-set nowrap
+" enable hard wrapping (insert enter) at 88 characters
+set nowrap nolinebreak formatoptions=tqj textwidth=88 colorcolumn=88
 
 " disable automatic indent when moving to the next line while writing code
 set noautoindent
@@ -209,56 +204,57 @@ set noshowcmd
 augroup latexmarkdownvariablesettings
     autocmd!
 
-    " set the maximum textwidth (at this point a return is inserted if nowrap is set)
-    autocmd FileType tex,markdown,vimwiki setlocal textwidth=80
+    " enable hard wrapping (insert enter) at 88 characters [tex, md, vimwiki]
+    autocmd Filetype tex,markdown,vimwiki set nowrap nolinebreak formatoptions=tqj textwidth=88 colorcolumn=88
 
-    " disable color column
-    autocmd FileType tex,markdown,vimwiki setlocal colorcolumn=0
+    " enable soft wrapping (no enter inserted) at 88 characters [text files]
+    autocmd Filetype text setlocal wrap linebreak formatoptions=lqj textwidth=0 colorcolumn=88
 
-    " show line numbers
-    autocmd FileType tex,markdown,vimwiki setlocal nonumber
+    " when using soft wrapping, you'll likely want to remap j and k:
+    autocmd FileType text nnoremap <buffer> j gj
+    autocmd FileType text nnoremap <buffer> k gk
 
-    " relative line numbering
-    autocmd FileType tex,markdown,vimwiki setlocal norelativenumber
+    " don't show line numbers
+    autocmd FileType tex,text,markdown,vimwiki setlocal nonumber
+
+    " don't show relative line numbering
+    autocmd FileType tex,text,markdown,vimwiki setlocal norelativenumber
 
     " spell check, set default to en_us
-    autocmd FileType tex,markdown,vimwiki setlocal spell spelllang=en_us
+    autocmd FileType tex,text,markdown,vimwiki setlocal spell
 
     " left margin width (max 12)
-    autocmd FileType tex,markdown,vimwiki setlocal foldcolumn=12
+    autocmd FileType tex,text,markdown,vimwiki setlocal foldcolumn=8
 
     " show where you are in the document in status bar (e.g. 143,61, 20%)
-    autocmd FileType tex,markdown,vimwiki setlocal noruler
+    autocmd FileType tex,text,markdown,vimwiki setlocal noruler
 
     " show status bar (0=disabled, 1=show half status bar, 2=show full status bar)
-    autocmd FileType tex,markdown,vimwiki setlocal laststatus=0
+    autocmd FileType tex,text,markdown,vimwiki setlocal laststatus=0
 
     " don't show last command executed
-    autocmd FileType tex,markdown,vimwiki setlocal noshowcmd
-augroup end
-
-augroup markdownvariablesettings
-    autocmd!
-
-    " disable line wrapping
-    autocmd FileType markdown,vimwiki setlocal wrap linebreak
+    autocmd FileType tex,text,markdown,vimwiki setlocal noshowcmd
 augroup end
 
 augroup pythonvariablesettings
     autocmd!
 
-    " enable autoindent
+    " disable both hard wrapping and soft wrapping, but show colorcolumn at 88 characters
+    autocmd Filetype python setlocal nowrap nolinebreak formatoptions=lqj textwidth=0 colorcolumn=88
+
+    " enable autoindent on new line
     autocmd FileType python setlocal autoindent
 augroup end
 
 augroup vimvariablesettings
     autocmd!
 
-    " disable color column
-    autocmd FileType vim setlocal colorcolumn=0
+    " disable both hard wrapping and soft wrapping and don't show a colorcolumn
+    autocmd Filetype vim setlocal nowrap nolinebreak formatoptions=lqj textwidth=0 colorcolumn=0
 
     " more info in status bar:
     autocmd FileType vim setlocal showmode
+
 augroup end
 
 
