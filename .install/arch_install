@@ -902,16 +902,18 @@ systemctl_enable org.cups.cupsd
 
 ## fontconfig should already be installed, but just to be sure:
 pacman_install fontconfig
-## dejavu font: inkscape dependency (fully blocked by my fontconfig):
+## dejavu font: inkscape dependency (fully blocked by my fontconfig, replaced by Bitstream Vera):
 pacman_install ttf-dejavu
+## bitstream vera: alternative to dejavu (not blocked by my fontconfig, replaces DejaVu):
+pacman_install ttf-bitstream-vera
 ## cantarell fonts: gtk3 dependency (fully blocked by my fontconfig):
 pacman_install cantarell-fonts
 ## adobe fonts: nemo and other GNOME apps dependency (fully blocked by my fontconfig):
 pacman_install adobe-source-code-pro-fonts
-## liberation fonts: chromium, firefox and mplayer dependency (fully blocked by my fontconfig):
+## liberation fonts: chromium, firefox and mplayer dependency (currently my default fonts):
 pacman_install ttf-liberation
-## ubuntu fonts: a beautiful mono and sans font (my default mono font)
-pacman_install ttf-ubuntu-font-family
+## ubuntu fonts: a beautiful mono and sans font
+#pacman_install ttf-ubuntu-font-family
 ## gnu free fonts: optional vlc dependency (partly blocked by my fontconfig):
 #pacman_install gnu-free-fonts
 ## gnome core fontset (partly blocked by my fontconfig):
@@ -920,14 +922,16 @@ pacman_install ttf-ubuntu-font-family
 #pacman_install ttf-fira-code
 ## a patched fira code font with nerd font glyphs (partly blocked by my fontconfig):
 #yay_install nerd-fonts-fira-code
-## bitstream vera: alternative to dejavu (not blocked by my fontconfig):
-#pacman_install ttf-bitstream-vera
 ## nice serif (Linux Libertine) and sans-serif (Linux Biolinum) fonts (not blocked by my fontconfig):
-pacman_install ttf-linux-libertine
+# pacman_install ttf-linux-libertine
 ## recommended font package for compatibility with MS Office (fully blocked and partly aliased by my fontconfig):
 #yay_install ttf-ms-fonts
 ## recommended font package for compatibility with MS Office (fully blocked and partly aliased by my fontconfig):
 #yay_install ttf-vista-fonts
+## carlito: free font alternative to calibri
+pacman_install ttf-carlito
+## caladea: free font alternative to cambria
+#pacman_install ttf-caladea
 ## alternative nice font package (partly blocked by my fontconfig):
 #pacman_install ttf-droid
 ## yet another nice monospace font:
