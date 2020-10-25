@@ -913,7 +913,7 @@ pacman_install adobe-source-code-pro-fonts
 ## liberation fonts: chromium, firefox and mplayer dependency (currently my default fonts):
 pacman_install ttf-liberation
 ## ubuntu fonts: a beautiful mono and sans font
-#pacman_install ttf-ubuntu-font-family
+pacman_install ttf-ubuntu-font-family
 ## gnu free fonts: optional vlc dependency (partly blocked by my fontconfig):
 #pacman_install gnu-free-fonts
 ## gnome core fontset (partly blocked by my fontconfig):
