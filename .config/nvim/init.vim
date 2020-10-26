@@ -607,7 +607,8 @@ nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
 nnoremap <silent> <leader>ci  :<C-u>CocList -I symbols<cr>
 
 " edit one of the vim config files (requires set hidden)
-nnoremap <leader>cc :e ~/.config/nvim/init.vim<CR>
+nnoremap <leader>cc :Calendar<CR>
+nnoremap <leader>ci :e ~/.config/nvim/init.vim<CR>
 nnoremap <leader>cp :e ~/.config/nvim/plugins.vim<CR>
 nnoremap <leader>cs :e ~/.config/nvim/snippets/snippets.vim<CR>
 nnoremap <leader>coc :e ~/.config/nvim/coc-settings.vim<CR>
