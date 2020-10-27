@@ -7,27 +7,68 @@ import argparse
 import subprocess
 from datetime import datetime, timedelta
 
-def eprint(*args, **kwargs):
-    if not ARGS.suppress_errors:
-        print(*args, file=sys.stderr, **kwargs)
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["show", "apts"], help="show: show joplin todo list; apts: show calcurse appointments")
-    parser.add_argument("-c", "--calcurse-path", default="~/.calcurse", help="path of the calcurse config folder (default '~/.calcurse')")
-    parser.add_argument("-p", "--vimwiki-path", default="~/VimWiki", help="path of the todo list (default '~/VimWiki/todo.md)")
-    parser.add_argument("-l", "--line-length", default=100, type=int, help="maximum line length (characters)")
-    parser.add_argument("-n", "--num-lines", default=10, type=int, help="maximum number of lines")
-    parser.add_argument("-S", "--suppress-errors", action="store_true", help="suppress error messages")
+    parser.add_argument(
+        "command",
+        choices=["show", "apts"],
+        help="show: show joplin todo list; apts: show calcurse appointments",
+    )
+    parser.add_argument(
+        "-c",
+        "--calcurse-path",
+        default="~/.calcurse",
+        help="path of the calcurse config folder (default '~/.calcurse')",
+    )
+    parser.add_argument(
+        "-p",
+        "--vimwiki-path",
+        default="~/VimWiki",
+        help="path of the todo list (default '~/VimWiki/todo.md)",
+    )
+    parser.add_argument(
+        "-l",
+        "--line-length",
+        default=100,
+        type=int,
+        help="maximum line length (characters)",
+    )
+    parser.add_argument(
+        "-n", "--num-lines", default=10, type=int, help="maximum number of lines"
+    )
+    parser.add_argument(
+        "-S", "--suppress-errors", action="store_true", help="suppress error messages"
+    )
     ARGS = parser.parse_args()
     ARGS.vimwiki_path = os.path.abspath(os.path.expanduser(ARGS.vimwiki_path))
     if not os.path.exists(ARGS.vimwiki_path):
-        raise parser.error(f"invalid --vimwiki-path '{ARGS.vimwiki_path}'. The path does not exist.")
+        raise parser.error(
+            f"invalid --vimwiki-path '{ARGS.vimwiki_path}'. The path does not exist."
+        )
     if not os.path.isdir(ARGS.vimwiki_path):
-        raise parser.error(f"invalid --vimwiki-path '{ARGS.vimwiki_path}'. The path is not a directory.")
+        raise parser.error(
+            f"invalid --vimwiki-path '{ARGS.vimwiki_path}'. The path is not a directory."
+        )
     if ARGS.vimwiki_path.endswith("/"):
         ARGS.vimwiki_path = ARGS.vimwiki_path[:-1]
     return ARGS
+
+
+def _eprint(*args, **kwargs):
+    if not ARGS.suppress_errors:
+        print(*args, file=sys.stderr, **kwargs)
+
+
+def _crop_line(line, maxlen):
+    cropped_line = ""
+    for word in line.strip().split(" "):
+        if len(cropped_line) + len(word) > maxlen - 3:
+            cropped_line = cropped_line[:-1] + "..."
+            break
+        cropped_line = cropped_line + word + " "
+    return cropped_line
+
 
 def show():
     today = datetime.now().strftime("%Y-%m-%d")
@@ -39,19 +80,20 @@ def show():
             content = file.read()
         lines = content.split("## ")[1].split("\n")[1:]
         lines = [line for line in lines if line.strip()]
-        lines = [line[:ARGS.line_length] for line in lines]
-        lines = lines[:ARGS.num_lines]
+        lines = [_crop_line(line, ARGS.line_length) for line in lines]
+        lines = lines[: ARGS.num_lines]
         todo = "\n".join(lines)
         print(todo)
     except:
-        eprint(f"failed to load todo list.")
+        _eprint(f"failed to load todo list.")
+
 
 def apts():
     today = datetime.today()
     apts = os.path.expanduser(os.path.join(ARGS.calcurse_path, "apts"))
     with open(apts, "r") as file:
         lines = file.read().split("\n")
-    dates = [datetime.strptime(line.split(" ")[0],"%m/%d/%Y") for line in lines]
+    dates = [datetime.strptime(line.split(" ")[0], "%m/%d/%Y") for line in lines]
     dates, lines = zip(*sorted(zip(dates, lines)))
     lines = [line for line, date in zip(lines, dates) if date - today > timedelta(0)]
     content = "\n".join(lines[:5]).replace("|", " | ")
@@ -61,4 +103,3 @@ def apts():
 if __name__ == "__main__":
     ARGS = parse_args()
     eval(ARGS.command)()
-
