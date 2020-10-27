@@ -25,11 +25,22 @@ if [ ! -z "$1" ]; then
         git pull
         exit
     fi
-    if [ "$1" = "diary" ] || [ "$1" = "d" ]; then
+    if [ "$1" = "today" ] || [ "$1" = "w" ]; then
+        filename="diary/$(date +'%Y-%m-%d').md"
+    elif [ "$1" = "tomorrow" ] || [ "$1" = "m" ]; then
+        filename="diary/$(date +'%Y-%m-%d' --date=tomorrow).md"
+        echo $filename
+    elif [ "$1" = "yesterday" ] || [ "$1" = "y" ]; then
+        filename="diary/$(date +'%Y-%m-%d' --date=yesterday).md"
+    elif [ "$1" = "diary" ] || [ "$1" = "i" ]; then
         if [ -z "$2" ]; then
             filename=diary/diary.md
         else
             filename=$(find diary -type f -name "*$2*" | head -1)
+            if [ -z "$filename" ]; then
+                filename=$(date +'%Y-%m-%d' --date="$2" 2> /dev/null) || exit 1
+                filename="diary/$filename.md"
+            fi
         fi
     else
         filename=$(find . -type f -name "*$1*" | head -1)
