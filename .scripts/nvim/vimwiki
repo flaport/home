@@ -30,6 +30,7 @@ if [ ! -z "$1" ]; then
         filename=$(find . -type f -name "*$1*" | head -1)
     fi
     /usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'" -c Gpull -c "execute \"e $filename\""
+    exit
 fi
 
 /usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'" -c Gpull
