@@ -211,4 +211,7 @@ function! EnterEmptyVimWikiDiaryFile()
     endif
 endfunction
 
-autocmd BufNewFile *.md call EnterEmptyVimWikiDiaryFile()
+augroup vimwikisettings
+    autocmd!
+    autocmd BufNewFile *.md call EnterEmptyVimWikiDiaryFile()
+augroup end
