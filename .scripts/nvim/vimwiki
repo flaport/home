@@ -14,10 +14,15 @@ cd $HOME/VimWiki
 
 if [ ! -z "$1" ]; then
     if [ "$1" = "push" ]; then
-        echo push
+        echo vimwiki push
         git add -A
         git commit -m "updated $(git status -s | grep ".md$" | sed 's/^...//g' | sed 's/.md$/, /g' | tr -d '\n' | sed 's/, $//g')"
         git push
+        exit
+    fi
+    if [ "$1" = "pull" ]; then
+        echo vimwiki pull
+        git pull
         exit
     fi
     if [ "$1" = "diary" ] || [ "$1" = "d" ]; then
