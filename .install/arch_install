@@ -1190,7 +1190,8 @@ pacman_install intel-gpu-tools
 ##pacman_install nvidia-utils
 ##pacman_install nvtop
 ##pacman_install nvidia-settings
-##pacman_install cuda-toolkit
+##pacman_install cuda
+##pacman_install cudnn
 ##pacman_install opencl-nvidia
 ##yay_install optimus-manager
 ##echo $password | sudo -S cp $HOME/.install/config/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
