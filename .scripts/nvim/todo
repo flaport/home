@@ -15,28 +15,35 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=["show", "apts"], help="show: show joplin todo list; apts: show calcurse appointments")
     parser.add_argument("-c", "--calcurse-path", default="~/.calcurse", help="path of the calcurse config folder (default '~/.calcurse')")
-    parser.add_argument("-p", "--path", default="~/VimWiki/todo.md", help="path of the todo list (default '~/VimWiki/todo.md)")
+    parser.add_argument("-p", "--vimwiki-path", default="~/VimWiki", help="path of the todo list (default '~/VimWiki/todo.md)")
     parser.add_argument("-l", "--line-length", default=100, type=int, help="maximum line length (characters)")
     parser.add_argument("-n", "--num-lines", default=10, type=int, help="maximum number of lines")
     parser.add_argument("-S", "--suppress-errors", action="store_true", help="suppress error messages")
     ARGS = parser.parse_args()
+    ARGS.vimwiki_path = os.path.abspath(os.path.expanduser(ARGS.vimwiki_path))
+    if not os.path.exists(ARGS.vimwiki_path):
+        raise parser.error(f"invalid --vimwiki-path '{ARGS.vimwiki_path}'. The path does not exist.")
+    if not os.path.isdir(ARGS.vimwiki_path):
+        raise parser.error(f"invalid --vimwiki-path '{ARGS.vimwiki_path}'. The path is not a directory.")
+    if ARGS.vimwiki_path.endswith("/"):
+        ARGS.vimwiki_path = ARGS.vimwiki_path[:-1]
     return ARGS
 
 def show():
+    today = datetime.now().strftime("%Y-%m-%d")
+    path = f"{ARGS.vimwiki_path}/diary/{today}.md"
+    if not os.path.exists(path):
+        path = f"{ARGS.vimwiki_path}/todo.md"
     try:
-        lines = []
-        with open(os.path.abspath(os.path.expanduser(ARGS.path)), "r") as file:
-            for line in file:
-                if line.startswith("## "):
-                    break
-                if line.strip() != "":
-                    lines.append(line.strip())
-        lines = [line for line in lines if not line.startswith("# ")]
+        with open(path, "r") as file:
+            content = file.read()
+        lines = content.split("## ")[1].split("\n")[1:]
+        lines = [line for line in lines if line.strip()]
         lines = [line[:ARGS.line_length] for line in lines]
         lines = lines[:ARGS.num_lines]
         todo = "\n".join(lines)
         print(todo)
-    except Exception as e:
+    except:
         eprint(f"failed to load todo list.")
 
 def apts():

@@ -18,11 +18,18 @@ if [ ! -z "$1" ]; then
         git add -A
         git commit -m "updated $(git status -s | grep ".md$" | sed 's/^...//g' | sed 's/.md$/, /g' | tr -d '\n' | sed 's/, $//g')"
         git push
+        exit
+    fi
+    if [ "$1" = "diary" ] || [ "$1" = "d" ]; then
+        if [ -z "$2" ]; then
+            filename=diary/diary.md
+        else
+            filename=$(find diary -type f -name "*$2*" | head -1)
+        fi
     else
         filename=$(find . -type f -name "*$1*" | head -1)
-        /usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'" -c Gpull -c "execute \"e $filename\""
     fi
-    exit
+    /usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'" -c Gpull -c "execute \"e $filename\""
 fi
 
 /usr/bin/nvim -c VimwikiIndex -c "execute 'set path=.'" -c Gpull
