@@ -168,8 +168,8 @@ augroup end
 "-------------------------------------------------------------------------------
 " these settings may change depending on the filetype or active extension
 
-" enable hard wrapping (insert enter) at 88 characters
-set nowrap nolinebreak formatoptions=tqj textwidth=88 colorcolumn=88
+" enable no wrapping (disable both hard wrapping and soft wrapping)
+set nowrap nolinebreak formatoptions=lqj textwidth=0 colorcolumn=0
 
 " disable automatic indent when moving to the next line while writing code
 set noautoindent
@@ -205,10 +205,10 @@ augroup latexmarkdownvariablesettings
     autocmd!
 
     " enable hard wrapping (insert enter) at 88 characters [tex, md, vimwiki]
-    autocmd Filetype tex,markdown,vimwiki set nowrap nolinebreak formatoptions=tqj textwidth=88 colorcolumn=88
+    autocmd Filetype tex,markdown,vimwiki HardWrap
 
-    " enable soft wrapping (no enter inserted) at 88 characters [text files]
-    autocmd Filetype text setlocal wrap linebreak formatoptions=lqj textwidth=0 colorcolumn=88
+    " enable soft wrapping (no enter inserted) at end of window [text files]
+    autocmd Filetype text SoftWrap
 
     " when using soft wrapping, you'll likely want to remap j and k:
     autocmd FileType text nnoremap <buffer> j gj
@@ -239,8 +239,11 @@ augroup end
 augroup pythonvariablesettings
     autocmd!
 
-    " disable both hard wrapping and soft wrapping, but show colorcolumn at 88 characters
-    autocmd Filetype python setlocal nowrap nolinebreak formatoptions=lqj textwidth=0 colorcolumn=88
+    " disable both hard wrapping and soft wrapping
+    autocmd Filetype python NoWrap
+
+    " also show colorcolumn at 88 characters
+    autocmd Filetype python setlocal colorcolumn=88
 
     " enable autoindent on new line
     autocmd FileType python setlocal autoindent
@@ -250,7 +253,7 @@ augroup vimvariablesettings
     autocmd!
 
     " disable both hard wrapping and soft wrapping and don't show a colorcolumn
-    autocmd Filetype vim setlocal nowrap nolinebreak formatoptions=lqj textwidth=0 colorcolumn=0
+    autocmd Filetype vim NoWrap
 
     " more info in status bar:
     autocmd FileType vim setlocal showmode
@@ -315,9 +318,23 @@ cabbrev e!! call OpenAsSudo()
 "-------------------------------------------------------------------------------
 " these commands may change depending on the filetype or active extension
 
+" open a new fullscreen terminal
 command! T call NewTerminal("")
+
+" open a new horiontal terminal
 command! HT call NewHorizontalTerminal("")
+
+" open a new vertical terminal
 command! VT call NewVerticalTerminal("")
+
+" enable soft wrapping (no enter inserted) at end of window
+command! SoftWrap setlocal wrap linebreak formatoptions=lqj textwidth=0 colorcolumn=0
+
+" enable hard wrapping (insert enter) at 88 characters
+command! HardWrap setlocal nowrap nolinebreak formatoptions=tqj textwidth=88 colorcolumn=88
+
+" enable no wrapping (disable both hard wrapping and soft wrapping)
+command! NoWrap setlocal nowrap nolinebreak formatoptions=lqj textwidth=0 colorcolumn=0
 
 augroup terminal
   autocmd!
@@ -764,8 +781,16 @@ nnoremap <leader>U :echo "\<leader\>U"<cr>
 nnoremap <leader>v :echo "\<leader\>v"<cr>
 nnoremap <leader>V :echo "\<leader\>V"<cr>
 
+" enable no wrapping
+nnoremap <leader>wn :NoWrap<cr>
+
+" enable soft wrapping
+nnoremap <leader>ws :SoftWrap<cr>
+
+" enable hard wrapping
+nnoremap <leader>wh :SoftWrap<cr>
+
 " noop
-nnoremap <leader>w :echo "\<leader\>w"<cr>
 nnoremap <leader>W :echo "\<leader\>W"<cr>
 
 " noop
