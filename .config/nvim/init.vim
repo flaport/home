@@ -38,15 +38,8 @@ augroup filetypes
     autocmd BufNewFile,BufEnter,BufRead *.ipynb setlocal filetype=ipynb
     autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty setlocal filetype=tex
     autocmd BufNewFile,BufEnter,BufRead *.txt,/tmp/neomutt* setlocal filetype=text
-    autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/* call SetFiletypeMarkdownLike()
+    autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/* setlocal filetype=vimwiki
 augroup end
-function! SetFiletypeMarkdownLike()
-    if fnamemodify(expand('%'), ':p:h') == expand('~/VimWiki')
-        setlocal filetype=vimwiki
-    else
-        setlocal filetype=markdown
-    endif
-endfunction
 
 
 "" Fixed Settings
@@ -155,9 +148,11 @@ augroup fixedsettings
     " remove underline when in normal mode
     autocmd InsertLeave * set nocul
 
-
     " disable automatic commenting on newline:
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+    " sometimes syntax highlighting breaks in large files on buffer change:
+    autocmd BufEnter * syntax sync fromstart
 
     " automatically cd into folder of current file (disabled, but mapped to <leader>cd)
     "autocmd BufEnter * silent! lcd %:p:h
@@ -287,6 +282,8 @@ function! DoOnSave()
     endif
     normal `m
     delmarks m
+    " sometimes syntax highlighting breaks in large files on saving:
+    syntax sync fromstart
 endfunction
 
 " save on focus lost
@@ -955,7 +952,7 @@ function! RunPython(type)
     else
         call NewHorizontalTerminal("ipython --matplotlib")
         if exists("g:last_terminal_job_id")
-            sleep 1
+            sleep 100m
             call RunPython(a:type)
         endif
     endif
