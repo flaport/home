@@ -143,11 +143,11 @@ super + P
 super + q
     # handled by dwm
 
-# quit dwm (logout)
+# restart dwm
 super + Q
     # handled by dwm
 
-# restart dwm
+# quit dwm (logout)
 super + control + Q
     # handled by dwm
 
