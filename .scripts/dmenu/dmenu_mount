@@ -161,6 +161,7 @@ def mount(device: Device, directory: str):
             "ext3": _mount_ext,
             "ext4": _mount_ext,
             "vfat": _mount_vfat,
+            "exfat": _mount_exfat,
             "ntfs": _mount_ntfs,
             "cifs": _mount_cifs,
             "ssh": _mount_ssh,
@@ -191,6 +192,14 @@ def _mount_vfat(device: Device, directory: str):
               f"uid={os.getuid()},gid={os.getgid()},dmask=033,umask=033")
     msg = subprocess.check_output(
         ["sudo", "-A", "mount", f"{device.name}", directory, "--options", options]
+    )
+    return msg
+
+def _mount_exfat(device: Device, directory: str):
+    options = ("defaults,nofail,x-systemd.device-timeout=1s,"
+              f"uid={os.getuid()},gid={os.getgid()},dmask=033,umask=033")
+    msg = subprocess.check_output(
+        ["sudo", "-A", "mount", "-t", "exfat", f"{device.name}", directory, "--options", options]
     )
     return msg
 
