@@ -1004,10 +1004,10 @@ yay_install dragon-drag-and-drop
 #pacman_install linux-lts-headers
 ## virtualbox: virtual machines
 #pacman_install virtualbox
-## virtualbox drivers for non-linux kernels:
-#pacman_install virtualbox-host-dkms
 ## virtualbox drivers for linux kernels:
 #pacman_install virtualbox-host-modules-arch
+## virtualbox guest additions
+#pacman_install virtualbox-guest-iso
 ## qemu: alternative virtual machine client
 #pacman_install qemu
 ## ccid: usb smartcard reader drivers (dependency of eid-mw)
