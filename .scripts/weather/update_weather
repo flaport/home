@@ -4,7 +4,7 @@ CACHEDIR="$HOME/.cache/weatherreport"
 mkdir -p "$CACHEDIR"
 
 # first download to temp file:
-curl -s wttr.in > /tmp/weatherreport
+curl -s wttr.in | sed 's/↑/⬆/g' | sed 's/→/➡/g' | sed 's/↓/⬇/g' | sed 's/←/⬅/g' > /tmp/weatherreport
 
 # check for errors in downloaded file:
 if grep Sorry /tmp/weatherreport &> /dev/null; then
