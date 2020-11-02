@@ -2,13 +2,13 @@
 
 A Portable Linux Home Folder to feel right at home in any distribution.
 
-a.k.a _my dotfiles_ + _[bootstrapping scripts](../.install) for Arch and Debian_
+a.k.a _my [dotfiles](#list-of-configs) + [bootstrapping scripts](../.install) for Arch and Debian_
 
 a.k.a _highly opinionated configurations for anything I ever used._
 
 ![arch + dwm](home.gif)
 
-##### what you're seeing
+#### what you're seeing
 
 - [My dwm fork](https://github.com/flaport/dwm) with clickable [status bar](../.scripts/dwm/dwm_status).
 - [Adaptive theming](../.scripts/x/xcs) for TUIs, GTK apps and QT apps.
@@ -91,88 +91,88 @@ bash ~/.install/python_install
 
 A non-exhaustive list of configurations and script this repository has to offer:
 
-- [app defaults](../.config/mimeapps.list/)
 - [app files](../.local/share/applications/)
+- [app defaults](../.config/mimeapps.list/)
 - [alacritty](../.config/alacritty/alacritty.yml) · a terminal with GPU acceleration + [scripts](../.scripts/alacritty/)
-- [askpass](../.scripts/askpass) · custom GTK pinentry
 - [albert](../.config/albert/albert.confg) · a GTK based application launcher
+- [askpass](../.scripts/askpass) · custom GTK pinentry
 - [autojump](../.scripts/autojump/) · jump to folders in the cli.
 - [bash](../.bashrc) · shell
 - [broot](../.config/broot/) · terminal file browser
 - [castero](../.config/castero/castero.conf) · a TUI for podcasts
 - [cat](../.scripts/cat/) · concatenate files
-- [conda](../.condarc) · python package manager
-- [contacts](../.scripts/contact) · simple scripts to mange iCal contacts
-- [conky](../.config/conky/) · system monitor
 - [chromium](../.config/chromium-flags.conf) · the famous browser
+- [conda](../.condarc) · python package manager
+- [conky](../.config/conky/) · system monitor
+- [contacts](../.scripts/contact) · simple scripts to mange iCal contacts
 - [ctags](../.ctags) · used for tag jumping in vim
-- [dwm](../.scripts/dwm/) · startup and status bar script
 - [dmenu](https://github.com/flaport/dmenu) · application launcher ([rofi](../.config/rofi) alternative) + [much more](../.scripts/dmenu)
 - [dragon](../.scripts/dragon/d) · dragon drag-and-drop aliased to `d`.
 - [dunst](../.config/dunst/) · notifications
+- [dwm](../.scripts/dwm/) · startup and status bar script
 - [emacs](../.emacs.d/) · editor and more
 - [eslint](../.eslintrc) · javascript linting
-- [flameshot](../.config/Dharkael/) · a very capable screenshot program + [scripts](../.scripts/flameshot/)
-- [fish](../.config/fish/) · shell
-- [fontconfig](../.config/fontconfig) · default fonts and other font settings
-- [fstab](~/.extra/fstab) · an fstab example
 - [firefox](../.scripts/browser/) · the best browser
+- [fish](../.config/fish/) · shell
+- [flameshot](../.config/Dharkael/) · a very capable screenshot program + [scripts](../.scripts/flameshot/)
+- [fontconfig](../.config/fontconfig) · default fonts and other font settings
+- [fstab](../.extra/fstab) · an fstab example
 - [fzf](../.scripts/fzf) · the fuzzy file finder
+- [ghostscript](../.scripts/ghostscript/) · the low level pdf editor
 - [git](../.gitconfig) · source control + many convenience [scripts](../.scripts/git/)
+- [gnupg](../.gnupg/) · gpg agent
 - [gtk 2.0](../.config/gtk-2.0/) · gtk theming
 - [gtk 3.0](../.config/gtk-3.0/) · gtk theming
-- [gnupg](../.gnupg/) · gpg agent
-- [ghostscript](../.scripts/ghostscript/) · the low level pdf editor
 - [hosts](../.extra/hosts) · a hosts file example
 - [inkscape](../.scripts/inkscape) · custom scripts using the incscape CLI
 - [ipython](../.ipython/profile_default/) · interactive python shell
 - [joplin](../.config/joplin/) · note taking app + some basic [scripts](../.scripts/joplin/)
 - [jupyter](../.jupyter/) · notebook server for python (and others) + [scripts](../.scripts/jupyterhubopen)
 - [kvantum](../.config/Kvantum/) · qt theming + [scripts](../.scripts/kvantum/)
-- [lockscreen] · custom scripts handling screenlocks and more
+- [latexmk](../.latexmkrc) · latex build settings
+- [lockscreen](../.scripts/lockscreen/) · custom scripts handling screenlocks and more
 - [ls](../.scripts/ls) · ls aliased to lsd if no arguments given
 - [lxappearance](../.scripts/lxappearance/) · GTK theme chooser
-- [latexmk](../.latexmkrc) · latex build settings
 - [matplotlib](../.config/matplotlib/) · python plotting + [scripts](../.scripts/matplotlib)
 - [mouse cursor](../.icons/default/index.theme) · configuration
 - [mpv](../.config/mpv/) · media player + [scripts](../.scripts/mpv/)
 - [nemo](../.local/share/nemo/actions/) · file browser + [scripts](../.scripts/nemo/)
 - [neofetch](../.config/neofetch/) · system information
-- [nextcloud](../.config/Nextcloud/) · nextcloud client
 - [newsboat](../.config/newsboat/) · an RSS reader TUI
+- [nextcloud](../.config/Nextcloud/) · nextcloud client
 - [nvim](../.config/nvim/) · neovim: the terminal text editor + [scripts](../.scripts/nvim/)
 - [open-octet-stream](../.scripts/octet-stream/) · custom script to open 'octet-stream' (binary) files.
 - [openvpn](../.config/openvpn/) · vpn tool
 - [picom](../.config/picom/) · compositor + [alpha script](../.scripts/x/alpha) to change transparency from cli + [custom scripts](../.scripts/picom/).
-- [rename](../.scripts/rename/) · a simple script to batch rename files with vim
 - [qt5ct](../.config/qt5ct/) · qt theming
 - [qutebrowser](../.config/qutebrowser/) · qt based web browser with vim keybindings
+- [rename](../.scripts/rename/) · a simple script to batch rename files with vim
 - [rofi](../.config/rofi/) · application launcher ([dmenu](https://github.com/flaport/dmenu) alternative) + [much more](../.scripts/dmenu)
 - [spotifyd](../.config/spotifyd) · the headless spotify daemon (used in conjuction with spotify-tui)
 - [spotify-tui](../.config/spotify-tui) · the spotify TUI + [scripts](../.scripts/spotify-tui/)
 - [sxhkd](../.config/sxhkd/) · keyboard shortcuts
-- [syncthing](../.config/syncthing/) · file synchronization between devices
 - [sxiv](../.config/sxiv/) · the simple X image viewer
+- [syncthing](../.config/syncthing/) · file synchronization between devices
+- [termdown](../.scripts/termdown) · the terminal countdown timer
 - [tmux](../.tmux.conf) · terminal multiplexer
 - [transmission-daemon](../.config/transmission-daemon/) · transmission torrent daemon + [scripts](../.scripts/transmission/)
+- [ueberzug](../.scripts/ueberzug/) · the terminal image overlayer
 - [vifm](../.config/vifm/) · terminal file browser with vim keybindings + [scripts](../.scripts/vifm/)
-- [wallpaper](../.scripts/wallpaper) · a custom script to set wallpapers using `feh`.
-- [weather](../.scripts/weather/) · custom weather scripts
-- [webapp](../.scripts/webapps/) · custom scripts to open webpages as webapps.
-- [x](../.scripts/x) · custom scripts to configure X
-- [xdg-open](../.scripts/xdg-open/) · custom scripts related to `xdg-open`, such as `o` aliased to `xdg-open`.
 - [vimb](../.config/vimb/) · web browser with vim keybindings (does not seem to work very well for me)
-- [termdown](../.scripts/termdown) · the terminal countdown timer
 - [vimfx](../.config/vimfx/) · vim keybindings for firefox (requires [legacyfox patch](https://github.com/girst/LegacyFox))
 - [vis](../.config/vis/) · music cli visualizer
 - [vscode](../.config/Code%20-%20OSS/) · code editor
+- [wallpaper](../.scripts/wallpaper) · a custom script to set wallpapers using `feh`.
 - [wallpaper](../.scripts/wallpaper/) · scripts to set wallpaper
+- [weather](../.scripts/weather/) · custom weather scripts
+- [webapp](../.scripts/webapps/) · custom scripts to open webpages as webapps.
+- [xdg-open](../.scripts/xdg-open/) · custom scripts related to `xdg-open`, such as `o` aliased to `xdg-open`.
 - [xinit](../.xinitrc) · x session starter
 - [xrandr](../.scripts/screenlayout/) · screenlayout [convenience scripts](../.scripts/screenlayout/) + [screenlayout selector](../.scripts/dmenu/dmenu_screenlayout).
 - [xresources](../.config/Xresources) · colorschemes + [xcs script](../.scripts/x/xcs)
+- [x](../.scripts/x) · custom scripts to configure X
 - [zathura](../.config/zathura/) · pdf reader + [scripts](../.scripts/zathura)
 - [zsh](../.zshrc) · my preferred shell
-- [ueberzug](../.scripts/ueberzug/) · the terminal image overlayer
 
 ## List of custom builds
 
