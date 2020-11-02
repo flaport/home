@@ -263,7 +263,7 @@ super + control + Return
 
 # toggle pause / play
 super + shift + equal
-    notify-send "⏯"; ff-toggle-pause; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
+    notify-send "⏯"; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
 
 # raise volume
 super + equal
@@ -509,11 +509,11 @@ XF86AudioPrev
 
 # toggle pause / play
 XF86AudioPause
-    notify-send "⏯"; ff-toggle-pause; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
+    notify-send "⏯"; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
 
 # toggle pause / play
 XF86AudioPlay
-    notify-send "⏯"; ff-toggle-pause; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
+    notify-send "⏯"; mpvcontrol togglepause; timeout 1s playerctl play-pause && (icon=$(cat $HOME/.cache/dwm_playercontrol) && [ "$icon" = "" ] && echo  > $HOME/.cache/dwm_playercontrol || echo  > $HOME.cache/dwm_playercontrol); dwm_status
 
 # toggle pause / play
 XF86AudioStop
