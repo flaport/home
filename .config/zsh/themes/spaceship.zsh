@@ -5,7 +5,7 @@
 # License: MIT
 # https://github.com/denysdovhan/spaceship-prompt
 #
-# configured for arch-home by flaport
+# configured for https://github.com/flaport/home
 #
 
 SPACESHIP_ROOT="$HOME/.spaceship-prompt"
