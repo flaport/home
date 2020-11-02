@@ -135,6 +135,8 @@ set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
 
 " Mappings
 
+nnoremap q :q!<cr>
+
 nnoremap W :wal<cr>
 
 " edit (overrides preview; use w instead)
