@@ -948,7 +948,11 @@ pacman_install adobe-source-han-serif-cn-fonts
 #pacman_install adobe-source-han-serif-tw-fonts
 ## awesome terminal fonts: nice icons (lsd and dwm [my build] dependency):
 pacman_install awesome-terminal-fonts
-## hack nerd fonts: patched font with different nice icons (recommended for lsd):
+## powerline symbols: essential symbols for powerlines in zsh/bash/vim/...
+#yay_install otf-powerline-symbols-git
+## devicons: more symbols (used in lsd)
+#yay_install ttf-devicons
+## hack nerd fonts: patched font with nice icons (recommended for lsd):
 yay_install nerd-fonts-hack
 ## Joypixels color emojis:
 pacman_install ttf-joypixels
