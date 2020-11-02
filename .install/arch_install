@@ -463,7 +463,7 @@ pacman_install neofetch
 ## lightweight system information
 #yay_install pfetch
 ## some more eye-candy (useless music visualizer):
-#yay_install cli-visualizer
+#yay_install cli-visualizer-git
 ## large ascii letters
 #pacman_install figlet
 ## task spooler: queue tasks
