@@ -15,42 +15,44 @@
 
 ## dmask / fmask
 # Other mount systems (for example vfat and ntfs-3g) use dmask and fmask to set
-# correct permissions.  here is a handy table to set these permissions
+# correct permissions. here is a handy table to set these permissions
 # correctly:
-#            0   1   2   3   4   5   6   7
-#        r   +   +   +   +   -   -   -   -
-#        w   +   +   -   -   +   +   -   -
-#        x   +   -   +   -   +   -   +   -
+# 0 1 2 3 4 5 6 7
+# r + + + + - - - -
+# w + + - - + + - -
+# x + - + - + - + -
 # for example: 003 corresponds to the octal 774.
 
 ## dump / pass
 # general guideline:
-#   root partition "/" :  dump=0; pass=1
-#   other partitions   :  dump=0; pass=2
+# root partition "/" : dump=0; pass=1
+# other partitions : dump=0; pass=2
 
 
-## <file system>                    <dir>               <type>      <options> <dump> <pass>
+## <file system> <dir> <type> <options> <dump> <pass>
 
 ## linux filesystems
 # root
-UUID=<root-uuid>                    /                   ext4        rw,relatime 0 1
+UUID=<root-uuid> / ext4 rw,relatime 0 1
 # home
-UUID=<home-uuid>                    /home               ext3        rw,relatime 0 2
+UUID=<home-uuid> /home ext3 rw,relatime 0 2
 # swap
-UUID=<swap-uuid>      	            none                swap      	defaults  	0 0
+UUID=<swap-uuid> none swap defaults 0 0
 
-## shared filesystems
+## shared filesystems [consider adding 'noauto,' if no automounting desired]
 # ext3 partitions
-UUID=<ext-uuid>                     /mnt/<name>      ext3        rw,relatime,nofail,x-systemd.device-timeout=1s 0 2
+UUID=<ext-uuid> /mnt/<name> ext3 rw,relatime,nofail,x-systemd.device-timeout=1s 0 2
 # ext4 partitions
-UUID=<ext-uuid>                     /mnt/<name>      ext4        rw,relatime,nofail,x-systemd.device-timeout=1s 0 2
+UUID=<ext-uuid> /mnt/<name> ext4 rw,relatime,nofail,x-systemd.device-timeout=1s 0 2
 # ntfs partitions
-UUID=<ntfs-uuid>                    /mnt/<name>      ntfs-3g     defaults,nofail,x-systemd.device-timeout=1s,uid=<user>,gid=<user>,dmask=033,umask=033 0 2
+UUID=<ntfs-uuid> /mnt/<name> ntfs-3g rw,defaults,nofail,x-systemd.device-timeout=1s,uid=<user>,gid=<user>,dmask=033,umask=033 0 2
 # fat partitions (usbs)
-UUID=<fat-uuid>                     /mnt/<name>      vfat        defaults,nofail,x-systemd.device-timeout=1s,uid=<user>,gid=<user>,dmask=033,umask=033 0 2
+UUID=<fat-uuid> /mnt/<name> vfat defaults,nofail,x-systemd.device-timeout=1s,uid=<user>,gid=<user>,dmask=033,umask=033 0 2
+# macos formatted HFS drive (note: not HFS+)
+/dev/sdxi /mnt/Mac hfsplus auto,user,rw,exec 0 0
 
 ## network filesystems (use \040 to add spaces in path). Add noauto flag if network location should not be automatically mounted.
-//<domain>/location/sublocation     /mnt/<name>     cifs        noauto,defaults,nofail,x-systemd.device-timeout=1s,credentials=/home/<user>/.smbcredentials,uid=<user>,gid=<user>,dir_mode=0744,file_mode=0744 0 2
+//<domain>/location/sublocation /mnt/<name> cifs noauto,defaults,nofail,x-systemd.device-timeout=1s,credentials=/home/<user>/.smbcredentials,uid=<user>,gid=<user>,dir_mode=0744,file_mode=0744 0 2
 
 # davfs: nextcloud mount
 # add this to /etc/davfs2/secrets: /home/<local-username>/<folder> <local-username> <cloud-password>
