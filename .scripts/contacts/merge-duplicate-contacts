@@ -1,9 +1,11 @@
 #!/usr/bin/python
 import sys
 
+
 def usage():
     print("merge-duplicate-contacts [contacts-file.vcf]")
     exit(1)
+
 
 def keyval(line):
     splitted_line = line.split(":")
@@ -41,4 +43,3 @@ with open(contacts_file, "r") as file:
 for vcard in vcards.values():
     for key, value in vcard.items():
         print(f"{key}:{value}")
-

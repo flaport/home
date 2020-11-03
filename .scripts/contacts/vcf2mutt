@@ -1,0 +1,24 @@
+#!/usr/bin/python
+import os
+import sys
+
+def usage():
+    print("vcf2mutt [contacts-file.vcf]")
+    exit(1)
+
+if __name__ == "__main__":
+    firstname, lastname, email, idx = "", "", "", 0
+    filename = os.path.abspath(os.path.expanduser(sys.argv[1]))
+    with open(filename, "r") as file:
+        for line in file:
+            if line.startswith("N:"):
+                idx = 0
+                lastname, firstname = [name.strip() for name in line.split(":")[1].split(";")[:2]]
+            if line.startswith("EMAIL"):
+                email = line.split(":")[-1].strip().lower()
+                if email:
+                    idx += 1
+                    suffix = "" if idx == 1 else f".{idx}"
+                    alias = f"{firstname.lower().replace(' ','_')}.{lastname.lower().replace(' ','_')}{suffix}"
+                    line = f"alias {alias} {firstname} {lastname} <{email}>"
+                    print(line)
