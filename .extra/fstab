@@ -52,3 +52,6 @@ UUID=<fat-uuid>                     /mnt/<name>      vfat        defaults,nofail
 ## network filesystems (use \040 to add spaces in path). Add noauto flag if network location should not be automatically mounted.
 //<domain>/location/sublocation     /mnt/<name>     cifs        noauto,defaults,nofail,x-systemd.device-timeout=1s,credentials=/home/<user>/.smbcredentials,uid=<user>,gid=<user>,dir_mode=0744,file_mode=0744 0 2
 
+# davfs: nextcloud mount
+# add this to /etc/davfs2/secrets: /home/<local-username>/<folder> <local-username> <cloud-password>
+https://cloud.example.com/remote.php/dav/files/<cloud-username>/ /home/<local-username>/<folder> davfs noauto,rw,uid=<local-username>,gid=<local-username> 0 0

@@ -865,10 +865,12 @@ systemctl_create syncthing
 #yay_install jellyfin
 #systemctl_enable jellyfin
 ## nextcloud: your own dropbox at home :-)
-pacman_install nextcloud-client
+#pacman_install nextcloud-client
 ## override the default general nextcloud settings
-[ -f $HOME/.config/Nextcloud/nextcloud.cfg ] || cp $HOME/.config/Nextcloud/nextcloud.general.cfg $HOME/.config/Nextcloud/nextcloud.cfg
-## nextcloud server (this needs quite a bit manual configuration):
+#[ -f $HOME/.config/Nextcloud/nextcloud.cfg ] || cp $HOME/.config/Nextcloud/nextcloud.general.cfg $HOME/.config/Nextcloud/nextcloud.cfg
+## nextcloud via webdav:
+#pacman_install davfs2
+## nextcloud server (this needs quite a bit of manual configuration):
 #pacman_install nextcloud
 ## nginx: reverse proxy
 pacman_install nginx
