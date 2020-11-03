@@ -1,0 +1,639 @@
+#!/usr/bin/env bash
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+
+# ---------------------------------------------------- #
+# !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
+# ---------------------------------------------------- #
+
+# last complete install: 2020.05.11
+
+# Note: this script does NOT attempt to be an exact copy for `arch_install`.
+#       It just attempts to give a similar feel in the terminal of my
+#       debian/ubuntu servers.
+
+# Note: this script can be run as often as you like. It will not attempt to re-install
+#       any already installed program, making it a very fast way update some preferences
+#       or install additional packages by adding them to the list below.
+
+
+## Checks
+#-------------------------------------------------------------------------------
+
+## pre-installation checks
+if [ "$USER" == root ]; then
+    echo
+    echo "'arch_install' should NOT be run as root, nor should it be run with sudo."
+    echo "this script should be run [normally] by a user with sudo privileges."
+    exit 1
+fi
+
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+    echo
+    echo "'arch_install' should NOT be sourced."
+    exit 1
+fi
+
+
+## Parse arguments
+#-------------------------------------------------------------------------------
+
+[ ! -z "$2" ] && >&2 echo usage: arch_install [--force] && exit 1
+[ ! -z "$1" ] && [  "$1" = "--force" ] && FORCE=1 || FORCE=0
+
+
+## Logging
+#-------------------------------------------------------------------------------
+
+mkdir -p $HOME/.local/share
+LOG="$HOME/.local/share/debian_install.log"
+ERR="$HOME/.local/share/debian_install_errors.log"
+printf "DEBIAN PACKAGE INSTALL\n\n\n" > $LOG
+printf "DEBIAN PACKAGE INSTALL\n\n\n" > $ERR
+
+
+## User input
+#-------------------------------------------------------------------------------
+
+# Ask for password, this will be used for all the sudo calls.:
+# and to change the shell later on.
+read -s -p "[sudo] password for $USER: " password
+echo $password | sudo -S echo '' 2>/dev/null
+if [ $? -ne 0 ]; then
+    printf "\nIncorrect sudo password. Script ended prematurely.\n\nPlease start over.\n\n"
+    exit 1
+fi
+
+
+## Update
+#-------------------------------------------------------------------------------
+
+## Update arch
+printf "\n\nUpdating...\n\n"
+printf "\n\nUpdating...\n\n" >> $LOG
+printf "\n\nUpdating...\n\n" >> $ERR
+echo $password | sudo -S apt update -y >> $LOG 2>> $ERR
+echo $password | sudo -S apt upgrade -y >> $LOG 2>> $ERR
+
+
+## Custom installation functions
+#-------------------------------------------------------------------------------
+
+echo_success(){
+    if [ $1 -ne 0 ]; then
+        printf "failed!\n"
+        printf "\nfailed!\n" >> $LOG
+        printf "\nfailed!\n" >> $ERR
+        return 1
+    fi
+
+    printf "success!\n"
+    printf "\nsuccess!\n" >> $LOG
+    printf "\nsuccess!\n" >> $ERR
+    return 0
+}
+
+apt_install(){ # will only install the first argument!
+    printf "[ apt  ] install $1... "
+    printf "\n\n\n[ apt  ] install $1...\n" >> $LOG
+    printf "\n\n\n[ apt  ] install $1...\n" >> $ERR
+
+    # check if package is already installed...
+    dpkg -l $1 >> $LOG 2>> $ERR;
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
+        printf "already installed.\n"
+        printf "already installed.\n" >> $LOG
+        printf "already installed.\n" >> $ERR
+        return 1
+    fi
+
+    printf "sudo apt install -y $1\n" >> $LOG
+    printf "sudo apt install -y $2\n" >> $ERR
+    echo $password | sudo -S apt install -y $1 >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+submodule_install(){ # will only install the first argument!
+    printf "[submod] install $1... "
+    printf "\n\n\n[submod] install $1...\n" >> $LOG
+    printf "\n\n\n[submod] install $1...\n" >> $ERR
+
+    printf "cd $HOME/.build/$1\n" >> $LOG
+    printf "cd $HOME/.build/$1\n" >> $ERR
+    cd "$HOME/.build/$1" >> $LOG 2>> $ERR
+
+    printf "sudo make clean\n" >> $LOG
+    printf "sudo make clean\n" >> $ERR
+    echo $password | sudo -S rm config.h >> $LOG 2>> $ERR
+    echo $password | sudo -S make clean >> $LOG 2>> $ERR
+
+    printf "git pull\n" >> $LOG
+    printf "git pull\n" >> $ERR
+    if [ "$1" = "st" ]; then
+        # v1 is my most stable st version for now...
+        git checkout v1 >> $LOG 2>> $ERR
+        git pull origin v1 >> $LOG 2>> $ERR
+    else
+        git checkout master >> $LOG 2>> $ERR
+        git pull origin master >> $LOG 2>> $ERR
+    fi
+
+    printf "sudo make install\n" >> $LOG
+    printf "sudo make install\n" >> $ERR
+    echo $password | sudo -S make all >> $LOG 2>> $ERR
+    echo $password | sudo -S make install >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    echo $password | sudo -S make clean >> $LOG 2>> $ERR
+    echo $password | rm -f config.h >> $LOG 2>> $ERR
+
+    printf "cd $HOME\n" >> $LOG
+    printf "cd $HOME\n" >> $ERR
+    cd $HOME >> $LOG 2>> $ERR
+
+    return $exit_code
+}
+
+pip3_install() {
+    printf "[ pip3 ] install $1... "
+    printf "\n\n\n[ pip3 ] install $1\n" >> $LOG
+    printf "\n\n\n[ pip3 ] install $1\n" >> $ERR
+
+    # check if package is already installed...
+    /usr/bin/python3 -c "import $1" >/dev/null 2>/dev/null
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
+        printf "already installed.\n"
+        printf "already installed.\n" >> $LOG
+        printf "already installed.\n" >> $ERR
+        return 1
+    fi
+
+    printf "sudo /usr/bin/python3 -m pip install $1\n" >> $LOG
+    printf "sudo /usr/bin/python3 -m pip install $1\n" >> $ERR
+    echo $password | sudo -S /usr/bin/python3 -m pip install $1 >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+pip2_install() {
+    printf "[ pip2 ] install $1... "
+    printf "\n\n\n[ pip2 ] install $1\n" >> $LOG
+    printf "\n\n\n[ pip2 ] install $1\n" >> $ERR
+
+    # check if package is already installed...
+    /usr/bin/python2 -c "import $1" >/dev/null 2>/dev/null
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
+        printf "already installed.\n"
+        printf "already installed.\n" >> $LOG
+        printf "already installed.\n" >> $ERR
+        return 1
+    fi
+
+    printf "sudo /usr/bin/python2 -m pip install $1\n" >> $LOG
+    printf "sudo /usr/bin/python2 -m pip install $1\n" >> $ERR
+    echo $password | sudo -S /usr/bin/python2 -m pip install $1 >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+systemctl_create() {
+    printf "[system] create $1 service... "
+    printf "\n\n\n[system] create $1 service...\n" >> $LOG
+    printf "\n\n\n[system] create $1 service...\n" >> $ERR
+    source=$HOME/.install/services/$1.service
+    target=$(head -6 $source | tail -1 | sed 's/#\ *TARGET:\ *//g')
+
+    echo $password | sudo -S systemctl daemon-reload
+    echo "# NOTE: THIS FILE WAS AUTO-GENERATED BY $HOME/.install/arch_install" | sudo tee $target > /dev/null 2>> $ERR
+    echo "# AND WILL PROBABLY BE OVERWRITTEN IN THE FUTURE." | sudo tee -a $target > /dev/null 2>> $ERR
+    echo "# EDIT THE SOURCE FILE AT $source" | sudo tee -a $target > /dev/null 2>> $ERR
+    echo "# and run $HOME/.install/arch_install again to install it here." | sudo tee -a $target > /dev/null 2>> $ERR
+    echo "" | sudo tee -a $target > /dev/null 2>> $ERR
+    tail --lines=+7 $source | sed 's|{USER}|'$USER'|g' | sed 's|{HOME}|'$HOME'|g' | sudo tee -a $target > /dev/null 2>> $ERR
+    exit_code=$?
+    echo $password | sudo -S systemctl daemon-reload
+    echo_success $exit_code
+    return $exit_code
+}
+
+systemctl_enable() {
+    printf "[system] enable $1 service... "
+    printf "\n\n\n[system] enable $1 service...\n" >> $LOG
+    printf "\n\n\n[system] enable $1 service...\n" >> $ERR
+    printf "sudo systemctl enable $1\n" >> $LOG
+    printf "sudo systemctl enable $1\n" >> $ERR
+    echo $password | sudo -S systemctl enable "$1" >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+link() {
+    [ ! -z $3 ] && printf "link: too many arguments" && return 1
+    printf "[ link ] from $1 to $2... "
+    printf "\n\n\n[ link ] from $1 to $2\n" >> $LOG
+    printf "\n\n\n[ link ] from $1 to $2\n" >> $ERR
+    printf "sudo ln -sf $1 $2\n" >> $LOG
+    printf "sudo ln -sf $1 $2\n" >> $ERR
+    [ -f "$2" ] && echo $password | sudo -S mv $2 $2.bak  >> $LOG 2>> $ERR
+    echo $password | sudo -S ln -sf $1 $2  >> $LOG 2>> $ERR
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+# Build tools
+#-------------------------------------------------------------------------------
+
+apt_install git
+apt_install make
+apt_install cmake
+apt_install build-essential
+
+# Terminal: tools and TUIs
+#-------------------------------------------------------------------------------
+
+## calcurse: a terminal calendar client
+apt_install calcurse
+## search tool
+apt_install grep
+## alternative search tool
+#apt_install ripgrep
+## alternative search tool
+#apt_install ack
+## fuzzy finder tool
+apt_install fzf
+## rsync: safe and secure copy & backup
+apt_install rsync
+## atool gives information about archives
+#apt_install atool
+## zip
+apt_install zip
+## unzip
+apt_install unzip
+## pv: progress bars on stdout
+#apt_install pv
+## battery daemon (sleep on low power):
+#apt_install acpid
+#systemctl_enable acpid
+## vifm: terminal file browser
+apt_install vifm
+## dos2unix: tool to change carriage return (^M | \r) into nomal return (\n)
+#apt_install dos2unix
+## terminal multiplexer:
+apt_install tmux
+## run tmux as a systemd service:
+systemctl_create tmux
+systemctl_enable tmux
+## program manuals
+apt_install man
+apt_install man-db
+apt_install texinfo
+## very useful alternative to man: show most common commands for executable
+apt_install tldr
+## unit conversions
+apt_install units
+## terminal music player: mplayer
+apt_install mplayer
+## copying and pasting from the terminal
+apt_install xclip
+## video to thumbnail conversion
+apt_install ffmpegthumbnailer
+## check if bash script is posix complient (needs haskell -> 250mb -> disabled by default)
+#apt_install shellcheck
+## highlight: to highlight code in the terminal (nice `cat` alternative, used in my custom scripts)
+apt_install highlight
+## mediainfo: show audio and video information in terminal
+#apt_install mediainfo
+## process information
+apt_install htop
+## espeak: text to speach engine
+#apt_install espeak
+## system information
+apt_install neofetch
+## large ascii letters
+#apt_install figlet
+## task spooler: queue tasks
+#apt_install task-spooler
+## sockets (needed for custom mpvcontrol script)
+#apt_install socat
+## torrents: transmission cli
+apt_install transmission-cli
+## transmission remote cli gtk interface
+#apt_install transmission-remote-gtk
+## vim / neovim: terminal text editor
+apt_install neovim
+## link neovim to standard vim binary:
+link /usr/bin/nvim /usr/bin/vim
+link /usr/bin/nvim /usr/bin/vi
+## pynvim: better integration of python with neovim:
+pip3_install pynvim
+pip2_install pynvim
+## ruby-neovim: better integration of ruby with neovim:
+apt_install ruby-neovim
+## vimwiki-markdown: better integration for mardown files in vimwiki:
+pip3_install vimwiki-markdown
+pip2_install vimwiki-markdown
+## ccls: C language server (required by CoC plugin for nvim)
+apt_install ccls
+## ctags: recommended vim dependency for jump-to-tag functionality
+apt_install ctags
+## wordgrinder: terminal word processor
+#apt_install wordgrinder
+## terminal internet search: google
+#apt_install googler
+## terminal internet search: duckduckgo
+#apt_install ddgr
+## newsboat: RSS reader
+apt_install newsboat
+## trans: command line translation engine
+apt_install translate-shell
+## whois information
+apt_install whois
+## cronie: cron job daemon
+#apt_install cronie
+#systemctl_enable cronie
+## ncmpcpp: terminal music client
+apt_install ncmpcpp
+## spotify-tui: terminal client for spotify (building this takes LONG)
+#apt_install spotify-tui
+## full spotify daemon (building this takes LONG)
+#apt_install spotifyd-full
+## playerctl: terminal client to control spotify, spotifyd, vlc, ...
+apt_install playerctl
+## media daemon
+#apt_install mpd
+#systemctl_enable mpd
+## media control
+#apt_install mpc
+
+
+# Drive and file system drivers
+#-------------------------------------------------------------------------------
+
+## mount cifs parititions
+apt_install cifs-utils
+## dosfstools: support for dos (windows) - like filesystems
+apt_install dosfstools
+## exfat-utils: access fat-drives
+apt_install exfat-utils
+## ntfs-3g: access NTFS network drives
+apt_install ntfs-3g
+## samba shares = network volumes
+apt_install samba
+## access media on external device (phone, ...)
+apt_install fuse
+## access ssh file system
+apt_install sshfs
+## access mac-formatted drives (HFS+)
+apt_install hfsprogs
+## testdisk to figure out location HFS+ partition wrapped in 'Apple Core Storage':
+apt_install testdisk
+
+
+# Printers
+#-------------------------------------------------------------------------------
+
+## printer system (cups @ localhost:631)
+apt_install cups
+## common printer drivers
+apt_install printer-driver-gutenprint
+## for network printing
+apt_install avahi-daemon
+systemctl_enable avahi-daemon
+apt_install libnss-mdns
+## print to pdf
+apt_install cups-pdf
+## enable cups service
+systemctl_enable cups
+
+
+
+# Fonts
+#-------------------------------------------------------------------------------
+
+## fontconfig should already be installed, but just to be sure:
+apt_install fontconfig
+## dejavu font: inkscape dependency (fully blocked by my fontconfig, replaced by Bitstream Vera):
+apt_install ttf-dejavu
+## bitstream vera: alternative to dejavu (not blocked by my fontconfig, replaces DejaVu):
+apt_install ttf-bitstream-vera
+## cantarell fonts: gtk3 dependency (fully blocked by my fontconfig):
+apt_install fonts-cantarell
+## liberation fonts: chromium, firefox and mplayer dependency (currently my default fonts):
+apt_install ttf-liberation
+## ubuntu fonts: a beautiful mono and sans font
+apt_install fonts-ubuntu
+## gnome core fontset (partly blocked by my fontconfig):
+apt_install gsfonts
+
+
+
+# Graphical User Interfaces
+#-------------------------------------------------------------------------------
+
+## nemo: sometimes a non-terminal file browser can be useful
+apt_install nemo
+## nemo settings: set default terminal to st:
+gsettings set org.cinnamon.desktop.default-applications.terminal exec st
+gsettings set org.cinnamon.desktop.default-applications.terminal exec-arg -e
+## screen settings: arandr (xrandr included)
+apt_install arandr
+## best pdf reader: general document reader with vim bindings
+apt_install zathura
+## pdf reader extension
+apt_install zathura-pdf-mupdf
+## djvu reader extension
+apt_install zathura-djvu
+## pulseaudio control panel
+apt_install pavucontrol
+## bluetooth manager (run blueman-manager)
+apt_install blueman
+## virtualbox dependency: linux headers
+apt_install linux-headers
+## qemu: alternative virtual machine client
+apt_install qemu
+## pcsc-tools: pc smartcard tools (dependency of eid-mw)
+apt_install pcsc-tools
+
+
+# Images, video and media (viewers and editors)
+#-------------------------------------------------------------------------------
+
+## pinta: an improved ms paint clone
+#apt_install pinta
+## inkscape
+#apt_install inkscape
+## GIMP: the GNU Image Manipulation program, a photoshop alternative
+#apt_install gimp
+## image viewer
+apt_install sxiv
+## imagemagick: for images, screenshots
+apt_install imagemagick
+## scrot: alternative screenshot program [requires imagemagick]
+#apt_install scrot
+## flameshot: arguably the best screenshot program
+apt_install flameshot
+## youtube-dl: download YouTube videos
+apt_install youtube-dl
+## vlc media player
+apt_install vlc
+## mpv media player
+apt_install mpv
+## ffmpeg command line tool
+apt_install ffmpeg
+
+
+# Office
+#-------------------------------------------------------------------------------
+
+## open-source office
+apt_install libreoffice
+## sqlite database browser
+apt_install sqlitebrowser
+## tex-live (disabled by default bc heavy package)
+apt_install texlive
+## bibliographies
+apt_install biber
+## convert document types into each other
+apt_install pandoc
+
+
+# Programming
+#-------------------------------------------------------------------------------
+
+## Python programming language:
+apt_install python2
+apt_install python
+apt_install ipython
+
+## Scientific computing with octave (Matlab alternative)
+apt_install octave
+
+
+# Browsers
+#-------------------------------------------------------------------------------
+
+## firefox (like waterfox, but the original ;-) )
+apt_install firefox
+## chromium
+apt_install chromium
+
+
+# Email
+#-------------------------------------------------------------------------------
+
+## send email
+apt_install msmtp
+## mbsync: sync email (isync is the distribution, mbsync is the executable)
+apt_install isync
+## mutt email client
+apt_install neomutt
+link /usr/bin/neomutt /usr/bin/mutt
+## notmuch: email indexing
+apt_install notmuch
+## html email view (also browser!)
+apt_install lynx
+
+
+# Resources
+#-------------------------------------------------------------------------------
+
+## a collection of very nice wallpapers:
+if [ ! -d "$HOME/.local/share/wallpapers" ]; then
+    echo "cloning a full repo of very nice wallpapers..."
+    git clone https://gitlab.com/dwt1/wallpapers $HOME/.local/share/wallpapers >> $LOG 2>> $ERR
+fi
+
+
+# Personal builds and forks  (placed at the end so all dependencies are installed)
+#-------------------------------------------------------------------------------
+
+## x11 dependencies
+apt_install xcb-dev
+apt_install libxft-dev
+apt_install libx11-dev
+apt_install libxcb-res0-dev
+apt_install libharfbuzz-dev
+
+## my dwm fork [window manager]
+submodule_install dwm
+## my dmenu fork [application launcher]
+submodule_install dmenu
+## my st fork [terminal]
+submodule_install st
+## my scroll fork [scroll] (implements scrollback in st)
+submodule_install scroll
+
+
+# Password manager
+#-------------------------------------------------------------------------------
+
+apt_install gnupg # gpg --full-gen-key (generate gpg key)
+apt_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
+
+
+# Shells and extensions
+#-------------------------------------------------------------------------------
+
+## dash: a minimal implementation of sh:
+apt_install dash
+## we'll make sh point to dash in stead to bash
+link /usr/bin/dash /bin/sh
+## make dash the default shell:
+#echo $password | chsh -s /bin/dash 2>> $LOG >> $ERR
+
+## bash: should already have been installed:
+#apt_install bash
+## make bash the default shell:
+#echo $password | chsh -s /bin/bash 2>> $LOG >> $ERR
+
+## fish: alternative shell. It's not posix compliant, but friendly and interactive ;)
+#apt_install fish
+## make fish the default shell:
+#echo $password | chsh -s /usr/bin/fish 2>> $LOG >> $ERR
+
+## zsh: another alternative shell. In contrast to fish, it is posix compliant + extras
+## it's my preferred shell.
+apt_install zsh
+## make zsh the default shell:
+echo $password | chsh -s /usr/bin/zsh >> $LOG 2>> $ERR
+
+## autojump extension for bash/zsh/fish
+mkdir -p $HOME/.cache
+rm -rf $HOME/.cache/autojump
+git clone https://github.com/wting/autojump $HOME/.cache/autojump 2>> $LOG >> $ERR
+cd $HOME/.cache/autojump 2>> $LOG >> $ERR
+python install.py -d $HOME/.config/autojump 2>> $LOG >> $ERR
+sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $HOME/.config/autojump/bin/autojump >> $LOG 2>> $ERR
+ln -sf $HOME/.config/autojump/bin/autojump $HOME/.local/bin
+
+## stderred extension for bash/zsh: show stderr messages in red:
+rm -rf $HOME/.config/stderred
+git clone https://github.com/sickill/stderred $HOME/.config/stderred 2>> $LOG >> $ERR
+cd $HOME/.config/stderred 2>> $LOG >> $ERR
+make 2>> $LOG >> $ERR
+
+## fish-like autosuggestions for zsh:
+rm -rf $HOME/.config/zsh/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/zsh-autosuggestions 2>> $LOG >> $ERR
+
+## syntax highlighting for zsh:
+rm -rf $HOME/.config/zsh/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.config/zsh/zsh-syntax-highlighting 2>> $LOG >> $ERR
+
+
+# Finished
+#-------------------------------------------------------------------------------
+
+printf "\n\n\n\n\n"
+echo "###############"
+echo "## finished! ##"
+echo "###############"
