@@ -348,6 +348,19 @@ pacman_enable_multilib(){
 }
 
 
+# Linux kernels
+#-------------------------------------------------------------------------------
+
+## switch to bleeding edge linux kernel (this is what I use)
+#pacman_install linux
+## switch to long term support linux kernel
+#pacman_install linux-lts
+## switch to hardened (safer) linux kernel
+#pacman_install linux-hardened
+## switch to zen kernel
+#pacman_install linux-zen
+
+
 # Build tools
 #-------------------------------------------------------------------------------
 
@@ -366,7 +379,6 @@ pacman_install npm
 #pip (python package manager)
 pacman_install python-pip
 pacman_install python2-pip
-
 
 # Terminal: tools and TUIs
 #-------------------------------------------------------------------------------
@@ -1010,7 +1022,7 @@ yay_install dragon-drag-and-drop
 #pacman_install virtualbox
 ## virtualbox drivers for linux kernels:
 #pacman_install virtualbox-host-modules-arch
-## virtualbox guest additions
+## virtualbox guest additions (only necessary when running arch *inside* virtualbox)
 #pacman_install virtualbox-guest-iso
 ## qemu: alternative virtual machine client
 #pacman_install qemu
