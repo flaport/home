@@ -359,6 +359,8 @@ pacman_enable_multilib(){
 #pacman_install linux-hardened
 ## switch to zen kernel
 #pacman_install linux-zen
+## always generate grub entries after installing new kernels:
+#echo $password | sudo -S grub-mkconfig -o /boot/grub/grub.cfg
 
 
 # Build tools
@@ -557,6 +559,7 @@ pacman_install playerctl
 ## service that checks number of packages that need updating:
 systemctl_create pacmanquery
 systemctl_enable pacmanquery
+
 
 # Drive and file system drivers
 #-------------------------------------------------------------------------------
@@ -1020,12 +1023,14 @@ npm_install nativefier
 yay_install dragon-drag-and-drop
 ## virtualbox dependency: linux headers
 #pacman_install linux-headers
-## virtualbox dependency: linux headers [for linux lts kernel only!]
+## virtualbox dependency: linux headers [for linux-lts kernel only!]
 #pacman_install linux-lts-headers
 ## virtualbox: virtual machines
 #pacman_install virtualbox
-## virtualbox drivers for linux kernels:
+## virtualbox drivers [for linux kernel]:
 #pacman_install virtualbox-host-modules-arch
+## virtualbox drivers [for linux-lts and other kernels]:
+#pacman_install virtualbox-host-dkms
 ## virtualbox guest additions (only necessary when running arch *inside* virtualbox)
 #pacman_install virtualbox-guest-iso
 ## qemu: alternative virtual machine client
@@ -1191,22 +1196,26 @@ pacman_install gstreamer-vaapi
 pacman_install vdpauinfo
 pacman_install intel-gpu-tools
 
-## option 0: do nothing
+### option 0: do nothing
 
-## option 1: intel integrated graphics (recommended on most systems):
+### option 1: intel integrated graphics (recommended on most systems):
 ##pacman_install intel-media-driver
 ##pacman_install libvdpau-va-gl
 ##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 ##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 
-## option 2: older intel integrated graphics:
+### option 2: older intel integrated graphics:
 ##pacman_install libva-intel-driver  # OR: yay_install libva-intel-driver-g45-h264
 ##pacman_install libvdpau-va-gl
 ##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 ##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 
-## option 3: nvidia proprietary drivers and acceleration:
+### option 3: nvidia proprietary drivers and acceleration:
+## nvidia driver:
 ##pacman_install nvidia
+## nvidia driver (for linux-lts):
+##pacman_install nvidia-lts
+## other nvidia related packages:
 ##pacman_install nvidia-utils
 ##pacman_install nvtop
 ##pacman_install nvidia-settings
@@ -1222,18 +1231,13 @@ pacman_install intel-gpu-tools
 ## force 96 dpi in Xorg when nvidia driver is in use:
 ##grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
 
-## option 4: open source nvidia-driver [nouveau]
+### option 4: open source nvidia-driver [nouveau]
 ##sudo pacman -Rns --noconfirm nvidia >> $LOG 2>> $ERR
 ##pacman_install libva-mesa-driver
 ##pacman_install mesa-vdpau
 ##yay_install nouveau-fw
 ##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 ##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-
-## chromium-vaapi: chromium with libva support (does not work for option 0):
-##yay_install chromium-vaapi
-##alternatively: install chromium-vaapi from archlinuxcn repositories:
-##pacman_enable_archlinuxcn && pacman_install chromium-vaapi
 
 
 # Resources
