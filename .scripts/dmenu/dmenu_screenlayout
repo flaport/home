@@ -10,6 +10,11 @@ import sys
 from time import sleep
 from subprocess import call, check_output, CalledProcessError, Popen, PIPE
 
+def screenlayout_order_key(filename):
+    filename = filename.split("/")[-1].replace("[", "").replace("]", "")
+    filename = f"{len(filename.split('-'))} {filename}"
+    return filename
+
 # check if picom is running
 with open(os.devnull, "w") as file:
     picom = not call(["pidof", "picom"], stdout=file, stderr=file)
@@ -17,7 +22,7 @@ with open(os.devnull, "w") as file:
 # get possible layouts
 layouts = os.listdir(os.path.expanduser("~/.scripts/screenlayout"))
 layouts = ["default_screenlayout", "same", "last"] + sorted(
-    [layout for layout in layouts if layout[0] == "["]
+    [layout for layout in layouts if layout[0] == "["], key=screenlayout_order_key, reverse=True,
 )
 
 # pipe the layouts as input commands [to dmenu]

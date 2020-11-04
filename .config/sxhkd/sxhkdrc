@@ -139,6 +139,14 @@ super + p
 super + P
     default_screenlayout
 
+# same screen layout
+super + control + p
+    $HOME/.scripts/screenlayout/same
+
+# last screen layout
+super + control + P
+    $HOME/.scripts/screenlayout/last
+
 # kill current window (dwm)
 super + q
     # handled by dwm
