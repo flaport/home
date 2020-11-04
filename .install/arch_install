@@ -581,6 +581,10 @@ pacman_install sshfs
 #yay_install hfsprogs
 ## testdisk to figure out location HFS+ partition wrapped in 'Apple Core Storage':
 #pacman_install testdisk
+## webdav filesystem (mount Nextcloud as a folder)
+pacman_install davfs2
+## recommended settings for davfs2 + Nextcloud
+echo $password | sudo -S sed -i 's/# use_locks.*/use_locks 0/g' /etc/davfs2/davfs2.conf
 
 
 # Graphical desktop server: xorg
@@ -868,8 +872,6 @@ systemctl_create syncthing
 #pacman_install nextcloud-client
 ## override the default general nextcloud settings
 #[ -f $HOME/.config/Nextcloud/nextcloud.cfg ] || cp $HOME/.config/Nextcloud/nextcloud.general.cfg $HOME/.config/Nextcloud/nextcloud.cfg
-## nextcloud via webdav:
-#pacman_install davfs2
 ## nextcloud server (this needs quite a bit of manual configuration):
 #pacman_install nextcloud
 ## nginx: reverse proxy
