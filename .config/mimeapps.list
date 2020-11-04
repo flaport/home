@@ -32,6 +32,7 @@ video/mp4=mpv.desktop
 video/mpeg=mpv.desktop
 video/x-matroska=mpv.desktop
 x-scheme-handler/chrome=firefox.desktop
+x-scheme-handler/etcher=etcher.desktop
 x-scheme-handler/ftp=firefox.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
