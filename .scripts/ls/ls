@@ -1,12 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # use normal ls command when used in a script
 LS=/bin/ls
 
 # however, in an interactive session (i.e. in a shell, use lsd if available)
 if [ -t 1 ]; then
-    LS="$(which lsd 2> /dev/null) --group-dirs first"
-    [ $? -ne 0 ] && LS="/bin/ls --group-directories-first --color=auto"
+    LS="$(which lsd 2> /dev/null) --group-dirs first" || LS="/bin/ls --group-directories-first --color=auto"
 fi
 
 # call ls with all arguments supplied

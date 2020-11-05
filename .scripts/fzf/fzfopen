@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-result=$(compgen -c | fzf) 
-eval $result & disown;
+result=$(compgen -c | fzf)
+eval "$result" & disown;
 sleep 0.3

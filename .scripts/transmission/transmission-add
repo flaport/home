@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
 #   |  __\| |   | / \||  \/|| / \||  \/|  / \
@@ -33,7 +33,7 @@ if pass transmission >/dev/null 2>/dev/null; then
     password=$(pass show transmission | head -1)
     auth="--auth $username:$password"
 fi
-if transmission-remote $auth -a "$URL" > /dev/null 2> /dev/null; then
+if transmission-remote "$auth" -a "$URL" > /dev/null 2> /dev/null; then
     echo "Torrent succesfully added."
     notify-send "transmission-add" "Torrent succesfully added."
     exit 0

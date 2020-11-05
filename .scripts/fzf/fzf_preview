@@ -5,71 +5,70 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
-[[ ! -z $1 ]] && FILENAME=$1 || exit 1
-[[ ! -z $2 ]] && LINESSHOWN=$2 || LINESSHOWN=51
+[[ ! -z "$1" ]] && FILENAME="$1" || exit 1
 
-echo $FILENAME
-echo $FILENAME | sed 's/./-/g'
+echo "$FILENAME"
+echo "$FILENAME" | sed 's/./-/g'
 
 if [ -d "$FILENAME" ] 2> /dev/null; then
-    tree -L 1 $FILENAME
+    tree -L 1 "$FILENAME"
     exit
 fi
 
 if [ -L "$FILENAME" ] 2> /dev/null; then
-    printf "LINK => $(readlink $FILENAME)"
+    printf "LINK => %s" "$(readlink "$FILENAME")"
     exit
 fi
 
 if [ -f "$FILENAME" ]; then
-    if [[ $FILENAME == *.py ]]; then
-        highlight $FILENAME --src-lang=python -O ansi --force 2> /dev/null
+    if [[ "$FILENAME" == *.py ]]; then
+        highlight "$FILENAME" --src-lang=python -O ansi --force 2> /dev/null
         exit
     fi
 
-    if [[ $FILENAME == *.ipynb ]]; then
-        jupyter nbconvert $FILENAME --to python --stdout 2> /dev/null | highlight -O ansi --force 2> /dev/null
+    if [[ "$FILENAME" == *.ipynb ]]; then
+        jupyter nbconvert "$FILENAME" --to python --stdout 2> /dev/null | highlight -O ansi --force 2> /dev/null
         exit
     fi
 
-    if [[ $FILENAME == *.htm* ]]; then
-        highlight $FILENAME --src-lang=html -O ansi --force 2> /dev/null
+    if [[ "$FILENAME" == *.htm* ]]; then
+        highlight "$FILENAME" --src-lang=html -O ansi --force 2> /dev/null
         exit
     fi
 
-    if [[ $FILENAME == *.md ]]; then
-        highlight $FILENAME --src-lang=markdown -O ansi --force 2> /dev/null
+    if [[ "$FILENAME" == *.md ]]; then
+        highlight "$FILENAME" --src-lang=markdown -O ansi --force 2> /dev/null
         exit
     fi
 
-    if [[ $FILENAME == *.pdf ]]; then
+    if [[ "$FILENAME" == *.pdf ]]; then
         pdftotext -q "$FILENAME" - 2> /dev/null
         exit
     fi
 
-    if [[ $FILENAME == *.bash ||  $FILENAME == *.sh ]]; then
-        cat $FILENAME | highlight --src-lang=bash -O ansi --force 2> /dev/null
+    if [[ "$FILENAME" == *.bash ||  "$FILENAME" == *.sh ]]; then
+        highlight "$FILENAME" --src-lang=bash -O ansi --force 2> /dev/null
         exit
     fi
 
-    if [[ $FILENAME == *.png || $FILENAME == *.PNG ]]; then
-        viu $FILENAME
+    if [[ "$FILENAME" == *.png || "$FILENAME" == *.PNG ]]; then
+        viu "$FILENAME"
         exit
     fi
 
-    if [[ $FILENAME == *.jpg || $FILENAME == *.jpeg || $FILENAME == *.JPG || $FILENAME == *.JPEG ]]; then
-        viu $FILENAME
+    if [[ "$FILENAME" == *.jpg || "$FILENAME" == *.jpeg || "$FILENAME" == *.JPG || "$FILENAME" == *.JPEG ]]; then
+        viu "$FILENAME"
         exit
     fi
 
-    if [[ $FILENAME == *.svg ]]; then
-        inkscape "$FILENAME" -e /tmp/fzf-ubz-preview.png &> /dev/null
+    if [[ "$FILENAME" == *.svg ]]; then
+        inkscape "$FILENAME" -e /tmp/fzf-ubz-preview.png > /dev/null 2>&1
         viu /tmp/fzf-ubz-preview.png
         exit
     fi
 
-    if [[ $FILENAME == *.mp4 ]]; then
-        ffmpeg -y -i $FILENAME -ss 00:00:01.000 -vframes 1 /tmp/fzf-ubz-preview.png &> /dev/null
+    if [[ "$FILENAME" == *.mp4 ]]; then
+        ffmpeg -y -i "$FILENAME" -ss 00:00:01.000 -vframes 1 /tmp/fzf-ubz-preview.png > /dev/null 2>&1
         viu /tmp/fzf-ubz-preview.png
         exit
     fi
