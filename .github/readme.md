@@ -77,14 +77,14 @@ programs that are already on the system and hence is pretty fast after its first
 Edit the file to your liking first.
 
 ```
-bash ~/.install/arch_install
+~/.install/arch_install
 ```
 
 [completely optional] I'm using python a lot. I have a similar bootstrapping script with
 my preferred Anaconda installation. Edit the file to your liking first.
 
 ```
-bash ~/.install/python_install
+~/.install/python_install
 ```
 
 ## List of configs
