@@ -106,7 +106,7 @@ pacman_install(){ # will only install the first argument!
 
     printf "sudo pacman -S --noconfirm --noprogress $1\n" >> $LOG
     printf "sudo pacman -S --noconfirm --noprogress $1\n" >> $ERR
-    echo $password | sudo -S pacman -S --noconfirm --noprogress $1 >> $LOG 2>> $ERR
+    echo $password | sudo -S pacman -S --noconfirm --noprogress --overwrite='*' $1 >> $LOG 2>> $ERR
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -128,7 +128,7 @@ yay_install(){ # will only install the first argument!
 
     printf "yay -S -q --noconfirm $1\n" >> $LOG
     printf "yay -S -q --noconfirm $1\n" >> $ERR
-    yay -S -q --noconfirm $1 >> $LOG 2>> $ERR
+    yay -S -q --noconfirm --overwrite='*' $1 >> $LOG 2>> $ERR
     exit_code=$?
     echo_success $exit_code
     return $exit_code
