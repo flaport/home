@@ -10,41 +10,61 @@ import sys
 from time import sleep
 from subprocess import call, check_output, CalledProcessError, Popen, PIPE
 
+
 def screenlayout_order_key(filename):
     filename = filename.split("/")[-1].replace("[", "").replace("]", "")
     filename = f"{len(filename.split('-'))} {filename}"
     return filename
 
-# check if picom is running
-with open(os.devnull, "w") as file:
-    picom = not call(["pidof", "picom"], stdout=file, stderr=file)
 
-# get possible layouts
-layouts = os.listdir(os.path.expanduser("~/.scripts/screenlayout"))
-layouts = ["default_screenlayout", "same", "last"] + sorted(
-    [layout for layout in layouts if layout[0] == "["], key=screenlayout_order_key, reverse=True,
-)
+def picom_is_running():
+    # check if picom is running
+    with open(os.devnull, "w") as file:
+        return not call(["pidof", "picom"], stdout=file, stderr=file)
 
-# pipe the layouts as input commands [to dmenu]
-commands = Popen(["printf", "\n".join(layouts)], stdout=PIPE).stdout
 
-# take the input commands and select one with dmenu
-try:
-    command = check_output(["dmenu", "-p", " "] + sys.argv[1:], stdin=commands).decode().strip()
-    if command == "default_screenlayout":
-        os.remove(os.path.expanduser("~/.scripts/screenlayout/last")) # otherwise default_screenlayout will default to last
-    # call the final layout command
-    call([os.path.join(os.path.expanduser("~/.scripts/screenlayout"), command)])
-except CalledProcessError:
-    pass
+def get_screenlayouts():
+    layouts = os.listdir(os.path.expanduser("~/.scripts/screenlayout"))
+    layouts = ["default_screenlayout", "same", "last"] + sorted(
+        [layout for layout in layouts if layout[0] == "["],
+        key=screenlayout_order_key,
+        reverse=True,
+    )
+    return layouts
 
-sleep(1)
 
-# reset keystroke repeat rate
-Popen(["xset", "r", "rate", "200", "45"])
+def dmenu(list_in, prompt=""):
+    prompt = [] if not prompt else ["-p", prompt]
+    try:
+        dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+        choice = check_output(["dmenu"] + prompt, stdin=dmenu_in).decode().strip()
+        return choice
+    except CalledProcessError:
+        return ""
 
-# restart picom if it was running
-with open(os.devnull, "w") as file:
-    if picom and call(["pidof", "picom"], stdout=file, stderr=file):
-        Popen(["picom", "--experimental-backends"], stdout=file, stderr=file)
 
+def run_in_background(command):
+    with open(os.devnull, "w") as file:
+        Popen(command, stdout=file, stderr=file)
+
+
+def xset():
+    run_in_background(["xset", "r", "rate", "200", "45"])
+
+
+def picom():
+    cmd = ["picom", "--experimental-backends"]
+    if os.path.exists(os.path.expanduser("~/.cache/xcs/picom.conf")):
+        cmd += ["--config", os.path.expanduser("~/.cache/xcs/picom.conf")]
+    run_in_background(cmd)
+
+
+if __name__ == "__main__":
+    picom_was_running = picom_is_running()
+    layouts = get_screenlayouts()
+    command = dmenu(layouts, prompt=" ")
+    filename = os.path.join(os.path.expanduser("~/.scripts/screenlayout/"), command)
+    call(filename)
+    xset()
+    if picom_was_running and not picom_is_running():
+        picom()

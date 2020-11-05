@@ -35,10 +35,7 @@ def write_screenlayout_option(filename, command):
         file.write(
             f"""#!/usr/bin/env bash
 {' '.join(command)}
-sleep 1
-xset r rate 200 45 # reset keystroke repeat rate
 wallpaper current # reset wallpaper
-picom --experimental-backends # restart picom
 cat "{filename}" > "{os.path.join(os.path.dirname(filename), 'last')}"
 chmod u+x {os.path.join(os.path.dirname(filename), 'last')}
 """
