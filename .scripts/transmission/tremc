@@ -29,4 +29,4 @@ if pass transmission >/dev/null 2>/dev/null; then
     c="-c $username:$password@localhost:9091"
 fi
 
-/usr/bin/tremc $c "$@"
+/usr/bin/tremc "$c" "$@"

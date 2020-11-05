@@ -8,26 +8,26 @@
 
 # merge pdfs with ghostscript
 gsmerge(){
-    output=$1
+    output="$1"
     shift 1
     gs \
-     -sOutputFile=$output \
+     -sOutputFile="$output" \
      -sDEVICE=pdfwrite \
      -dCompatibilityLevel=1.4 \
      -dNOPAUSE \
      -dBATCH \
      -dAutoRotatePages=/None \
-    $@
+    "$@"
 }
 
 # handle output argument
-[ -z "$1" ] && (>&2 echo usage: pdfmerge [merged pdf] [pdf1 pdf2 pdf3 ...] && exit 1) || output=$(echo $1 | sed 's/^\(.*\).pdf/\1/g').pdf
+[ -z "$1" ] && (>&2 echo usage: pdfmerge [merged pdf] [pdf1 pdf2 pdf3 ...] && exit 1) || output=$(echo "$1" | sed 's/^\(.*\).pdf/\1/g').pdf
 
 # handle input arguments
 shift 1
-args=$(for var in $@; do
-    printf "\"$(echo $var | sed 's/^\(.*\).pdf/\1/g').pdf\" "
+args=$(for var in "$@"; do
+    printf "\"$(echo "$var" | sed 's/^\(.*\).pdf/\1/g').pdf\" "
 done)
 
-gsmerge $output $args
+gsmerge "$output" "$args"
 

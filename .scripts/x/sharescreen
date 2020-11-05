@@ -2,4 +2,4 @@
 
 # share the left most screen with x11vnc:
 
-x11vnc -clip 1920x1080+0+0 -forever -loop -safer -shared -ultrafilexfer -o $HOME/.local/share/x11vnc.log
+x11vnc -clip 1920x1080+0+0 -forever -loop -safer -shared -ultrafilexfer -o "$HOME/.local/share/x11vnc.log"

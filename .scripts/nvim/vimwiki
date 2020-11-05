@@ -6,11 +6,11 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
 if [ ! -d "$HOME/VimWiki" ]; then
-    mkdir $HOME/VimWiki
+    mkdir "$HOME/VimWiki"
 fi
 
 
-cd $HOME/VimWiki
+cd "$HOME/VimWiki" || exit 1
 
 if [ ! -z "$1" ]; then
     if [ "$1" = "push" ]; then
@@ -29,7 +29,7 @@ if [ ! -z "$1" ]; then
         filename="diary/$(date +'%Y-%m-%d').md"
     elif [ "$1" = "tomorrow" ] || [ "$1" = "m" ]; then
         filename="diary/$(date +'%Y-%m-%d' --date=tomorrow).md"
-        echo $filename
+        echo "$filename"
     elif [ "$1" = "yesterday" ] || [ "$1" = "y" ]; then
         filename="diary/$(date +'%Y-%m-%d' --date=yesterday).md"
     elif [ "$1" = "diary" ] || [ "$1" = "i" ]; then

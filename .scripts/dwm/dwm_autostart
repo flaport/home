@@ -18,7 +18,7 @@ rm -f "$LOG"; touch "$LOG"
 rm -f "$ERR"; touch "$ERR"
 
 log(){
-    echo "$@" >> $LOG
+    echo "$@" >> "$LOG"
     eval "$@" >> "$LOG" 2>> "$ERR"
 }
 

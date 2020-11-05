@@ -36,7 +36,7 @@ gsgray(){
 }
 
 # handle output argument
-[ -z "$1" ] && usage && exit 1 || output=$(echo $1 | sed 's/^\(.*\).pdf/\1/g')
+[ -z "$1" ] && usage && exit 1 || output="$(echo "$1" | sed 's/^\(.*\).pdf/\1/g')"
 shift 1
 
 # no input -> usage
@@ -44,15 +44,15 @@ shift 1
 
 # only a single input -> gray output pdf in same folder
 if [ -z "$2" ]; then
-   input=$(echo $1 | sed 's/^\(.*\).pdf/\1/g')
+   input=$(echo "$1" | sed 's/^\(.*\).pdf/\1/g')
    gsgray "$output.pdf" "$input.pdf"
    exit $?
 fi
 
 # multiple inputs -> output dir with gray pdfs
-mkdir -p $output
-for var in $@; do
-   input=$(echo $var | sed 's/^\(.*\).pdf/\1/g')
+mkdir -p "$output"
+for var in "$@"; do
+   input="$(echo "$var" | sed 's/^\(.*\).pdf/\1/g')"
    gsgray "$output/$input.pdf" "$input.pdf"
 done
 

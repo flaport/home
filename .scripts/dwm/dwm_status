@@ -88,8 +88,8 @@ status(){
     idx=0
     rootname=""
     tempdelim="#DELIM#" # temporary delimiter, will be replaced by $DELIM later on. Defining a temporary delimiter is necessary as it ensures one can use a normal space as delimiter.
-    if [ ! -z $BUTTON ]; then
-       $WIDGET$BUTTON 2> /dev/null && return # if widget name given
+    if [ ! -z "$BUTTON" ]; then
+       "$WIDGET$BUTTON" 2> /dev/null && return # if widget name given
     fi
     for widget in "$@" # if no widget or widget index given
     do
@@ -558,13 +558,13 @@ transmission(){
         password=$(pass show transmission | head -1)
         auth="--auth $username:$password"
     fi
-    if ! transmission-remote $auth --list \
+    if ! transmission-remote "$auth" --list \
         | grep -v ID | grep -v Sum:\
         | awk  '{ print $2;}' \
         | sed '/100%/d' | sed 's/%//g' | sed 's|n/a||g' \
         | xargs python -c "from sys import argv; print(f' {sum(int(i) for i in argv[1:])/len(argv[1:]):.0f}%')" 2> /dev/null;
     then
-        num=$(transmission-remote $auth --list | grep -v ID | grep -vc Sum:)
+        num=$(transmission-remote "$auth" --list | grep -v ID | grep -vc Sum:)
         [ "$num" -gt 0 ] && echo "🌱$num" && return # seeding
         echo  # active
     fi
@@ -575,10 +575,10 @@ transmission1(){
         password=$(pass transmission | head -1)
         auth="--auth $username:$password"
     fi
-    num="$(transmission-remote $auth --list | grep -v ID | grep -vc Sum:)"
+    num="$(transmission-remote "$auth" --list | grep -v ID | grep -vc Sum:)"
     title="$(transmission) Transmission: $(transmission | sed 's//active/g' | sed 's/🌱/seeding/g') [$num]"
     msg="\n[ middle click to open transmission-cli   ]\n[ right click to stop transmission-daemon ]"
-    [ "$num" -gt 0 ] && msg="\n$(transmission-remote $auth --list)\n$msg"
+    [ "$num" -gt 0 ] && msg="\n$(transmission-remote "$auth" --list)\n$msg"
     notify-send "$title" "$msg"
 }
 transmission2(){
