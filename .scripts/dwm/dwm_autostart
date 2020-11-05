@@ -5,21 +5,26 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 
-# start by setting the wallpaper. It's the first thing people notice.
+# start by setting the wallpaper. It's the first thing you notice.
 wallpaper current
 
 # start by killing all 'dwm_autostart' processes except this one:
 ps aux | grep -ie dwm_autostart | grep -v grep | awk '{print $2}' | sed "/$$/d" | xargs kill -9 &
 
 # save logs here:
-rm -f "$HOME/.local/share/dwm_autostart.log"
-touch "$HOME/.local/share/dwm_autostart.log"
-rm -f "$HOME/.local/share/dwm_autostart.errors.log"
-touch "$HOME/.local/share/dwm_autostart.errors.log"
+LOG="$HOME/.local/share/dwm_autostart.log"
+ERR="$HOME/.local/share/dwm_autostart.errors.log"
+rm -f "$LOG"; touch "$LOG"
+rm -f "$ERR"; touch "$ERR"
 
-# special start function (checks if program is already running, logs and backgrounds process)
+log(){
+    echo "$@" >> $LOG
+    eval "$@" >> "$LOG" 2>> "$ERR"
+}
+
 start(){
-    pidof "$1" >/dev/null 2> /dev/null || "$@" >> "$HOME"/.local/share/dwm_autostart.log 2>> "$HOME"/.local/share/dwm_autostart.errors.log &
+    pidof "$1" >/dev/null 2>&1 && return
+    log "$@" &
 }
 
 # enable hotkeys
@@ -34,44 +39,35 @@ start nm-applet
 # bluetooth manager applet
 start blueman-applet
 
-# automatically lock screen after 10 minutes
-start xautolock -time 10 -locker validate_and_lock_screen
-
 # make the mouse invisible after a brief period of not using it.
 start unclutter
 
-# enable x settings daemon
+# enable x settings start
 start xsettingsd
 
 # update xrdb database
-start xrdb "$HOME/.Xresources"
+log xrdb "$HOME/.Xresources"
 
 # export possible screenlayouts and set default one with `arandr`
-default_screenlayout >> "$HOME"/.local/share/dwm_autostart.log 2>> "$HOME"/.local/share/dwm_autostart.errors.log
-
-# enable transparent windows (doing this with 'start' doesn't work)
-picom --daemon --experimental-backends >> "$HOME"/.local/share/dwm_autostart.log 2>> "$HOME"/.local/share/dwm_autostart.errors.log
+log default_screenlayout
 
 # conky dashboards (same one on three monitors)
 if ! pidof conky >/dev/null 2> /dev/null; then
-    conky -x 60 >/dev/null 2>&1 &
-    conky -x -1860 >/dev/null 2>&1 &
-    conky -x -3780 >/dev/null 2>&1 &
+    log conky -d -x 60
+    log conky -d -x -1860
+    log conky -d -x -3780
 fi
-
-# starting the previous daemons might have messed with the wallpaper... set it again.
-wallpaper current
 
 # set cursor speed
 # wrapped into loop, as sometimes this inexplicably stops working
 while true; do
-    xset r rate 200 45 &
+    log xset r rate 200 45
     sleep 60
 done &
 
 # update email inbox every 10 minutes (but only ask once for the password.)
 while true; do
-    syncmail >/dev/null 2> /dev/null &
+    start syncmail
     export PASSWORD_STORE_GPG_OPTS="--pinentry-mode error"
     sleep 600s
 done &
@@ -79,33 +75,35 @@ done &
 # update dwm status bar every 10 seconds
 while true; do
     sleep 2s
-    dwm_status >/dev/null 2> /dev/null &
+    start dwm_status
     sleep 8s
 done &
 
 # check battery status every 10 minutes
 while true; do
     sleep 10s
-    cat /sys/class/power_supply/BAT*/capacity > /dev/null 2> /dev/null || break
-    capacity="$(cat /sys/class/power_supply/BAT*/capacity | head -1)"
-    [ -z "$capacity" ] && break
-    batstatus=$(cat /sys/class/power_supply/BAT*/status | head -1)
-    if [ "$batstatus" = "Discharging" ] && [ "$capacity" -lt 5 ]; then
-        notify-send --urgency=CRITICAL "battery low" "   $capacity%" &
-    fi
+    start check-low-battery
     sleep 590s
 done &
 
 # update weather report every hour
 while true; do
     sleep 10s
-    update_weather >/dev/null 2> /dev/null &
+    start update_weather
     sleep 3590s
 done &
 
-# sync joplin notes every hour
+# automatically lock screen after 10 minutes (xautolock crashes sometimes -> loop)
 while true; do
     sleep 10s
-    joplin-sync >/dev/null 2> /dev/null &
+    start xautolock -time 10 -locker validate_and_lock_screen
     sleep 3590s
 done &
+
+# enable transparent windows (should be last)
+sleep 1
+if [ -f "$HOME/.cache/xcs/picom.conf" ]; then
+    log picom --daemon --experimental-backends --config "$HOME/.cache/xcs/picom.conf"
+else
+    log picom --daemon --experimental-backends
+fi

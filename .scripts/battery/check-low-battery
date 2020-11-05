@@ -1,0 +1,11 @@
+#!/bin/sh
+cat /sys/class/power_supply/BAT*/capacity > /dev/null 2> /dev/null || break
+capacity="$(cat /sys/class/power_supply/BAT*/capacity | head -1)"
+[ -z "$capacity" ] && break
+batstatus=$(cat /sys/class/power_supply/BAT*/status | head -1)
+if [ "$batstatus" = "Discharging" ] && [ "$capacity" -lt 5 ]; then
+    notify-send --urgency=CRITICAL "battery low" "   $capacity%" &
+    echo "battery low!"
+    exit 1
+fi
+exit 0
