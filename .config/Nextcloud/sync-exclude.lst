@@ -1,5 +1,4 @@
 *~
-.*
 ._*
 \#*#
 ]*.~*
@@ -33,3 +32,5 @@ System Volume Information
 ].Trash-*
 ].Trashes
 *.unison
+.ipynb_checkpoints
+__pycache__
