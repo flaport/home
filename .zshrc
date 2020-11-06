@@ -71,7 +71,7 @@ rprompt(){
     [[ $retval != 0 ]] && echo -ne "%B%F{red}[$retval]%f%b "
     # user@host
     if [[ $UID == 0 ]]; then
-       echo -ne "%B%F{red}$USER%f%b"
+       echo -ne "%B%F{red}root%f%b"
     else
         [[ $UID != 1000 || -n $SSH_CLIENT ]] && echo -ne "%F{yellow}$USER%f"
     fi
