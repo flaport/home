@@ -366,9 +366,18 @@ pacman_enable_multilib(){
 # Build tools
 #-------------------------------------------------------------------------------
 
-pacman_install git
 pacman_install make
 pacman_install cmake
+
+
+# Git
+#-------------------------------------------------------------------------------
+
+pacman_install git
+git config pull.rebase false
+git config push.default simple
+git config advice.addIgnoredFile false
+git submodule update --init --recursive
 
 
 # Alternative package managers
@@ -381,6 +390,7 @@ git_install https://aur.archlinux.org/yay.git
 #pip (python package manager)
 #pacman_install python-pip
 #pacman_install python2-pip
+
 
 # Terminal: tools and TUIs
 #-------------------------------------------------------------------------------
