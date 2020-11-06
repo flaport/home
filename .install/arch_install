@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.06.06
+# last complete install: 2020.11.06
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -377,10 +377,10 @@ pacman_install cmake
 ## yay (AUR helper)
 git_install https://aur.archlinux.org/yay.git
 ## npm (node package manager)
-pacman_install npm
+#pacman_install npm
 #pip (python package manager)
-pacman_install python-pip
-pacman_install python2-pip
+#pacman_install python-pip
+#pacman_install python2-pip
 
 # Terminal: tools and TUIs
 #-------------------------------------------------------------------------------
@@ -390,7 +390,7 @@ echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf
 ## disable tty tickets (giving sudo password in one terminal enables passwordless sudo in other terminals as well for 15 min)
 echo Defaults:$USER '!tty_tickets', timestamp_timeout=15 | sudo tee /etc/sudoers.d/tty_tickets
 ## install scripts for bootstrapping new arch installations
-pacman_install arch-install-scripts
+#pacman_install arch-install-scripts
 ## alacritty: arguably the best terminal
 pacman_install alacritty
 ## calcurse: a terminal calendar client
@@ -425,7 +425,7 @@ pacman_install unarchiver
 #pacman_install acpid
 #systemctl_enable acpid
 ## vifm: terminal file browser
-pacman_install vifm
+#pacman_install vifm
 ## dos2unix: tool to change carriage return (^M | \r) into nomal return (\n)
 #pacman_install dos2unix
 ## terminal multiplexer:
@@ -441,7 +441,7 @@ pacman_install texinfo
 ## very useful alternative to man: show most common commands for executable
 pacman_install tldr
 ## unit conversions
-pacman_install units
+#pacman_install units
 ## terminal music player: mplayer
 #pacman_install mplayer
 ## copying and pasting from the terminal
@@ -451,11 +451,11 @@ pacman_install poppler
 ## video to thumbnail conversion
 pacman_install ffmpegthumbnailer
 ## audio thumbnails with ffmpeg (heh?)
-yay_install ffmpegthumbnailer-mp3
+#yay_install ffmpegthumbnailer-mp3
 ## epub thumbnailer
-yay_install epub-thumbnailer-git
+#yay_install epub-thumbnailer-git
 ## font previewer
-yay_install fontpreview-git
+#yay_install fontpreview-git
 ## check if bash script is posix complient (needs haskell -> 250mb -> disabled by default)
 #pacman_install shellcheck
 ## shell formatter
@@ -463,13 +463,13 @@ yay_install fontpreview-git
 ## highlight: to highlight code in the terminal (nice `cat` alternative, used in my custom scripts)
 pacman_install highlight
 ## mediainfo: show audio and video information in terminal
-pacman_install mediainfo
+#pacman_install mediainfo
 ## process information
 pacman_install htop
 ## termdown: terminal timer/stopwatch
-pacman_install termdown
+#pacman_install termdown
 ## espeak: text to speach engine (used in my custom termdown script)
-pacman_install espeak
+#pacman_install espeak
 ## aplay: simple sound player based on alsa
 #yay_install alsaplayer-git
 ## system information
@@ -505,25 +505,25 @@ link /usr/bin/nvim /usr/bin/vim
 link /usr/bin/nvim /usr/bin/vi
 ## pynvim: better integration of python with neovim:
 pacman_install python-pynvim
-pip2_install pynvim
+#pip2_install pynvim
 ## ruby-neovim: better integration of ruby with neovim:
-yay_install ruby-neovim
+#yay_install ruby-neovim
 ## node-neovim: better integration of nodejs with neovim:
-npm_install neovim
+#npm_install neovim
 ## vimwiki-markdown: better integration for mardown files in vimwiki:
-pip3_install vimwiki-markdown
+#pip3_install vimwiki-markdown
 ## instant-markdown-d used for instant markdown visualization in vim
-npm_install instant-markdown-d
+#npm_install instant-markdown-d
 ## ccls: C language server (required by CoC plugin for nvim)
 pacman_install ccls
 ## bash language server (required by CoC plugin for nvim)
 pacman_install bash-language-server
 ## eslint: javascript linter (required by COC plugin for nvim)
-npm_install eslint
+pacman_install eslint
 ## ctags: recommended vim dependency for jump-to-tag functionality
 pacman_install ctags
 ## scim: terminal spreadsheet viewer/editor
-yay_install sc-im
+#yay_install sc-im
 ## wordgrinder: terminal word processor
 #yay_install wordgrinder
 ## terminal internet search: google
@@ -531,24 +531,22 @@ yay_install sc-im
 ## terminal internet search: duckduckgo
 #yay_install ddgr
 ## newsboat: RSS reader
-pacman_install newsboat
+#pacman_install newsboat
 ## trans: command line translation engine
-pacman_install translate-shell
+#pacman_install translate-shell
 ## whois information
-pacman_install whois
+#pacman_install whois
 ## cronie: cron job daemon
 #pacman_install cronie
 ## (pixelated) terminal image previews
 yay_install viu
 #systemctl_enable cronie
 ## ncmpcpp: terminal music client
-pacman_install ncmpcpp
+#pacman_install ncmpcpp
 ## spotify-tui: terminal client for spotify (building this takes LONG)
 #yay_install spotify-tui
 ## spotify daemon (dependency for spotify-tui)
-pacman_install spotifyd
-## full spotify daemon (building this takes LONG)
-#yay_install spotifyd-full
+#pacman_install spotifyd
 ## playerctl: terminal client to control spotify, spotifyd, vlc, ...
 pacman_install playerctl
 ## media daemon
@@ -581,9 +579,9 @@ pacman_install android-file-transfer # android access
 ## access ssh file system
 pacman_install sshfs
 ## access mac-formatted drives (HFS+)
-#yay_install hfsprogs
+yay_install hfsprogs
 ## testdisk to figure out location HFS+ partition wrapped in 'Apple Core Storage':
-#pacman_install testdisk
+pacman_install testdisk
 ## webdav filesystem (mount Nextcloud as a folder)
 pacman_install davfs2
 ## recommended settings for davfs2 + Nextcloud
@@ -619,12 +617,10 @@ pacman_install unclutter
 yay_install xurls
 ## remap escape key:
 #yay_install xcape-git
-## viewer with synctex support, and some custom plugins
+## emulate mouse clicks and keyboard presses
 pacman_install xdotool
 ## xsettingsd: immediately apply changes in GTK theme
 pacman_install xsettingsd
-## viewer with synctex support, and some custom plugins
-pacman_install xdotool
 ## server access control for x
 pacman_install xorg-xhost
 ## sharing and viewing x-sessions on other computers
@@ -645,7 +641,7 @@ yay_install picom-git
 ## libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
 ## the reason it is installed this way is because this library replaces libxft
 ## requiring you to answer yes on a [y/N] question...
-pacman -Q libxft-bgra &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra >> $LOG 2>> $ERR
+pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra-git >> $LOG 2>> $ERR
 
 
 # Desktop Environment / Window Manager
@@ -836,7 +832,7 @@ yay_install gtk-theme-arc-gruvbox-git
 ## dark nord-inspired color theme
 yay_install nordic-theme-git
 ## light nord-inspired color theme
-yay_install nordic-polar-theme-git
+#yay_install nordic-polar-theme-git
 ## lxappearance: tool to choose gtk themes
 pacman_install lxappearance
 ## gtk look-and-feel for qt (comes with kvantummanager = lxappearance for qt apps):
@@ -864,9 +860,9 @@ pacman_install xcursor-simpleandsoft
 #-------------------------------------------------------------------------------
 
 ## syncthing: synchronization between devices
-pacman_install syncthing
+#pacman_install syncthing
 ## run syncthing as a systemd service
-systemctl_create syncthing
+#systemctl_create syncthing
 #systemctl_enable syncthing
 ## jellyfin: media center
 #yay_install jellyfin
@@ -1006,7 +1002,7 @@ pacman_install zathura-djvu
 ## etcher: GUI dd alternative
 #yay_install etcher-bin
 ## anki: a flashcard program
-pacman_install anki
+#pacman_install anki
 ## pulseaudio control panel
 pacman_install pavucontrol
 ## bluetooth manager (run blueman-manager)
@@ -1018,9 +1014,9 @@ pacman_install blueman
 ## 'airdrop' for linux (only works between pcs):
 #yay_install warpinator
 ## natifier: make 'native' electron apps given a url
-npm_install nativefier
+#npm_install nativefier
 ## dragon-drag-and-drop: drag files into applications (aliassed to 'd')
-yay_install dragon-drag-and-drop
+#yay_install dragon-drag-and-drop
 ## virtualbox dependency: linux headers
 #pacman_install linux-headers
 ## virtualbox dependency: linux headers [for linux-lts kernel only!]
@@ -1051,7 +1047,7 @@ yay_install dragon-drag-and-drop
 #-------------------------------------------------------------------------------
 
 ## pinta: an improved ms paint clone
-yay_install pinta
+#yay_install pinta
 ## inkscape
 pacman_install inkscape
 ## GIMP: the GNU Image Manipulation program, a photoshop alternative
@@ -1130,10 +1126,10 @@ if [ $? -eq 0 ]; then
     code --install-extension pkief.material-icon-theme >> $LOG 2>> $ERR
 fi
 ## Python programming language:
-pacman_install python2
 pacman_install python
-pacman_install ipython2
 pacman_install ipython
+#pacman_install python2
+#pacman_install ipython2
 
 ## Scientific computing with octave (Matlab alternative)
 pacman_install octave
@@ -1270,8 +1266,6 @@ submodule_install scroll
 pacman_install tk
 ## python style guide checker
 pacman_install yapf
-## python package manager
-pacman_install python-pip
 ## progress bars
 pacman_install python-tqdm
 ## numerical calculations
@@ -1285,6 +1279,7 @@ pacman_install flake8
 pacman_install python-pyflakes
 pacman_install python-isort
 pacman_install python-black
+## automatic colorscheme generation based on image
 pacman_install python-pywal
 ## connectivity (requirement for calcurse-caldav synchronization)
 pacman_install python-httplib2
@@ -1295,45 +1290,45 @@ pacman_install python-pillow
 ## sockets
 #pacman_install python-websockets
 pacman_install flake8
-## jedi: linting and more (disabled in favor of pip-install)
-#pacman_install python-jedi
+## jedi: linting and more
+pacman_install python-jedi
 ## requests (castero dependency)
-pacman_install python-requests
+#pacman_install python-requests
 ## pytest (castero dependency)
-pacman_install python-pytest
+#pacman_install python-pytest
 ## cjkwrap (castero dependency)
-pacman_install python-cjkwrap
+#pacman_install python-cjkwrap
 ## coverage (castero dependency)
-pacman_install python-coverage
+#pacman_install python-coverage
 ## beautifulsoup4 (castero dependency)
-pacman_install python-beautifulsoup4
+#pacman_install python-beautifulsoup4
 ## python mpv (castero dependency)
-yay_install python-mpv
+#yay_install python-mpv
 ## pylatexenc: latex -> unicode conversion
-yay_install python-pylatexenc
+#yay_install python-pylatexenc
 ## castero: tui podcast client
-yay_install castero
+#yay_install castero
 ## jedi: linting and more (newer version than via pacman)
-pip3_install jedi
+#pip3_install jedi
 ## neovim-remote needed for synctex
-pip3_install neovim-remote
+#pip3_install neovim-remote
 ## dependency for neovim-remote:
-pacman_install python-psutil
+#pacman_install python-psutil
 ## image previews (overlays) in terminal (very difficult to configure)
-pacman_install python-xlib # install this BEFORE ueberzug
-pip3_install ueberzug
+#pacman_install python-xlib # install this BEFORE ueberzug
+#pip3_install ueberzug
 ## automate GUI tasks with pyautogui
-pip3_install pyautogui
+#pip3_install pyautogui
 ## markdown <-> ipynb conversion
-pip3_install notedown
+#pip3_install notedown
 ## google cloud apis
 #pip3_install google-api-python-client
 #pip3_install google-auth-httplib2
 #pip3_install google-auth-oauthlib
 ## smdv: simple markdown viewer
-pip3_install smdv
+#pip3_install smdv
 ## run jupyterlab as a systemd service:
-systemctl_create jupyterhub
+#systemctl_create jupyterhub
 #systemctl_enable jupyterhub
 
 
@@ -1342,10 +1337,10 @@ systemctl_create jupyterhub
 
 pacman_install gnupg # gpg --full-gen-key (generate gpg key)
 pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
-#yay_install passff-host  # host for the pass "passFF" firefox extension
 pacman_install browserpass # host for the pass "browserpass" chromium/firefox extension
 pacman_install browserpass-firefox # host for the pass "browserpass" firefox extension
 pacman_install browserpass-chromium # host for the pass "browserpass" chromium extension
+#yay_install passff-host  # host for the pass "passFF" firefox extension
 
 
 # System settings
