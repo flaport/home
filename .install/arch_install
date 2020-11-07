@@ -542,6 +542,8 @@ pacman_install ctags
 #yay_install ddgr
 ## newsboat: RSS reader
 #pacman_install newsboat
+## ueberzug: image overlays in the terminal
+pacman_install ueberzug
 ## trans: command line translation engine
 #pacman_install translate-shell
 ## whois information
@@ -1325,9 +1327,6 @@ pacman_install python-jedi
 #pip3_install neovim-remote
 ## dependency for neovim-remote:
 #pacman_install python-psutil
-## image previews (overlays) in terminal (very difficult to configure)
-#pacman_install python-xlib # install this BEFORE ueberzug
-#pip3_install ueberzug
 ## automate GUI tasks with pyautogui
 #pip3_install pyautogui
 ## markdown <-> ipynb conversion
