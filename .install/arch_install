@@ -1202,48 +1202,49 @@ pacman_install gstreamer-vaapi
 pacman_install vdpauinfo
 pacman_install intel-gpu-tools
 
-### option 0: do nothing
+## OPTION 0: do nothing
 
-### option 1: intel integrated graphics (recommended on most systems):
-##pacman_install intel-media-driver
-##pacman_install libvdpau-va-gl
-##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+## OPTION 1: intel integrated graphics (recommended on most systems):
+#pacman_install intel-media-driver
+#pacman_install libvdpau-va-gl
+#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 
-### option 2: older intel integrated graphics:
-##pacman_install libva-intel-driver  # OR: yay_install libva-intel-driver-g45-h264
-##pacman_install libvdpau-va-gl
-##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+## OPTION 2: older intel integrated graphics:
+#pacman_install libva-intel-driver  # OR: yay_install libva-intel-driver-g45-h264
+#pacman_install libvdpau-va-gl
+#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 
-### option 3: nvidia proprietary drivers and acceleration:
-## nvidia driver:
-##pacman_install nvidia
-## nvidia driver (for linux-lts):
-##pacman_install nvidia-lts
+## OPTION 3: nvidia proprietary drivers and acceleration:
+## nvidia driver (for linux kernel)
+#pacman_install nvidia
+## nvidia driver (for linux-lts kernel):
+#pacman_install nvidia-lts
 ## other nvidia related packages:
-##pacman_install nvidia-utils
-##pacman_install nvtop
-##pacman_install nvidia-settings
-##pacman_install cuda
-##pacman_install cudnn
-##pacman_install opencl-nvidia
-##yay_install optimus-manager
-##echo $password | sudo -S cp $HOME/.install/config/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
-##systemctl_enable optimus-manager
-##pacman_install libva-vdpau-driver # OR: yay_install libva-vdpau-driver-chromium
-##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nvidia" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+#pacman_install nvidia-utils
+#pacman_install nvtop
+#pacman_install nvidia-settings
+#pacman_install cuda
+#pacman_install cudnn
+#pacman_install opencl-nvidia
+## configure nvidia with optimus-manager
+#yay_install optimus-manager
+#echo $password | sudo -S cp $HOME/.install/config/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
+#systemctl_enable optimus-manager
+#pacman_install libva-vdpau-driver # OR: yay_install libva-vdpau-driver-chromium
+#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nvidia" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 ## force 96 dpi in Xorg when nvidia driver is in use:
-##grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
+#grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
 
-### option 4: open source nvidia-driver [nouveau]
-##sudo pacman -Rns --noconfirm nvidia >> $LOG 2>> $ERR
-##pacman_install libva-mesa-driver
-##pacman_install mesa-vdpau
-##yay_install nouveau-fw
-##grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-##grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+## OPTION 4: open source nvidia-driver [nouveau]
+#sudo pacman -Rns --noconfirm nvidia >> $LOG 2>> $ERR
+#pacman_install libva-mesa-driver
+#pacman_install mesa-vdpau
+#yay_install nouveau-fw
+#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
 
 
 # Resources
