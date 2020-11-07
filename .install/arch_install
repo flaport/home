@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.11.06
+# last complete install: 2020.11.07
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -46,8 +46,8 @@ fi
 mkdir -p $HOME/.local/share
 LOG="$HOME/.local/share/arch_install.log"
 ERR="$HOME/.local/share/arch_install_errors.log"
-printf "ARCH PACKAGE INSTALL\n\n\n" > $LOG
-printf "ARCH PACKAGE INSTALL\n\n\n" > $ERR
+printf "ARCH PACKAGE INSTALL\n\n\n" > "$LOG"
+printf "ARCH PACKAGE INSTALL\n\n\n" > "$ERR"
 
 
 # User input
@@ -68,9 +68,9 @@ fi
 
 ## Update arch
 printf "\n\nUpdating Arch Linux...\n\n"
-printf "\n\nUpdating Arch Linux...\n\n" >> $LOG
-printf "\n\nUpdating Arch Linux...\n\n" >> $ERR
-echo $password | sudo -S pacman -Syu --noconfirm >> $LOG 2>> $ERR
+printf "\n\nUpdating Arch Linux...\n\n" >> "$LOG"
+printf "\n\nUpdating Arch Linux...\n\n" >> "$ERR"
+echo $password | sudo -S pacman -Syu --noconfirm >> "$LOG" 2>> "$ERR"
 
 
 # Custom installation functions
@@ -79,34 +79,34 @@ echo $password | sudo -S pacman -Syu --noconfirm >> $LOG 2>> $ERR
 echo_success(){
     if [ $1 -ne 0 ]; then
         printf "failed!\n"
-        printf "\nfailed!\n" >> $LOG
-        printf "\nfailed!\n" >> $ERR
+        printf "\nfailed!\n" >> "$LOG"
+        printf "\nfailed!\n" >> "$ERR"
         return 1
     fi
 
     printf "success!\n"
-    printf "\nsuccess!\n" >> $LOG
-    printf "\nsuccess!\n" >> $ERR
+    printf "\nsuccess!\n" >> "$LOG"
+    printf "\nsuccess!\n" >> "$ERR"
     return 0
 }
 
 pacman_install(){ # will only install the first argument!
     printf "[pacman] install $1... "
-    printf "\n\n\n[pacman] install $1...\n" >> $LOG
-    printf "\n\n\n[pacman] install $1...\n" >> $ERR
+    printf "\n\n\n[pacman] install $1...\n" >> "$LOG"
+    printf "\n\n\n[pacman] install $1...\n" >> "$ERR"
 
     # check if package is already installed...
-    echo $password | sudo -S pacman -Q $1 >> $LOG 2>> $ERR;
+    echo $password | sudo -S pacman -Q $1 >> "$LOG" 2>> "$ERR";
     if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
-        printf "already installed.\n" >> $LOG
-        printf "already installed.\n" >> $ERR
+        printf "already installed.\n" >> "$LOG"
+        printf "already installed.\n" >> "$ERR"
         return 1
     fi
 
-    printf "sudo pacman -S --noconfirm --noprogress $1\n" >> $LOG
-    printf "sudo pacman -S --noconfirm --noprogress $1\n" >> $ERR
-    echo $password | sudo -S pacman -S --noconfirm --noprogress --overwrite='*' $1 >> $LOG 2>> $ERR
+    printf "sudo pacman -S --noconfirm --noprogress $1\n" >> "$LOG"
+    printf "sudo pacman -S --noconfirm --noprogress $1\n" >> "$ERR"
+    echo $password | sudo -S pacman -S --noconfirm --noprogress --overwrite='*' $1 >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -114,21 +114,21 @@ pacman_install(){ # will only install the first argument!
 
 yay_install(){ # will only install the first argument!
     printf "[ yay  ] install $1... "
-    printf "\n\n\n[ yay  ] install $1...\n" >> $LOG
-    printf "\n\n\n[ yay  ] install $1...\n" >> $ERR
+    printf "\n\n\n[ yay  ] install $1...\n" >> "$LOG"
+    printf "\n\n\n[ yay  ] install $1...\n" >> "$ERR"
 
     # check if package is already installed...
-    echo $password | sudo -S pacman -Q $1 >> $LOG 2>> $ERR;
+    echo $password | sudo -S pacman -Q $1 >> "$LOG" 2>> "$ERR";
     if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
-        printf "already installed.\n" >> $LOG
-        printf "already installed.\n" >> $ERR
+        printf "already installed.\n" >> "$LOG"
+        printf "already installed.\n" >> "$ERR"
         return 1
     fi
 
-    printf "yay -S -q --noconfirm $1\n" >> $LOG
-    printf "yay -S -q --noconfirm $1\n" >> $ERR
-    yay -S -q --noconfirm --overwrite='*' $1 >> $LOG 2>> $ERR
+    printf "yay -S -q --noconfirm $1\n" >> "$LOG"
+    printf "yay -S -q --noconfirm $1\n" >> "$ERR"
+    yay -S -q --noconfirm --overwrite='*' $1 >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -139,101 +139,101 @@ git_install(){ # will only install the first argument!
     name=${name%.*}
 
     printf "[ git  ] install $name... "
-    printf "\n\n\n[ git  ] install $name...\n" >> $LOG
-    printf "\n\n\n[ git  ] install $name...\n" >> $ERR
+    printf "\n\n\n[ git  ] install $name...\n" >> "$LOG"
+    printf "\n\n\n[ git  ] install $name...\n" >> "$ERR"
 
     # check if package is already installed...
-    echo $password | sudo -S pacman -Q $name >> $LOG 2>> $ERR;
+    echo $password | sudo -S pacman -Q $name >> "$LOG" 2>> "$ERR";
     if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
-        printf "already installed.\n" >> $LOG
-        printf "already installed.\n" >> $ERR
+        printf "already installed.\n" >> "$LOG"
+        printf "already installed.\n" >> "$ERR"
         return 1
     fi
 
-    printf "git clone $1 /tmp/gitpkg\n" >> $LOG
-    printf "git clone $1 /tmp/gitpkg\n" >> $ERR
-    git clone $1 /tmp/gitpkg >> $LOG 2>> $ERR
+    printf "git clone $1 /tmp/gitpkg\n" >> "$LOG"
+    printf "git clone $1 /tmp/gitpkg\n" >> "$ERR"
+    git clone $1 /tmp/gitpkg >> "$LOG" 2>> "$ERR"
 
-    printf "cd /tmp/gitpkg\n" >> $LOG
-    printf "cd /tmp/gitpkg\n" >> $ERR
-    cd /tmp/gitpkg >> $LOG 2>> $ERR
+    printf "cd /tmp/gitpkg\n" >> "$LOG"
+    printf "cd /tmp/gitpkg\n" >> "$ERR"
+    cd /tmp/gitpkg >> "$LOG" 2>> "$ERR"
 
-    printf "makepkg -si --noconfirm --noprogress\n" >> $LOG
-    printf "makepkg -si --noconfirm --noprogress\n" >> $ERR
-    makepkg -si --noconfirm --noprogress >> $LOG 2>> $ERR
+    printf "makepkg -si --noconfirm --noprogress\n" >> "$LOG"
+    printf "makepkg -si --noconfirm --noprogress\n" >> "$ERR"
+    makepkg -si --noconfirm --noprogress >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
 
-    printf "cd ~\n" >> $LOG
-    printf "cd ~\n" >> $ERR
-    cd $HOME >> $LOG 2>> $ERR
+    printf "cd ~\n" >> "$LOG"
+    printf "cd ~\n" >> "$ERR"
+    cd $HOME >> "$LOG" 2>> "$ERR"
 
-    printf "rm -rf /tmp/gitpkg\n" >> $LOG
-    printf "rm -rf /tmp/gitpkg\n" >> $ERR
-    rm -rf /tmp/gitpkg >> $LOG 2>> $ERR
+    printf "rm -rf /tmp/gitpkg\n" >> "$LOG"
+    printf "rm -rf /tmp/gitpkg\n" >> "$ERR"
+    rm -rf /tmp/gitpkg >> "$LOG" 2>> "$ERR"
 
     return $exit_code
 }
 
 submodule_install(){ # will only install the first argument!
     printf "[submod] install $1... "
-    printf "\n\n\n[submod] install $1...\n" >> $LOG
-    printf "\n\n\n[submod] install $1...\n" >> $ERR
+    printf "\n\n\n[submod] install $1...\n" >> "$LOG"
+    printf "\n\n\n[submod] install $1...\n" >> "$ERR"
 
-    printf "cd $HOME/.build/$1\n" >> $LOG
-    printf "cd $HOME/.build/$1\n" >> $ERR
-    cd "$HOME/.build/$1" >> $LOG 2>> $ERR
+    printf "cd $HOME/.build/$1\n" >> "$LOG"
+    printf "cd $HOME/.build/$1\n" >> "$ERR"
+    cd "$HOME/.build/$1" >> "$LOG" 2>> "$ERR"
 
-    printf "sudo make clean\n" >> $LOG
-    printf "sudo make clean\n" >> $ERR
-    echo $password | sudo -S rm config.h >> $LOG 2>> $ERR
-    echo $password | sudo -S make clean >> $LOG 2>> $ERR
+    printf "sudo make clean\n" >> "$LOG"
+    printf "sudo make clean\n" >> "$ERR"
+    echo $password | sudo -S rm config.h >> "$LOG" 2>> "$ERR"
+    echo $password | sudo -S make clean >> "$LOG" 2>> "$ERR"
 
-    printf "git pull\n" >> $LOG
-    printf "git pull\n" >> $ERR
+    printf "git pull\n" >> "$LOG"
+    printf "git pull\n" >> "$ERR"
     if [ "$1" = "st" ]; then
         # v1 is my most stable st version for now...
-        git checkout v1 >> $LOG 2>> $ERR
-        git pull origin v1 >> $LOG 2>> $ERR
+        git checkout v1 >> "$LOG" 2>> "$ERR"
+        git pull origin v1 >> "$LOG" 2>> "$ERR"
     else
-        git checkout master >> $LOG 2>> $ERR
-        git pull origin master >> $LOG 2>> $ERR
+        git checkout master >> "$LOG" 2>> "$ERR"
+        git pull origin master >> "$LOG" 2>> "$ERR"
     fi
 
-    printf "sudo make install\n" >> $LOG
-    printf "sudo make install\n" >> $ERR
-    echo $password | sudo -S make all >> $LOG 2>> $ERR
-    echo $password | sudo -S make install >> $LOG 2>> $ERR
+    printf "sudo make install\n" >> "$LOG"
+    printf "sudo make install\n" >> "$ERR"
+    echo $password | sudo -S make all >> "$LOG" 2>> "$ERR"
+    echo $password | sudo -S make install >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
-    echo $password | sudo -S make clean >> $LOG 2>> $ERR
-    echo $password | rm -f config.h >> $LOG 2>> $ERR
+    echo $password | sudo -S make clean >> "$LOG" 2>> "$ERR"
+    echo $password | rm -f config.h >> "$LOG" 2>> "$ERR"
 
-    printf "cd $HOME\n" >> $LOG
-    printf "cd $HOME\n" >> $ERR
-    cd $HOME >> $LOG 2>> $ERR
+    printf "cd $HOME\n" >> "$LOG"
+    printf "cd $HOME\n" >> "$ERR"
+    cd $HOME >> "$LOG" 2>> "$ERR"
 
     return $exit_code
 }
 
 pip3_install() {
     printf "[ pip3 ] install $1... "
-    printf "\n\n\n[ pip3 ] install $1\n" >> $LOG
-    printf "\n\n\n[ pip3 ] install $1\n" >> $ERR
+    printf "\n\n\n[ pip3 ] install $1\n" >> "$LOG"
+    printf "\n\n\n[ pip3 ] install $1\n" >> "$ERR"
 
     # check if package is already installed...
     /usr/bin/python3 -c "import $1" >/dev/null 2>/dev/null
     if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
-        printf "already installed.\n" >> $LOG
-        printf "already installed.\n" >> $ERR
+        printf "already installed.\n" >> "$LOG"
+        printf "already installed.\n" >> "$ERR"
         return 1
     fi
 
-    printf "sudo /usr/bin/python3 -m pip install $1\n" >> $LOG
-    printf "sudo /usr/bin/python3 -m pip install $1\n" >> $ERR
-    echo $password | sudo -S /usr/bin/python3 -m pip install $1 >> $LOG 2>> $ERR
+    printf "sudo /usr/bin/python3 -m pip install $1\n" >> "$LOG"
+    printf "sudo /usr/bin/python3 -m pip install $1\n" >> "$ERR"
+    echo $password | sudo -S /usr/bin/python3 -m pip install $1 >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -241,21 +241,21 @@ pip3_install() {
 
 pip2_install() {
     printf "[ pip2 ] install $1... "
-    printf "\n\n\n[ pip2 ] install $1\n" >> $LOG
-    printf "\n\n\n[ pip2 ] install $1\n" >> $ERR
+    printf "\n\n\n[ pip2 ] install $1\n" >> "$LOG"
+    printf "\n\n\n[ pip2 ] install $1\n" >> "$ERR"
 
     # check if package is already installed...
     /usr/bin/python2 -c "import $1" >/dev/null 2>/dev/null
     if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
-        printf "already installed.\n" >> $LOG
-        printf "already installed.\n" >> $ERR
+        printf "already installed.\n" >> "$LOG"
+        printf "already installed.\n" >> "$ERR"
         return 1
     fi
 
-    printf "sudo /usr/bin/python2 -m pip install $1\n" >> $LOG
-    printf "sudo /usr/bin/python2 -m pip install $1\n" >> $ERR
-    echo $password | sudo -S /usr/bin/python2 -m pip install $1 >> $LOG 2>> $ERR
+    printf "sudo /usr/bin/python2 -m pip install $1\n" >> "$LOG"
+    printf "sudo /usr/bin/python2 -m pip install $1\n" >> "$ERR"
+    echo $password | sudo -S /usr/bin/python2 -m pip install $1 >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -263,21 +263,21 @@ pip2_install() {
 
 npm_install(){
     printf "[ npm  ] install $1... "
-    printf "\n\n\n[ npm  ] install $1\n" >> $LOG
-    printf "\n\n\n[ npm  ] install $1\n" >> $ERR
+    printf "\n\n\n[ npm  ] install $1\n" >> "$LOG"
+    printf "\n\n\n[ npm  ] install $1\n" >> "$ERR"
 
     # check if package is already installed...
     echo $password | sudo -S npm list -g 2> /dev/null | grep "$1" >/dev/null 2>/dev/null
     if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
         printf "already installed.\n"
-        printf "already installed.\n" >> $LOG
-        printf "already installed.\n" >> $ERR
+        printf "already installed.\n" >> "$LOG"
+        printf "already installed.\n" >> "$ERR"
         return 1
     fi
 
-    printf "sudo npm install -g $1\n" >> $LOG
-    printf "sudo npm install -g $1\n" >> $ERR
-    echo $password | sudo -S npm install -g $1 >> $LOG 2>> $ERR
+    printf "sudo npm install -g $1\n" >> "$LOG"
+    printf "sudo npm install -g $1\n" >> "$ERR"
+    echo $password | sudo -S npm install -g $1 >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -285,18 +285,18 @@ npm_install(){
 
 systemctl_create() {
     printf "[system] create $1 service... "
-    printf "\n\n\n[system] create $1 service...\n" >> $LOG
-    printf "\n\n\n[system] create $1 service...\n" >> $ERR
+    printf "\n\n\n[system] create $1 service...\n" >> "$LOG"
+    printf "\n\n\n[system] create $1 service...\n" >> "$ERR"
     source=$HOME/.install/services/$1.service
     target=$(head -6 $source | tail -1 | sed 's/#\ *TARGET:\ *//g')
 
     echo $password | sudo -S systemctl daemon-reload
-    echo "# NOTE: THIS FILE WAS AUTO-GENERATED BY $HOME/.install/arch_install" | sudo tee $target > /dev/null 2>> $ERR
-    echo "# AND WILL PROBABLY BE OVERWRITTEN IN THE FUTURE." | sudo tee -a $target > /dev/null 2>> $ERR
-    echo "# EDIT THE SOURCE FILE AT $source" | sudo tee -a $target > /dev/null 2>> $ERR
-    echo "# and run $HOME/.install/arch_install again to install it here." | sudo tee -a $target > /dev/null 2>> $ERR
-    echo "" | sudo tee -a $target > /dev/null 2>> $ERR
-    tail --lines=+7 $source | sed 's|{USER}|'$USER'|g' | sed 's|{HOME}|'$HOME'|g' | sudo tee -a $target > /dev/null 2>> $ERR
+    echo "# NOTE: THIS FILE WAS AUTO-GENERATED BY $HOME/.install/arch_install" | sudo tee $target > /dev/null 2>> "$ERR"
+    echo "# AND WILL PROBABLY BE OVERWRITTEN IN THE FUTURE." | sudo tee -a $target > /dev/null 2>> "$ERR"
+    echo "# EDIT THE SOURCE FILE AT $source" | sudo tee -a $target > /dev/null 2>> "$ERR"
+    echo "# and run $HOME/.install/arch_install again to install it here." | sudo tee -a $target > /dev/null 2>> "$ERR"
+    echo "" | sudo tee -a $target > /dev/null 2>> "$ERR"
+    tail --lines=+7 $source | sed 's|{USER}|'$USER'|g' | sed 's|{HOME}|'$HOME'|g' | sudo tee -a $target > /dev/null 2>> "$ERR"
     exit_code=$?
     echo $password | sudo -S systemctl daemon-reload
     echo_success $exit_code
@@ -305,11 +305,11 @@ systemctl_create() {
 
 systemctl_enable() {
     printf "[system] enable $1 service... "
-    printf "\n\n\n[system] enable $1 service...\n" >> $LOG
-    printf "\n\n\n[system] enable $1 service...\n" >> $ERR
-    printf "sudo systemctl enable $1\n" >> $LOG
-    printf "sudo systemctl enable $1\n" >> $ERR
-    echo $password | sudo -S systemctl enable "$1" >> $LOG 2>> $ERR
+    printf "\n\n\n[system] enable $1 service...\n" >> "$LOG"
+    printf "\n\n\n[system] enable $1 service...\n" >> "$ERR"
+    printf "sudo systemctl enable $1\n" >> "$LOG"
+    printf "sudo systemctl enable $1\n" >> "$ERR"
+    echo $password | sudo -S systemctl enable "$1" >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -318,12 +318,12 @@ systemctl_enable() {
 link() {
     [ ! -z $3 ] && printf "link: too many arguments" && return 1
     printf "[ link ] from $1 to $2... "
-    printf "\n\n\n[ link ] from $1 to $2\n" >> $LOG
-    printf "\n\n\n[ link ] from $1 to $2\n" >> $ERR
-    printf "sudo ln -sf $1 $2\n" >> $LOG
-    printf "sudo ln -sf $1 $2\n" >> $ERR
-    [ -f "$2" ] && echo $password | sudo -S mv $2 $2.bak  >> $LOG 2>> $ERR
-    echo $password | sudo -S ln -sf $1 $2  >> $LOG 2>> $ERR
+    printf "\n\n\n[ link ] from $1 to $2\n" >> "$LOG"
+    printf "\n\n\n[ link ] from $1 to $2\n" >> "$ERR"
+    printf "sudo ln -sf $1 $2\n" >> "$LOG"
+    printf "sudo ln -sf $1 $2\n" >> "$ERR"
+    [ -f "$2" ] && echo $password | sudo -S mv $2 $2.bak  >> "$LOG" 2>> "$ERR"
+    echo $password | sudo -S ln -sf $1 $2  >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -331,20 +331,20 @@ link() {
 
 pacman_enable_archlinuxcn(){ # add archlinuxcn to the pacman repositories
     printf "[pacman] enable archlinuxcn"
-    printf "\n\n\n[pacman] enable archlinuxcn\n" >> $LOG
-    printf "\n\n\n[pacman] enable archlinuxcn\n" >> $ERR
-    grep "\[archlinuxcn\]" /etc/pacman.conf &> /dev/null || printf "\n\n[archlinuxcn]\nServer=https://repo.archlinuxcn.org/\$arch" | sudo tee -a /etc/pacman.conf > /dev/null 2>> $ERR
-    echo $password | sudo -S pacman -Syy >> $LOG 2>> $ERR
+    printf "\n\n\n[pacman] enable archlinuxcn\n" >> "$LOG"
+    printf "\n\n\n[pacman] enable archlinuxcn\n" >> "$ERR"
+    grep "\[archlinuxcn\]" /etc/pacman.conf &> /dev/null || printf "\n\n[archlinuxcn]\nServer=https://repo.archlinuxcn.org/\$arch" | sudo tee -a /etc/pacman.conf > /dev/null 2>> "$ERR"
+    echo $password | sudo -S pacman -Syy >> "$LOG" 2>> "$ERR"
     pacman_install archlinuxcn-keyring
 }
 
 pacman_enable_multilib(){
     printf "[pacman] enable multilib"
-    printf "\n\n\n[pacman] enable multilib\n" >> $LOG
-    printf "\n\n\n[pacman] enable multilib\n" >> $ERR
-    sudo sed -i 's|^#\[multilib\]|[multilib]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> $LOG 2>> $ERR
-    sudo sed -i 's|^#\[multilib-testing\]|[multilib-testing]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> $LOG 2>> $ERR
-    echo $password | sudo -S pacman -Syy >> $LOG 2>> $ERR
+    printf "\n\n\n[pacman] enable multilib\n" >> "$LOG"
+    printf "\n\n\n[pacman] enable multilib\n" >> "$ERR"
+    sudo sed -i 's|^#\[multilib\]|[multilib]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> "$LOG" 2>> "$ERR"
+    sudo sed -i 's|^#\[multilib-testing\]|[multilib-testing]\nInclude\ =\ /etc/pacman.d/mirrorlist|g' /etc/pacman.conf >> "$LOG" 2>> "$ERR"
+    echo $password | sudo -S pacman -Syy >> "$LOG" 2>> "$ERR"
 }
 
 
@@ -396,7 +396,7 @@ git_install https://aur.archlinux.org/yay.git
 #-------------------------------------------------------------------------------
 
 ## eyecandy: patch pacman config to enable Color and ILoveCandy
-echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf >> $LOG 2>> $ERR
+echo $password | sudo -S sed -i 's|^#Color|Color\nILoveCandy|g' /etc/pacman.conf >> "$LOG" 2>> "$ERR"
 ## disable tty tickets (giving sudo password in one terminal enables passwordless sudo in other terminals as well for 15 min)
 echo Defaults:$USER '!tty_tickets', timestamp_timeout=15 | sudo tee /etc/sudoers.d/tty_tickets
 ## install scripts for bootstrapping new arch installations
@@ -651,7 +651,7 @@ yay_install picom-git
 ## libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
 ## the reason it is installed this way is because this library replaces libxft
 ## requiring you to answer yes on a [y/N] question...
-pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra-git >> $LOG 2>> $ERR
+pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra-git >> "$LOG" 2>> "$ERR"
 
 
 # Desktop Environment / Window Manager
@@ -666,16 +666,16 @@ pacman_install sxhkd
 ## light: CLI utility to change backlight value of laptops
 pacman_install light
 ## allow only users in video group to make changes to backlight
-groupadd video >> $LOG 2>> $ERR
+groupadd video >> "$LOG" 2>> "$ERR"
 echo $password | sudo -S usermod -a -G video $USER
-echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chgrp video /sys/class/backlight/%k/brightness\"" | sudo tee /etc/udev/rules.d/backlight.rules > /dev/null 2>> $ERR
-echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chmod g+w /sys/class/backlight/%k/brightness\"" | sudo tee -a /etc/udev/rules.d/backlight.rules > /dev/null 2>> $ERR
+echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chgrp video /sys/class/backlight/%k/brightness\"" | sudo tee /etc/udev/rules.d/backlight.rules > /dev/null 2>> "$ERR"
+echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chmod g+w /sys/class/backlight/%k/brightness\"" | sudo tee -a /etc/udev/rules.d/backlight.rules > /dev/null 2>> "$ERR"
 ## xautolock to automatically lock the screen
 pacman_install xautolock
 ## wallpapers
 pacman_install feh
 ## moving wallpapers
-#git clone https://github.com/glouw/paperview /tmp/paperview >$LOG 2>$ERR; cd /tmp/paperview >$LOG 2>$ERR; make >$LOG 2>$ERR; mv paperview ~/.local/bin >$LOG 2>$ERR; mv scenes ~/.local/share >$LOG 2>$ERR; cd ~; rm -rf /tmp/paperview
+#git clone https://github.com/glouw/paperview /tmp/paperview >"$LOG" 2>"$ERR"; cd /tmp/paperview >"$LOG" 2>"$ERR"; make >"$LOG" 2>"$ERR"; mv paperview ~/.local/bin >"$LOG" 2>"$ERR"; mv scenes ~/.local/share >"$LOG" 2>"$ERR"; cd ~; rm -rf /tmp/paperview
 ## dependency for moving wallpapers
 #pacman_install sdl2
 ## rofi (dmenu alternative)
@@ -693,13 +693,13 @@ pacman_install lightdm
 yay_install lightdm-mini-greeter
 echo $password | sudo -S mkdir -p /usr/share/xsessions
 echo $password | sudo -S cp -f $HOME/.local/share/applications/dwm.desktop /usr/share/xsessions/
-echo $password | sudo -S sed -i "s/\(#\)\?.*greeter-session.*=.*/greeter-session=lightdm-mini-greeter/g" /etc/lightdm/lightdm.conf >> $LOG 2>> $ERR
-echo $password | sudo -S sed -i "s/\(#\)\?.*user-session.*=.*/user-session=dwm/g" /etc/lightdm/lightdm.conf >> $LOG 2>> $ERR
-echo $password | sudo -S sed -i "s/^user.*=.*/user = $USER/g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
-echo $password | sudo -S sed -i "s/^show-password-label.*=.*/show-password-label = false/g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
-echo $password | sudo -S sed -i "s/^password-label-text.*=.*/password-label-text = $USER:/g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
-echo $password | sudo -S sed -i "s|^background-image.*=.*|background-image=\"$HOME/.cache/current-wallpaper\"|g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
-echo $password | sudo -S sed -i "s/F92672/2AA198/g" /etc/lightdm/lightdm-mini-greeter.conf >> $LOG 2>> $ERR
+echo $password | sudo -S sed -i "s/\(#\)\?.*greeter-session.*=.*/greeter-session=lightdm-mini-greeter/g" /etc/lightdm/lightdm.conf >> "$LOG" 2>> "$ERR"
+echo $password | sudo -S sed -i "s/\(#\)\?.*user-session.*=.*/user-session=dwm/g" /etc/lightdm/lightdm.conf >> "$LOG" 2>> "$ERR"
+echo $password | sudo -S sed -i "s/^user.*=.*/user = $USER/g" /etc/lightdm/lightdm-mini-greeter.conf >> "$LOG" 2>> "$ERR"
+echo $password | sudo -S sed -i "s/^show-password-label.*=.*/show-password-label = false/g" /etc/lightdm/lightdm-mini-greeter.conf >> "$LOG" 2>> "$ERR"
+echo $password | sudo -S sed -i "s/^password-label-text.*=.*/password-label-text = $USER:/g" /etc/lightdm/lightdm-mini-greeter.conf >> "$LOG" 2>> "$ERR"
+echo $password | sudo -S sed -i "s|^background-image.*=.*|background-image=\"$HOME/.cache/current-wallpaper\"|g" /etc/lightdm/lightdm-mini-greeter.conf >> "$LOG" 2>> "$ERR"
+echo $password | sudo -S sed -i "s/F92672/2AA198/g" /etc/lightdm/lightdm-mini-greeter.conf >> "$LOG" 2>> "$ERR"
 systemctl_enable lightdm
 ## maybe you just want autologin instead of a display manager:
 #systemctl_create getty-auto-login
@@ -784,11 +784,11 @@ pacman_install pulseaudio
 pacman_install networkmanager
 systemctl_enable NetworkManager
 ## use cloudflare DNS servers:
-printf "[global-dns-domain-*]\nservers=1.1.1.1,1.0.0.1" | sudo tee /etc/NetworkManager/conf.d/dns-servers.conf > /dev/null 2>> $ERR
+printf "[global-dns-domain-*]\nservers=1.1.1.1,1.0.0.1" | sudo tee /etc/NetworkManager/conf.d/dns-servers.conf > /dev/null 2>> "$ERR"
 ## create network group (this might fail if the group exists already, but who cares.)
-groupadd network >> $LOG 2>> $ERR
+groupadd network >> "$LOG" 2>> "$ERR"
 ## create policy kit rule (everyone in network group can connect to / change networks)
-printf "polkit.addRule(function(action, subject) {\n  if (action.id.indexOf(\"org.freedesktop.NetworkManager.\") == 0 && subject.isInGroup(\"network\")) {\n    return polkit.Result.YES;\n  }\n});" | sudo tee /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules > /dev/null 2>> $ERR
+printf "polkit.addRule(function(action, subject) {\n  if (action.id.indexOf(\"org.freedesktop.NetworkManager.\") == 0 && subject.isInGroup(\"network\")) {\n    return polkit.Result.YES;\n  }\n});" | sudo tee /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules > /dev/null 2>> "$ERR"
 ## add current user to network group
 echo $password | sudo -S usermod -a -G network $USER
 ## applet in the corner of the screen
@@ -803,7 +803,7 @@ systemctl_create openvpn
 ## ssh (client and server)
 pacman_install openssh
 ## allow X-forwarding for sshd:
-echo $password | sudo -S sed -i 's|^.*X11Forwarding.*|X11Forwarding yes|g' /etc/ssh/sshd_config >> $LOG 2>> $ERR
+echo $password | sudo -S sed -i 's|^.*X11Forwarding.*|X11Forwarding yes|g' /etc/ssh/sshd_config >> "$LOG" 2>> "$ERR"
 systemctl_enable sshd
 ## autossh (for ssh daemons)
 pacman_install autossh
@@ -872,7 +872,7 @@ pacman_install xcursor-simpleandsoft
 ## syncthing: synchronization between devices
 #pacman_install syncthing
 ## run syncthing as a systemd service
-#systemctl_create syncthing
+systemctl_create syncthing
 #systemctl_enable syncthing
 ## jellyfin: media center
 #yay_install jellyfin
@@ -1124,16 +1124,13 @@ pacman_install pandoc
 ## code OSS (open source build of vscode)
 pacman_install code
 if [ $? -eq 0 ]; then
-    code --install-extension vscodevim.vim >> $LOG 2>> $ERR
-    code --install-extension ban.spellright >> $LOG 2>> $ERR
-    code --install-extension wholroyd.jinja >> $LOG 2>> $ERR
-    code --install-extension ms-python.python >> $LOG 2>> $ERR
-    code --install-extension codezombiech.gitignore >> $LOG 2>> $ERR
-    code --install-extension james-yu.latex-workshop >> $LOG 2>> $ERR
-    code --install-extension formulahendry.code-runner >> $LOG 2>> $ERR
-    code --install-extension shardulm94.trailing-spaces >> $LOG 2>> $ERR
-    code --install-extension richie5um2.vscode-sort-json >> $LOG 2>> $ERR
-    code --install-extension pkief.material-icon-theme >> $LOG 2>> $ERR
+    code --install-extension vscodevim.vim >> "$LOG" 2>> "$ERR"
+    code --install-extension wholroyd.jinja >> "$LOG" 2>> "$ERR"
+    code --install-extension ms-python.python >> "$LOG" 2>> "$ERR"
+    code --install-extension james-yu.latex-workshop >> "$LOG" 2>> "$ERR"
+    code --install-extension formulahendry.code-runner >> "$LOG" 2>> "$ERR"
+    code --install-extension shardulm94.trailing-spaces >> "$LOG" 2>> "$ERR"
+    code --install-extension pkief.material-icon-theme >> "$LOG" 2>> "$ERR"
 fi
 ## Python programming language:
 pacman_install python
@@ -1154,6 +1151,9 @@ pacman_install octave
 pacman_install firefox
 ## patch firefox and waterfox to work with some legacy extensions (like vimfx)
 submodule_install legacyfox
+## enhanced security settings for firefox (you might have to copy this manually if your profile is called differently)
+#cp "$HOME/.mozilla/firefox/secure-prefs.js" "$(echo $HOME/.mozilla/firefox/*.default-release)/prefs.js"
+#cp "$HOME/.mozilla/firefox/secure-prefs.js" "$(echo $HOME/.mozilla/firefox/*.default)/prefs.js"
 ## chromium
 #pacman_install chromium
 ## ungoogled-chromium: the name says it all (note: compiling takes HOURS!):
@@ -1207,14 +1207,14 @@ pacman_install intel-gpu-tools
 ## OPTION 1: intel integrated graphics (recommended on most systems):
 #pacman_install intel-media-driver
 #pacman_install libvdpau-va-gl
-#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=iHD" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
+#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
 
 ## OPTION 2: older intel integrated graphics:
 #pacman_install libva-intel-driver  # OR: yay_install libva-intel-driver-g45-h264
 #pacman_install libvdpau-va-gl
-#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=i965" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
+#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=va_gl" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
 
 ## OPTION 3: nvidia proprietary drivers and acceleration:
 ## nvidia driver (for linux kernel)
@@ -1233,18 +1233,18 @@ pacman_install intel-gpu-tools
 #echo $password | sudo -S cp $HOME/.install/config/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
 #systemctl_enable optimus-manager
 #pacman_install libva-vdpau-driver # OR: yay_install libva-vdpau-driver-chromium
-#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nvidia" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=vdpau" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
+#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nvidia" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
 ## force 96 dpi in Xorg when nvidia driver is in use:
-#grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> $LOG 2>> $ERR
+#grep dpi /etc/X11/xinit/xserverrc &> /dev/null || echo $password | sudo -S sed -i 's|/usr/bin/X|/usr/bin/X -dpi 96|g' /etc/X11/xinit/xserverrc >> "$LOG" 2>> "$ERR"
 
 ## OPTION 4: open source nvidia-driver [nouveau]
-#sudo pacman -Rns --noconfirm nvidia >> $LOG 2>> $ERR
+#sudo pacman -Rns --noconfirm nvidia >> "$LOG" 2>> "$ERR"
 #pacman_install libva-mesa-driver
 #pacman_install mesa-vdpau
 #yay_install nouveau-fw
-#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
-#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> $ERR
+#grep LIBVA_DRIVER_NAME /etc/environment &> /dev/null || echo "LIBVA_DRIVER_NAME=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
+#grep VDPAU_DRIVER /etc/environment &> /dev/null || echo "VDPAU_DRIVER=nouveau" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
 
 
 # Resources
@@ -1253,7 +1253,7 @@ pacman_install intel-gpu-tools
 ## a collection of very nice wallpapers:
 if [ ! -d "$HOME/.local/share/wallpapers" ]; then
     echo "cloning a full repo of very nice wallpapers..."
-    git clone https://gitlab.com/dwt1/wallpapers $HOME/.local/share/wallpapers >> $LOG 2>> $ERR
+    git clone https://gitlab.com/dwt1/wallpapers $HOME/.local/share/wallpapers >> "$LOG" 2>> "$ERR"
 fi
 
 
@@ -1339,7 +1339,7 @@ pacman_install python-jedi
 ## smdv: simple markdown viewer
 #pip3_install smdv
 ## run jupyterlab as a systemd service:
-#systemctl_create jupyterhub
+systemctl_create jupyterhub
 #systemctl_enable jupyterhub
 
 
@@ -1358,20 +1358,20 @@ pacman_install browserpass-chromium # host for the pass "browserpass" chromium e
 #-------------------------------------------------------------------------------
 
 ## set correct date/time
-echo $password | sudo -S timedatectl set-local-rtc 1 >> $LOG 2>> $ERR
+echo $password | sudo -S timedatectl set-local-rtc 1 >> "$LOG" 2>> "$ERR"
 ## make sure everyone can mount in /mnt
-echo $password | sudo -S chmod a+rwx /mnt >> $LOG 2>> $ERR
+echo $password | sudo -S chmod a+rwx /mnt >> "$LOG" 2>> "$ERR"
 if [ ! -f $HOME/.Xresources ]; then
     # copy preferred theme to ~/.Xresources -> default color scheme
-    cp $HOME/.config/Xresources/gruvbox-dark $HOME/.Xresources >> $LOG 2>> $ERR
+    cp $HOME/.config/Xresources/gruvbox-dark $HOME/.Xresources >> "$LOG" 2>> "$ERR"
     # enable colorscheme
-    xrdb $HOME/.Xresources >> $LOG 2>> $ERR
+    xrdb $HOME/.Xresources >> "$LOG" 2>> "$ERR"
     # if the custom `xcs` script is in the path,
     # run it to apply colorscheme to currently open windows:
-    xcs current >> $LOG 2>> $ERR
+    xcs current >> "$LOG" 2>> "$ERR"
 fi
 ## make sure everyone can create folders in /opt
-echo $password | sudo -S chmod a+rwx /opt >> $LOG 2>> $ERR
+echo $password | sudo -S chmod a+rwx /opt >> "$LOG" 2>> "$ERR"
 
 
 # Shells and extensions
@@ -1382,46 +1382,46 @@ pacman_install dash
 ## we'll make sh point to dash in stead to bash
 link /usr/bin/dash /bin/sh
 ## make dash the default shell:
-#echo $password | chsh -s /bin/dash 2>> $LOG >> $ERR
+#echo $password | chsh -s /bin/dash 2>> "$LOG" >> "$ERR"
 
 ## bash: should already have been installed:
 #pacman_install bash
 ## make bash the default shell:
-#echo $password | chsh -s /bin/bash 2>> $LOG >> $ERR
+#echo $password | chsh -s /bin/bash 2>> "$LOG" >> "$ERR"
 
 ## fish: alternative shell. It's not posix compliant, but friendly and interactive ;)
 #pacman_install fish
 ## make fish the default shell:
-#echo $password | chsh -s /usr/bin/fish 2>> $LOG >> $ERR
+#echo $password | chsh -s /usr/bin/fish 2>> "$LOG" >> "$ERR"
 
 ## zsh: another alternative shell. In contrast to fish, it is posix compliant + extras
 ## it's my preferred shell.
 pacman_install zsh
 ## make zsh the default shell:
-echo $password | chsh -s /usr/bin/zsh >> $LOG 2>> $ERR
+echo $password | chsh -s /usr/bin/zsh >> "$LOG" 2>> "$ERR"
 
 ## autojump extension for bash/zsh/fish
 mkdir -p $HOME/.cache
 rm -rf $HOME/.cache/autojump
-git clone https://github.com/wting/autojump $HOME/.cache/autojump 2>> $LOG >> $ERR
-cd $HOME/.cache/autojump 2>> $LOG >> $ERR
-python install.py -d $HOME/.config/autojump 2>> $LOG >> $ERR
-sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $HOME/.config/autojump/bin/autojump >> $LOG 2>> $ERR
+git clone https://github.com/wting/autojump $HOME/.cache/autojump 2>> "$LOG" >> "$ERR"
+cd $HOME/.cache/autojump 2>> "$LOG" >> "$ERR"
+python install.py -d $HOME/.config/autojump 2>> "$LOG" >> "$ERR"
+sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $HOME/.config/autojump/bin/autojump >> "$LOG" 2>> "$ERR"
 ln -sf $HOME/.config/autojump/bin/autojump $HOME/.local/bin
 
 ## stderred extension for bash/zsh: show stderr messages in red:
 rm -rf $HOME/.config/stderred
-git clone https://github.com/sickill/stderred $HOME/.config/stderred 2>> $LOG >> $ERR
-cd $HOME/.config/stderred 2>> $LOG >> $ERR
-make 2>> $LOG >> $ERR
+git clone https://github.com/sickill/stderred $HOME/.config/stderred 2>> "$LOG" >> "$ERR"
+cd $HOME/.config/stderred 2>> "$LOG" >> "$ERR"
+make 2>> "$LOG" >> "$ERR"
 
 ## fish-like autosuggestions for zsh:
 rm -rf $HOME/.config/zsh/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/zsh-autosuggestions 2>> $LOG >> $ERR
+git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/zsh-autosuggestions 2>> "$LOG" >> "$ERR"
 
 ## syntax highlighting for zsh:
 rm -rf $HOME/.config/zsh/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.config/zsh/zsh-syntax-highlighting 2>> $LOG >> $ERR
+git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.config/zsh/zsh-syntax-highlighting 2>> "$LOG" >> "$ERR"
 
 ## zsh package manager (i do not really recommend this):
 #yay_install oh-my-zsh-git

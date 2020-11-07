@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.06.06
+# last complete install: 2020.11.07
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -56,64 +56,70 @@ done
 ## logging
 #-------------------------------------------------------------------------------
 
-mkdir -p $HOME/.local/share
+mkdir -p "$HOME/.local/share"
 LOG="$HOME/.local/share/python_install.log"
 ERR="$HOME/.local/share/python_install_errors.log"
-printf "ANACONDA PACKAGE INSTALL\n\n\n" > $LOG
-printf "ANACONDA PACKAGE INSTALL\n\n\n" > $ERR
+printf "ANACONDA PACKAGE INSTALL\n\n\n" > "$LOG"
+printf "ANACONDA PACKAGE INSTALL\n\n\n" > "$ERR"
 
 
 ## helpers
 #-------------------------------------------------------------------------------
 
 echo_success(){
-    if [ $1 -ne 0 ]; then
+    if [ "$1" -ne 0 ]; then
         printf "failed!\n"
-        printf "\nfailed!\n" >> $LOG
-        printf "\nfailed!\n" >> $ERR
+        printf "\nfailed!\n" >> "$LOG"
+        printf "\nfailed!\n" >> "$ERR"
         return 1
     fi
 
     printf "success!\n"
-    printf "\nsuccess!\n" >> $LOG
-    printf "\nsuccess!\n" >> $ERR
+    printf "\nsuccess!\n" >> "$LOG"
+    printf "\nsuccess!\n" >> "$ERR"
     return 0
 }
 
 create_environment(){
-    ENVNAME="$1"
-    printf "\n\n\n[conda] create environment '$ENVNAME'..."
-    printf "\n\n\n[conda] create environment '$ENVNAME'..." >> $LOG
-    printf "\n\n\n[conda] create environment '$ENVNAME'..." >> $ERR
-    [ ! -z "$2" ] && local V="python=$2"
-    NPM="$CONDAROOT/envs/$ENVNAME/bin/npm"
+    printf "[conda] create environment '%s'..." "$ENVNAME"
+    printf "\n\n\n[conda] create environment '%s'..." "$ENVNAME" >> "$LOG"
+    printf "\n\n\n[conda] create environment '%s'..." "$ENVNAME" >> "$ERR"
+    [ ! -z "$1" ] && local V="python=$1"
     PIP="$CONDAROOT/envs/$ENVNAME/bin/pip"
     PYTHON="$CONDAROOT/envs/$ENVNAME/bin/python"
     if [ -d "$CONDAROOT/envs/$ENVNAME" ]; then
         echo "already exists."
         return 0
     fi
-    $CONDA create -y -n $ENVNAME $V >> $LOG 2>> $ERR
+    conda create -y -n "$ENVNAME" "$V" >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
 }
 
 update_environment() {
-    printf "[conda] update environment '$ENVNAME'..."
-    printf "\n\n\n[conda] update environment '$ENVNAME'..." >> $LOG
-    printf "\n\n\n[conda] update environment '$ENVNAME'..." >> $ERR
-    $CONDA update -y -n $ENVNAME conda  >> $LOG 2>> $ERR
-    $CONDA update -y -n $ENVNAME --all >> $LOG 2>> $ERR
+    printf "[conda] update environment '%s'..." "$ENVNAME"
+    printf "\n\n\n[conda] update environment '%s'..." "$ENVNAME" >> "$LOG"
+    printf "\n\n\n[conda] update environment '%s'..." "$ENVNAME" >> "$ERR"
+    conda update -y -n "$ENVNAME" conda  >> "$LOG" 2>> "$ERR"
+    conda update -y -n "$ENVNAME" --all >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
 }
 
+activate_environment() {
+    printf "[conda] activate environment '%s'..." "$ENVNAME"
+    printf "\n\n\n[conda] activate environment '%s'..." "$ENVNAME" >> "$LOG"
+    printf "\n\n\n[conda] activate environment '%s'..." "$ENVNAME" >> "$ERR"
+    conda activate "$ENVNAME" >> "$LOG" 2>> "$ERR"
+    echo
+}
+
 conda_install() {
-    printf "[conda] install '$1' in environment '$ENVNAME'... "
-    printf "\n\n\n[conda] install '$1' in environment '$ENVNAME'...\n" >> $LOG
-    printf "\n\n\n[conda] install '$1' in environment '$ENVNAME'...\n" >> $ERR
+    printf "[conda] install '%s' in environment '%s'..." "$1" "$ENVNAME"
+    printf "\n\n\n[conda] install '%s' in environment '%s'...\n" "$1" "$ENVNAME" >> "$LOG"
+    printf "\n\n\n[conda] install '%s' in environment '%s'...\n" "$1" "$ENVNAME" >> "$ERR"
     local S=""
     if [ $FORCE -eq 0 ]; then
         if $PYTHON -c "import $1" &> /dev/null; then
@@ -122,21 +128,21 @@ conda_install() {
         fi
         S="-S"
     fi
-    if [ ! -z $2 ]; then
+    if [ ! -z "$2" ]; then
         local CHANNEL="-c $2"
     fi
-    printf "conda install -y $S $1\n" >> $LOG
-    printf "conda install -y $S $1\n" >> $ERR
-    $CONDA install -y $S -n $ENVNAME $CHANNEL $1 >> $LOG 2>> $ERR
+    printf "conda install %s %s\n" "$S" "$1" >> "$LOG"
+    printf "conda install %s %s\n" "$S" "$1" >> "$ERR"
+    conda install -y "$S" -n "$ENVNAME" "$CHANNEL" "$1" >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
 }
 
 pip_install() {
-    printf "[ pip ] install '$1' in environment '$ENVNAME'... "
-    printf "\n\n\n[ pip ] install '$1' in environment '$ENVNAME'...\n" >> $LOG
-    printf "\n\n\n[ pip ] install '$1' in environment '$ENVNAME'...\n" >> $ERR
+    printf "[ pip ] install '%s' in environment '%s'..." "$1" "$ENVNAME"
+    printf "\n\n\n[ pip ] install '%s' in environment '%s'...\n" "$1" "$ENVNAME" >> "$LOG"
+    printf "\n\n\n[ pip ] install '%s' in environment '%s'...\n" "$1" "$ENVNAME" >> "$ERR"
     local S="--upgrade"
     if [ $FORCE -eq 0 ]; then
         if $PYTHON -c "import $1" &> /dev/null; then
@@ -145,9 +151,9 @@ pip_install() {
         fi
         S=""
     fi
-    printf "pip install $S $1\n" >> $LOG
-    printf "pip install $S $1\n" >> $ERR
-    $PIP install $S $1 >> $LOG 2>> $ERR
+    printf "pip install %s %s\n" "$S" "$1" >> "$LOG"
+    printf "pip install %s %s\n" "$S" "$1" >> "$ERR"
+    $PIP install "$S" "$1" >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -155,15 +161,14 @@ pip_install() {
 
 labextension_install(){
     JUPYTER="$CONDAROOT/bin/jupyter"
-    printf "[ lab ] install extension: $1..."
-    printf "\n\n\n[ lab ] install extension: $1..." >> $LOG
-    printf "\n\n\n[ lab ] install extension: $1..." >> $ERR
-    if $JUPYTER labextension check $1 >> $LOG 2>> $ERR; then
+    printf "[ lab ] install extension: %s..." "$1"
+    printf "\n\n\n[ lab ] install extension: %s..." "$1" >> "$LOG"
+    printf "\n\n\n[ lab ] install extension: %s..." "$1" >> "$ERR"
+    if $JUPYTER labextension check "$1" >> "$LOG" 2>> "$ERR"; then
         echo "already installed"
         return 0
     fi
-    echo
-    $JUPYTER labextension install $1 >> $LOG 2>> $ERR
+    $JUPYTER labextension install "$1" >> "$LOG" 2>> "$ERR"
     exit_code=$?
     echo_success $exit_code
     return $exit_code
@@ -173,25 +178,34 @@ labextension_install(){
 #-------------------------------------------------------------------------------
 
 if [ ! -d "$CONDAROOT" ]; then
-    printf "installing anaconda python at $CONDAROOT... "
-    cd $HOME
+    printf "installing anaconda python at %s... " "$CONDAROOT"
+    cd "$HOME" || exit 1
     curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output /tmp/miniconda.sh --silent
-    bash /tmp/miniconda.sh -b -p $CONDAROOT >> $LOG 2>> $ERR
+    bash /tmp/miniconda.sh -b -p "$CONDAROOT" >> "$LOG" 2>> "$ERR"
     rm /tmp/miniconda.sh
     echo "installed."
 fi
-
+__conda_setup="$("$CONDAROOT/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$CONDAROOT/etc/profile.d/conda.sh" ]; then
+        source "$CONDAROOT/etc/profile.d/conda.sh"
+    else
+        export PATH="$CONDAROOT/bin:$PATH"
+    fi
+fi
+unset __conda_setup
 
 ## base environment
 #-------------------------------------------------------------------------------
 
 ENVNAME="base"
-CONDA="$CONDAROOT/bin/conda"
-NPM="$CONDAROOT/bin/npm"
 PIP="$CONDAROOT/bin/pip"
 PYTHON="$CONDAROOT/bin/python"
 
 update_environment
+activate_environment
 conda_install cython
 conda_install numpy
 conda_install scipy
@@ -223,9 +237,10 @@ conda_install suitesparse
 
 conda_install pytorch pytorch
 conda_install torchvision pytorch
+#conda_install cudatoolkit pytorch
 
+conda_install nodejs\>=10 conda-forge
 conda_install jupyterhub conda-forge
-conda_install nodejs conda-forge
 conda_install jupyter conda-forge
 conda_install jupyterlab conda-forge
 conda_install ipympl conda-forge
@@ -237,13 +252,13 @@ conda_install python-dotenv conda-forge
 conda_install nbstripout conda-forge
 conda_install pre-commit conda-forge
 conda_install ipdb conda-forge
-conda_install pygmo conda-forge
 conda_install nbdime conda-forge
 conda_install pynvim conda-forge
 conda_install octave_kernel conda-forge
 conda_install bayesian-optimization conda-forge
 conda_install ipyvolume conda-forge
-# conda_install jupyterlab_code_formatter conda-forge
+#conda_install pygmo conda-forge
+#conda_install jupyterlab_code_formatter conda-forge
 
 pip_install kaggle
 pip_install notedown
@@ -251,8 +266,6 @@ pip_install neovim-remote
 pip_install jupyterlab_git
 pip_install torch_sparse_solve
 pip_install torch_lfilter
-# pip_install jupyter_tensorboard
-# pip_install jupyterlab_latex
 
 
 ## jupyterlab extensions
@@ -266,20 +279,19 @@ labextension_install jupyterlab-plotly
 labextension_install @jupyterlab/toc
 labextension_install jupyter-matplotlib
 labextension_install jupyter-threejs
-labextension_install jupyterlab-datawidgets
 labextension_install nbdime-jupyterlab
+labextension_install jupyterlab-datawidgets
 labextension_install @jupyter-voila/jupyterlab-preview
-# labextension_install @ryantam626/jupyterlab_code_formatter
-# labextension_install @jupyterlab/latex
-# labextension_install jupyterlab_tensorboard
-# labextension_install @lckr/jupyterlab_variableinspector
+#labextension_install @ryantam626/jupyterlab_code_formatter
 
 
 ## py2 environment
 #-------------------------------------------------------------------------------
 
-create_environment py2 2.7
+ENVNAME="py2"
+create_environment 2.7
 update_environment
+activate_environment
 conda_install cython
 conda_install numpy
 conda_install scipy
@@ -287,24 +299,19 @@ conda_install matplotlib
 conda_install pillow
 conda_install scikit-learn
 conda_install h5py
-conda_install ipympl
 conda_install pandas
-conda_install jupyter
-conda_install jupyterlab
-conda_install jupyterhub
+conda_install ipympl
 conda_install ipykernel
 conda_install ipywidgets
 conda_install widgetsnbextension
 conda_install pandoc
 conda_install pylint
 conda_install pydocstyle
-conda_install mypy
 conda_install line_profiler
 conda_install tqdm
 conda_install altair
 conda_install plotly
 conda_install pep8
-conda_install black
 conda_install flake8
 conda_install pyflakes
 conda_install isort
@@ -315,22 +322,24 @@ conda_install pytorch pytorch
 conda_install torchvision pytorch
 
 conda_install ipdb conda-forge
-conda_install pygmo conda-forge
 conda_install pynvim conda-forge
 conda_install bayesian-optimization conda-forge
+#conda_install pygmo conda-forge
 
 pip_install notedown
 printf "installing jupyter kernel for environment: py2... "
-$CONDAROOT/envs/py2/bin/python -m ipykernel install --user --name py2 --display-name "Python 2" >> $LOG 2>> $ERR
-mv $HOME/.local/share/jupyter/kernels/py2 $CONDAROOT/share/jupyter/kernels/ >> $LOG 2>> $ERR
+"$CONDAROOT/envs/py2/bin/python" -m ipykernel install --user --name py2 --display-name "Python 2" >> "$LOG" 2>> "$ERR"
+mv "$HOME/.local/share/jupyter/kernels/py2" "$CONDAROOT/share/jupyter/kernels/" >> "$LOG" 2>> "$ERR"
 echo "finished."
 
 
 ## R environment
 #-------------------------------------------------------------------------------
 
-create_environment r
+ENVNAME="r"
+create_environment
 update_environment
+activate_environment
 conda_install ipykernel
 conda_install ipywidgets
 conda_install r-irkernel conda-forge
@@ -338,8 +347,8 @@ conda_install pynvim conda-forge
 pip_install notedown
 pip_install neovim-remote
 printf "installing jupyter kernel for environment: r... "
-cp -rf $CONDAROOT/envs/r/share/jupyter/kernels/ir $CONDAROOT/share/jupyter/kernels
-sed -i "1s|R|$CONDAROOT/envs/r/bin/R|" $CONDAROOT/share/jupyter/kernels/ir/kernel.json
+cp -rf "$CONDAROOT/envs/r/share/jupyter/kernels/ir" "$CONDAROOT/share/jupyter/kernels"
+sed -i "1s|R|$CONDAROOT/envs/r/bin/R|" "$CONDAROOT/share/jupyter/kernels/ir/kernel.json"
 
 echo "finished."
 
@@ -347,8 +356,10 @@ echo "finished."
 ## julia environment
 #-------------------------------------------------------------------------------
 
-create_environment julia
+ENVNAME="julia"
+create_environment
 update_environment
+activate_environment
 conda_install ipykernel
 conda_install ipywidgets
 conda_install julia conda-forge
@@ -356,7 +367,17 @@ conda_install pynvim conda-forge
 pip_install notedown
 pip_install neovim-remote
 echo "installing jupyter kernel for environment: julia... "
-$CONDAROOT/envs/julia/bin/julia -E 'using Pkg; Pkg.add("IJulia"); precompile' >> $LOG 2>> $ERR
-$CONDAROOT/envs/julia/bin/julia -E 'using IJulia; installkernel("Julia")' >> $LOG 2>> $ERR
-mv $HOME/.local/share/jupyter/kernels/julia* $CONDAROOT/share/jupyter/kernels/ >> $LOG 2>> $ERR
+"$CONDAROOT/envs/julia/bin/julia" -E 'using Pkg; Pkg.add("IJulia"); precompile' >> "$LOG" 2>> "$ERR"
+"$CONDAROOT/envs/julia/bin/julia" -E 'using IJulia; installkernel("Julia")' >> "$LOG" 2>> "$ERR"
+mv "$HOME"/.local/share/jupyter/kernels/julia* "$CONDAROOT"/share/jupyter/kernels/ >> "$LOG" 2>> "$ERR"
 echo "finished."
+
+
+# Finished
+#-------------------------------------------------------------------------------
+
+printf "\n\n\n\n\n"
+echo "###############"
+echo "## finished! ##"
+echo "###############"
+

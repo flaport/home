@@ -58,7 +58,8 @@ pull the repository:
 git pull origin master
 ```
 
-set up the master branch to track the master branch at origin
+if you want to be able to push your changes to your remote repository, then set up the
+master branch to track the master branch at origin
 
 ```
 git branch --set-upstream-to=origin/master master
@@ -71,10 +72,10 @@ git submodule update --init --recursive
 ```
 
 [optional but recommended] If you're on Arch Linux, install my recommended programs with
-my bootstrapping script: `~/.install/arch_install`. Installing the recommended programs
-will make sure the configs and scripts work properly. This script won't re-install
-programs that are already on the system and hence is pretty fast after its first run.
-Edit the file to your liking first.
+the following bootstrapping script: `~/.install/arch_install`. Installing the
+recommended programs will make sure the configs and scripts work properly. This script
+won't re-install programs that are already on the system and hence is pretty fast after
+its first run.  Edit the file to your liking first.
 
 ```
 ~/.install/arch_install

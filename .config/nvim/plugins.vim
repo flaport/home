@@ -53,7 +53,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'shougo/context_filetype.vim' " completion from other opened files
 Plug 'spolu/dwm.vim' " dynamic window manager for vim
 Plug 'suan/vim-instant-markdown'
-Plug 'szymonmaszke/vimpyter' " edit jupyter notebooks
 Plug 'tpope/vim-commentary' " easy comment
 Plug 'tpope/vim-fugitive' " better git integration
 Plug 'tpope/vim-repeat' " easily repeat plugin commands with .
@@ -64,6 +63,10 @@ Plug 'vim-airline/vim-airline' " better status bar
 Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'vimwiki/vimwiki' " note taking in vim
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
+call system('which notedown')
+if !v:shell_error
+    Plug 'szymonmaszke/vimpyter' " edit jupyter notebooks
+endif
 call plug#end() " stop loading plugins
 
 
