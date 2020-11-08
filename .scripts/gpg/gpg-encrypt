@@ -1,0 +1,59 @@
+#!/usr/bin/python3
+
+import re
+import sys
+import argparse
+import subprocess
+
+def fzf(list_in):
+    p = subprocess.Popen(["printf", "\n".join(list_in)], stdout=subprocess.PIPE).stdout
+    try:
+        choices = subprocess.check_output(["fzf", "--preview-window", "hidden"], stdin=p).decode().strip().split("\n")
+    except subprocess.CalledProcessError:
+        return []
+    return choices
+
+def get_display_key(raw_key):
+    lines = raw_key.strip().split("\n")
+    key_id = lines[1].strip()[-8:]
+    key = re.sub(r"^uid[^\]]*] ", "", lines[2])
+    return f"{key} [{key_id}]"
+
+def get_full_key(raw_key):
+    return raw_key.strip().split("\n")[1].strip()
+
+def parse_args(args):
+    parser = argparse.ArgumentParser(description="gpg-encrypt: easily encrypt a message with one or multiple public keys in your keyring.")
+    parser.add_argument("filename", type=str, nargs="?", default="", help="file to encrypt")
+    parser.add_argument("-o", "--output", type=str, default="", help="(optional) output file. If not given the encrypted message is printed to stdout.")
+    return parser.parse_args(args)
+
+def load_keyring():
+    raw_keys = subprocess.check_output(["gpg", "--list-keys"]).decode().strip().split("\n")[2:]
+    raw_keys = "\n".join(raw_keys).split("\n\n")
+    keys = {get_display_key(raw_key):get_full_key(raw_key) for raw_key in raw_keys}
+    return keys
+
+def encrypt(content, keys):
+    command = ["gpg", "--always-trust", "--encrypt", "--armor"]
+    for key in keys:
+        command += ["--recipient", key]
+    print(" ".join(command))
+    p = subprocess.Popen(["printf", content], stdout=subprocess.PIPE).stdout
+    encrypted = subprocess.check_output(command, stdin=p).decode().strip()
+    return encrypted
+
+if __name__ == "__main__":
+    args = parse_args(sys.argv[1:])
+    content = sys.stdin.read().strip() if not args.filename else open(args.filename, "r").read()
+    keyring = load_keyring()
+    chosen_display_keys = fzf(keyring)
+    chosen_keys = [keyring[display_key] for display_key in chosen_display_keys]
+    encrypted = encrypt(content, chosen_keys)
+    try:
+        file = sys.stdout
+        if args.output:
+            file = open(args.output, "w")
+        print(encrypted, file=file)
+    finally:
+        file.close()
