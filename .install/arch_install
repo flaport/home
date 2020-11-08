@@ -1302,6 +1302,10 @@ pacman_install python-httplib2
 pacman_install python-neovim
 ## image processing in python
 pacman_install python-pillow
+## flask (dependency of my smdv script)
+pacman_install python-flask
+## websockets (dependency of my smdv script)
+pacman_install python-websockets
 ## sockets
 #pacman_install python-websockets
 pacman_install flake8
