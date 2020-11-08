@@ -1,0 +1,70 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+
+import os
+import sys
+from time import sleep
+from subprocess import call, check_output, CalledProcessError, Popen, PIPE
+
+
+def screenlayout_order_key(filename):
+    filename = filename.split("/")[-1].replace("[", "").replace("]", "")
+    filename = f"{len(filename.split('-'))} {filename}"
+    return filename
+
+
+def picom_is_running():
+    # check if picom is running
+    with open(os.devnull, "w") as file:
+        return not call(["pidof", "picom"], stdout=file, stderr=file)
+
+
+def get_screenlayouts():
+    layouts = [layout for layout in os.listdir(os.path.expanduser("~/.local/bin")) if layout.startswith("[")]
+    layouts = ["default_screenlayout", "same_screenlayout", "max_screenlayout"] + sorted(
+        [layout for layout in layouts if layout[0] == "["],
+        key=screenlayout_order_key,
+        reverse=True,
+    )
+    return layouts
+
+
+def dmenu(list_in, prompt=""):
+    prompt = [] if not prompt else ["-p", prompt]
+    try:
+        dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
+        choice = check_output(["dmenu"] + prompt, stdin=dmenu_in).decode().strip()
+        return choice
+    except CalledProcessError:
+        exit(1)
+
+
+def run_in_background(command):
+    with open(os.devnull, "w") as file:
+        Popen(command, stdout=file, stderr=file)
+
+
+def xset():
+    run_in_background(["xset", "r", "rate", "200", "45"])
+
+
+def picom():
+    cmd = ["picom", "--experimental-backends"]
+    if os.path.exists(os.path.expanduser("~/.cache/xcs/picom.conf")):
+        cmd += ["--config", os.path.expanduser("~/.cache/xcs/picom.conf")]
+    run_in_background(cmd)
+
+
+if __name__ == "__main__":
+    picom_was_running = picom_is_running()
+    layouts = get_screenlayouts()
+    command = dmenu(layouts, prompt=" ")
+    filename = os.path.join(os.path.expanduser("~/.local/bin"), command)
+    call(filename)
+    xset()
+    if picom_was_running and not picom_is_running():
+        picom()

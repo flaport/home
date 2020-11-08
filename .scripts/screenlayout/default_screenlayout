@@ -1,4 +1,11 @@
 #!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
 """ Figure out all possible keyboard layout combinations and choose the best one.
 
 The best one is defined as:
@@ -19,6 +26,8 @@ from time import sleep
 from itertools import permutations
 from subprocess import check_call, check_output, Popen
 
+localbin = os.path.expanduser("~/.local/bin")
+
 
 ## Functions
 
@@ -36,8 +45,8 @@ def write_screenlayout_option(filename, command):
             f"""#!/usr/bin/env bash
 {' '.join(command)}
 wallpaper current # reset wallpaper
-cat "{filename}" > "{os.path.join(os.path.dirname(filename), 'last')}"
-chmod u+x {os.path.join(os.path.dirname(filename), 'last')}
+cat "{filename}" > "{localbin}/last_screenlayout"
+chmod u+x "{localbin}/last_screenlayout"
 """
         )
     os.chmod(filename, stat.S_IRWXU)
@@ -76,11 +85,9 @@ def get_xrandr_screens():
 
 def clean_xrandr_commands():
     """ clean old xrandr commands that might belong to a different setup """
-    for option in os.listdir(os.path.expanduser("~/.scripts/screenlayout/")):
-        if option.startswith("[") or option == "same":
-            os.remove(
-                os.path.join(os.path.expanduser("~/.scripts/screenlayout"), option)
-            )
+    for option in os.listdir(localbin):
+        if option.startswith("[") or option == "same_screenlayout":
+            os.remove(f"{localbin}/{option}")
 
 
 def build_xrandr_commands():
@@ -95,7 +102,7 @@ def build_xrandr_commands():
     for output, resolution in connected_screens.items():
         mode = tuple_to_res(resolution)
         command += [ "--output", output, "--mode", mode, "--pos", "0x0", "--rotate", "normal"]
-    same_filename = os.path.join(os.path.expanduser("~/.scripts/screenlayout/"), "same")
+    same_filename = f"{localbin}/same_screenlayout"
     write_screenlayout_option(same_filename, command)
 
     # build screen layouts for all screen permutations:
@@ -123,10 +130,7 @@ def build_xrandr_commands():
             if primary:
                 command += ["--primary"]
                 primary = False
-            filename = os.path.join(
-                os.path.expanduser("~/.scripts/screenlayout/"),
-                "-".join("[{}]".format(o) for o in option),
-            )
+            filename = f"{localbin}/{'-'.join(f'[{o}]' for o in option)}"
             start_x += resolution[0]
 
         write_screenlayout_option(filename, command)
@@ -142,7 +146,7 @@ def build_xrandr_commands():
 if __name__ == "__main__":
     clean_xrandr_commands()
     filenames = build_xrandr_commands()
-    last_filename = os.path.expanduser("~/.scripts/screenlayout/last")
+    last_filename = f"{localbin}/last_screenlayout"
     try:
         last_command = open(last_filename, "r").readlines()[1].strip().split(" ")
         last_connected_screens = [c for c, m in zip(last_command, last_command[1:]) if m == "--mode"] # TODO: fix this mess

@@ -1,0 +1,24 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+# based on: https://stackoverflow.com/questions/5469828/how-to-create-a-callback-for-monitor-plugged-on-an-intel-graphics
+
+import pyudev
+import subprocess
+
+def udev_event_received(device):
+    subprocess.call(["notify-send", "monitor (dis)connected", "rearranging..."])
+    subprocess.call(["max_screenlayout"])
+    subprocess.call(["xset", "r", "rate", "200", "45"])
+
+if __name__ == "__main__":
+    context = pyudev.Context()
+    monitor_drm = pyudev.Monitor.from_netlink(context)
+    monitor_drm.filter_by(subsystem='drm')
+    observer_drm = pyudev.MonitorObserver(monitor_drm, callback=udev_event_received, daemon=False)
+    observer_drm.start()
+    observer_drm.join()

@@ -1285,6 +1285,8 @@ pacman_install python-tqdm
 pacman_install python-numpy
 ## plotting
 pacman_install python-matplotlib
+## monitor DRM events from udev (used in my custom 'watch_screens' script)
+pacman_install python-pyudev
 ## linters & formatters (recommended for vim)
 pacman_install python-pylint
 pacman_install autopep8

@@ -1,0 +1,35 @@
+#!/usr/bin/python3
+
+import os
+import re
+import subprocess
+
+localbin = os.path.expanduser("~/.local/bin")
+
+def generate_screenlayouts():
+    subprocess.call(["default_screenlayout"])
+
+def get_current_screenlayout():
+    with open(f"{localbin}/last_screenlayout", "r") as file:
+        for line in file:
+            if ">" in line:
+                break
+
+    last_screenlayout =  re.sub(r"[^\]]*$", "", re.sub(r"^[^\[]*", "", line))
+    return last_screenlayout
+
+def find_maximizing_screenlayouts(current_screenlayout):
+    possible_screenlayouts = []
+    for layout in os.listdir(localbin):
+        if layout.startswith(current_screenlayout):
+            possible_screenlayouts.append(layout)
+    return possible_screenlayouts
+
+if __name__ == "__main__":
+    last_screenlayout = get_current_screenlayout()
+    generate_screenlayouts()
+    current_screenlayout = get_current_screenlayout()
+    possible_screenlayouts = find_maximizing_screenlayouts(current_screenlayout)
+    best_screenlayout = max(possible_screenlayouts, key=lambda l: len(l.split('-')))
+    if best_screenlayout != current_screenlayout:
+        subprocess.call([f"{localbin}/{best_screenlayout}"])

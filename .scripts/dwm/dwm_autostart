@@ -45,6 +45,9 @@ start unclutter
 # enable x settings start
 start xsettingsd
 
+# watch monitors and rearrange them on (dis)connection
+start watch_screens
+
 # update xrdb database
 log xrdb "$HOME/.Xresources"
 
