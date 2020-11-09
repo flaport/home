@@ -532,6 +532,8 @@ pacman_install bash-language-server
 pacman_install eslint
 ## ctags: recommended vim dependency for jump-to-tag functionality
 pacman_install ctags
+## tidy: html formatter
+pacman_install tidy
 ## scim: terminal spreadsheet viewer/editor
 #yay_install sc-im
 ## wordgrinder: terminal word processor

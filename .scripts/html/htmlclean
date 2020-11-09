@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+
+import os
+import re
+import sys
+import argparse
+import subprocess
+
+import requests
+from bs4 import BeautifulSoup, Comment
+
+def tidy(html):
+    try:
+        with open(os.devnull, "w") as devnull:
+            p = subprocess.Popen(["tidy"], stdin=subprocess.PIPE, stderr=devnull, stdout=subprocess.PIPE)
+            p.stdin.write(html.encode())
+            out, err = p.communicate()
+            if err:
+                raise subprocess.CalledProcessError
+        return out.decode().strip()
+    except:
+        return html
+
+def parse_args(args):
+    argparser = argparse.ArgumentParser(description="remove all html attributes from all html tags in a file")
+    argparser.add_argument("filename", type=str, nargs="?", default="", help="html file to clean. If not given, htmlclean reads from stdin.")
+    args = argparser.parse_args(args)
+    return args
+
+def read_content(filename=""):
+    if filename:
+        return open(filename, "r").read()
+    else:
+        return sys.stdin.read()
+
+def get_soup(html):
+    return BeautifulSoup(html, features="html.parser")
+
+def remove_attrs(soup):
+    tags = soup.findAll(lambda tag: len(tag.attrs) > 0)
+    for tag in tags:
+        tag.attrs.clear()
+    return soup
+
+def remove_comments(html):
+    html = re.sub('<!--[^-]*-->', '', html).strip()
+    return html
+
+
+if __name__ == "__main__":
+    args = parse_args(sys.argv[1:])
+    html = read_content(args.filename)
+    soup = get_soup(html)
+    html = str(remove_attrs(soup))
+    html = remove_comments(html)
+    html = tidy(html)
+    print(html)
