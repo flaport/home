@@ -932,13 +932,6 @@ augroup latexfunctionkeyshortcuts
     autocmd FileType tex nnoremap <buffer> <F5><F5> :call LatexBuild("-f")<CR>
 augroup end
 
-augroup markdownfunctionkeyshortcuts
-    autocmd!
-    if fnamemodify(expand('%'), ':p:h') != expand('~/VimWiki')
-        " autocmd FileType markdown nnoremap <buffer> <CR> :call RunPython("cellstay")<cr>
-    endif
-augroup end
-
 function! RunPython(type)
     if exists("g:last_terminal_job_id")
         let b:slime_config = [g:last_terminal_job_id]
