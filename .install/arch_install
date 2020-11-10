@@ -1007,7 +1007,7 @@ pacman_install ttf-joypixels
 ## nemo: sometimes a non-terminal file browser can be useful
 pacman_install nemo
 ## nemo settings: set default terminal to st:
-gsettings set org.cinnamon.desktop.default-applications.terminal exec st
+gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
 gsettings set org.cinnamon.desktop.default-applications.terminal exec-arg -e
 ## nemo-terminal: show a small terminal window on top of the nemo windo
 #pacman_install nemo-terminal
