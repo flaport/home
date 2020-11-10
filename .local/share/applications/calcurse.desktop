@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=calcurse
+Encoding=UTF-8
+Version=1.0
+Type=Application
+NoDisplay=true
+Exec=st -e calcurse-import %f
+Comment=Calcurse Calendar

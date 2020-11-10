@@ -1,0 +1,137 @@
+#!/usr/bin/python3
+
+import os
+import re
+import sys
+from datetime import datetime, timedelta
+
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+
+def hook(func):
+    def hook_func():
+        try:
+            func()
+        except:
+            eprint(f"{func.__name__} failed")
+
+    return hook_func
+
+
+@hook
+def hook_replace_full_day_apts():
+    """replace full day appointments with appointments
+    starting at 00:01 and ending at 23:59
+
+    This is a fix for syncing with the nextcloud calendar, as full day
+    appointments get somehow removed when syncing with calcurse.
+    I suspect this is a calcurse-caldav issue, not related to nextcloud,
+    but I am not sure.
+    """
+    apts = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../apts"))
+
+    with open(apts, "r") as file:
+        initial_content = file.read()
+
+    lines = initial_content.split("\n")
+
+    good_lines = [line for line in lines if "->" in line and line and not "{" in line]
+
+    bad_lines1 = [line.split(" ") for line in lines if not "->" in line and line]
+    bad_lines1 = [
+        f"{date} @ 00:01 -> {date} @ 23:59|{title}" for date, _, title in bad_lines1
+    ]
+
+    bad_lines2 = [line.split(" ") for line in lines if "{" in line]
+    for i, (date1, _, _, _, date2, title) in enumerate(bad_lines2):
+        bad_lines2[i] = f"{date1} @ 00:01 -> {date2[:-1]} @ 23:59|{title}"
+
+    lines = good_lines + bad_lines1 + bad_lines2
+    dates = [datetime.strptime(line.split(" ")[0], "%m/%d/%Y") for line in lines]
+    dates, lines = zip(*sorted(zip(dates, lines)))
+
+    content = "\n".join(lines)
+
+    if content == initial_content:  # nothing to do
+        return
+
+    with open(apts, "w") as file:
+        file.write(content)
+
+    today = datetime.today()
+    lines = [line for line, date in zip(lines, dates) if date - today > timedelta(0)]
+    eprint("\nnext appointments:")
+    eprint("\n".join(lines[:5]))
+    eprint()
+
+
+@hook
+def hook_remove_hashes_from_apts():
+    apts = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../apts"))
+    lines = []
+    with open(apts, "r") as file:
+        for line in file:
+            try:
+                line1, line2 = line.split("->")
+            except:
+                lines.append(line)
+                continue
+            line2 = re.sub(">[^!^|]*[!|]", "|", line2)
+            line = "->".join((line1, line2))
+            lines.append(line)
+    with open(apts, "w") as file:
+        file.write("".join(lines))
+    return
+
+
+@hook
+def hook_change_exclammation_mark_dividers_to_pipes():
+    apts = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../apts"))
+    lines = []
+    with open(apts, "r") as file:
+        for line in file:
+            try:
+                line1, line2, line3 = line.split(" @ ")
+            except:
+                lines.append(line)
+                continue
+            line3 = line3[:5] + "|" + line3[6:]
+            line = " @ ".join((line1, line2, line3))
+            lines.append(line)
+    with open(apts, "w") as file:
+        file.write("".join(lines))
+    return
+
+
+@hook
+def hook_sort_appointments_on_date_and_time_and_keep_unique():
+    apts = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../apts"))
+    with open(apts, "r") as file:
+        lines = file.read().split("\n")
+
+    def key(line):
+        splitted_line = line.split(" @ ")
+        month, day, year = splitted_line[0].strip().split("/")
+        hour, minute = splitted_line[1].split("->")[0].strip().split(":")
+        return (
+            year.zfill(4)
+            + month.zfill(2)
+            + day.zfill(2)
+            + hour.zfill(2)
+            + minute.zfill(2)
+        )
+
+    lines = sorted(lines, key=key)
+    lines = {line: None for line in lines}
+    with open(apts, "w") as file:
+        file.write("\n".join(lines))
+    return
+
+
+if __name__ == "__main__":
+    hook_replace_full_day_apts()
+    hook_remove_hashes_from_apts()
+    hook_change_exclammation_mark_dividers_to_pipes()
+    hook_sort_appointments_on_date_and_time_and_keep_unique()

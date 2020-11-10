@@ -1,0 +1,80 @@
+#!/usr/bin/python3
+
+import os
+import re
+import sys
+import sqlite3
+import subprocess
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+def hook(func):
+    def hook_func():
+        try:
+            func()
+        except:
+            eprint(f"{func.__name__} failed")
+    return hook_func
+
+def load_joplin_todo(dbpath="~/.config/joplin-desktop/database.sqlite", title="Todo"):
+    dbpath = os.path.abspath(os.path.expanduser(dbpath))
+    try:
+        connection = sqlite3.connect(dbpath)
+        cursor = connection.cursor()
+        cursor.execute(f"SELECT body FROM notes WHERE title = '{title}'")
+        lines = [line[2:] for line in cursor.fetchone()[0].split("\n") if len(line) > 1]
+        for i, line in enumerate(lines):
+            lines[i] = line.replace("[ ]", f"[{min(i+1, 7)}]").replace("[x]", f"[9]")
+        todo = "\n".join(lines)
+    finally:
+        connection.close()
+    return todo
+
+def load_vimwiki_todo(vimwiki_path="~/VimWiki"):
+    lines = []
+    with open(os.path.abspath(os.path.expanduser(f"{vimwiki_path}/todo.md")), "r") as file:
+        for line in file:
+            if line.startswith("## "):
+                break
+            if line.strip() != "":
+                line = line.strip()
+                line = re.sub(r"^- \[ \]", "[1]", line)
+                line = re.sub(r"^- \[\.\]", "[2]", line)
+                line = re.sub(r"^- \[o\]", "[3]", line)
+                line = re.sub(r"^- \[O\]", "[4]", line)
+                line = re.sub(r"^- \[[^ ^\.^o^O^X]\]", "[7]", line)
+                line = re.sub(r"^- \[X\]", "[9]", line)
+                lines.append(line.strip())
+    lines = [line for line in lines if not line.startswith("# ")]
+    lines = sorted(lines)
+    todo = "\n".join(lines)
+    return todo
+
+def save_calcurse_todo(todo):
+    todopath = os.path.abspath(os.path.join(os.path.dirname(__file__), "../todo"))
+    with open(todopath, "w") as file:
+        file.write(todo)
+
+@hook
+def hook_load_joplin_todo():
+    todo = load_joplin_todo()
+    save_calcurse_todo(todo)
+
+@hook
+def hook_load_vimwiki_todo():
+    todo = load_vimwiki_todo()
+    save_calcurse_todo(todo)
+
+@hook
+def hook_calcurse_caldav():
+    with open(os.devnull, "w") as file:
+        try:
+            subprocess.check_call(["calcurse-caldav"], stderr=file)
+        except subprocess.CalledProcessError:
+            pass
+
+
+if __name__ == "__main__":
+    hook_calcurse_caldav()
+    hook_load_vimwiki_todo()

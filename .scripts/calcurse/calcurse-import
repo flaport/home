@@ -1,0 +1,105 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import tempfile
+import argparse
+import datetime
+import subprocess
+
+TZLOCAL = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
+
+
+def notify(title, body=""):
+    command = ["notify-send", title]
+    if body:
+        command.append(body)
+    subprocess.call(command)
+
+
+def calcurse(filename=""):
+    if not filename:
+        return subprocess.call(["calcurse"])
+    else:
+        filename = os.path.abspath(os.path.expanduser(filename))
+        return subprocess.call(["calcurse", "-i", filename])
+
+
+def parse_args(args):
+    parser = argparse.ArgumentParser(description="import ICS files into calcurse")
+    parser.add_argument(
+        "filename", type=str, nargs="?", default="", help="ICS file to add to calcurse"
+    )
+    args = parser.parse_args(args)
+    return args
+
+
+def parse_ics(filename):
+    content = open(filename, "r").read().strip()
+    events = [
+        f"BEGIN:VCALENDAR{event}" for event in content.split("BEGIN:VCALENDAR")[1:]
+    ]
+    events = [parse_event(event) for event in events]
+    ics = "\n".join(events)
+    return ics
+
+
+def parse_event(event):
+    tzoffset = find_timezone_offset(event)
+    timezone = find_timezone(event)
+    parsed_event = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT"
+    parsed_event += convert_to_localtime(find(event, f'DTSTART;TZID="{timezone}"'), tzoffset)
+    parsed_event += convert_to_localtime(find(event, f'DTEND;TZID="{timezone}"'), tzoffset)
+    parsed_event += find(event, "ORGANIZER")
+    parsed_event += find(event, "LOCATION")
+    parsed_event += find(event, "SUMMARY")
+    parsed_event += "\nEND:VEVENT\nEND:VCALENDAR"
+    return parsed_event
+
+
+def find(event, keyword):
+    try:
+        return (
+            "\n" + keyword + ":" + event.split(f"{keyword}:")[1].split("\n")[0].strip()
+        )
+    except IndexError:
+        return ""
+
+
+def find_timezone(event):
+    return find(event, "TZID").strip()[5:]
+
+
+def find_timezone_offset(event):
+    # TODO: handle TZOFFSETFROM
+    return find(event, "TZOFFSETTO").strip().split(":")[1].strip()
+
+
+def convert_to_localtime(time_line, tzoffset):
+    try:
+        tz = time_line.split(';TZID="')[1].split('":')[0].strip()
+    except IndexError:
+        return time_line
+    time_type = time_line.split(";")[0].strip()
+    time = datetime.datetime.strptime(
+        f"{time_line.split(':')[1].strip()}{tzoffset}", "%Y%m%dT%H%M%S%z"
+    )
+    utctime = datetime.datetime.utcfromtimestamp(time.timestamp())
+    localtime = utctime + TZLOCAL.utcoffset(utctime)
+    time_line = f"\n{time_type}:{localtime.strftime('%Y%m%dT%H%M%S')}"
+    return time_line
+
+
+if __name__ == "__main__":
+    args = parse_args(sys.argv[1:])
+    if not args.filename:
+        exit(subprocess.call(["calcurse"]))
+    parsed_ics = parse_ics(args.filename)
+    tempfilename = tempfile.mktemp("calcurse-import")
+    with open(tempfilename, "w") as tempfile:
+        print(parsed_ics, file=tempfile)
+    import_success = subprocess.call(["calcurse", "-i", tempfilename])
+    caldav_success = subprocess.call(["calcurse-caldav"])
+    subprocess.call(["calcurse"])
+    exit(import_success + caldav_success)
+

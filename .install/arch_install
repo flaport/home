@@ -405,6 +405,10 @@ echo Defaults:$USER '!tty_tickets', timestamp_timeout=15 | sudo tee /etc/sudoers
 pacman_install alacritty
 ## calcurse: a terminal calendar client
 pacman_install calcurse
+## vdirsyncer: synchronize caldav and carddav
+pacman_isntall vdirsyncer
+## khal: calendar command line utility for caldav sync
+pacman_install khal
 ## search tool
 pacman_install grep
 ## alternative search tool
@@ -534,6 +538,8 @@ pacman_install eslint
 pacman_install ctags
 ## tidy: html formatter
 pacman_install tidy
+## prettier: universal formatter
+pacman_install prettier
 ## scim: terminal spreadsheet viewer/editor
 #yay_install sc-im
 ## wordgrinder: terminal word processor
@@ -1281,6 +1287,8 @@ submodule_install scroll
 pacman_install tk
 ## python style guide checker
 pacman_install yapf
+## python timezone info
+pacman_install python-pytz
 ## progress bars
 pacman_install python-tqdm
 ## numerical calculations

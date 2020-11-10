@@ -1,0 +1,114 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import sqlite3
+import subprocess
+
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+
+def hook(func):
+    def hook_func():
+        try:
+            func()
+        except:
+            eprint(f"{func.__name__} failed")
+
+    return hook_func
+
+
+def export_calcurse_todo_for_joplin():
+    todopath = os.path.abspath(os.path.join(os.path.dirname(__file__), "../todo"))
+    with open(todopath, "r") as file:
+        lines = [
+            f"- {line}"
+            for line in sorted(file.read().split("\n"))
+            if line.replace(" ", "")
+        ]
+        for i in range(1, 9):
+            lines = [line.replace(f"[{i}]", "[ ]") for line in lines]
+        lines = [line.replace(f"[9]", "[x]") for line in lines]
+        todo = "\n".join(lines)
+    eprint(todo)
+    return todo
+
+
+def export_calcurse_todo_for_vimwiki():
+    todopath = os.path.abspath(os.path.join(os.path.dirname(__file__), "../todo"))
+    with open(todopath, "r") as file:
+        lines = [
+            f"- {line}" for line in sorted(file.read().split("\n")) if line.strip()
+        ]
+        for i in range(0, 2):
+            lines = [line.replace(f"[{i}]", "[ ]") for line in lines]
+        for i in range(2, 3):
+            lines = [line.replace(f"[{i}]", "[.]") for line in lines]
+        for i in range(3, 4):
+            lines = [line.replace(f"[{i}]", "[o]") for line in lines]
+        for i in range(4, 9):
+            lines = [line.replace(f"[{i}]", "[O]") for line in lines]
+        for i in range(9, 10):
+            lines = [line.replace(f"[{i}]", "[X]") for line in lines]
+        todo = "\n".join(lines)
+    eprint(todo)
+    return todo
+
+
+def save_joplin_todo(
+    todo, dbpath="~/.config/joplin-desktop/database.sqlite", title="Todo"
+):
+    dbpath = os.path.abspath(os.path.expanduser(dbpath))
+    try:
+        connection = sqlite3.connect(dbpath)
+        cursor = connection.cursor()
+        cursor.execute(f"UPDATE notes SET body = '{todo}' WHERE title = '{title}'")
+        connection.commit()
+    finally:
+        connection.close()
+
+
+def save_vimwiki_todo(todo, vimwiki_path="~/VimWiki"):
+    vimwiki_path = os.path.abspath(os.path.expanduser(vimwiki_path))
+    new_todo_lines = todo.split("\n")
+    with open(f"{vimwiki_path}/todo.md", "r") as file:
+        lines = file.read().split("\n")
+    for i, line in enumerate(lines):
+        if line.startswith("# "):
+            break
+    for j, line in enumerate(lines):
+        if line.startswith("## "):
+            break
+    lines = lines[: i + 1] + [""] + new_todo_lines + [""] + lines[j:]
+    with open(f"{vimwiki_path}/todo.md", "w") as file:
+        file.write("\n".join(lines))
+    subprocess.call(["prettier", "-w", f"{vimwiki_path}/todo.md"])
+
+
+@hook
+def hook_save_joplin_todo():
+    todo = export_calcurse_todo_for_joplin()
+    save_joplin_todo(todo)
+
+
+@hook
+def hook_save_vimwiki_todo():
+    todo = export_calcurse_todo_for_vimwiki()
+    save_vimwiki_todo(todo)
+
+
+@hook
+def hook_calcurse_caldav():
+    with open(os.devnull, "w") as file:
+        try:
+            s = subprocess.check_output(["calcurse-caldav"], stderr=file).decode()
+            eprint(s)
+        except subprocess.CalledProcessError:
+            pass
+
+
+if __name__ == "__main__":
+    hook_save_vimwiki_todo()
+    hook_calcurse_caldav()
