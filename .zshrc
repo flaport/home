@@ -155,6 +155,7 @@ sourcefile $HOME/.scripts/autojump/autojump-improved.zsh
 sourcefile $HOME/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '^p' autosuggest-accept #-execute
 bindkey '^n' autosuggest-accept #-execute
+bindkey '^o' autosuggest-toggle # enable/disable autosuggest
 
 # stderr in red; should be last.
 [ -f $HOME/.config/stderred/build/libstderred.so ] && export LD_PRELOAD="$HOME/.config/stderred/build/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
