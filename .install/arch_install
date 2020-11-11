@@ -1316,6 +1316,8 @@ pacman_install python-neovim
 pacman_install python-pillow
 ## flask (dependency of my smdv script)
 pacman_install python-flask
+## login utility for flask:
+pacman_install python-flask-login
 ## websockets (dependency of my smdv script)
 pacman_install python-websockets
 ## sockets
