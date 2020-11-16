@@ -31,6 +31,7 @@ localbin = os.path.expanduser("~/.local/bin")
 
 ## Functions
 
+
 def tuple_to_res(lst):
     """ convert a tuple to a resolution string like '1920x1080' """
     assert len(lst) == 2
@@ -53,8 +54,8 @@ chmod u+x "{localbin}/last_screenlayout"
 
 
 def screenlayout_order_key(filename):
-    filename = filename.split("/")[-1].replace("[", "").replace("]", "")
-    filename = f"{len(filename.split('-'))} {filename}"
+    filename = filename.split("/")[-1]
+    filename = f"{len(filename.split(']-['))} {filename}"
     return filename
 
 
@@ -101,7 +102,16 @@ def build_xrandr_commands():
         command += ["--output", output, "--off"]
     for output, resolution in connected_screens.items():
         mode = tuple_to_res(resolution)
-        command += [ "--output", output, "--mode", mode, "--pos", "0x0", "--rotate", "normal"]
+        command += [
+            "--output",
+            output,
+            "--mode",
+            mode,
+            "--pos",
+            "0x0",
+            "--rotate",
+            "normal",
+        ]
     same_filename = f"{localbin}/same_screenlayout"
     write_screenlayout_option(same_filename, command)
 
@@ -126,7 +136,16 @@ def build_xrandr_commands():
             resolution = connected_screens[output]
             mode = tuple_to_res(resolution)
             pos = tuple_to_res([start_x, 0])
-            command += [ "--output", output, "--mode", mode, "--pos", pos, "--rotate", "normal"]
+            command += [
+                "--output",
+                output,
+                "--mode",
+                mode,
+                "--pos",
+                pos,
+                "--rotate",
+                "normal",
+            ]
             if primary:
                 command += ["--primary"]
                 primary = False
@@ -149,8 +168,12 @@ if __name__ == "__main__":
     last_filename = f"{localbin}/last_screenlayout"
     try:
         last_command = open(last_filename, "r").readlines()[1].strip().split(" ")
-        last_connected_screens = [c for c, m in zip(last_command, last_command[1:]) if m == "--mode"] # TODO: fix this mess
-        last_connected_screens_currently_connected = [s in connected_screens for s in last_connected_screens]
+        last_connected_screens = [
+            c for c, m in zip(last_command, last_command[1:]) if m == "--mode"
+        ]  # TODO: fix this mess
+        last_connected_screens_currently_connected = [
+            s in connected_screens for s in last_connected_screens
+        ]
         if not all(last_connected_screens_currently_connected):
             raise RuntimeError
         check_call([last_filename])
