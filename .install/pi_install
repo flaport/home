@@ -11,10 +11,6 @@
 
 # last complete install: 2020.05.11
 
-# Note: this script does NOT attempt to be an exact copy for `arch_install`.
-#       It just attempts to give a similar feel in the terminal of my
-#       debian/ubuntu servers.
-
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
 #       or install additional packages by adding them to the list below.
@@ -49,10 +45,10 @@ fi
 #-------------------------------------------------------------------------------
 
 mkdir -p $HOME/.local/share
-LOG="$HOME/.local/share/debian_install.log"
-ERR="$HOME/.local/share/debian_install_errors.log"
-printf "DEBIAN PACKAGE INSTALL\n\n\n" > $LOG
-printf "DEBIAN PACKAGE INSTALL\n\n\n" > $ERR
+LOG="$HOME/.local/share/pi_install.log"
+ERR="$HOME/.local/share/pi_install_errors.log"
+printf "RASPBERRY PI PACKAGE INSTALL\n\n\n" > $LOG
+printf "RASPBERRY PACKAGE INSTALL\n\n\n" > $ERR
 
 
 ## User input
@@ -396,6 +392,12 @@ apt_install sshfs
 apt_install hfsprogs
 ## testdisk to figure out location HFS+ partition wrapped in 'Apple Core Storage':
 apt_install testdisk
+
+# Graphical desktop server: xorg
+#-------------------------------------------------------------------------------
+
+## install everything from xorg:
+apt_install xorg
 
 
 # Printers
