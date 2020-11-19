@@ -17,6 +17,9 @@ function sourcefile {
     [[ -f "$1" ]] && source "$1"
 }
 
+# source settings not in source control
+sourcefile $HOME/.bashrc2
+
 # disable ctrl-s and ctrl-q
 stty -ixon
 

@@ -14,6 +14,9 @@ function sourcefile {
     [[ -f "$1" ]] && source "$1"
 }
 
+# source settings not in source control
+sourcefile $HOME/.zshrc2
+
 # enable colors
 autoload -U colors && colors
 
