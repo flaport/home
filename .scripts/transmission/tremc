@@ -26,7 +26,8 @@ fi
 if pass transmission >/dev/null 2>/dev/null; then
     username=$(pass show transmission | head -2 | tail -1 | sed 's/^[^:]*:[ ]*//g' )
     password=$(pass show transmission | head -1)
-    c="-c $username:$password@localhost:9091"
+    c="$username:$password@localhost:9091"
+    /usr/bin/tremc -c "$c" "$@"
+else
+    /usr/bin/tremc "$@"
 fi
-
-/usr/bin/tremc "$c" "$@"
