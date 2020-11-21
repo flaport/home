@@ -16,7 +16,7 @@ def get_current_screenlayout():
                 break
 
     last_screenlayout =  re.sub(r"[^\]]*$", "", re.sub(r"^[^\[]*", "", line))
-    return last_screenlayout
+    return last_screenlayout.strip()
 
 def find_maximizing_screenlayouts(current_screenlayout):
     possible_screenlayouts = []
@@ -29,7 +29,10 @@ if __name__ == "__main__":
     last_screenlayout = get_current_screenlayout()
     generate_screenlayouts()
     current_screenlayout = get_current_screenlayout()
+    if not current_screenlayout:
+        exit(1)
     possible_screenlayouts = find_maximizing_screenlayouts(current_screenlayout)
     best_screenlayout = max(possible_screenlayouts, key=lambda l: len(l.split('-')))
     if best_screenlayout != current_screenlayout:
         subprocess.call([f"{localbin}/{best_screenlayout}"])
+    exit()
