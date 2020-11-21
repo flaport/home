@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.11.07
+# last complete install: 2020.11.21
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -386,7 +386,7 @@ git submodule update --init --recursive
 ## yay (AUR helper)
 git_install https://aur.archlinux.org/yay.git
 ## npm (node package manager)
-#pacman_install npm
+pacman_install npm
 #pip (python package manager)
 #pacman_install python-pip
 #pacman_install python2-pip
@@ -926,7 +926,7 @@ systemctl_enable avahi-daemon
 ## print to pdf
 pacman_install cups-pdf
 ## enable cups service
-systemctl_enable org.cups.cupsd
+systemctl_enable cups
 
 
 # Fonts
