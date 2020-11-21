@@ -19,6 +19,10 @@ if grep Time-out /tmp/weatherreport &> /dev/null; then
     >&2 echo "couldn't update weatherreport"
     exit 1
 fi
+if [[ $(cat /tmp/weatherreport | wc -l) < 3 ]]; then
+    >&2 echo "couldn't update weatherreport"
+    exit 1
+fi
 
 # if no observed errors, move downloaded file to cache:
 mv /tmp/weatherreport "$CACHEDIR/full"
