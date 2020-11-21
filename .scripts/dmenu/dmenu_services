@@ -13,7 +13,7 @@ preferred-services(){
     # extra entry for jellyfin:
     find /usr/lib/systemd/system -maxdepth 1 -type f -iname "*.service" | grep jellyfin.service | sed 's/@\.service//g' | sed 's/\.service//g' | sed 's|/usr/lib/systemd/system/||g'
     # extra entry for cups:
-    find /usr/lib/systemd/system -maxdepth 1 -type f -iname "*.service" | grep cupsd.service | sed 's/@\.service//g' | sed 's/\.service//g' | sed 's|/usr/lib/systemd/system/||g'
+    find /usr/lib/systemd/system -maxdepth 1 -type f -iname "*.service" | grep cups.service | sed 's/@\.service//g' | sed 's/\.service//g' | sed 's|/usr/lib/systemd/system/||g'
 }
 
 other-services(){
