@@ -1217,6 +1217,8 @@ pacman_install notmuch
 pacman_install lynx
 ## mutt wizard (disabled; manual configuration preferred)
 #yay_install mutt-wizard
+## Thunderbird: arguably the best email client for Linux (if a GUI is more your thing)
+#pacman_install thunderbird
 
 
 # Hardware acceleration
