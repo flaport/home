@@ -663,6 +663,13 @@ yay_install picom-git
 ## requiring you to answer yes on a [y/N] question...
 pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra-git >> "$LOG" 2>> "$ERR"
 
+## Dell displaylink drivers:
+#pacman_install linux-headers
+#yay_install evdi-git
+#yay_install displaylink
+#systemctl_enable displaylink
+#printf "\"OutputClass\"\n  Identifier \"DisplayLink\"\n  MatchDriver \"evdi\"\n  Driver \"modesetting\"\n  Option \"AccelMethod\" \"none\"\nEndSection" | sudo tee /usr/share/X11/xorg.conf.d/20-evdidevice.conf > /dev/null 2>> "$ERR"
+
 
 # Desktop Environment / Window Manager
 #-------------------------------------------------------------------------------
