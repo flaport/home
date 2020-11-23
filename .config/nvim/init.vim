@@ -785,7 +785,7 @@ nnoremap <leader>wn :NoWrap<cr>
 nnoremap <leader>ws :SoftWrap<cr>
 
 " enable hard wrapping
-nnoremap <leader>wh :SoftWrap<cr>
+nnoremap <leader>wh :HardWrap<cr>
 
 " noop
 nnoremap <leader>W :echo "\<leader\>W"<cr>
