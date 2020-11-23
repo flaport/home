@@ -639,6 +639,8 @@ yay_install xurls
 #yay_install xcape-git
 ## emulate mouse clicks and keyboard presses
 pacman_install xdotool
+## emulate mouse clicks and more from within python
+yay_install python-pyautogui
 ## xsettingsd: immediately apply changes in GTK theme
 pacman_install xsettingsd
 ## server access control for x
@@ -1363,8 +1365,6 @@ pacman_install python-jedi
 #pip3_install neovim-remote
 ## dependency for neovim-remote:
 #pacman_install python-psutil
-## automate GUI tasks with pyautogui
-#pip3_install pyautogui
 ## markdown <-> ipynb conversion
 #pip3_install notedown
 ## google cloud apis
