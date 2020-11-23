@@ -519,6 +519,8 @@ link /usr/bin/nvim /usr/bin/vim
 link /usr/bin/nvim /usr/bin/vi
 ## pynvim: better integration of python with neovim:
 pacman_install python-pynvim
+## neovim-remote: some of my nvim scripts depend on it
+yay_install neovim-remote
 #pip2_install pynvim
 ## ruby-neovim: better integration of ruby with neovim:
 #yay_install ruby-neovim
@@ -1361,10 +1363,6 @@ pacman_install python-jedi
 #yay_install castero
 ## jedi: linting and more (newer version than via pacman)
 #pip3_install jedi
-## neovim-remote needed for synctex
-#pip3_install neovim-remote
-## dependency for neovim-remote:
-#pacman_install python-psutil
 ## markdown <-> ipynb conversion
 #pip3_install notedown
 ## google cloud apis
