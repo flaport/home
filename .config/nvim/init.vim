@@ -267,23 +267,25 @@ augroup saving
 augroup end
 
 function! DoOnSave()
-    delmarks m
-    normal mm
-    " clear trailing spaces on saving:
-    exec '%s/\s\+$//e'
-    " format markdown files on save:
-    if &filetype == "markdown"
-        execute 'CocCommand prettier.formatFile'
-    endif
-    if &filetype == "vimwiki"
+    let vimwiki=0
+    if &filetype=='vimwiki'
+        let vimwiki=1
         setlocal filetype=markdown
-        execute 'CocCommand prettier.formatFile'
+    endif
+    if &filetype=='markdown'
+        CocCommand prettier.formatFile
+    else
+        delmarks m
+        normal mm
+        exec '%s/\s\+$//e'
+        normal `m
+        delmarks m
+    endif
+    syntax sync fromstart
+    if vimwiki==1
+        sleep 100m " TODO: wait for asynchronous (?) CocCommand to finish
         setlocal filetype=vimwiki
     endif
-    normal `m
-    delmarks m
-    " sometimes syntax highlighting breaks in large files on saving:
-    syntax sync fromstart
 endfunction
 
 " save on focus lost
