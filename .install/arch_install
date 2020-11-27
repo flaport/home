@@ -1085,6 +1085,8 @@ pacman_install blueman
 # yay_install pycharm-professional
 ## Fix to make PyCharm work in most window managers (like my dwm fork)
 #grep _JAVA_AWT_WM_NONREPARENTING /etc/environment &> /dev/null || echo "_JAVA_AWT_WM_NONREPARENTING=1" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
+## QT Whatsapp Web with tray Icon
+#yay_install qtwaw
 
 
 
