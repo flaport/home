@@ -1230,6 +1230,8 @@ pacman_install lynx
 #yay_install mutt-wizard
 ## Thunderbird: arguably the best email client for Linux (if a GUI is more your thing)
 #pacman_install thunderbird
+## mb2md: mailbox to maildir converter (convert thunderbird email storage to neomutt email storage)
+#pacman_install mb2md
 
 
 # Hardware acceleration
