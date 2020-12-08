@@ -406,7 +406,7 @@ pacman_install alacritty
 ## calcurse: a terminal calendar client
 pacman_install calcurse
 ## vdirsyncer: synchronize caldav and carddav
-pacman_isntall vdirsyncer
+pacman_install vdirsyncer
 ## khal: calendar command line utility for caldav sync
 pacman_install khal
 ## search tool
