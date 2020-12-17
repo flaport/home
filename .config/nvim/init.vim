@@ -267,6 +267,8 @@ augroup saving
 augroup end
 
 function! DoOnSave()
+    delmarks m
+    normal mm
     let vimwiki=0
     if &filetype=='vimwiki'
         let vimwiki=1
@@ -275,17 +277,15 @@ function! DoOnSave()
     if &filetype=='markdown'
         CocCommand prettier.formatFile
     else
-        delmarks m
-        normal mm
         exec '%s/\s\+$//e'
-        normal `m
-        delmarks m
     endif
     syntax sync fromstart
     if vimwiki==1
         sleep 100m " TODO: wait for asynchronous (?) CocCommand to finish
         setlocal filetype=vimwiki
     endif
+    normal `m
+    delmarks m
 endfunction
 
 " save on focus lost
@@ -954,6 +954,8 @@ function! RunPython(type)
 endfunction
 
 function! LatexBuild(force)
+    delmarks m
+    normal mm
     let latexcmd = "latexmk -xelatex -cd -synctex=1 -shell-escape ".a:force
     silent only
     if exists("$TEXBASE")
@@ -965,6 +967,8 @@ function! LatexBuild(force)
     call NewHorizontalTerminal(latexcmd)
     sleep 100m
     execute "normal G\<C-w>k"
+    normal `m
+    delmarks m
 endfunction
 
 
