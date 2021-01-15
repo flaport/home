@@ -20,7 +20,7 @@ endif
 "-------------------------------------------------------------------------------
 " jump to snippets file from anywhere: <leader>cs
 
-if filereadable(expand("~/.config/nvim/snippets.vim"))
+if filereadable(expand("~/.config/nvim/snippets/snippets.vim"))
     source ~/.config/nvim/snippets/snippets.vim
 endif
 
