@@ -60,6 +60,7 @@ Plug 'tpope/vim-speeddating' " increase date with <C-A>
 Plug 'tpope/vim-surround' " easily surround word with quotes or tags
 Plug 'valloric/MatchTagAlways' " highlight matching html tags
 Plug 'vim-airline/vim-airline' " better status bar
+Plug 'bling/vim-bufferline' " bufferline integration for airline
 Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'vimwiki/vimwiki' " note taking in vim
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
@@ -187,6 +188,9 @@ let g:markdown_minlines = 100
 " enable powerline fonts for vim airline
 let g:airline_powerline_fonts = 1
 let g:airline_theme="xresources_airline"
+let g:airline#extensions#bufferline#enabled = 1
+let g:airline#extensions#bufferline#overwrite_variables = 1
+let g:bufferline_echo = 0
 
 " vimwiki/vimwiki --------------------------------
 
