@@ -3,17 +3,37 @@ import os
 import sys
 import subprocess
 
+def notify(title, msg=""):
+    subprocess.check_call(["notify-send", title, msg])
+
 try:
     filename = os.path.abspath(os.path.expanduser(sys.argv[1]))
 except IndexError:
     exit(1)
 
+_, ext = os.path.splitext(filename.lower())
 
-if filename.lower().endswith(".fsp"):
-    exit(subprocess.call(["/opt/lumerical/2019b/bin/fdtd-solutions", filename]))
-
-if filename.lower().endswith(".gds"):
+if ext == ".gds":
+    notify(f"opening Klayout...", filename)
     exit(subprocess.call(["/usr/bin/klayout", "-e", filename]))
+elif ext in (".fsp", ".icp", ".lms", ".ldev"):
+    if not os.path.isdir("/opt/lumerical"):
+        notify(f"Lumerical not found", filename)
+        exit(1)
+    version = sorted(os.listdir("/opt/lumerical"), reverse=True)[0]
 
-if filename.lower().endswith(".icp"):
-    exit(subprocess.call(["/opt/lumerical/2019b/bin/interconnect-app", "-e", filename]))
+    if ext == ".fsp":
+        notify(f"opening FDTD Solutions...", filename)
+        exit(subprocess.call([f"/opt/lumerical/2019b/bin/fdtd-solutions", filename]))
+
+    if ext == ".lms":
+        notify(f"opening Mode Solutions...", filename)
+        exit(subprocess.call([f"/opt/lumerical/{version}/bin/mode-solutions", "-e", filename]))
+
+    if ext == ".icp":
+        notify(f"opening Lumerical Interconnect...", filename)
+        exit(subprocess.call([f"/opt/lumerical/2019b/bin/interconnect-app", "-e", filename]))
+
+    if ext == ".ldev":
+        notify(f"opening Lumerical Device...", filename)
+        exit(subprocess.call([f"/opt/lumerical/{version}/bin/device", "-e", filename]))
