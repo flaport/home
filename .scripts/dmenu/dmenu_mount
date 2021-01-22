@@ -80,7 +80,8 @@ class Device:
         s += line(self.name, 15)
         s += line(self.size, 12)
         s += line(self.fstype, 10)
-        s += line(self.uuid, 15)
+        if hasattr(self, "uuid") and self.uuid:
+            s += line(self.uuid, 15)
         s += line(self.label, 10)
         return s
 
@@ -280,27 +281,27 @@ if __name__ == "__main__":
         print("Usage: dmenu_mount [mount|unmount]")
         exit(1)
 
-    try:
-        if mode == "mount":
-            devices = find_devices_to_mount()
-        else:
-            devices = find_devices_to_unmount()
-        device_line = dmenu(devices.values(), f"{mode}")
-        chosen_device = devices.get(device_line) or parse_device_line(device_line)
-        if not chosen_device.name:
-            print("no device chosen")
-            exit(1)
-        if mode == "mount":
-            chosen_directory = os.path.abspath(os.path.expanduser(dmenu(mountpoint_options(chosen_device), "mount-in").strip()))
-            msg = mount(chosen_device, chosen_directory)
-        if mode == "unmount":
-            msg = unmount(chosen_device)
+#    try:
+    if mode == "mount":
+        devices = find_devices_to_mount()
+    else:
+        devices = find_devices_to_unmount()
+    device_line = dmenu(devices.values(), f"{mode}")
+    chosen_device = devices.get(device_line) or parse_device_line(device_line)
+    if not chosen_device.name:
+        print("no device chosen")
+        exit(1)
+    if mode == "mount":
+        chosen_directory = os.path.abspath(os.path.expanduser(dmenu(mountpoint_options(chosen_device), "mount-in").strip()))
+        msg = mount(chosen_device, chosen_directory)
+    if mode == "unmount":
+        msg = unmount(chosen_device)
 
-        notify(f"{mode} success", msg)
-        print(f"{mode} success")
-        if msg:
-            print(str(msg))
-    except Exception as e:
-        print(e)
-        notify(f"{mode} failed", str(e))
+    notify(f"{mode} success", msg)
+    print(f"{mode} success")
+    if msg:
+        print(str(msg))
+#    except Exception as e:
+#        print(e)
+#        notify(f"{mode} failed", str(e))
 
