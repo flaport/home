@@ -657,7 +657,9 @@ c.Spawner.default_url = '/lab'
 #  Note that the spawner class' interface is not guaranteed to be exactly same
 #  across upgrades, so if you are using the callable take care to verify it
 #  continues to work after upgrades!
-#c.Spawner.environment = {}
+c.Spawner.environment = {
+    'JUPYTERHUB_SINGLEUSER_APP': "jupyter_server.serverapp.ServerApp"
+}
 
 ## Timeout (in seconds) before giving up on a spawned HTTP server
 #
