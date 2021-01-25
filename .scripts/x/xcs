@@ -392,7 +392,7 @@ def write_alacritty_config(xresources, filename="~/.cache/alacritty/alacritty.ym
                 elif bright and "    cyan:" in line:
                     line = f"    cyan: '{xresources['color14']}'\n"
                 elif (normal or dim) and "    white:" in line:
-                    line = f"    white: '{xresources['color15']}'\n"
+                    line = f"    white: '{xresources['color7']}'\n"
                 elif bright and "    white:" in line:
                     line = f"    white: '{xresources['color15']}'\n"
                 line = line
