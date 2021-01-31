@@ -1175,6 +1175,10 @@ pacman_install ipython
 #pacman_install python2
 #pacman_install ipython2
 
+## Swift programming language:
+#yay_install swift-bin
+#yay_install swift-language-git
+
 ## Scientific computing with octave (Matlab alternative)
 pacman_install octave
 
