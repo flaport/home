@@ -379,7 +379,9 @@ endfunction
 
 " go to edit mode in terminal emulator:
 " the backtick is there to not interfere with the <Esc> of the shell itself.
-tnoremap `<Esc> <C-\><C-n>
+tnoremap <Esc> <C-\><C-n>
+" keep original Escape available uner `<Esc>
+tnoremap `<Esc> <Esc>
 
 " use K to show documentation in preview window (reqruires neoclide/coc.nvim)
 nnoremap <silent> K :call ShowDocumentation()<CR>
@@ -488,7 +490,7 @@ nnoremap <C-c> <Esc>:call CloseBuffer()<CR>
 " scroll text up with cursor staying where it is (opposite of <C-y>)
 " <C-e> " standard vim keybinding
 
-" exit terminal mode (same as `<Esc>)
+" exit terminal mode
 tnoremap <C-e> <C-\><C-N>
 
 " down full screen
@@ -499,37 +501,37 @@ tnoremap <C-e> <C-\><C-N>
 
 
 " increase master area (requires dwm.vim)
-nmap <C-h> <Plug>DWMShrinkMaster
-" DISABLED: move to split left of current split (also when in terminal mode)
-" nnoremap <C-h> <C-w>h
-" tnoremap <C-h> <C-\><C-N><C-w>h
+" nmap <C-h> <Plug>DWMShrinkMaster
+" move to split left of current split (also when in terminal mode)
+nnoremap <C-h> <C-w>h
+tnoremap <C-h> <C-\><C-N><C-w>h
 
 " DISABLED: jump forward in cursor position stack (same as TAB; opposite of <C-o>)
 " <C-i> = TAB " standard vim keybinding
 
 " move to next split in clockwise direction (requires dwm.vim)
-nmap <C-j> <C-w>w
-" DISABLED: move to split below of current split (also when in terminal mode)
-" nnoremap <C-j> <C-w>j
-" tnoremap <C-j> <C-\><C-N><C-w>j
+" nmap <C-j> <C-w>w
+" move to split below of current split (also when in terminal mode)
+nnoremap <C-j> <C-w>j
+tnoremap <C-j> <C-\><C-N><C-w>j
 
 " move to previous split in anticlockwise direction (requires dwm.vim)
-nmap <C-k> <C-w>W
-" DISABLED: move to split above of current split (also when in terminal mode)
-" nnoremap <C-k> <C-w>k
-" tnoremap <C-k> <C-\><C-N><C-w>k
+" nmap <C-k> <C-w>W
+" move to split above of current split (also when in terminal mode)
+nnoremap <C-k> <C-w>k
+tnoremap <C-k> <C-\><C-N><C-w>k
 
 " decrease master area (requires dwm.vim)
-nmap <C-l> <Plug>DWMGrowMaster
-" DISABLED: move to split right of current split (also when in terminal mode)
-" nnoremap <C-l> <C-w>l
-" tnoremap <C-l> <C-\><C-N><C-w>l
+" nmap <C-l> <Plug>DWMGrowMaster
+" move to split right of current split (also when in terminal mode)
+nnoremap <C-l> <C-w>l
+tnoremap <C-l> <C-\><C-N><C-w>l
 
 " move to first non-whitespace of next line
 " <C-m> " standard vim keybinding
 
 " create new split in master area (requires dwm.vim)
-nmap <C-n> <Plug>DWMNew
+" nmap <C-n> <Plug>DWMNew
 
 " jump backward in cursor position stack (opposite of <C-i> or TAB)
 " <C-o> " standard vim keybinding
@@ -800,7 +802,7 @@ nnoremap <leader>y :echo "\<leader\>y"<cr>
 nnoremap <leader>Y :echo "\<leader\>Y"<cr>
 
 " focus current split in master area (requires dwm.vim)
-nmap <C-space> <Plug>DWMFocus
+" nmap <C-space> <Plug>DWMFocus
 
 " noop
 nnoremap <leader>Z :echo "\<leader\>Z"<cr>

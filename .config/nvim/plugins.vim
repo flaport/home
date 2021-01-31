@@ -51,7 +51,7 @@ Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'shougo/context_filetype.vim' " completion from other opened files
-Plug 'spolu/dwm.vim' " dynamic window manager for vim
+" Plug 'spolu/dwm.vim' " dynamic window manager for vim
 Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-commentary' " easy comment
 Plug 'tpope/vim-fugitive' " better git integration
