@@ -1225,6 +1225,8 @@ submodule_install legacyfox
 # Email
 #-------------------------------------------------------------------------------
 
+## awesome email client
+pacman_install thunderbird
 ## send email
 pacman_install msmtp
 ## mbsync: sync email (isync is the distribution, mbsync is the executable)
