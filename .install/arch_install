@@ -411,6 +411,10 @@ pacman_install alacritty
 #pacman_install khal
 ## search tool
 pacman_install grep
+## download tool
+pacman_install curl
+## alternative download tool (youtube-dl dependency)
+pacman_install wget
 ## alternative search tool
 #pacman_install ripgrep
 ## alternative search tool
@@ -669,7 +673,6 @@ pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q lib
 
 ## Dell displaylink drivers:
 pacman_install linux-headers
-yay_install evdi-git
 yay_install displaylink
 systemctl_enable displaylink
 printf "Section \"OutputClass\"\n  Identifier \"DisplayLink\"\n  MatchDriver \"evdi\"\n  Driver \"modesetting\"\n  Option \"AccelMethod\" \"none\"\nEndSection" | sudo tee /usr/share/X11/xorg.conf.d/20-evdidevice.conf > /dev/null 2>> "$ERR"
@@ -1148,8 +1151,10 @@ pacman_install libreoffice-fresh
 #pacman_install texlive-most
 ## bibliographies
 pacman_install biber
-## convert document types into each other
-pacman_install pandoc
+## pandoc: convert document types into each other
+#pacman_install pandoc
+## pandoc as a single binary, without the haskell dependencies:
+yay_install pandoc-bin
 ## open-source note taking app (takes a while to build)
 #yay_install joplin
 
@@ -1177,6 +1182,9 @@ pacman_install ipython
 ## Swift programming language:
 #yay_install swift-bin
 #yay_install swift-language-git
+
+## Haskell programming language (glasgow haskell compiler):
+pacman_install ghc
 
 ## Scientific computing with octave (Matlab alternative)
 #pacman_install octave
