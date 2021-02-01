@@ -652,13 +652,15 @@ pacman_install xsettingsd
 ## server access control for x
 pacman_install xorg-xhost
 ## sharing and viewing x-sessions on other computers
-pacman_install x11vnc
+#pacman_install x11vnc
 ## create x11vnc systemd service:
-systemctl_create x11vnc
+#systemctl_create x11vnc
 ## view x11vnc session (executable: gvncviewer)
 #pacman_install gtk-vnc
 ## view x11vnc session (executable: vncviewer) <-- better framerate
 #pacman_install tigervnc
+## view x11vnc and realvnc sessions (executable: vncviewer)
+#yay_install realvnc-vnc-viewer
 ## compositor (for transparent windows, blur, ...)
 #pacman_install xcompmgr
 ## better compositor:
