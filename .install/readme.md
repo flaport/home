@@ -69,6 +69,15 @@
         * `cp /boot/efi/EFI/GRUB/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI`
     * Create a startup file:
         * `echo 'bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB"' > /boot/efi/startup.nsh`
+* **UEFI**: Extra: rEFInd Bootloader. When working with EFI file systems, one can choose to
+install the rEFInd bootloader, which is a bit more slick than GRUB:
+    * `pacman -S intel-ucode linux linux-firmware` OR `pacman -S amd-ucode linux linux-firmware`
+    * `pacman -S refind-efi`
+    * Install rEFInd: `refind-install`
+    * Edit `/boot/refind_linux.conf` such that only the following line remains:
+        * `"Boot with standard options" "rw root=UUID=<your-root-partition-uuid>"`
+    * (optional) download and install a theme for your rEFInd splash screen. For example
+    this one: https://github.com/EvanPurkhiser/rEFInd-minimal.
 * **BIOS** Install a bootloader
     * `pacman -S grub`
     * `grub-install --target=i386-pc /dev/sdx`
