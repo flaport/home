@@ -48,6 +48,12 @@ torch = LazyModule(name="torch", fullname="torch")
 F = LazyModule(name="F", fullname="torch.nn.functional")
 plt = LazyModule(name="plt", fullname="matplotlib.pyplot")
 
+def _stripright(s):
+    if not s:
+        return s
+    while s[-1] == " ":
+        s = s[:-1]
+    return s
 
 def unrecursive(start=0, stacksize=3, printsrc=True):
     import os, re, inspect, functools, tempfile, secrets
@@ -57,7 +63,7 @@ def unrecursive(start=0, stacksize=3, printsrc=True):
         s = re.sub("^@.*", "", inspect.getsource(func))
         if func.__doc__:
             s = s.replace(func.__doc__, "").replace("''''''", "").replace('""""""', "")
-        s = "\n".join(stripright(line) for line in s.split("\n") if line.strip())
+        s = "\n".join(_stripright(line) for line in s.split("\n") if line.strip())
         funcname = func.__name__
         funcdef, *funcbody = s.split(":\n")
         funcdef = funcdef + ':\n'
