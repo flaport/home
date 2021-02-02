@@ -162,8 +162,9 @@ bindkey '^o' autosuggest-toggle # enable/disable autosuggest
 
 # stderr in red; should be last.
 [ -f $HOME/.config/stderred/build/libstderred.so ] && export LD_PRELOAD="$HOME/.config/stderred/build/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
-ghci(){LD_PRELOAD=${LD_PRELOAD:51} /usr/bin/ghci "$@"}
-apl(){LD_PRELOAD=${LD_PRELOAD:51} /usr/bin/apl "$@"}
+ghci(){LD_PRELOAD="" /usr/bin/ghci "$@"}
+stack(){LD_PRELOAD="" /usr/bin/stack "$@"}
+apl(){LD_PRELOAD="" /usr/bin/apl "$@"}
 
 # Load zsh-syntax-highlighting; should be last.
 sourcefile $HOME/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
