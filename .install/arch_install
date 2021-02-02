@@ -374,6 +374,7 @@ pacman_install cmake
 #-------------------------------------------------------------------------------
 
 pacman_install git
+pacman_install git-lfs
 git config pull.rebase false
 git config push.default simple
 git config advice.addIgnoredFile false
@@ -1187,6 +1188,9 @@ pacman_install ipython
 
 ## Haskell programming language (glasgow haskell compiler):
 pacman_install ghc
+pacman_install ghc-static
+pacman_install stack
+pacman_install haskell-base-prelude
 
 ## Scientific computing with octave (Matlab alternative)
 #pacman_install octave
