@@ -1,3 +1,5 @@
 changeps1: false
 auto_activate_base: true
 report_errors: false
+channels:
+  - conda-forge
