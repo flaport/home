@@ -535,6 +535,8 @@ yay_install neovim-remote
 #pip3_install vimwiki-markdown
 ## instant-markdown-d used for instant markdown visualization in vim
 #npm_install instant-markdown-d
+## pyright: static typechecker and linter for python
+npm_install pyright
 ## ccls: C language server (required by CoC plugin for nvim)
 pacman_install ccls
 ## bash language server (required by CoC plugin for nvim)

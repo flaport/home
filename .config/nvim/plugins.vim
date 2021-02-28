@@ -39,6 +39,7 @@ endif
 
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
+Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
 Plug 'hanschen/vim-ipython-cell' " better integration with ipython (requires slime)
 Plug 'jpalardy/vim-slime' " better integration between text and terminal buffers
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
@@ -46,12 +47,10 @@ Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
 Plug 'junegunn/goyo.vim', " distraction free writing.
 Plug 'kshenoy/vim-signature' " show marks in margin
 Plug 'lilydjwg/colorizer' " paint css colors with the real color
-Plug 'mattn/calendar-vim' " vim calendar (use in conjuction with vimwiki diary)
 Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'shougo/context_filetype.vim' " completion from other opened files
-" Plug 'spolu/dwm.vim' " dynamic window manager for vim
 Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-commentary' " easy comment
 Plug 'tpope/vim-fugitive' " better git integration
@@ -83,6 +82,21 @@ endif
 "" Plugin Settings
 "-------------------------------------------------------------------------------
 " Plugin settings are defined here. Keyboard shortcuts are defined in init.vim.
+
+
+" davidhalter/jedi-vim ---------------------------------------------------------
+
+" disable autocompletion (using coc-pyright instead)
+let g:jedi#completions_enabled = 0
+" disable call signatures (using coc-pyright instead)
+let g:jedi#show_call_signatures = 0
+" all these mappings work only for python code:
+" go to definition
+let g:jedi#goto_command = '<Leader>d'
+" find ocurrences
+let g:jedi#usages_command = '<Leader>o'
+" find assignments
+let g:jedi#goto_assignments_command = '<Leader>a'
 
 
 " hanschen/vim-ipython-cell ----------------------

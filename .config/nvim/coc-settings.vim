@@ -13,11 +13,12 @@ let g:coc_global_extensions = [
     \'coc-html',
     \'coc-json',
     \'coc-prettier',
-    \'coc-python',
+    \'coc-pyright',
     \'coc-sh',
     \'coc-snippets',
     \'coc-tsserver',
     \'coc-vimlsp',
+    \'coc-yaml',
 \]
 
 " there's a problem with coc-ccls, it doesn't property link its libraries. Let's do this manually...
