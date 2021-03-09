@@ -41,8 +41,8 @@ if [ ! -z "$1" ]; then
     else
         filename=$(find . -type f -name "*$1*" | head -1)
     fi
-    /usr/bin/nvim -c VimwikiIndex -c Gpull -c "execute \"e $filename\""
+    /usr/bin/nvim -c VimwikiIndex -c 'Git pull' -c "execute \"e $filename\""
     exit
 fi
 
-/usr/bin/nvim -c VimwikiIndex -c Gpull
+/usr/bin/nvim -c VimwikiIndex -c 'Git pull'
