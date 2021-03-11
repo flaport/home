@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+#    _____ _     ____  ____  ____  ____  _____
+#   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
+#   |  __\| |   | / \||  \/|| / \||  \/|  / \
+#   | |   | |_/\| |-|||  __/| \_/||    /  | |
+#   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
+#
+
+from functools import partial
+from python_dmenu_lib import *
+
+if __name__ == "__main__":
+    exit(
+        main(partial(get_dict, os.path.expanduser("~/.scripts/dmenu/symbols.txt")), "α ")
+    )

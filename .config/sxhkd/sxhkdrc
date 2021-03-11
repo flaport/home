@@ -199,7 +199,9 @@ super + T
 super + u
     dmenu_accents
 
+# insert unicode symbols
 super + U
+    dmenu_symbols
 
 # shift focus to monitor V (dwm)
 super + v
