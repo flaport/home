@@ -124,7 +124,15 @@ alias grep="grep --color=auto"
 alias base="conda activate base"
 alias system="conda deactivate && conda deactivate"
 alias history="history 1"
-alias pip="pip --no-cache-dir"
+
+alias pip="python -m pip --no-cache-dir"
+alias pip3="python3 -m pip --no-cache-dir"
+alias pip2="python2 -m pip --no-cache-dir"
+
+alias spip="sudo /usr/bin/python -m pip --no-cache-dir"
+alias spip3="sudo /usr/bin/python3 -m pip --no-cache-dir"
+alias spip2="sudo /usr/bin/python2 -m pip --no-cache-dir"
+
 man() { # colored man pages:
     LESS_TERMCAP_md=$'\e[01;31m' \
     LESS_TERMCAP_me=$'\e[0m' \
