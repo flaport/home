@@ -652,8 +652,11 @@ nmap <silent> <leader>d :w<CR><Plug>(coc-definition)
 " noop
 nnoremap <leader>D :echo "\<leader\>D"<cr>
 
-" noop
-nnoremap <leader>E :echo "\<leader\>E"<cr>
+" jump to next error / warning in file
+nnoremap <leader>e :call CocAction('diagnosticNext')<CR>
+
+" jump to previous error / warning in file
+nnoremap <leader>E :call CocAction('diagnosticPrevious')<CR>
 
 " fuzzy find content in all files in tree  (requires junegunn/fzf)
 nnoremap <leader>fb :Buffers<CR>
