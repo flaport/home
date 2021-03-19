@@ -89,14 +89,14 @@ set clipboard^=unnamed
 " replace tabs by spaces
 set expandtab
 
-" set tabs to have a width of 4 spaces
-set tabstop=4
+" set tabs to have a width of 2 spaces
+set tabstop=2
 
-" set tabs to have a maximum width of 4 spaces
-set softtabstop=4
+" set tabs to have a maximum width of 2 spaces
+set softtabstop=2
 
-" set the shift operators (`<<` and `>>`) to insert 4 spaces
-set shiftwidth=4
+" set the shift operators (`<<` and `>>`) to insert 2 spaces
+set shiftwidth=2
 
 " code folding
 " zM: fold all; zR: unfold all; za: toggle fold, zv: unfold one; zc: fold one
@@ -196,7 +196,7 @@ set laststatus=2
 " don't show last command executed
 set noshowcmd
 
-augroup latexmarkdownvariablesettings
+augroup latexmarkdownsettings
     autocmd!
 
     " enable hard wrapping (insert enter) at 88 characters [tex, md, vimwiki]
@@ -231,7 +231,7 @@ augroup latexmarkdownvariablesettings
     autocmd FileType tex,text,markdown,vimwiki setlocal noshowcmd
 augroup end
 
-augroup pythonvariablesettings
+augroup pythonsettings
     autocmd!
 
     " disable both hard wrapping and soft wrapping
@@ -242,9 +242,19 @@ augroup pythonvariablesettings
 
     " enable autoindent on new line
     autocmd FileType python setlocal autoindent
+
+    " set tabs to have a width of 4 spaces
+    set tabstop=4
+
+    " set tabs to have a maximum width of 4 spaces
+    set softtabstop=4
+
+    " set the shift operators (`<<` and `>>`) to insert 4 spaces
+    set shiftwidth=4
+
 augroup end
 
-augroup vimvariablesettings
+augroup vimsettings
     autocmd!
 
     " disable both hard wrapping and soft wrapping and don't show a colorcolumn
