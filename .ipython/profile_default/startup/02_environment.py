@@ -1,9 +1,12 @@
 import os
 
-with open("/etc/environment", "r") as file:
-    for line in file:
+with open("/etc/environment", "r") as __file:
+    for line in __file:
         try:
-            key, val = line.split("=")
+            __key, __val = line.split("=")
         except:
             continue
-        os.environ[key.strip()] = val.strip()
+        os.environ[__key.strip()] = __val.strip()
+
+
+del __file, __key, __val
