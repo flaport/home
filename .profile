@@ -22,8 +22,6 @@
 #-------------------------------------------------------------------------------
 
 [ -d $HOME/.webapps ] || mkdir $HOME/.webapps
-[ -d $HOME/Downloads ] || mkdir $HOME/Downloads
-[ -d $HOME/Transmission ] || mkdir $HOME/Transmission
 [ -f $HOME/.pythonpath ] || touch $HOME/.pythonpath &> /dev/null
 [ -f $HOME/.config/rofi/xresources-colors.rasi ] || touch $HOME/.config/rofi/xresources-colors.rasi &> /dev/null
 [ -f $HOME/.Xresources ] || cp $HOME/.config/Xresources/nord $HOME/.Xresources &> /dev/null
