@@ -192,14 +192,8 @@ submodule_install(){ # will only install the first argument!
 
     printf "git pull\n" >> "$LOG"
     printf "git pull\n" >> "$ERR"
-    if [ "$1" = "st" ]; then
-        # v1 is my most stable st version for now...
-        git checkout v1 >> "$LOG" 2>> "$ERR"
-        git pull origin v1 >> "$LOG" 2>> "$ERR"
-    else
-        git checkout master >> "$LOG" 2>> "$ERR"
-        git pull origin master >> "$LOG" 2>> "$ERR"
-    fi
+    git checkout master >> "$LOG" 2>> "$ERR"
+    git pull origin master >> "$LOG" 2>> "$ERR"
 
     printf "sudo make install\n" >> "$LOG"
     printf "sudo make install\n" >> "$ERR"
