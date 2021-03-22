@@ -59,4 +59,5 @@
     "python.linting.pydocstyleEnabled": true,
     "git.autofetch": true,
     "diffEditor.renderSideBySide": false,
+    "terminal.integrated.inheritEnv": false,
 }
