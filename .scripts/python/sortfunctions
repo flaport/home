@@ -1,0 +1,73 @@
+#!/usr/bin/python
+
+import os
+import re
+import sys
+import argparse
+from collections import defaultdict
+
+def parse_args(args):
+    parser = argparse.ArgumentParser(description="sort python functions alphabetically")
+    parser.add_argument(
+        "filename",
+        type=str,
+        #nargs="?",
+        #default="",
+        help="path to sort",
+    )
+    parsed_args = parser.parse_args()
+    parsed_args.filename = os.path.abspath(os.path.expanduser(parsed_args.filename))
+    if not os.path.exists(parsed_args.filename):
+        raise FileNotFoundError(f"'{parsed_args.filename}' does not exist.")
+    if os.path.isdir(parsed_args.filename):
+        raise IsADirectoryError(f"'{parsed_args.filename}' is a directory.")
+    return parsed_args
+
+def parse_lines(lines):
+    lines_dict = {}
+    currentfunc = "<none>"
+    for line in lines:
+        if not line:
+            continue
+        if line.startswith("def "):
+            currentfunc = line.split("def ")[1].lower()
+            currentfunc = "0" + re.sub("[^a-z_]", "", (currentfunc + "(").split("(")[0])
+        elif line.startswith("class "):
+            currentfunc = line.split("class ")[1].lower()
+            currentfunc = "1" + re.sub("[^a-z_]", "", (currentfunc + "(").split("(")[0])
+        elif re.sub("[ ][ ]*", " ", line.strip().replace("'",'"')) == 'if __name__ == "__main__":':
+            currentfunc = "<main>"
+        elif not line.startswith(" "):
+            currentfunc = "<none>"
+        if currentfunc not in lines_dict:
+            lines_dict[currentfunc] = []
+        lines_dict[currentfunc].append(re.sub("[ ]*$", "", line))
+    return lines_dict
+
+def main(args):
+    args = parse_args(args)
+    with open(args.filename, "r") as file:
+        lines = file.read().split('\n')
+
+    lines_dict = parse_lines(lines)
+
+    for line in lines_dict.pop("<none>"):
+        print(line)
+
+    main_lines = lines_dict.pop("<main>")
+
+    sorted_func_names = sorted(lines_dict)
+
+    for funcname in sorted_func_names:
+        func_lines = lines_dict.pop(funcname)
+        for line in func_lines:
+            print(line)
+
+    for line in main_lines:
+        print(line)
+
+
+if __name__ == "__main__":
+    main(sys.argv)
+
+
