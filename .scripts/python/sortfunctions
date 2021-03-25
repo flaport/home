@@ -51,10 +51,11 @@ def main(args):
 
     lines_dict = parse_lines(lines)
 
-    for line in lines_dict.pop("<none>"):
+    none_lines = [] if '<none>' not in lines_dict else lines_dict.pop('<none>')
+    for line in none_lines:
         print(line)
 
-    main_lines = lines_dict.pop("<main>")
+    main_lines = [] if '<main>' not in lines_dict else lines_dict.pop("<main>")
 
     sorted_func_names = sorted(lines_dict)
 
