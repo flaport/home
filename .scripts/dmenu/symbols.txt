@@ -1,2 +1,6 @@
 ° degree
 · middot
+← left arrow
+↑ up arrow
+→ right arrow
+↓ down arrow

@@ -11,6 +11,7 @@ import os
 import sys
 import time
 from subprocess import Popen, call, check_output, PIPE, CalledProcessError
+
 try:
     import pyautogui
 except:
@@ -24,12 +25,15 @@ def dmenu(list_in, prompt=""):
     prompt = [] if not prompt else ["-p", prompt]
     try:
         dmenu_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
-        choice = check_output(
-            ["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in
-        ).decode().strip()
+        choice = (
+            check_output(["dmenu"] + prompt + sys.argv[2:], stdin=dmenu_in)
+            .decode()
+            .strip()
+        )
         return choice
     except CalledProcessError:
         return ""
+
 
 def notify(title, message=""):
     if display:
@@ -37,6 +41,7 @@ def notify(title, message=""):
             check_output(["notify-send", title, message])
         else:
             check_output(["notify-send", title])
+
 
 def copy_to_clipboard(content):
     if display:
@@ -46,39 +51,51 @@ def copy_to_clipboard(content):
         status = call(["xclip", "-selection", "clipboard"], stdin=xclip_in)
         return status
 
+
 def get_dict(filename):
     filename = os.path.abspath(os.path.expanduser(filename))
     dic = {}
     with open(filename, "r") as file:
         for line in file:
-            value, key = line.split(" ")
+            value, *key = (el.strip() for el in line.strip().split(" ") if el.strip())
             value = value.strip()
-            key = key.strip()
+            key = " ".join(key).strip()
             longkey = f"{key} {value}"
             dic[longkey] = value
     return dic
+
 
 def get_current_window_name_and_position():
     if not has_xdotool:
         return "", 0, 0
     window_id = check_output(["xdotool", "getactivewindow"]).strip().decode()
     name = check_output(["xdotool", "getwindowname", window_id]).strip().decode()
-    geometry = check_output(["xdotool", "getwindowgeometry", window_id]).strip().decode()
+    geometry = (
+        check_output(["xdotool", "getwindowgeometry", window_id]).strip().decode()
+    )
     x, y = geometry.split("Position: ")[1].split(" ")[0].split(",")
     return name, x, y
+
 
 def move_mouse(x, y):
     if not has_xdotool:
         return 1
     return call(["xdotool", "mousemove", x, y])
 
+
 def middle_click():
     if not has_xdotool:
         return 1
     return call(["xdotool", "click", "2"])
 
+
 def paste(windowname, content):
-    if pyautogui is not None and not windowname in {"st", "xterm", "urxvt", "Alacritty"}:
+    if pyautogui is not None and not windowname in {
+        "st",
+        "xterm",
+        "urxvt",
+        "Alacritty",
+    }:
         pyautogui.hotkey("ctrl", "v")
     elif has_xdotool:
         middle_click()
@@ -86,6 +103,7 @@ def paste(windowname, content):
         notify(f"'{content}' copied to clipboard.")
     else:
         print(content)
+
 
 def main(get_dict, *args):
     try:
@@ -100,4 +118,3 @@ def main(get_dict, *args):
         return 0
     except:
         return 1
-
