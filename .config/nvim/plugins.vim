@@ -40,7 +40,6 @@ endif
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
-Plug 'hanschen/vim-ipython-cell' " better integration with ipython (requires slime)
 Plug 'jpalardy/vim-slime' " better integration between text and terminal buffers
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
 Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
@@ -63,7 +62,14 @@ Plug 'bling/vim-bufferline' " bufferline integration for airline
 Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'vimwiki/vimwiki' " note taking in vim
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
+Plug 'hanschen/vim-ipython-cell' " better integration with ipython (requires slime)
+
+call system('ipython -c "import sys"')
+if !v:shell_error
 call system('which notedown')
+    Plug 'hanschen/vim-ipython-cell' " better integration with ipython (requires slime)
+endif
+
 if !v:shell_error
     Plug 'szymonmaszke/vimpyter' " edit jupyter notebooks
 endif
