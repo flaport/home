@@ -89,15 +89,6 @@ set clipboard^=unnamed
 " replace tabs by spaces
 set expandtab
 
-" set tabs to have a width of 2 spaces
-set tabstop=2
-
-" set tabs to have a maximum width of 2 spaces
-set softtabstop=2
-
-" set the shift operators (`<<` and `>>`) to insert 2 spaces
-set shiftwidth=2
-
 " code folding
 " zM: fold all; zR: unfold all; za: toggle fold, zv: unfold one; zc: fold one
 set foldmethod=indent
@@ -196,6 +187,15 @@ set laststatus=2
 " don't show last command executed
 set noshowcmd
 
+" set tabs to have a width of 2 spaces
+set tabstop=2
+
+" set tabs to have a maximum width of 2 spaces
+set softtabstop=2
+
+" set the shift operators (`<<` and `>>`) to insert 2 spaces
+set shiftwidth=2
+
 augroup latexmarkdownsettings
     autocmd!
 
@@ -244,13 +244,13 @@ augroup pythonsettings
     autocmd FileType python setlocal autoindent
 
     " set tabs to have a width of 4 spaces
-    set tabstop=4
+    autocmd FileType python setlocal tabstop=4
 
     " set tabs to have a maximum width of 4 spaces
-    set softtabstop=4
+    autocmd FileType python setlocal softtabstop=4
 
     " set the shift operators (`<<` and `>>`) to insert 4 spaces
-    set shiftwidth=4
+    autocmd FileType python setlocal shiftwidth=4
 
 augroup end
 
@@ -263,6 +263,22 @@ augroup vimsettings
     " more info in status bar:
     autocmd FileType vim setlocal showmode
 
+    " set tabs to have a width of 4 spaces
+    autocmd FileType vim setlocal tabstop=4
+
+    " set tabs to have a maximum width of 4 spaces
+    autocmd FileType vim setlocal softtabstop=4
+
+    " set the shift operators (`<<` and `>>`) to insert 4 spaces
+    autocmd FileType vim setlocal shiftwidth=4
+
+augroup end
+
+augroup yamlsettings
+    autocmd!
+
+    " enable indentLine plugin
+    let g:indentLine_enabled = 1
 augroup end
 
 

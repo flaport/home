@@ -74,5 +74,14 @@
       }
     }
   },
-  "coc.preferences.extensionUpdateCheck": "daily"
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "yaml.format.enable": true,
+  "yaml.format.proseWrap": "always",
+  "yaml.format.printWidth": 88,
+  "yaml.completion": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/gitlab-ci.json": [".gitlab-ci.yml", ".gitlab-ci.yaml"],
+    "schema/pic-schema.json": ["*.pic.yaml", "*.pic.yml"]
+  },
+  "yaml.schemaStore.enable": true
 }

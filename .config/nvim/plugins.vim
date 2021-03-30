@@ -39,6 +39,7 @@ endif
 
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
+Plug 'bling/vim-bufferline' " bufferline integration for airline
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
 Plug 'jpalardy/vim-slime' " better integration between text and terminal buffers
 Plug 'jremmen/vim-ripgrep' " better grep command for vim
@@ -49,6 +50,7 @@ Plug 'lilydjwg/colorizer' " paint css colors with the real color
 Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'pedrohdz/vim-yaml-folds' " better folding for yaml files
 Plug 'shougo/context_filetype.vim' " completion from other opened files
 Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-commentary' " easy comment
@@ -58,11 +60,9 @@ Plug 'tpope/vim-speeddating' " increase date with <C-A>
 Plug 'tpope/vim-surround' " easily surround word with quotes or tags
 Plug 'valloric/MatchTagAlways' " highlight matching html tags
 Plug 'vim-airline/vim-airline' " better status bar
-Plug 'bling/vim-bufferline' " bufferline integration for airline
 Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'vimwiki/vimwiki' " note taking in vim
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
-Plug 'hanschen/vim-ipython-cell' " better integration with ipython (requires slime)
 
 call system('ipython -c "import sys"')
 if !v:shell_error
