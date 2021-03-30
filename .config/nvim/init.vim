@@ -476,21 +476,19 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " exit current buffer without saving
 function! CloseBuffer()
-    try
-        exec DWMClose()
-    catch
-        if &filetype == "netrw"
+    if &filetype == "netrw"
+        exec "bd!"
+    else
+        let numbuffers = len(getbufinfo({'buflisted':1}))
+        if numbuffers > 1
             exec "bd!"
         else
-            let numbuffers = len(getbufinfo({'buflisted':1}))
-            if numbuffers > 1
-                exec "bd!"
-            else
-                exec "qa!"
-            endif
+            exec "qa!"
         endif
-    endtry
+    endif
 endfunction
+
+" close current buffer
 inoremap <C-c> <Esc>:call CloseBuffer()<CR>
 nnoremap <C-c> <Esc>:call CloseBuffer()<CR>
 
@@ -692,11 +690,14 @@ nmap <silent> gr <Plug>(coc-references)
 " Toggle Goyo
 nnoremap <leader>G :Goyo<CR>
 
-" enable hard mode for training purposes (requires wikitopian/hardmode)
-nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
+" shrink current horizontal split (decrease height)
+nnoremap <leader>h 3<C-w>-
 
-" noop
-nnoremap <leader>H :echo "\<leader\>H"<cr>
+" make all splits horizontal
+nnoremap <leader>H <C-w>t<C-w>K
+
+" enable hard mode for training purposes (requires wikitopian/hardmode)
+"nnoremap <leader>H <Esc>:call ToggleHardMode()<CR>
 
 "<leader>i: more information (toggle status bar)
 nnoremap <leader>i :call ToggleStatusBar()<CR>
@@ -789,9 +790,11 @@ nnoremap <leader>u :UndotreeShow<CR><C-w>h
 " noop
 nnoremap <leader>U :echo "\<leader\>U"<cr>
 
-" noop
-nnoremap <leader>v :echo "\<leader\>v"<cr>
-nnoremap <leader>V :echo "\<leader\>V"<cr>
+" shrink current vertical split (decrease width)
+nnoremap <leader>v 3<C-w><
+
+" make all splits vertical
+nnoremap <leader>V <C-w>t<C-w>H
 
 " enable no wrapping
 nnoremap <leader>wn :NoWrap<cr>
