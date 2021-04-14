@@ -944,6 +944,7 @@ nnoremap <F12> :echo "\<F12\>"<cr>
 augroup pythonfunctionkeyshortcuts
     autocmd!
     " run cell and jump to next cell (use '##' to mark a cell)
+    autocmd FileType python nnoremap <buffer> <CR> :call RunPython("celljump")<cr>
     autocmd FileType python nnoremap <buffer> <S-CR> :call RunPython("celljump")<cr>
     " run cell and stay (use '##' to mark a cell)
     autocmd FileType python nnoremap <buffer> <C-CR> :call RunPython("cellstay")<cr>
