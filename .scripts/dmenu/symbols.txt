@@ -4,3 +4,9 @@
 ↑ up arrow
 → right arrow
 ↓ down arrow
+≈ approx
+█ full block
++ plus
+− minus
+± plus minus
+× multiplication (times)
