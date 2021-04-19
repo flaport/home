@@ -1,5 +1,7 @@
 {
   "coc.preferences.formatOnSaveFiletypes": [],
+  "coc.preferences.rootPatterns": [".git", ".hg", ".vim", "schema"],
+  "workspace.bottomUpFiletypes": ["yaml"],
   "diagnostic.errorSign": "•",
   "diagnostic.infoSign": "•",
   "diagnostic.warningSign": "•",
@@ -63,9 +65,9 @@
       "rootPatterns": [
         ".ccls",
         "compile_commands.json",
-        ".vim/",
-        ".git/",
-        ".hg/"
+        ".vim",
+        ".git",
+        ".hg"
       ],
       "initializationOptions": {
         "cache": {
