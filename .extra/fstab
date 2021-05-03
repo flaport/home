@@ -51,6 +51,10 @@ UUID=<fat-uuid> /mnt/<name> vfat defaults,nofail,x-systemd.device-timeout=1s,uid
 # macos formatted HFS drive (note: not HFS+)
 /dev/sdxi /mnt/Mac hfsplus auto,user,rw,exec 0 0
 
+# bitlocker windows partition (requires dislocker [AUR])
+/dev/nvme0n1p3 /mnt/dislocker fuse.dislocker recovery-password=XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX,defaults,nofail,uid=<user>,gid=<user>,dmask=033,umask=033 0 0
+/mnt/dislocker/dislocker-file /mnt/c auto defaults,nofail,uid=<user>,gid=<user>,dmask=033,umask=033 0 0
+
 ## network filesystems (use \040 to add spaces in path). Add noauto flag if network location should not be automatically mounted.
 //<domain>/location/sublocation /mnt/<name> cifs noauto,defaults,nofail,x-systemd.device-timeout=1s,credentials=/home/<user>/.smbcredentials,uid=<user>,gid=<user>,dir_mode=0744,file_mode=0744 0 2
 
