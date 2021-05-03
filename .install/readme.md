@@ -1,6 +1,6 @@
 # Clean Arch Linux Installation.
 
-***Note:*** These installation instructions were last checked by me on 2020.11.07.
+***Note:*** These installation instructions were last checked by me on 2020.05.03.
 
 ## First Installation with bootable USB
 * Download **the most recent** Arch Linux ISO [http://archlinux.org/download](http://archlinux.org/download) from a mirror **near you**, and create a USB flash drive.
@@ -72,7 +72,7 @@
 * **UEFI**: Extra: rEFInd Bootloader. When working with EFI file systems, one can choose to
 install the rEFInd bootloader, which is a bit more slick than GRUB:
     * `pacman -S intel-ucode linux linux-firmware` OR `pacman -S amd-ucode linux linux-firmware`
-    * `pacman -S refind-efi`
+    * `pacman -S refind`
     * Install rEFInd: `refind-install`
     * Edit `/boot/refind_linux.conf` such that only the following line remains:
         * `"Boot with standard options" "rw root=UUID=<your-root-partition-uuid>"`

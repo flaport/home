@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.02.01
+# last complete install: 2020.05.03
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -1123,7 +1123,7 @@ pacman_install ffmpeg
 ## spotify (I prefer spotifyd + spotify-tui)
 #yay_install spotify
 ## GDS viewer and editor
-pacman_install klayout
+#pacman_install klayout
 ## lbry: youtube alternative
 #yay_install lbry-app-bin
 ## skype: video calls
