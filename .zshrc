@@ -9,6 +9,8 @@
 ## General settings
 #-------------------------------------------------------------------------------
 
+export LANG=en_US.UTF-8
+
 # source function (ignore file if file does not exist)
 function sourcefile {
     [[ -f "$1" ]] && source "$1"
