@@ -10,3 +10,5 @@
 − minus
 ± plus minus
 × multiplication (times)
+² squared 2
+³ cubed 3
