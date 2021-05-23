@@ -605,6 +605,8 @@ pacman_install sshfs
 yay_install hfsprogs
 ## testdisk to figure out location HFS+ partition wrapped in 'Apple Core Storage':
 pacman_install testdisk
+## data-at-rest tool: easy-to-use stacked filesystem encryption tool
+pacman_install gocryptfs
 ## webdav filesystem (mount Nextcloud as a folder)
 pacman_install davfs2
 ## recommended settings for davfs2 + Nextcloud
