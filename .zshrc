@@ -45,6 +45,21 @@ bindkey "^[h" up-line-or-history # alt + h
 bindkey "^[l" down-line-or-history # alt + l
 bindkey "^y" "" # noop
 
+# complecation related settings
+# Define completers
+zstyle ':completion:*' completer _extensions _complete _approximate
+# Autocomplete options for cd instead of directory stack
+zstyle ':completion:*' complete-options true
+# zstyle ':completion:*' file-sort modification
+zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
+zstyle ':completion:*:*:*:*:descriptions' format '%F{blue}-- %D %d --%f'
+# # Colors for files and directory
+zstyle ':completion:*' file-list all
+# # See ZSHCOMPWID "completion matching control"
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+
+
 # prompt and cursor shape based on vi mode
 setopt prompt_subst
 prompt(){
