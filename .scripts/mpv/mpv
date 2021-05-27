@@ -13,8 +13,8 @@ from subprocess import call
 
 random_socketname = f"/tmp/mpvsocket{secrets.token_hex(4)}"
 
-if not [key for key in sys.argv if "--player-operation-mode" in key]:
-    sys.argv.append("--player-operation-mode=pseudo-gui")
+# if not [key for key in sys.argv if "--player-operation-mode" in key]:
+#     sys.argv.append("--player-operation-mode=pseudo-gui")
 
 if not [key for key in sys.argv if "--input-ipc-server" in key]:
     sys.argv.append(f"--input-ipc-server={random_socketname}")
