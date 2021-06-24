@@ -211,43 +211,11 @@ ENVNAME="base"
 PYTHON="$CONDAROOT/bin/python"
 
 update_environment
-ctivate_environment
-mamba_install black
-mamba_install nodejs\>=10 conda-forge
-mamba_install jupyterlab\>=3 conda-forge
-mamba_install jupyterhub conda-forge
-mamba_install jupyterlab_code_formatter conda-forge
-mamba_install ipympl conda-forge
-mamba_install nbstripout conda-forge
-mamba_install pre-commit conda-forge
-mamba_install nbdime conda-forge
-mamba_install pynvim conda-forge
-mamba_install cython
-mamba_install numpy
-mamba_install scipy
-mamba_install sympy
-mamba_install pandas
-mamba_install pytables
-mamba_install tensorflow
-mamba_install scikit-learn
-mamba_install matplotlib
-mamba_install altair
-mamba_install plotly
-mamba_install pillow
-mamba_install pandoc
-mamba_install h5py
-mamba_install tqdm
-mamba_install line_profiler
-mamba_install pylint
-mamba_install pydocstyle
-mamba_install mypy
-mamba_install pep8
-mamba_install black
-mamba_install flake8
-mamba_install pyflakes
-mamba_install isort
-mamba_install yapf
-mamba_install pytest
-mamba_install twine
-pip_install jax
-pip_install jaxlib
+activate_environment
+mamba install -y -n base -c conda-forge black nodejs\>=10 jupyterlab\>=3 jupyterhub \
+  jupyterlab_code_formatter ipympl nbstripout pre-commit nbdime pynvim cython numpy \
+  scipy sympy pandas pytables tensorflow scikit-learn matplotlib altair plotly      \
+  pillow pandoc h5py tqdm line_profiler pylint pydocstyle mypy pep8 black flake8    \
+  pyflakes isort yapf pytest twine jupyterlab_vim pip wheel setuptools sphinx gdspy \
+  shapely bump2version lxml
+
