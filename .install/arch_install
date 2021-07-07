@@ -420,6 +420,8 @@ pacman_install fzf
 pacman_install rsync
 ## atool gives information about archives
 #pacman_install atool
+## glu: opengl binaries
+pacman_install glu
 ## zip
 pacman_install zip
 ## unzip
