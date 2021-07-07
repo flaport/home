@@ -12,3 +12,6 @@
 × multiplication (times)
 ² squared 2
 ³ cubed 3
+√ radical (square root)
+€ euro
+£ pound
