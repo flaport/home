@@ -681,6 +681,7 @@ nnoremap <leader>fL :BLines<CR>
 nnoremap <leader>fm :Marks<CR>
 nnoremap <leader>fM :Maps<CR>
 nnoremap <leader>ft :Tags<CR>
+nnoremap <leader>fi :CocCommand python.sortImports<CR>
 
 " autoformat code (requires neoclide/coc.nvim)
 xmap <leader>F <Plug>(coc-format-selected)
