@@ -1,0 +1,4 @@
+:set prompt "\ESC[1;35m\x03BB\ESC[m> "
+:set prompt-cont ""
+:set +t
+:set +m
