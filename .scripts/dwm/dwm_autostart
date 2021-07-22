@@ -54,13 +54,6 @@ log xrdb "$HOME/.Xresources"
 # export possible screenlayouts and set default one with `arandr`
 log default_screenlayout
 
-# conky dashboards (same one on three monitors)
-if ! pidof conky >/dev/null 2> /dev/null; then
-    log conky -d -x 60
-    log conky -d -x -1860
-    log conky -d -x -3780
-fi
-
 # set cursor speed
 # wrapped into loop, as sometimes this inexplicably stops working
 while true; do
@@ -109,4 +102,11 @@ if [ -f "$HOME/.cache/xcs/picom.conf" ]; then
     log picom --daemon --experimental-backends --config "$HOME/.cache/xcs/picom.conf"
 else
     log picom --daemon --experimental-backends
+fi
+
+# conky dashboards (same one on three monitors)
+if ! pidof conky >/dev/null 2> /dev/null; then
+    log conky -d -x 60
+    log conky -d -x -1860
+    log conky -d -x -3780
 fi
