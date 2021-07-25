@@ -14,6 +14,8 @@ def udev_event_received(device):
     subprocess.call(["notify-send", "monitor (dis)connected", "rearranging..."])
     subprocess.call(["max_screenlayout"])
     subprocess.call(["xset", "r", "rate", "200", "45"])
+    subprocess.Popen(["picom", "--daemon", "--experimental-backends"])
+
 
 if __name__ == "__main__":
     context = pyudev.Context()
