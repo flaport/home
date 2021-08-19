@@ -634,8 +634,8 @@ pacman_install xorg-xprop
 pacman_install xorg-xev
 ## get info on current active windows
 #pacman_install xorg-xdpyinfo
-## enable tap-to-click on touchpads:
-grep 'Option "Tapping" "on"' /usr/share/X11/xorg.conf.d/40-libinput.conf &> /dev/null || echo $password | sudo -S sed -i 's|^\([^M]*\)\(MatchIsTouchpad.*\)|\1\2\n\1Option "Tapping" "on"|g' /usr/share/X11/xorg.conf.d/40-libinput.conf
+## enable tap-to-click on some touchpads (probably a manual install works better):
+# grep 'Option "Tapping" "on"' /usr/share/X11/xorg.conf.d/40-libinput.conf &> /dev/null || echo $password | sudo -S sed -i 's|^\([^M]*\)\(MatchIsTouchpad.*\)|\1\2\n\1Option "Tapping" "on"|g' /usr/share/X11/xorg.conf.d/40-libinput.conf
 ## virtual x server
 pacman_install xorg-server-xvfb
 ## hide an inactive mouse
