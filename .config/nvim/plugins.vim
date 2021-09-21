@@ -48,10 +48,12 @@ Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
 Plug 'junegunn/goyo.vim', " distraction free writing.
 Plug 'kshenoy/vim-signature' " show marks in margin
 Plug 'lilydjwg/colorizer' " paint css colors with the real color
+Plug 'mattn/emmet-vim' " emmet for vim
 Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pedrohdz/vim-yaml-folds' " better folding for yaml files
+Plug 'posva/vim-vue' " vuejs syntax highlighting
 Plug 'shougo/context_filetype.vim' " completion from other opened files
 Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-commentary' " easy comment
