@@ -40,6 +40,7 @@ endif
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
 Plug 'bling/vim-bufferline' " bufferline integration for airline
+Plug 'cespare/vim-toml' " toml syntax highlighting
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
 Plug 'glench/vim-jinja2-syntax' " jinja2 support in vim
 Plug 'jpalardy/vim-slime' " better integration between text and terminal buffers
