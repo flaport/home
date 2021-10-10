@@ -828,6 +828,8 @@ pacman_install network-manager-applet
 pacman_install openconnect
 ## vpn: openvpn
 pacman_install openvpn
+## openvpn plugin for networkmanager
+pacman_install networkmanager-openvpn
 ## openvpn service that can be run in the background
 systemctl_create openvpn
 #systemctl_enable openvpn
