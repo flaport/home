@@ -9,12 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.11.07
-
-# Note: this script can be run as often as you like. It will not attempt to re-install
-#       any already installed program, making it a very fast way update some preferences
-#       or install additional packages by adding them to the list below.
-
+# last complete install: 2021.10.10
 
 ## checks
 #-------------------------------------------------------------------------------
@@ -34,156 +29,16 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
 fi
 
 
-## parse arguments
-#-------------------------------------------------------------------------------
-
-
-FORCE=0
-CONDAROOT="$HOME/.anaconda"
-while [ ! -z "$1" ]; do
-    if [ "$1" = "--dir" ]; then
-        CONDAROOT="$2"
-        shift 1
-    elif [ "$1" = "--force" ]; then
-        FORCE=1
-    else
-        >&2 echo "usage: python_install [--dir DIR] [--force]"
-        exit 1
-    fi
-    shift 1
-done
-
-## logging
-#-------------------------------------------------------------------------------
-
-mkdir -p "$HOME/.local/share"
-LOG="$HOME/.local/share/python_install.log"
-ERR="$HOME/.local/share/python_install_errors.log"
-printf "ANACONDA PACKAGE INSTALL\n\n\n" > "$LOG"
-printf "ANACONDA PACKAGE INSTALL\n\n\n" > "$ERR"
-
-
-## helpers
-#-------------------------------------------------------------------------------
-
-echo_success(){
-    if [ "$1" -ne 0 ]; then
-        printf "failed!\n"
-        printf "\nfailed!\n" >> "$LOG"
-        printf "\nfailed!\n" >> "$ERR"
-        return 1
-    fi
-
-    printf "success!\n"
-    printf "\nsuccess!\n" >> "$LOG"
-    printf "\nsuccess!\n" >> "$ERR"
-    return 0
-}
-
-create_environment(){
-    printf "[conda] create environment '%s'..." "$ENVNAME"
-    printf "\n\n\n[conda] create environment '%s'..." "$ENVNAME" >> "$LOG"
-    printf "\n\n\n[conda] create environment '%s'..." "$ENVNAME" >> "$ERR"
-    [ ! -z "$1" ] && local V="python=$1"
-    PYTHON="$CONDAROOT/envs/$ENVNAME/bin/python"
-    if [ -d "$CONDAROOT/envs/$ENVNAME" ]; then
-        echo "already exists."
-        return 0
-    fi
-    conda create -y -n "$ENVNAME" "$V" >> "$LOG" 2>> "$ERR"
-    exit_code=$?
-    echo_success $exit_code
-    return $exit_code
-}
-
-update_environment() {
-    printf "[mamba] update environment '%s'..." "$ENVNAME"
-    printf "\n\n\n[mamba] update environment '%s'..." "$ENVNAME" >> "$LOG"
-    printf "\n\n\n[mamba] update environment '%s'..." "$ENVNAME" >> "$ERR"
-    mamba update -y -n "$ENVNAME" --all >> "$LOG" 2>> "$ERR"
-    exit_code=$?
-    echo_success $exit_code
-    return $exit_code
-}
-
-activate_environment() {
-    printf "[conda] activate environment '%s'..." "$ENVNAME"
-    printf "\n\n\n[conda] activate environment '%s'..." "$ENVNAME" >> "$LOG"
-    printf "\n\n\n[conda] activate environment '%s'..." "$ENVNAME" >> "$ERR"
-    conda activate "$ENVNAME" >> "$LOG" 2>> "$ERR"
-    echo
-}
-
-mamba_install() {
-    printf "[mamba] install '%s' in environment '%s'..." "$1" "$ENVNAME"
-    printf "\n\n\n[mamba] install '%s' in environment '%s'...\n" "$1" "$ENVNAME" >> "$LOG"
-    printf "\n\n\n[mamba] install '%s' in environment '%s'...\n" "$1" "$ENVNAME" >> "$ERR"
-    local S=""
-    if [ $FORCE -eq 0 ]; then
-        if $PYTHON -c "import $1" &> /dev/null; then
-            echo "already installed."
-            return 0
-        fi
-        local S="-S"
-    fi
-    if [ ! -z "$2" ]; then
-        local CHANNEL="-c $2"
-    fi
-    printf "mamba install %s %s\n" "$S" "$1" >> "$LOG"
-    printf "mamba install %s %s\n" "$S" "$1" >> "$ERR"
-    mamba install -y "$S" -n "$ENVNAME" "$CHANNEL" "$1" >> "$LOG" 2>> "$ERR"
-    exit_code=$?
-    echo_success $exit_code
-    return $exit_code
-}
-
-pip_install() {
-    printf "[ pip ] install '%s' in environment '%s'..." "$1" "$ENVNAME"
-    printf "\n\n\n[ pip ] install '%s' in environment '%s'...\n" "$1" "$ENVNAME" >> "$LOG"
-    printf "\n\n\n[ pip ] install '%s' in environment '%s'...\n" "$1" "$ENVNAME" >> "$ERR"
-    local S="--upgrade"
-    if [ $FORCE -eq 0 ]; then
-        if $PYTHON -c "import $1" &> /dev/null; then
-            echo "already installed."
-            return 0
-        fi
-        local S=""
-    fi
-    printf "pip install %s %s\n" "$S" "$1" >> "$LOG"
-    printf "pip install %s %s\n" "$S" "$1" >> "$ERR"
-    if [ ! -z "$S" ]; then
-        $PYTHON -m pip install "$S" "$1" >> "$LOG" 2>> "$ERR"
-    else
-        $PYTHON -m pip install "$1" >> "$LOG" 2>> "$ERR"
-    fi
-    exit_code=$?
-    echo_success $exit_code
-    return $exit_code
-}
-
-labextension_install(){
-    JUPYTER="$CONDAROOT/bin/jupyter"
-    printf "[ lab ] install extension: %s..." "$1"
-    printf "\n\n\n[ lab ] install extension: %s..." "$1" >> "$LOG"
-    printf "\n\n\n[ lab ] install extension: %s..." "$1" >> "$ERR"
-    if $JUPYTER labextension check "$1" >> "$LOG" 2>> "$ERR"; then
-        echo "already installed"
-        return 0
-    fi
-    $JUPYTER labextension install "$1" >> "$LOG" 2>> "$ERR"
-    exit_code=$?
-    echo_success $exit_code
-    return $exit_code
-}
-
 ## anaconda python
 #-------------------------------------------------------------------------------
+
+CONDAROOT="$HOME/.anaconda"
 
 if [ ! -d "$CONDAROOT" ]; then
     printf "installing anaconda python at %s... " "$CONDAROOT"
     cd "$HOME" || exit 1
-    curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output /tmp/miniconda.sh --silent
-    bash /tmp/miniconda.sh -b -p "$CONDAROOT" >> "$LOG" 2>> "$ERR"
+    curl -L https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh --output /tmp/miniconda.sh --silent
+    bash /tmp/miniconda.sh -b -p "$CONDAROOT"
     rm /tmp/miniconda.sh
     echo "installed."
 fi
@@ -198,20 +53,11 @@ else
     fi
 fi
 unset __conda_setup
-if ! conda list -n base | grep mamba > /dev/null 2>&1; then
-    printf "[conda] install 'mamba' in environment 'base'..."
-    conda install -y -n base -c conda-forge mamba >/dev/null 2>&1
-fi
 
 
 ## base environment
 #-------------------------------------------------------------------------------
 
-ENVNAME="base"
-PYTHON="$CONDAROOT/bin/python"
-
-update_environment
-activate_environment
 mamba install -y -n base -c conda-forge black nodejs\>=10 jupyterlab\>=3 jupyterhub \
   jupyterlab_code_formatter ipympl nbstripout pre-commit nbdime pynvim cython numpy \
   scipy sympy pandas pytables tensorflow scikit-learn matplotlib altair plotly      \

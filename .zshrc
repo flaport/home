@@ -166,6 +166,10 @@ man() { # colored man pages:
 
 # conda (scientific python distribution and environments)
 sourcefile "$HOME/.anaconda/etc/profile.d/conda.sh"
+if [ -f "$HOME/.anaconda/etc/profile.d/mamba.sh" ]; then
+  source "$HOME/.anaconda/etc/profile.d/mamba.sh"
+  alias conda=mamba
+fi
 
 # travis (continuous integration)
 sourcefile "$HOME/.travis/travis.sh"
