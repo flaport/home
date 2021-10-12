@@ -62,6 +62,6 @@ mamba install -y -n base -c conda-forge black nodejs\>=10 jupyterlab\>=3 jupyter
   jupyterlab_code_formatter ipympl nbstripout pre-commit nbdime pynvim cython numpy \
   scipy sympy pandas pytables tensorflow scikit-learn matplotlib altair plotly      \
   pillow pandoc h5py tqdm line_profiler pylint pydocstyle mypy pep8 black flake8    \
-  pyflakes isort yapf pytest twine jupyterlab_vim pip wheel setuptools sphinx gdspy \
+  pyflakes isort yapf pytest twine jupyterlab_vim build pip wheel setuptools sphinx gdspy \
   shapely bump2version lxml
 
