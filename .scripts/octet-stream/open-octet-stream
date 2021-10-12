@@ -24,16 +24,16 @@ elif ext in (".fsp", ".icp", ".lms", ".ldev"):
 
     if ext == ".fsp":
         notify(f"opening FDTD Solutions...", filename)
-        exit(subprocess.call([f"/opt/lumerical/2019b/bin/fdtd-solutions", filename]))
+        exit(subprocess.call([f"/opt/lumerical/{version}/bin/fdtd-solutions-app", filename]))
 
     if ext == ".lms":
         notify(f"opening Mode Solutions...", filename)
-        exit(subprocess.call([f"/opt/lumerical/{version}/bin/mode-solutions", "-e", filename]))
+        exit(subprocess.call([f"/opt/lumerical/{version}/bin/mode-solutions-app", filename]))
 
     if ext == ".icp":
         notify(f"opening Lumerical Interconnect...", filename)
-        exit(subprocess.call([f"/opt/lumerical/2019b/bin/interconnect-app", "-e", filename]))
+        exit(subprocess.call([f"/opt/lumerical/{version}/bin/interconnect-app", filename]))
 
     if ext == ".ldev":
         notify(f"opening Lumerical Device...", filename)
-        exit(subprocess.call([f"/opt/lumerical/{version}/bin/device", "-e", filename]))
+        exit(subprocess.call([f"/opt/lumerical/{version}/bin/device-app", filename]))
