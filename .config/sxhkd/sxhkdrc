@@ -133,11 +133,11 @@ super + O
 
 # dmenu choose monitor layout
 super + p
-    dmenu_screenlayout
+    pavucontrol
 
 # default screen layout
 super + P
-  pavucontrol
+    dmenu_screenlayout
 
 # same screen layout
 super + control + p
