@@ -54,7 +54,7 @@ x-scheme-handler/spice=org.remmina.Remmina.desktop
 x-scheme-handler/vnc=org.remmina.Remmina.desktop
 
 [Added Associations]
-application/octet-stream=fdtd-solutions.desktop;klayout.desktop;interconnect.desktop;open-octet-stream.desktop
+application/octet-stream=fdtd-solutions.desktop;mode-solutions.desktop;klayout.desktop;interconnect.desktop;open-octet-stream.desktop
 application/pdf=org.pwmt.zathura.desktop
 application/pkix-cert=nvim.desktop
 application/vnd.ms-visio.drawing.main+xml=libreoffice-draw.desktop;
