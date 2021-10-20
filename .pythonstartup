@@ -31,7 +31,10 @@ class LazyModule:
     def _import(self):
         import importlib
 
-        module = importlib.import_module(self.fullname)
+        try:
+            module = importlib.import_module(self.fullname)
+        except ImportError:
+            module = None
         globals()[self.name] = module
         return module
 

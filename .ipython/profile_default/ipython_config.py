@@ -160,7 +160,7 @@ c.TerminalIPythonApp.display_banner = False
 #  it is not applied if there are no more arguments on the line, and '2' for
 #  'full' autocall, where all callable objects are automatically called (even if
 #  no arguments are present).
-c.InteractiveShell.autocall = 1
+c.InteractiveShell.autocall = 2
 
 ## Autoindent IPython code entered interactively.
 c.InteractiveShell.autoindent = True
@@ -530,7 +530,7 @@ c.PlainTextFormatter.pprint = True
 ## Enable unicode completions, e.g. \alpha<tab> . Includes completion of latex
 #  commands, unicode names, and expanding unicode characters back to latex
 #  commands.
-#c.Completer.backslash_combining_completions = True
+c.Completer.backslash_combining_completions = True
 
 ## Enable debug for the Completer. Mostly print extra information for
 #  experimental jedi integration.
