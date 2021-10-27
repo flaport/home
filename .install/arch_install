@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2020.05.03
+# last complete install: 2021.10.21
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -604,7 +604,7 @@ pacman_install android-file-transfer # android access
 ## access ssh file system
 pacman_install sshfs
 ## access mac-formatted drives (HFS+)
-yay_install hfsprogs
+# yay_install hfsprogs
 ## testdisk to figure out location HFS+ partition wrapped in 'Apple Core Storage':
 pacman_install testdisk
 ## data-at-rest tool: easy-to-use stacked filesystem encryption tool
@@ -835,6 +835,8 @@ systemctl_create openvpn
 #systemctl_enable openvpn
 ## ssh (client and server)
 pacman_install openssh
+## mosh (ssh client for connections with high latency)
+pacman_install mosh
 ## allow X-forwarding for sshd:
 echo $password | sudo -S sed -i 's|^.*X11Forwarding.*|X11Forwarding yes|g' /etc/ssh/sshd_config >> "$LOG" 2>> "$ERR"
 systemctl_enable sshd
@@ -1089,7 +1091,7 @@ pacman_install blueman
 ## PyCharm Community Edition: python IDE
 # pacman_install pycharm-community-edition
 ## PyCharm Professional: python IDE
-# yay_install pycharm-professional
+#yay_install pycharm-professional
 ## Fix to make PyCharm work in most window managers (like my dwm fork)
 #grep _JAVA_AWT_WM_NONREPARENTING /etc/environment &> /dev/null || echo "_JAVA_AWT_WM_NONREPARENTING=1" | sudo tee -a /etc/environment > /dev/null 2>> "$ERR"
 ## QT Whatsapp Web with tray Icon
@@ -1189,10 +1191,10 @@ pacman_install ipython
 #yay_install swift-language-git
 
 ## Haskell programming language (glasgow haskell compiler):
-pacman_install ghc
-pacman_install ghc-static
-pacman_install stack
-pacman_install haskell-base-prelude
+#pacman_install ghc
+#pacman_install ghc-static
+#pacman_install stack
+#pacman_install haskell-base-prelude
 
 ## Scientific computing with octave (Matlab alternative)
 #pacman_install octave
@@ -1466,25 +1468,25 @@ echo $password | chsh -s /usr/bin/zsh >> "$LOG" 2>> "$ERR"
 ## autojump extension for bash/zsh/fish
 mkdir -p $HOME/.cache
 rm -rf $HOME/.cache/autojump
-git clone https://github.com/wting/autojump $HOME/.cache/autojump 2>> "$LOG" >> "$ERR"
-cd $HOME/.cache/autojump 2>> "$LOG" >> "$ERR"
-python install.py -d $HOME/.config/autojump 2>> "$LOG" >> "$ERR"
-sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $HOME/.config/autojump/bin/autojump >> "$LOG" 2>> "$ERR"
+git clone https://github.com/wting/autojump $HOME/.cache/autojump
+cd $HOME/.cache/autojump
+python install.py -d $HOME/.config/autojump
+sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $HOME/.config/autojump/bin/autojump
 ln -sf $HOME/.config/autojump/bin/autojump $HOME/.local/bin
 
 ## stderred extension for bash/zsh: show stderr messages in red:
 rm -rf $HOME/.config/stderred
-git clone https://github.com/sickill/stderred $HOME/.config/stderred 2>> "$LOG" >> "$ERR"
-cd $HOME/.config/stderred 2>> "$LOG" >> "$ERR"
-make 2>> "$LOG" >> "$ERR"
+git clone https://github.com/sickill/stderred $HOME/.config/stderred
+cd $HOME/.config/stderred
+make
 
 ## fish-like autosuggestions for zsh:
 rm -rf $HOME/.config/zsh/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/zsh-autosuggestions 2>> "$LOG" >> "$ERR"
+git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/zsh-autosuggestions
 
 ## syntax highlighting for zsh:
 rm -rf $HOME/.config/zsh/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.config/zsh/zsh-syntax-highlighting 2>> "$LOG" >> "$ERR"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.config/zsh/zsh-syntax-highlighting
 
 ## zsh package manager (i do not really recommend this):
 #yay_install oh-my-zsh-git
