@@ -1,6 +1,6 @@
 [%General]
 author=Eliver Lara
-comment=A dark theme created using the awesome Nord color pallete. 
+comment=A dark theme created using the awesome Nord color pallete.
 x11drag=menubar_and_primary_toolbar
 alt_mnemonic=false
 left_tabs=false
@@ -17,7 +17,7 @@ tooltip_shadow_depth=6
 splitter_width=4
 scroll_width=6
 scroll_arrows=true
-scroll_min_extent=60
+scroll_min_extent=16
 slider_width=2
 slider_handle_width=18
 slider_handle_length=18
@@ -38,7 +38,7 @@ merge_menubar_with_toolbar=false
 small_icon_size=16
 large_icon_size=32
 button_icon_size=16
-toolbar_icon_size=22
+toolbar_icon_size=font
 combo_as_lineedit=false
 animate_states=false
 button_contents_shift=false
@@ -48,8 +48,8 @@ combo_focus_rect=true
 groupbox_top_label=false
 inline_spin_indicators=false
 joined_inactive_tabs=false
-layout_spacing=6
-layout_margin=9
+layout_spacing=2
+layout_margin=2
 scrollbar_in_view=false
 transient_scrollbar=false
 transient_groove=false
@@ -71,6 +71,7 @@ intensity=1.00
 saturation=1.00
 click_behavior=0
 shadowless_popup=false
+drag_from_buttons=false
 
 [GeneralColors]
 window.color=#434c5e
@@ -116,6 +117,8 @@ opaque_colors=false
 scroll_jump_workaround=true
 centered_forms=false
 kinetic_scrolling=false
+noninteger_translucency=false
+style_vertical_toolbars=false
 
 [PanelButtonCommand]
 frame=true
