@@ -4,11 +4,17 @@ import sys
 import subprocess
 
 def notify(title, msg=""):
+    print(f"{title}: {msg}")
     subprocess.check_call(["notify-send", title, msg])
 
 try:
     filename = os.path.abspath(os.path.expanduser(sys.argv[1]))
 except IndexError:
+    notify(f"Failed to open.", "No file given")
+    exit(1)
+
+if not os.path.exists(filename):
+    notify(f"File does not exist!", f"{filename} not found.")
     exit(1)
 
 _, ext = os.path.splitext(filename.lower())
@@ -20,7 +26,12 @@ elif ext in (".fsp", ".icp", ".lms", ".ldev"):
     if not os.path.isdir("/opt/lumerical"):
         notify(f"Lumerical not found", filename)
         exit(1)
-    version = sorted(os.listdir("/opt/lumerical"), reverse=True)[0]
+    try:
+        version = sorted(os.listdir("/opt/lumerical"), reverse=True)[0]
+    except IndexError:
+        notify(f"Failed to open {filename}.", "Lumerical not installed.")
+        exit(1)
+
 
     if ext == ".fsp":
         notify(f"opening FDTD Solutions...", filename)
