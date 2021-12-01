@@ -82,7 +82,7 @@
   "yaml.format.printWidth": 88,
   "yaml.completion": true,
   "yaml.schemas": {
-    "https://json.schemastore.org/gitlab-ci.json": [".gitlab-ci.yml", ".gitlab-ci.yaml"],
+    "https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json": [".gitlab-ci.yml", ".gitlab-ci.yaml"],
     "schema/pic-schema.json": ["*.pic.yaml", "*.pic.yml"]
   },
   "yaml.schemaStore.enable": true
