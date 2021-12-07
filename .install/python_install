@@ -63,4 +63,4 @@ mamba install -y -n base -c conda-forge black nodejs\>=10 jupyterlab\>=3 jupyter
   scipy sympy pandas pytables tensorflow scikit-learn matplotlib altair plotly      \
   pillow pandoc h5py tqdm line_profiler pylint pydocstyle mypy pep8 black flake8    \
   pyflakes isort yapf pytest twine jupyterlab_vim build pip wheel setuptools sphinx gdspy \
-  shapely bump2version lxml grayskull bokeh
+  shapely bump2version lxml grayskull bokeh jupyterlab-lsp pyright python-lsp-server
