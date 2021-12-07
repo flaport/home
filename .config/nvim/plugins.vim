@@ -44,7 +44,6 @@ Plug 'cespare/vim-toml' " toml syntax highlighting
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
 Plug 'glench/vim-jinja2-syntax' " jinja2 support in vim
 Plug 'jpalardy/vim-slime' " better integration between text and terminal buffers
-Plug 'jremmen/vim-ripgrep' " better grep command for vim
 Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
 Plug 'junegunn/goyo.vim', " distraction free writing.
 Plug 'kshenoy/vim-signature' " show marks in margin
