@@ -1,60 +1,60 @@
-import os
-import sys
-import shutil as sh
-from shutil import move, move as mv, copy2 as copy, copy2 as cp
-from contextlib import contextmanager
-
-
-@contextmanager
-def nostdout():
-    oldstdout, oldstderr = sys.stdout, sys.stderr
-    file = open(os.devnull, "w")
-    try:
-        sys.stdout, sys.stderr = file, file
-        yield
-    finally:
-        sys.stdout, sys.stderr = oldstdout, oldstderr
-        file.close()
-
-
-class LazyModule:
-    """Import module on first attribute access
-
-    - for faster REPL loadtimes
-    - to prevent ImportErrors
-    """
-
-    def __init__(self, name="", fullname=""):
-        self.name = name
-        self.fullname = fullname
-
-    def _import(self):
-        import importlib
-
-        try:
-            module = importlib.import_module(self.fullname)
-        except ImportError:
-            module = None
-        globals()[self.name] = module
-        return module
-
-    def __getattr__(self, attr):
-        module = self._import()
-        attr = getattr(module, attr)
-        return attr
-
-    def __repr__(self):
-        module = self._import()
-        return repr(module)
-
-    def __str__(self):
-        module = self._import()
-        return str(module)
-
-
-np = LazyModule(name="np", fullname="numpy")
-sp = LazyModule(name="sp", fullname="scipy")
-nn = LazyModule(name="nn", fullname="torch.nn")
-torch = LazyModule(name="torch", fullname="torch")
-F = LazyModule(name="F", fullname="torch.nn.functional")
-plt = LazyModule(name="plt", fullname="matplotlib.pyplot")
+# import os
+# import sys
+# import shutil as sh
+# from shutil import move, move as mv, copy2 as copy, copy2 as cp
+# from contextlib import contextmanager
+#
+#
+# @contextmanager
+# def nostdout():
+#     oldstdout, oldstderr = sys.stdout, sys.stderr
+#     file = open(os.devnull, "w")
+#     try:
+#         sys.stdout, sys.stderr = file, file
+#         yield
+#     finally:
+#         sys.stdout, sys.stderr = oldstdout, oldstderr
+#         file.close()
+#
+#
+# class LazyModule:
+#     """Import module on first attribute access
+#
+#     - for faster REPL loadtimes
+#     - to prevent ImportErrors
+#     """
+#
+#     def __init__(self, name="", fullname=""):
+#         self.name = name
+#         self.fullname = fullname
+#
+#     def _import(self):
+#         import importlib
+#
+#         try:
+#             module = importlib.import_module(self.fullname)
+#         except ImportError:
+#             module = None
+#         globals()[self.name] = module
+#         return module
+#
+#     def __getattr__(self, attr):
+#         module = self._import()
+#         attr = getattr(module, attr)
+#         return attr
+#
+#     def __repr__(self):
+#         module = self._import()
+#         return repr(module)
+#
+#     def __str__(self):
+#         module = self._import()
+#         return str(module)
+#
+#
+# np = LazyModule(name="np", fullname="numpy")
+# sp = LazyModule(name="sp", fullname="scipy")
+# nn = LazyModule(name="nn", fullname="torch.nn")
+# torch = LazyModule(name="torch", fullname="torch")
+# F = LazyModule(name="F", fullname="torch.nn.functional")
+# plt = LazyModule(name="plt", fullname="matplotlib.pyplot")
