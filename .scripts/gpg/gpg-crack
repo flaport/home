@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# try all word in words.txt
+for word in $(cat wordlist.txt); do
+
+  # try to decrypt with word
+  echo "${word}" | gpg --decrypt --pinentry-mode loopback --passphrase-fd 0 --batch testfile.asc
+
+  # if decrypt is successfull; stop
+  if [ $? -eq 0 ]; then
+
+    echo "GPG passphrase is: ${word}";
+    exit 0;
+
+  fi
+
+done;
+
+exit 1;

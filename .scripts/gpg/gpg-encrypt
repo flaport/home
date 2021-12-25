@@ -38,7 +38,6 @@ def encrypt(content, keys):
     command = ["gpg", "--always-trust", "--encrypt", "--armor"]
     for key in keys:
         command += ["--recipient", key]
-    print(" ".join(command))
     p = subprocess.Popen(["printf", content], stdout=subprocess.PIPE).stdout
     encrypted = subprocess.check_output(command, stdin=p).decode().strip()
     return encrypted
