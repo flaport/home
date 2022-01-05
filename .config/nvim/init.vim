@@ -125,7 +125,7 @@ hi FoldColumn ctermbg=NONE
 " set wildmode=longest,longest,full
 
 " enable syntax highlighting
-syntax enable
+" syntax enable
 
 " disable netrw banner
 let g:netrw_banner=0
