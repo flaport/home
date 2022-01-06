@@ -14,12 +14,9 @@ let g:colors_name="xresources"
 
 " Treesitting related (code highlighting related) ----------------------------
 " Strong Purple Magenta 13
-hi Constant	ctermfg=13 " TSConstant
-" hi link Character Constant " TSCharacter
-" hi link String Constant " TSString TSLiteral
-" hi link Boolean Constant " Boolean TSBoolean
-" hi link Number Constant " TSNumber
-" hi link Float Constant " TSFloat
+hi Function cterm=bold ctermfg=13 " TSFunction TSMethod
+" Weak Purple Magenta 5
+hi Special ctermfg=5 " SpecialChar TSStringSpecial TSVariableBuiltin TSFuncBuiltin
 
 " Strong Cyan Aqua 14
 hi TSKeywordFunction cterm=bold	ctermfg=14 " TSKeywordFunction
@@ -30,9 +27,13 @@ hi PreProc ctermfg=6 " TSAnnotation TSAttribute
 " hi link Include PreProc " TSInclude TSNamespace
 
 " Strong Green 10
-hi Function cterm=bold ctermfg=10 " TSFunction TSMethod
+hi Constant	ctermfg=10 " TSConstant
+" hi link Character Constant " TSCharacter
+" hi link String Constant " TSString TSLiteral
+" hi link Boolean Constant " Boolean TSBoolean
+" hi link Number Constant " TSNumber
+" hi link Float Constant " TSFloat
 " Weak Green 2
-hi Special ctermfg=2 " SpecialChar TSStringSpecial TSVariableBuiltin TSFuncBuiltin
 
 " Strong Blue 12
 hi Identifier cterm=none ctermfg=12 " TSParameter
@@ -51,9 +52,8 @@ hi Statement cterm=bold	ctermfg=11
 
 " Strong Foregound fg 15
 " Weak Foregound fg 7
-" hi Special ctermfg=7 " SpecialChar TSStringSpecial TSVariableBuiltin TSFuncBuiltin
 hi Delimiter cterm=bold ctermfg=7 " TSDelimiter TSPunctBracket TSPunctSpecial
-hi Comment	ctermfg=7 " TSComment
+" hi Comment	ctermfg=7 " TSComment
 
 
 " Quickscope related -------------------------------
