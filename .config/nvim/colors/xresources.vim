@@ -65,14 +65,15 @@ hi Folded   ctermfg=7 ctermbg=None cterm=bold
 " CocHighlightText weaker bg
 hi CursorColumn ctermbg=8
 " CocFloat suggestion menu window
-hi Pmenu ctermfg=15 ctermbg=5
-hi PmenuSel ctermfg=7 ctermbg=0
+hi Pmenu ctermfg=15 ctermbg=8
+hi PmenuSel ctermfg=15 ctermbg=5
 " Coc InfoSign and HintSign
-hi CocWarningSign ctermfg=11
-hi CocInfoSign ctermfg=10
-hi CocHintSign ctermfg=12
+hi CocWarningSign ctermfg=3 cterm=italic
+hi CocInfoSign ctermfg=5 cterm=italic
+hi CocHintSign ctermfg=4 cterm=italic
 " CocUnused highlight
 hi Conceal ctermfg=11 ctermbg=8
+
 
 " TUI related ----------------------------
 " Search
