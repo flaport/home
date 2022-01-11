@@ -188,6 +188,7 @@ sourcefile $HOME/.scripts/autojump/autojump-improved.zsh
 
 # zsh autosuggestions (like in the fish shell)
 sourcefile $HOME/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+typeset -g ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=7'
 bindkey '^p' autosuggest-accept #-execute
 bindkey '^n' autosuggest-accept #-execute
 bindkey '^o' autosuggest-toggle # enable/disable autosuggest
