@@ -1,0 +1,58 @@
+#!/usr/bin/python
+
+from functools import lru_cache
+from typing import List
+
+import requests
+from lxml import html
+
+
+@lru_cache(maxsize=None)
+def levenshtein_distance(a: str, b: str) -> int:
+    if len(a) == 0:
+        return len(b)
+    elif len(b) == 0:
+        return len(a)
+    elif a[0] == b[0]:
+        return levenshtein_distance(a[1:], b[1:])
+    else:
+        return 1 + min(
+            levenshtein_distance(a[1:], b),
+            levenshtein_distance(a, b[1:]),
+            levenshtein_distance(a[1:], b[1:]),
+        )
+
+
+@lru_cache(maxsize=None)
+def _options(letter: str) -> List[str]:
+    url = f"https://archive.archlinux.org/packages/{letter}"
+    response = requests.get(url)
+    if not response.ok:
+        return []
+    doc = html.fromstring(response.text)
+    opts = [l[2][:-1] for l in doc.iterlinks()]
+    opts = [o for o in opts if '.' not in o]
+    return opts
+
+
+def options(query: str) -> List[str]:
+    query = query.lower().replace(" ", "-").replace("_", "-")
+    letter = query[0]
+    return _options(letter)
+
+
+if __name__ == "__main__":
+    opts: List[str] = []
+    query: str = ''
+    while not opts or levenshtein_distance(opts[0], query) > 0:
+        print("-----------")
+        for opt in opts[:5]:
+            print(f" - {opt}")
+        print("> ", end="")
+        query = input()
+
+        opts = options(query)
+        dists = {opt: levenshtein_distance(query, opt) for opt in options(query)}
+        dists = {k: v for k, v in sorted(dists.items(), key=lambda x: x[1])}
+        opts = [k for i, k in enumerate(dists) if i < 5]
+    print(opts)
