@@ -39,7 +39,6 @@ endif
 
 call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
-Plug 'bling/vim-bufferline' " bufferline integration for airline
 Plug 'cespare/vim-toml' " toml syntax highlighting
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
 Plug 'glench/vim-jinja2-syntax' " jinja2 support in vim
@@ -62,11 +61,12 @@ Plug 'tpope/vim-repeat' " easily repeat plugin commands with .
 Plug 'tpope/vim-speeddating' " increase date with <C-A>
 Plug 'tpope/vim-surround' " easily surround word with quotes or tags
 Plug 'valloric/MatchTagAlways' " highlight matching html tags
-Plug 'vim-airline/vim-airline' " better status bar
 Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'vimwiki/vimwiki' " note taking in vim
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " Better syntax highlighting
+Plug 'nvim-lualine/lualine.nvim' " blazing fast status line
+Plug 'kyazdani42/nvim-web-devicons' " Icons in statusline
 
 call system('ipython -c "import sys"')
 if !v:shell_error
@@ -237,15 +237,103 @@ let g:markdown_syntax_conceal = 1
 " highlight 100 lines
 let g:markdown_minlines = 100
 
+" nvim-lualine/lualine.nvim ----------------------
 
-" vim-airline/vim-airline ------------------------
+lua <<EOF
+require'lualine'.setup {
+	options = {
+		icons_enabled = true,
+		theme = "gruvbox",
+		-- component_separators = { left = "", right = "" },
+		-- section_separators = { left = "", right = "" },
+		component_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
+		disabled_filetypes = {},
+		always_divide_middle = true,
+	},
+	sections = {
+		lualine_a = { "mode" },
+		lualine_b = {
+			"branch",
+			-- { "diff", colored = false },
+			{
+				"diagnostics",
+				colored = false,
+			},
+		},
+		lualine_c = {
+			{
+				"buffers",
+				show_modified_status = false,
+				max_length = vim.o.columns * 2 / 3,
+				buffers_color = {
+					-- Same values as the general color option can be used here.
+					active = "lualine_a_normal", -- Color for active buffer.
+					inactive = "lualine_c_normal", -- Color for inactive buffer.
+				},
+			},
+		},
+		lualine_x = { "encoding", "fileformat", "filetype" },
+		lualine_y = { "progress" },
+		lualine_z = { "location" },
+	},
+	inactive_sections = {
+		lualine_a = {},
+		lualine_b = {},
+		lualine_c = { "filename" },
+		lualine_x = { "location" },
+		lualine_y = {},
+		lualine_z = {},
+	},
+	tabline = {},
+	extensions = { "nvim-tree" },
+})
+    -- custom theme
+    local custom_gruvbox = require("lualine.themes.gruvbox")
+    -- normal mode
+    custom_gruvbox.normal.a.fg = 0
+    custom_gruvbox.normal.a.bg = 10
+    custom_gruvbox.normal.b.fg = 15
+    custom_gruvbox.normal.b.bg = 8
+    custom_gruvbox.normal.c.fg = 15
+    custom_gruvbox.normal.c.bg = 0
+    -- insert mode
+    custom_gruvbox.insert.a.fg = 0
+    custom_gruvbox.insert.a.bg = 9
+    custom_gruvbox.insert.b.fg = 15
+    custom_gruvbox.insert.b.bg = 8
+    custom_gruvbox.insert.c.fg = 15
+    custom_gruvbox.insert.c.bg = 0
+    -- visual mode
+    custom_gruvbox.visual.a.fg = 0
+    custom_gruvbox.visual.a.bg = 11
+    custom_gruvbox.visual.b.fg = 15
+    custom_gruvbox.visual.b.bg = 8
+    custom_gruvbox.visual.c.fg = 15
+    custom_gruvbox.visual.c.bg = 0
+    -- replace mode
+    custom_gruvbox.replace.a.fg = 0
+    custom_gruvbox.replace.a.bg = 15
+    custom_gruvbox.replace.b.fg = 15
+    custom_gruvbox.replace.b.bg = 8
+    custom_gruvbox.replace.c.fg = 15
+    custom_gruvbox.replace.c.bg = 0
+    -- command mode
+    custom_gruvbox.command.a.fg = 0
+    custom_gruvbox.command.a.bg = 13
+    custom_gruvbox.command.b.fg = 15
+    custom_gruvbox.command.b.bg = 8
+    custom_gruvbox.command.c.fg = 15
+    custom_gruvbox.command.c.bg = 0
+    -- inactive mode
+    custom_gruvbox.inactive.a.fg = 0
+    custom_gruvbox.inactive.a.bg = 2
+    custom_gruvbox.inactive.b.fg = 0
+    custom_gruvbox.inactive.b.bg = 7
+    custom_gruvbox.inactive.c.fg = 15
+    custom_gruvbox.inactive.c.bg = 8
+EOF
 
-" enable powerline fonts for vim airline
-let g:airline_powerline_fonts = 1
-let g:airline_theme="xresources_airline"
-let g:airline#extensions#bufferline#enabled = 1
-let g:airline#extensions#bufferline#overwrite_variables = 1
-let g:bufferline_echo = 0
 
 " vimwiki/vimwiki --------------------------------
 
