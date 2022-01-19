@@ -287,7 +287,7 @@ require'lualine'.setup {
 	},
 	tabline = {},
 	extensions = { "nvim-tree" },
-})
+}
     -- custom theme
     local custom_gruvbox = require("lualine.themes.gruvbox")
     -- normal mode
