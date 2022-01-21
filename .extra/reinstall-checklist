@@ -1,0 +1,9 @@
+# Reinstall checklist
+
+when reinstalling the root partition (which I sometimes do), it's useful to
+copy/check for custom files in there. This is a checklist to aid my own memory:
+
+1. /etc/fstab
+2. /etc/pacman.conf
+3. /etc/systemd/system/*.service (custom services?)
+4. ...
