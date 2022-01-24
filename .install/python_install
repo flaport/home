@@ -42,27 +42,23 @@ if [ ! -d "$CONDAROOT" ]; then
     rm /tmp/miniconda.sh
     echo "installed."
 fi
-__conda_setup="$("$CONDAROOT/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$CONDAROOT/etc/profile.d/conda.sh" ]; then
-        source "$CONDAROOT/etc/profile.d/conda.sh"
-    else
-        export PATH="$CONDAROOT/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+
+source "$CONDAROOT/etc/profile.d/conda.sh"
 
 
 ## base environment
 #-------------------------------------------------------------------------------
 
-mamba install -y -n base -c conda-forge black nodejs\>=10 jupyterlab\>=3 jupyterhub \
-  jupyterlab_code_formatter ipympl nbstripout pre-commit nbdime pynvim cython numpy \
-  scipy sympy pandas pytables tensorflow scikit-learn matplotlib altair plotly      \
-  pillow pandoc h5py tqdm line_profiler pylint pydocstyle mypy pep8 black flake8    \
-  pyflakes isort yapf pytest twine jupyterlab_vim build pip wheel setuptools sphinx gdspy \
-  shapely bump2version lxml grayskull bokeh jupyterlab-lsp pyright nbdev
+mamba install -y -n base altair black bokeh build bump2version ca-certificates certifi \
+coverage cython dvc-s3 fastcore fire flake8 flax gdspy git graphviz grayskull \
+greenlet h5py ipykernel ipympl ipywidgets isort jax jaxlib jinja2 jupyterhub \
+jupyterlab jupyterlab-lsp jupyterlab_code_formatter jupyterlab_vim line_profiler \
+lxml make matplotlib mypy natsort nbdev nbdime nbsphinx nbstripout networkx nodejs \
+numpy openpyxl openssh openssl pandas pandoc papermill patch pep8 pillow pip plotly \
+pre-commit pybind11 pydocstyle pyflakes pygraphviz pylint pynvim pyright pytables \
+pytest pytest-order pytest-timeout python python-graphviz pyyaml scikit-learn scipy \
+setuptools shapely sphinx sphinx-autodoc-typehints sphinx_rtd_theme suitesparse \
+sympy tensorflow tqdm twine watchdog wheel xlrd xmltodict yapf
 
-conda run -n base --no-capture-output jupyter labextension install @arbennett/base16-nord
+conda run -n base python -m ipykernel install --user --name base --display-name base
+conda run -n base jupyter labextension install @arbennett/base16-nord
