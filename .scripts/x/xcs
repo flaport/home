@@ -353,8 +353,8 @@ def write_alacritty_config(xresources, filename="~/.cache/alacritty/alacritty.ym
                     normal, bright, dim = False, True, False
                 if "  dim:" in line:
                     normal, bright, dim = False, False, True
-                if "background_opacity:" in line:
-                    line = f"background_opacity: {xresources['alpha']:.2f}\n"
+                if "  opacity:" in line:
+                    line = f"  opacity: {xresources['alpha']:.2f}\n"
                 elif "    background:" in line:
                     line = f"    background: '{xresources['color0']}'\n"
                 elif "    foreground:" in line:

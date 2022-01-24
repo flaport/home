@@ -24,6 +24,7 @@ window:
     instance: Alacritty
     general: Alacritty
   gtk_theme_variant: None
+  opacity: 0.90
 
 scrolling:
   history: 10000
@@ -51,7 +52,6 @@ font:
     y: 0
   use_thin_strokes: false
 
-background_opacity: 0.90
 
 colors:
   primary:
