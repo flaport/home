@@ -60,5 +60,5 @@ pytest pytest-order pytest-timeout python python-graphviz pyyaml scikit-learn sc
 setuptools shapely sphinx sphinx-autodoc-typehints sphinx_rtd_theme suitesparse \
 sympy tensorflow tqdm twine watchdog wheel xlrd xmltodict yapf
 
-conda run -n base python -m ipykernel install --user --name base --display-name base
-conda run -n base jupyter labextension install @arbennett/base16-nord
+$CONDAROOT/bin/python -m ipykernel install --user --name base --display-name base
+$CONDAROOT/bin/jupyter labextension install @arbennett/base16-nord
