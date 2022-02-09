@@ -15,3 +15,4 @@ find . -name ".ipynb_checkpoints" | xargs rm -rf
 echo 'find . -name ".ipynb_checkpoints" | xargs rm -rf'
 find . -name ".pytest_cache" | xargs rm -rf
 echo 'find . -name ".pytest_cache" | xargs rm -rf'
+find . -name ".pytest_cache" | xargs rm -rf
