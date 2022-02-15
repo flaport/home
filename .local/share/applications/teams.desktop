@@ -3,7 +3,7 @@ Version=1.0
 Type=Application
 Name=Microsoft Teams
 Comment=Microsoft Teams for Linux is your chat-centered workspace in Office 365.
-Exec=/usr/bin/teams %U
+Exec=chromium --app="https://teams.microsoft.com"
 Icon=teams
 Terminal=false
 StartupNotify=true
