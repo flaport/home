@@ -319,7 +319,13 @@ super + semicolon
 super + shift + semicolon
     # handled by dwm
 
+# swap forward/backward slashes in string on primary selection (clipboard)
 super + slash
+    slashes primary
+
+# swap forward/backward slashes in string on clipboard
+super + shift + slash
+    slashes clipboard
 
 super + apostrophe
 

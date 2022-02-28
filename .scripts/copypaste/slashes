@@ -1,0 +1,24 @@
+#!/usr/bin/python
+"""Swap forward/backward slashes in the string currently on the clipboard
+
+This is useful when copying windows-based paths with backslashes...
+"""
+import sys
+from subprocess import check_output, call, Popen, PIPE
+
+if len(sys.argv) > 1:
+    sel = sys.argv[1]
+else:
+    sel = "primary"
+
+if sel not in ["primary", "secondary", "clipboard"]:
+    print("usage: slashes [primary|secondary|clipboard]", file=sys.stderr)
+    exit(1)
+
+s = check_output(["xclip", "-sel", sel, "-o"]).decode()
+s = s.replace("/", "🔕")
+s = s.replace("\\", "/")
+s = s.replace("🔕", "\\")
+pipe = Popen(["echo", s], stdout=PIPE)
+print(s)
+exit(call(["xclip", "-sel", sel], stdin=pipe.stdout))
