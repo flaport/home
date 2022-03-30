@@ -135,6 +135,7 @@ zle -N zle-line-init
 alias :q=exit
 alias :x=exit
 alias :e=$EDITOR
+alias ss="sudo systemctl"
 alias ll="ls -l"
 alias la="ls -la"
 alias grep="grep --color=auto"
