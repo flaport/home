@@ -212,20 +212,20 @@ super + V
     # handled by dwm
 
 # start firefox
-super + w
+super + W
     firefox --new-window
 
 # start chromium
-super + W
+super + w
     chromium --new-window
 
 # search the web with duckduckgo:
 super + control + w
-    q=$(printf "" | dmenu -p "🦆 ") && firefox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && chromium --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + control + W
-    q=$(printf "" | dmenu -p " ") && firefox --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && chromium --new-window "https://google.com/search?q=$q"
 
 # shift focus to monitor X (dwm)
 super + x
@@ -471,11 +471,11 @@ super + F8
 
 # search the web with duckduckgo:
 super + F9
-    q=$(printf "" | dmenu -p "🦆 ") && firefox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && chromium --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + shift + F9
-    q=$(printf "" | dmenu -p " ") && firefox --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && chromium --new-window "https://google.com/search?q=$q"
 
 super + F10
 
@@ -549,11 +549,11 @@ XF86AudioMedia
 
 # search the web with duckduckgo:
 XF86Search
-    q=$(printf "" | dmenu -p "🦆 ") && firefox --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && chromium --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 shift + XF86Search
-    q=$(printf "" | dmenu -p " ") && firefox --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && chromium --new-window "https://google.com/search?q=$q"
 
 # new floating ipython shell
 XF86Calculator
