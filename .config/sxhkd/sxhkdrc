@@ -15,7 +15,7 @@ super + A
 
 # reload picom config
 super + control + a
-    kill -SIGUSR1 $(pidof picom)
+    notify-send "picom reloaded" && kill -SIGUSR1 $(pidof picom)
 
 # set alpha to 100%
 super + control + A
@@ -185,7 +185,7 @@ super + S
 
 # reload sxhkd config
 super + control + s
-    kill -SIGUSR1 $(pidof sxhkd)
+    kill -SIGUSR1 $(pidof sxhkd) && notify-send "sxhkd reloaded"
 
 # toggle between last two dwm layouts
 super + t
