@@ -49,7 +49,6 @@
   "html.format.enable": true,
   "json.format.enable": true,
   "suggest.autoTrigger": "always",
-  "suggest.echodocSupport": true,
   "suggest.maxCompleteItemCount": 10,
   "suggest.noselect": true,
   "languageserver": {
@@ -83,7 +82,7 @@
   "yaml.completion": true,
   "yaml.schemas": {
     "https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json": [".gitlab-ci.yml", ".gitlab-ci.yaml"],
-    "schema/pic-schema.json": ["*.pic.yaml", "*.pic.yml"]
+    "https://blob.flaport.net/pic-schema.json": ["*.pic.yaml", "*.pic.yml"]
   },
   "yaml.schemaStore.enable": true
 }

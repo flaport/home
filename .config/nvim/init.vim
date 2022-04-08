@@ -39,6 +39,7 @@ augroup filetypes
     autocmd BufNewFile,BufEnter,BufRead *.tex,*.sty setlocal filetype=tex
     autocmd BufNewFile,BufEnter,BufRead *.txt,/tmp/neomutt* setlocal filetype=text
     autocmd BufNewFile,BufEnter,BufRead *.md,/tmp/calcurse*,~/.calcurse/notes/* setlocal filetype=vimwiki
+    autocmd BufNewFile,BufEnter,BufRead *.pic.yml call DetectSls()
 augroup end
 
 

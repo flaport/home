@@ -41,16 +41,21 @@ call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
 Plug 'cespare/vim-toml' " toml syntax highlighting
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
+Plug 'flaport/salt-vim' " add salt syntax highlighting for normal yaml files (custom fork of saltvim)
 Plug 'glench/vim-jinja2-syntax' " jinja2 support in vim
 Plug 'jpalardy/vim-slime' " better integration between text and terminal buffers
 Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
 Plug 'junegunn/goyo.vim', " distraction free writing.
 Plug 'kshenoy/vim-signature' " show marks in margin
+Plug 'kyazdani42/nvim-web-devicons' " Icons in statusline
+Plug 'lepture/vim-jinja' " jinja2 support
 Plug 'lilydjwg/colorizer' " paint css colors with the real color
 Plug 'mattn/emmet-vim' " emmet for vim
 Plug 'mbbill/undotree' " undo tree for vim
 Plug 'mhinz/vim-signify' " git/mercurial/others diff icons on the side of the file lines
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvim-lualine/lualine.nvim' " blazing fast status line
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " Better syntax highlighting
 Plug 'pedrohdz/vim-yaml-folds' " better folding for yaml files
 Plug 'posva/vim-vue' " vuejs syntax highlighting
 Plug 'shougo/context_filetype.vim' " completion from other opened files
@@ -64,9 +69,6 @@ Plug 'valloric/MatchTagAlways' " highlight matching html tags
 Plug 'vim-utils/vim-man' " man pages in vim
 Plug 'vimwiki/vimwiki' " note taking in vim
 Plug 'wikitopian/hardmode' " vim hard mode (useful for training)
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " Better syntax highlighting
-Plug 'nvim-lualine/lualine.nvim' " blazing fast status line
-Plug 'kyazdani42/nvim-web-devicons' " Icons in statusline
 
 call system('ipython -c "import sys"')
 if !v:shell_error
