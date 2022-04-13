@@ -31,7 +31,7 @@
 ## Environment variables
 #-------------------------------------------------------------------------------
 
-export BROWSER="firefox"
+export BROWSER="chromium"
 export CC="gcc"
 export COLORTERM="truecolor"
 export CXX="g++"
