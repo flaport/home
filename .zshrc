@@ -142,6 +142,7 @@ alias grep="grep --color=auto"
 alias base="conda activate base"
 alias system="conda deactivate && conda deactivate"
 alias history="history 1"
+alias D="dunk | less -R"
 
 alias pip="python -m pip --no-cache-dir"
 alias pip3="python3 -m pip --no-cache-dir"
