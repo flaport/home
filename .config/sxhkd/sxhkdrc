@@ -99,6 +99,14 @@ super + k
 super + K
     /usr/bin/passmenu -l 20
 
+# type password with passmenu
+super + control + k
+    /usr/bin/passmenu --type -l 20
+
+# fill in default username
+super + control + K
+    type-login --type
+
 # increase master window size (dwm)
 super + l
     # handled by dwm
@@ -211,21 +219,21 @@ super + v
 super + V
     # handled by dwm
 
-# start firefox
+# start $BROWSER2
 super + W
-    firefox --new-window
+    $BROWSER2 --new-window
 
-# start chromium
+# start $BROWSER
 super + w
-    chromium --new-window
+    $BROWSER --new-window
 
 # search the web with duckduckgo:
 super + control + w
-    q=$(printf "" | dmenu -p "🦆 ") && chromium --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && $BROWSER --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + control + W
-    q=$(printf "" | dmenu -p " ") && chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && $BROWSER --new-window "https://google.com/search?q=$q"
 
 # shift focus to monitor X (dwm)
 super + x
@@ -471,11 +479,11 @@ super + F8
 
 # search the web with duckduckgo:
 super + F9
-    q=$(printf "" | dmenu -p "🦆 ") && chromium --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && $BROWSER --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 super + shift + F9
-    q=$(printf "" | dmenu -p " ") && chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && $BROWSER --new-window "https://google.com/search?q=$q"
 
 super + F10
 
@@ -549,11 +557,11 @@ XF86AudioMedia
 
 # search the web with duckduckgo:
 XF86Search
-    q=$(printf "" | dmenu -p "🦆 ") && chromium --new-window "https://duckduckgo.com/?q=$q"
+    q=$(printf "" | dmenu -p "🦆 ") && $BROWSER --new-window "https://duckduckgo.com/?q=$q"
 
 # search the web with google:
 shift + XF86Search
-    q=$(printf "" | dmenu -p " ") && chromium --new-window "https://google.com/search?q=$q"
+    q=$(printf "" | dmenu -p " ") && $BROWSER --new-window "https://google.com/search?q=$q"
 
 # new floating ipython shell
 XF86Calculator

@@ -1208,6 +1208,8 @@ pacman_install ipython
 # Browsers
 #-------------------------------------------------------------------------------
 
+## epiphany (gnome webbrowser)
+pacman_install epiphany
 ## waterfox (like firefox, but better defaults)
 #yay_install waterfox-current-bin
 ## firefox (like waterfox, but the original ;-) )
