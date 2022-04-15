@@ -522,7 +522,7 @@ link /usr/bin/nvim /usr/bin/vi
 pacman_install python-pynvim
 ## neovim-remote: some of my nvim scripts depend on it
 yay_install neovim-remote
-#pip2_install pynvim
+pacman_install python-pynvim
 ## ruby-neovim: better integration of ruby with neovim:
 #yay_install ruby-neovim
 ## node-neovim: better integration of nodejs with neovim:
@@ -1401,7 +1401,7 @@ pacman_install python-lxml
 ## castero: tui podcast client
 #yay_install castero
 ## jedi: linting and more (newer version than via pacman)
-#pip3_install jedi
+pacman_install python-jedi
 ## markdown <-> ipynb conversion
 #pip3_install notedown
 ## google cloud apis
@@ -1413,6 +1413,10 @@ pacman_install python-lxml
 ## run jupyterlab as a systemd service:
 systemctl_create jupyterhub
 #systemctl_enable jupyterhub
+## neovim compatibility
+pacman_install python-pynvim
+## dunk, a better git-diff (pipe git diff into dunk)
+#pip3_install dunk
 
 
 # Password manager
