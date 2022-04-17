@@ -678,16 +678,16 @@ pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q lib
 
 ## Dell displaylink drivers:
 pacman_install linux-headers
-yay_install evdi-git
+#yay_install evdi-git
 #yay_install evdi
-yay_install displaylink
+#yay_install displaylink
 #yay_install displaylink-beta
-systemctl_enable displaylink
-printf "Section \"OutputClass\"\n  Identifier \"DisplayLink\"\n  MatchDriver \"evdi\"\n  Driver \"modesetting\"\n  Option \"AccelMethod\" \"none\"\nEndSection" | sudo tee /usr/share/X11/xorg.conf.d/20-evdidevice.conf > /dev/null 2>> "$ERR"
-printf "Section \"Device\"\n  Identifier \"DisplayLink\"\n  Driver \"modesetting\"\n  Option \"PageFlip\" \"false\"\nEndSection" | sudo tee /usr/share/X11/xorg.conf.d/21-displaylink.conf > /dev/null 2>> "$ERR"
-yay_install rsyslog
-printf ":msg,contains,"drm_wait_vblank" /var/log/displaylink.err\n&stop" | sudo tee /etc/rsyslog.d/30-displaylink.conf > /dev/null 2>> "$ERR"
-systemctl_enable rsyslog
+#systemctl_enable displaylink
+#printf "Section \"OutputClass\"\n  Identifier \"DisplayLink\"\n  MatchDriver \"evdi\"\n  Driver \"modesetting\"\n  Option \"AccelMethod\" \"none\"\nEndSection" | sudo tee /usr/share/X11/xorg.conf.d/20-evdidevice.conf > /dev/null 2>> "$ERR"
+#printf "Section \"Device\"\n  Identifier \"DisplayLink\"\n  Driver \"modesetting\"\n  Option \"PageFlip\" \"false\"\nEndSection" | sudo tee /usr/share/X11/xorg.conf.d/21-displaylink.conf > /dev/null 2>> "$ERR"
+#yay_install rsyslog
+#printf ":msg,contains,"drm_wait_vblank" /var/log/displaylink.err\n&stop" | sudo tee /etc/rsyslog.d/30-displaylink.conf > /dev/null 2>> "$ERR"
+#systemctl_enable rsyslog
 
 
 # Desktop Environment / Window Manager
