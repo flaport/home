@@ -31,7 +31,7 @@
 ## Environment variables
 #-------------------------------------------------------------------------------
 
-export BROWSER="epiphany"
+export BROWSER="firefox"
 export BROWSER2="chromium" # fallback browser
 export CC="gcc"
 export COLORTERM="truecolor"
