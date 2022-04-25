@@ -677,7 +677,7 @@ pacman_install xorg-xhost
 pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra-git >> "$LOG" 2>> "$ERR"
 
 ## Dell displaylink drivers:
-pacman_install linux-headers
+#pacman_install linux-headers
 #yay_install evdi-git
 #yay_install evdi
 #yay_install displaylink
