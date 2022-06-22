@@ -41,7 +41,7 @@ call plug#begin('~/.config/nvim/plugged') " start loading plugins
 Plug 'anntzer/vim-cython' " cython syntax highlighting
 Plug 'cespare/vim-toml' " toml syntax highlighting
 Plug 'davidhalter/jedi-vim' " Python go-to-definition [autocompletion disabled]
-Plug 'flaport/salt-vim' " add salt syntax highlighting for normal yaml files (custom fork of saltvim)
+Plug 'vmware-archive/salt-vim' " add salt syntax highlighting for normal yaml files (custom fork of saltvim)
 Plug 'glench/vim-jinja2-syntax' " jinja2 support in vim
 Plug 'jpalardy/vim-slime' " better integration between text and terminal buffers
 Plug 'junegunn/fzf.vim' " fuzzy file finder (needs system wide fzf install)
