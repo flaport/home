@@ -137,11 +137,9 @@ super + O
 
 # dmenu choose monitor layout
 super + p
-    pavucontrol
-
-# default screen layout
-super + P
     dmenu_screenlayout
+
+super + P
 
 # same screen layout
 super + control + p
@@ -165,7 +163,7 @@ super + control + Q
 
 # open neomutt
 super + r
-    cd $HOME; $TERMINAL -e neomutt
+    pavucontrol
 
 # run mbsync
 super + R
