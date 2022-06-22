@@ -1426,9 +1426,11 @@ pacman_install python-pynvim
 
 pacman_install gnupg # gpg --full-gen-key (generate gpg key)
 pacman_install pass # pass init floris.laporte@gmail.com (use gpg key to store passwords securely)
+pacman_install pass-otp # otp manager for pass
 pacman_install browserpass # host for the pass "browserpass" chromium/firefox extension
 pacman_install browserpass-firefox # host for the pass "browserpass" firefox extension
 pacman_install browserpass-chromium # host for the pass "browserpass" chromium extension
+yay_install passmenu-otp-git # otp menu for pass
 #yay_install passff-host  # host for the pass "passFF" firefox extension
 
 
