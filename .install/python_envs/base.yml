@@ -1,0 +1,32 @@
+name: base
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - mamba==0.22.1
+  - conda==4.12.0
+  - pip
+  - jupyterhub
+  - ca-certificates
+  - certifi
+  - openssl
+  - ipywidgets
+  - ipympl
+  - bokeh
+  - jupyter_bokeh
+  - plotly
+  - altair
+  - matplotlib
+  - black
+  - pyright
+  - jupyterlab
+  - jupyterlab_vim
+  - isort
+  - jupyterlab-git
+  - orjson
+  - h5py
+  - pip:
+    - h5grove
+    - jupyterlab-code-formatter
+    - jupyterlab-hdf
+    - tifffile

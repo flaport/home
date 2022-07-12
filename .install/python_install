@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# !/usr/bin/env bash
 #    _____ _     ____  ____  ____  ____  _____
 #   /    // \   /  _ \/  __\/  _ \/  __\/__ __\
 #   |  __\| |   | / \||  \/|| / \||  \/|  / \
@@ -49,16 +49,12 @@ source "$CONDAROOT/etc/profile.d/conda.sh"
 ## base environment
 #-------------------------------------------------------------------------------
 
-mamba install -y -n base altair black bokeh build bump2version ca-certificates certifi \
-coverage cython dvc-s3 fastcore fire flake8 flax gdspy git graphviz grayskull \
-greenlet h5py ipykernel ipympl ipywidgets isort jax jaxlib jinja2 jupyterhub \
-jupyterlab jupyterlab-lsp jupyterlab_code_formatter jupyterlab_vim line_profiler \
-lxml make matplotlib mypy natsort nbdev nbdime nbsphinx nbstripout networkx nodejs \
-numpy openpyxl openssh openssl pandas pandoc papermill patch pep8 pillow pip plotly \
-pre-commit pybind11 pydocstyle pyflakes pygraphviz pylint pynvim pyright pytables \
-pytest pytest-order pytest-timeout python python-graphviz pyyaml scikit-learn scipy \
-setuptools shapely sphinx sphinx-autodoc-typehints sphinx_rtd_theme suitesparse \
-sympy tensorflow tqdm twine watchdog wheel xlrd xmltodict yapf
+conda env update -n base -f "$HOME/.install/python_envs/base.yml"
 
 $CONDAROOT/bin/python -m ipykernel install --user --name base --display-name base
-$CONDAROOT/bin/jupyter labextension install @arbennett/base16-nord
+$CONDAROOT/bin/jupyter labextension install \
+    @arbennett/base16-nord \
+    @arbennett/base16-mexico-light \
+    jupyterlab-plotly \
+    @jupyterlab/hdf5
+

@@ -1213,7 +1213,9 @@ pacman_install epiphany
 ## waterfox (like firefox, but better defaults)
 #yay_install waterfox-current-bin
 ## firefox (like waterfox, but the original ;-) )
-pacman_install firefox
+#pacman_install firefox
+## firefox developer edition
+pacman_install firefox-developer-edition
 ## patch firefox and waterfox to work with some legacy extensions (like vimfx)
 submodule_install legacyfox
 ## enhanced security settings for firefox (you might have to copy this manually if your profile is called differently)
