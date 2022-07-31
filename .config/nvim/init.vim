@@ -370,9 +370,9 @@ augroup end
 augroup pythonterminal
     autocmd!
 
-    autocmd FileType python command! T call NewTerminal("ipython --matplotlib")
-    autocmd FileType python command! HT call NewHorizontalTerminal("ipython --matplotlib")
-    autocmd FileType python command! VT call NewVerticalTerminal("ipython --matplotlib")
+    autocmd FileType python command! T call NewTerminal("ipython")
+    autocmd FileType python command! HT call NewHorizontalTerminal("ipython")
+    autocmd FileType python command! VT call NewVerticalTerminal("ipython")
 augroup end
 
 function! OnTerminalOpen()
@@ -982,9 +982,9 @@ function! RunPython(type)
     else
         call system('ipython -c "import sys"')
         if !v:shell_error
-            call NewHorizontalTerminal("ipython --matplotlib")
+            call NewHorizontalTerminal("ipython")
             if exists("g:last_terminal_job_id")
-                sleep 100m
+                sleep 300m
                 call RunPython(a:type)
             endif
         else
