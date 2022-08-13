@@ -45,6 +45,10 @@ bindkey "^[h" up-line-or-history # alt + h
 bindkey "^[l" down-line-or-history # alt + l
 bindkey "^y" "" # noop
 
+# reverse history search
+bindkey -v
+bindkey '^R' history-incremental-search-backward
+
 # complecation related settings
 # Define completers
 zstyle ':completion:*' completer _extensions _complete _approximate
