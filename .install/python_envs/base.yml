@@ -21,11 +21,14 @@ dependencies:
   - jupyterlab-lsp
   - jupyterlab_vim
   - matplotlib
+  - numpy
   - openssl
   - orjson
+  - pandas
   - pip
   - plotly
   - pyright
+  - scipy
   - pip:
     - h5grove
     - jupyterlab-code-formatter

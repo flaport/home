@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2021.10.21
+# last run: 2022.08.13 (in full)
 
 ## checks
 #-------------------------------------------------------------------------------
@@ -59,4 +59,3 @@ $CONDAROOT/bin/jupyter labextension install \
     jupyterlab-plotly \
     @jupyterlab/hdf5 \
     @jupyterlab/server-proxy
-
