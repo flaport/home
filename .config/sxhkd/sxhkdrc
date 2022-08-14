@@ -23,7 +23,7 @@ super + control + A
 
 # connect to already paired bluetooth device
 super + b
-    dmenu_bluetooth
+  blueman-manager
 
 # toggle dwm status bar
 super + B

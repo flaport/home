@@ -6,6 +6,8 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 
+# NOTE: this script does no longer work for bluetoothctl >≈ 5.65
+
 systemctl status bluetooth | grep inactive && exit 1
 
 bluetoothctl -- power on &> /dev/null
