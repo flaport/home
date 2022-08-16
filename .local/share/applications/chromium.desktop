@@ -9,7 +9,6 @@ Terminal=false
 Icon=chromium
 Type=Application
 Categories=Network;WebBrowser;
-MimeType=application/pdf;application/rdf+xml;application/rss+xml;application/xhtml+xml;application/xhtml_xml;application/xml;image/gif;image/jpeg;image/png;image/webp;text/html;text/xml;x-scheme-handler/ftp;x-scheme-handler/http;x-scheme-handler/https;
 Actions=new-window;new-private-window;new-app-window;
 
 [Desktop Action new-window]
@@ -23,3 +22,4 @@ Exec=/usr/bin/chromium --incognito %U
 [Desktop Action new-app-window]
 Name=New App Window
 Exec=/usr/bin/chromium --app=%U
+MimeType=x-scheme-handler/mailto;application/pdf;application/rdf+xml;application/rss+xml;application/xhtml+xml;application/xhtml_xml;application/xml;image/gif;image/jpeg;image/png;image/webp;text/html;text/xml;x-scheme-handler/ftp;x-scheme-handler/http;x-scheme-handler/https;
