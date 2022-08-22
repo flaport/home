@@ -20,6 +20,7 @@ let g:coc_global_extensions = [
     \'coc-vimlsp',
     \'coc-yaml',
     \'coc-toml',
+    \'coc-rust-analyzer',
 \]
 
 " there's a problem with coc-ccls, it doesn't property link its libraries. Let's do this manually...
