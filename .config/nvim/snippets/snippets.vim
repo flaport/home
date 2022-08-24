@@ -6,11 +6,17 @@
 "
 " jump to snippets file from anywhere: <leader>cs
 
+"" Rust
+"-------------------------------------------------------------------------------
+inoremap !debug
+autocmd FileType rust inoremap dbg <Esc>ciwprintln!("{:?}", <Esc>pa);<Esc>hh
+
+
 "" Latex
 "-------------------------------------------------------------------------------
 
 "insert mode
-inoremap &tex <Esc>:-1read ~/.config/nvim/snippets/tex.tex<CR>:set filetype=tex<CR>/TITLE<CR><Esc>ciw
+inoremap !tex <Esc>:-1read ~/.config/nvim/snippets/tex.tex<CR>:set filetype=tex<CR>/TITLE<CR><Esc>ciw
 autocmd FileType tex inoremap !fig <Esc>:-1read ~/.config/nvim/snippets/figure.tex<CR>jzOj$i
 autocmd FileType tex inoremap !svg <Esc>:-1read ~/.config/nvim/snippets/svgfigure.tex<CR>jzOj$i
 autocmd FileType tex inoremap !pgf <Esc>:-1read ~/.config/nvim/snippets/pgffigure.tex<CR>jzOj$i
@@ -42,7 +48,7 @@ autocmd FileType markdown nnoremap <leader>` 0f*wDa~~<Esc>pa~~<Esc>
 "" Html
 "-------------------------------------------------------------------------------
 
-inoremap &html <Esc>:-1read ~/.config/nvim/snippets/html.html<CR>:set filetype=html<CR>zR/title<CR><Esc>cit
+inoremap !html <Esc>:-1read ~/.config/nvim/snippets/html.html<CR>:set filetype=html<CR>zR/title<CR><Esc>cit
 autocmd FileType html inoremap !'a &aacute;
 autocmd FileType html inoremap !'e &eacute;
 autocmd FileType html inoremap !'i &iacute;
