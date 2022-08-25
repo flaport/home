@@ -156,7 +156,7 @@ let g:slime_target = "neovim"
 let g:slime_python_ipython = 1
 let g:slime_dont_ask_default = 1
 let g:slime_cell_delimiter = "##"
-let g:slime_paste_file = "$HOME/.config/nvim/slime_paste"
+let g:slime_paste_file = "~/.config/nvim/slime_paste" " don't use $HOME here...
 let g:slime_default_config = [5]
 
 
