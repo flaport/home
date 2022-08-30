@@ -16,3 +16,4 @@
 € euro
 £ pound
 ¿ reverse question mark
+∈ element in
