@@ -1,0 +1,23 @@
+{
+    "workbench.colorTheme": "Visual Studio Light",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.inlineSuggest.enabled": true,
+    "terminal.integrated.inheritEnv": false,
+    "python.formatting.provider": "black",
+    "python.sortImports.args": [
+        "--profile", "black"
+    ],
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "git.mergeEditor": false
+}
