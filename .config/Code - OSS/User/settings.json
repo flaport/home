@@ -60,4 +60,5 @@
     "git.autofetch": true,
     "diffEditor.renderSideBySide": false,
     "terminal.integrated.inheritEnv": false,
+    "git.mergeEditor": false
 }
