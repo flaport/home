@@ -75,6 +75,11 @@ prompt(){
         echo -ne "%F{blue}%{%G%} %f" # 
         [[ $CONDA_DEFAULT_ENV != base ]] && echo -ne "%F{blue}$CONDA_DEFAULT_ENV%f "
     fi
+    # virtualenv info
+    if [[ ! -z $VIRTUAL_ENV ]]; then
+        echo -ne "%F{yellow}%{%G%} %f" # 
+        echo -ne "%F{yellow}$(basename $VIRTUAL_ENV)%f "
+    fi
     # path
     [[ $PWD == "/" ]] && echo -ne "%F{cyan}/%f " || echo -ne "%F{cyan}%(4~|%-1~/…/%2~|%3~)/%f " # 
     # git info
