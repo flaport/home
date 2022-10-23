@@ -7,17 +7,21 @@
         "default": "right",
         "jupyter-notebook": "left"
     },
-    "workbench.iconTheme": "material-icon-theme",
+    "workbench.iconTheme": "vscode-icons",
     "editor.inlineSuggest.enabled": true,
     "terminal.integrated.inheritEnv": false,
     "python.formatting.provider": "black",
     "python.sortImports.args": [
-        "--profile", "black"
+        "--profile",
+        "black"
     ],
     "[python]": {
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
         }
     },
-    "git.mergeEditor": false
+    "git.mergeEditor": false,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.variableTypes": true,
+    "python.analysis.typeCheckingMode": "basic"
 }
