@@ -511,6 +511,7 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " scroll page backward
 " <C-b> " standard vim keybinding
+inoremap <silent> <C-b> <C-r>=CocActionAsync('showSignatureHelp')<CR>
 
 " exit current buffer without saving
 function! CloseBuffer()
