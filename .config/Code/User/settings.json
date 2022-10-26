@@ -23,5 +23,7 @@
     "git.mergeEditor": false,
     "python.analysis.inlayHints.functionReturnTypes": true,
     "python.analysis.inlayHints.variableTypes": true,
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "diffEditor.renderSideBySide": false,
+    "explorer.confirmDragAndDrop": false
 }
