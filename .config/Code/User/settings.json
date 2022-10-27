@@ -25,5 +25,6 @@
     "python.analysis.inlayHints.variableTypes": true,
     "python.analysis.typeCheckingMode": "basic",
     "diffEditor.renderSideBySide": false,
-    "explorer.confirmDragAndDrop": false
+    "explorer.confirmDragAndDrop": false,
+    "jupyter.askForKernelRestart": false
 }
