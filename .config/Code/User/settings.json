@@ -26,5 +26,6 @@
     "python.analysis.typeCheckingMode": "basic",
     "diffEditor.renderSideBySide": false,
     "explorer.confirmDragAndDrop": false,
-    "jupyter.askForKernelRestart": false
+    "jupyter.askForKernelRestart": false,
+    "explorer.confirmDelete": false
 }

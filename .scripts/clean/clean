@@ -9,10 +9,12 @@ find . -name "__pycache__" | xargs rm -rf
 echo 'find . -name "__pycache__" | xargs rm -rf'
 find . -name "*.so" | xargs rm -rf
 echo 'find . -name "*.so" | xargs rm -rf'
-find . -name "*.egg-info" | xargs rm -rf
-echo 'find . -name "*.egg-info" | xargs rm -rf'
+#find . -name "*.egg-info" | xargs rm -rf
+#echo 'find . -name "*.egg-info" | xargs rm -rf'
 find . -name ".ipynb_checkpoints" | xargs rm -rf
 echo 'find . -name ".ipynb_checkpoints" | xargs rm -rf'
 find . -name ".pytest_cache" | xargs rm -rf
 echo 'find . -name ".pytest_cache" | xargs rm -rf'
 find . -name ".pytest_cache" | xargs rm -rf
+echo 'find . -name ".mypy_cache" | xargs rm -rf'
+find . -name ".mypy_cache" | xargs rm -rf
