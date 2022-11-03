@@ -27,5 +27,6 @@
     "diffEditor.renderSideBySide": false,
     "explorer.confirmDragAndDrop": false,
     "jupyter.askForKernelRestart": false,
-    "explorer.confirmDelete": false
+    "explorer.confirmDelete": false,
+    "window.zoomLevel": -1
 }
