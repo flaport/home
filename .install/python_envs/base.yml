@@ -3,8 +3,6 @@ channels:
   - conda-forge
 dependencies:
   - python=3.10
-  - mamba==0.22.1
-  - conda==4.12.0
   - altair
   - black
   - bokeh
@@ -29,9 +27,9 @@ dependencies:
   - plotly
   - pyright
   - scipy
+  - h5grove
+  - jupyterlab_code_formatter
+  - tifffile
+  - jupyter-server-proxy
   - pip:
-    - h5grove
-    - jupyterlab-code-formatter
     - jupyterlab-hdf
-    - tifffile
-    - jupyter-server-proxy
