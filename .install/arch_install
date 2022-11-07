@@ -840,6 +840,10 @@ systemctl_create openvpn
 #systemctl_enable openvpn
 ## ssh (client and server)
 pacman_install openssh
+## ssl
+pacman_install openssl
+## ssl 1.1
+pacman_install openssl-1.1
 ## mosh (ssh client for connections with high latency)
 pacman_install mosh
 ## allow X-forwarding for sshd:

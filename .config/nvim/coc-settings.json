@@ -84,5 +84,6 @@
   "rust-analyzer.diagnostics.enable": true,
   "rust-analyzer.inlayHints.chainingHints.enable": true,
   "rust-analyzer.inlayHints.typeHints.enable": true,
-  "rust-analyzer.inlayHints.parameterHints.enable": true
+  "rust-analyzer.inlayHints.parameterHints.enable": true,
+  "snippets.ultisnips.pythonPrompt": false
 }
