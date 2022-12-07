@@ -83,11 +83,11 @@ while true; do
 done &
 
 # update weather report every hour
-while true; do
-    sleep 10s
-    start update_weather
-    sleep 3590s
-done &
+# while true; do
+#     sleep 10s
+#     start update_weather
+#     sleep 3590s
+# done &
 
 # automatically lock screen after 10 minutes (xautolock crashes sometimes -> loop)
 while true; do
