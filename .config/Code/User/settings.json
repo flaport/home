@@ -28,5 +28,8 @@
     "explorer.confirmDragAndDrop": false,
     "jupyter.askForKernelRestart": false,
     "explorer.confirmDelete": false,
-    "window.zoomLevel": -1
+    "window.zoomLevel": -1,
+    "editor.unicodeHighlight.allowedCharacters": {
+        "×": true
+    }
 }
