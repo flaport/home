@@ -453,11 +453,11 @@ super + F1
 
 # raise volume
 super + F2
-    notify-send "🔊 ↗"; amixer -D pulse set Master 5%+; dwm_status
+    notify-send "🔉 ↘"; amixer -D pulse set Master 5%-; dwm_status
 
 # lower volume
 super + F3
-    notify-send "🔉 ↘"; amixer -D pulse set Master 5%-; dwm_status
+    notify-send "🔊 ↗"; amixer -D pulse set Master 5%+; dwm_status
 
 # toggle mute volume
 super + F4
