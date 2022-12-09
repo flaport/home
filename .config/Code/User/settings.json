@@ -1,35 +1,68 @@
 {
-    "workbench.colorTheme": "Visual Studio Light",
-    "workbench.editorAssociations": {
-        "*.ipynb": "jupyter-notebook"
-    },
-    "notebook.cellToolbarLocation": {
-        "default": "right",
-        "jupyter-notebook": "left"
-    },
-    "workbench.iconTheme": "vscode-icons",
-    "editor.inlineSuggest.enabled": true,
-    "terminal.integrated.inheritEnv": false,
-    "python.formatting.provider": "black",
-    "python.sortImports.args": [
-        "--profile",
-        "black"
-    ],
-    "[python]": {
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
-    "git.mergeEditor": false,
-    "python.analysis.inlayHints.functionReturnTypes": true,
-    "python.analysis.inlayHints.variableTypes": true,
-    "python.analysis.typeCheckingMode": "basic",
-    "diffEditor.renderSideBySide": false,
-    "explorer.confirmDragAndDrop": false,
-    "jupyter.askForKernelRestart": false,
-    "explorer.confirmDelete": false,
-    "window.zoomLevel": -1,
-    "editor.unicodeHighlight.allowedCharacters": {
-        "×": true
+  "workbench.colorTheme": "Visual Studio Light",
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  },
+  "workbench.iconTheme": "vscode-icons",
+  "editor.inlineSuggest.enabled": true,
+  "terminal.integrated.inheritEnv": true,
+  "python.formatting.provider": "black",
+  "python.sortImports.args": ["--profile", "black"],
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
     }
+  },
+  "git.mergeEditor": false,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.variableTypes": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "diffEditor.renderSideBySide": false,
+  "explorer.confirmDragAndDrop": false,
+  "jupyter.askForKernelRestart": false,
+  "explorer.confirmDelete": false,
+  "window.zoomLevel": -1,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "latex-workshop.view.pdf.viewer": "tab",
+  "trailing-spaces.trimOnSave": true,
+  "vim.enableNeovim": true,
+  "vim.handleKeys": {
+    "<C-f>": false,
+    "<C-h>": false
+  },
+  "vim.insertModeKeyBindings": [
+    {
+      "after": ["<Esc>"],
+      "before": ["j", "j"]
+    }
+  ],
+  "vim.neovimPath": "/usr/bin/nvim",
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["leader", "s"],
+      "commands": ["latex-workshop.synctex"]
+    },
+    {
+      "after": ["d", "d"],
+      "before": ["<leader>", "d"]
+    }
+  ],
+  "window.restoreWindows": "none",
+  "workbench.settings.useSplitJSON": true,
+  "latex-workshop.latex.magic.args": [
+    "-synctex=1",
+    "-interaction=nonstopmode",
+    "-file-line-error",
+    "-xelatex",
+    "-shell-escape",
+    "%DOC%"
+  ],
+  "vim.useSystemClipboard": true,
+  "python.linting.pydocstyleEnabled": true,
+  "git.autofetch": true
 }
