@@ -17,3 +17,4 @@
 £ pound
 ¿ reverse question mark
 ∈ element in
+∂ partial
