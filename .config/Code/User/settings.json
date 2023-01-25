@@ -63,6 +63,9 @@
     "%DOC%"
   ],
   "vim.useSystemClipboard": true,
-  "python.linting.pydocstyleEnabled": true,
-  "git.autofetch": true
+  "git.autofetch": true,
+  "jupyter.widgetScriptSources": [
+    "jsdelivr.com",
+    "unpkg.com"
+  ]
 }
