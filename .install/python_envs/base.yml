@@ -2,21 +2,24 @@ name: base
 channels:
   - conda-forge
 dependencies:
-  - python=3.10
   - altair
   - black
   - bokeh
   - ca-certificates
   - certifi
+  - dask-labextension
+  - h5grove
   - h5py
   - ipympl
-  - ipywidgets
+  - ipywidgets<8
   - isort
+  - jupyter-server-proxy
   - jupyter_bokeh
   - jupyterhub
   - jupyterlab
   - jupyterlab-git
   - jupyterlab-lsp
+  - jupyterlab_code_formatter
   - jupyterlab_vim
   - matplotlib
   - numpy
@@ -26,10 +29,9 @@ dependencies:
   - pip
   - plotly
   - pyright
+  - python=3.10
   - scipy
-  - h5grove
-  - jupyterlab_code_formatter
   - tifffile
-  - jupyter-server-proxy
+  - tqdm
   - pip:
     - jupyterlab-hdf

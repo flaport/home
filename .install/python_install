@@ -52,10 +52,8 @@ source "$CONDAROOT/etc/profile.d/conda.sh"
 conda env update -n base -f "$HOME/.install/python_envs/base.yml"
 
 $CONDAROOT/bin/python -m ipykernel install --user --name base --display-name base
-$CONDAROOT/bin/jupyter serverextension enable --py jupyter_server_proxy
 $CONDAROOT/bin/jupyter labextension install \
     @arbennett/base16-nord \
     @arbennett/base16-mexico-light \
     jupyterlab-plotly \
     @jupyterlab/hdf5 \
-    @jupyterlab/server-proxy
