@@ -78,7 +78,7 @@ return require("packer").startup(function(use)
 	-- vuejs syntax highlighting
 	-- use({'posva/vim-vue'})
 	-- completion from other opened files
-	use({ "shougo/context_filetype.vim" })
+	-- use({ "shougo/context_filetype.vim" })
 	-- markdown viewer
 	use({ "suan/vim-instant-markdown" })
 	-- easy comment

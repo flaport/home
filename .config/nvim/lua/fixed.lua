@@ -65,7 +65,7 @@ vim.opt.tags = "./.tags;,.tags;"
 vim.opt.mouse = "a"
 
 -- copy to star register by default (selection copy)
-vim.opt.clipboard = vim.opt.clipboard:prepend("unnamed")
+vim.opt.clipboard = "unnamed"
 
 -- code folding
 -- zM: fold all; zR: unfold all; za: toggle fold, zv: unfold one; zc: fold one
