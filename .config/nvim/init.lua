@@ -14,3 +14,5 @@ vim.cmd([[source ~/.config/nvim/vim/python.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/rust.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/yaml.vim ]])
 
+vim.asyncomplete_auto_completeopt = 0
+vim.completeopt="menuone,noinsert,noselect,preview"
