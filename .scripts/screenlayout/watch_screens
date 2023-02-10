@@ -14,7 +14,7 @@
 #     subprocess.call(["notify-send", "monitor (dis)connected", "rearranging..."])
 #     subprocess.call(["max_screenlayout"])
 #     subprocess.call(["xset", "r", "rate", "200", "45"])
-#     subprocess.Popen(["picom", "--daemon", "--experimental-backends"])
+#     subprocess.Popen(["picom", "--daemon"])
 #
 #
 # if __name__ == "__main__":

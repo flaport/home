@@ -7,8 +7,8 @@
 
 import os
 import sys
+from subprocess import PIPE, CalledProcessError, Popen, call, check_output
 from time import sleep
-from subprocess import call, check_output, CalledProcessError, Popen, PIPE
 
 
 def screenlayout_order_key(filename):
@@ -53,7 +53,7 @@ def xset():
 
 
 def picom():
-    cmd = ["picom", "--experimental-backends"]
+    cmd = ["picom"]
     if os.path.exists(os.path.expanduser("~/.cache/xcs/picom.conf")):
         cmd += ["--config", os.path.expanduser("~/.cache/xcs/picom.conf")]
     run_in_background(cmd)

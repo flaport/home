@@ -8,17 +8,16 @@
 
 ## imports
 
-import os
-import re
-import sys
-import time
+import argparse
+import contextlib
 import glob
 import json
+import os
+import re
 import shutil
-import argparse
 import subprocess
-import contextlib
-
+import sys
+import time
 
 ## Constants
 
@@ -234,7 +233,7 @@ def update_picom(filename="~/.cache/xcs/picom.conf"):
     print(f"restarting picom with custom config file at '{filename}'...")
     subprocess.call(["killall", "picom"])
     time.sleep(0.1)
-    subprocess.Popen(["picom", "--experimental-backends", "--config", filename])
+    subprocess.Popen(["picom", "--config", filename])
 
 def update_qt5ct(filename="~/.config/qt5ct/qt5ct.conf"):
     filename = os.path.abspath(os.path.expanduser(filename))
