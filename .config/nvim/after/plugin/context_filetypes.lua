@@ -1,0 +1,2 @@
+-- let g:context_filetype#same_filetypes = {}
+-- let g:context_filetype#same_filetypes._ = '_'

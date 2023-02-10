@@ -47,8 +47,6 @@ return require("packer").startup(function(use)
 	use({ "anntzer/vim-cython" })
 	-- toml syntax highlighting
 	use({ "cespare/vim-toml" })
-	-- Python go-to-definition [autocompletion disabled]
-	-- use({'davidhalter/jedi-vim'})
 	-- add salt syntax highlighting for normal yaml files (custom fork of saltvim)
 	use({ "vmware-archive/salt-vim" })
 	-- jinja2 support in vim

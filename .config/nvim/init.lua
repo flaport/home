@@ -7,7 +7,6 @@ require("colors")
 require("variables")
 require("filetypes")
 
-vim.cmd([[source ~/.config/nvim/vim/plugin_settings.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/other_settings.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/latex.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/neovim.vim ]])
