@@ -1,4 +1,3 @@
-
 "" Plugin Settings
 "-------------------------------------------------------------------------------
 " Plugin settings are defined here. Keyboard shortcuts are defined in init.vim.
