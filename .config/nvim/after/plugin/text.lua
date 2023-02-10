@@ -4,3 +4,4 @@ vim.api.nvim_create_autocmd(
     { pattern = { "/usr/share/nvim/runtime/doc/*.txt" },
         command = "setlocal nospell",
         group = group })
+

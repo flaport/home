@@ -6,7 +6,9 @@ vim.g.mapleader = " "
 -- neovim 0.7: only use filetype.lua not fallback to filtype.vim
 -- vim.g.do_filetype_lua = 1
 -- vim.g.did_load_filetypes = 0
-vim.cmd("filetype plugin indent on")
+-- vim.opt.filetype = true
+-- vim.opt.plugin = true
+-- vim.opt.indent = "on"
 
 -- vim.cmd 'syntax on' -- disabled for treesitter syntax
 
@@ -65,7 +67,6 @@ vim.opt.mouse = "a"
 -- copy to star register by default (selection copy)
 vim.opt.clipboard = vim.opt.clipboard:prepend("unnamed")
 
-
 -- code folding
 -- zM: fold all; zR: unfold all; za: toggle fold, zv: unfold one; zc: fold one
 vim.opt.foldmethod = "manual"
@@ -84,8 +85,7 @@ vim.opt.wildmenu = true
 vim.opt.undofile = true
 
 -- set undi directory where unlimited history can be saved it is not working! TODO
--- vim.opt.undodir = "$HOME/.local/share/nvim/undo"
-
+vim.opt.undodir = vim.fn.expand("~/.local/share/nvim/undo")
 
 -- disable netrw banner
 vim.g.netrw_banner = false
@@ -93,21 +93,24 @@ vim.g.netrw_banner = false
 -- Default Variable Settings
 -------------------------------------------------------------------------------
 -- these settings may change depending on the filetype or active extension
-vim.cmd("set nowrap nolinebreak formatoptions=lqj textwidth=0 colorcolumn=0")
+vim.opt.wrap = false
+vim.opt.linebreak = false
+vim.opt.formatoptions = "lqj"
+vim.opt.textwidth = 0
+-- vim.opt.colorcolumn = 0
 
 -- disable automatic indent when moving to the next line while writing code
 vim.opt.autoindent = false
 
 -- show line numbers
-vim.opt.number = true
+-- vim.opt.number = "0"
 
 -- relative line numbering (disabled)
 vim.opt.relativenumber = false
 
 -- spell check default to en_us
-vim.cmd("set spell spelllang=en_us")
--- ...and turn it off by default
-vim.cmd("set nospell")
+vim.opt.spell = false
+vim.opt.spelllang = "en_us"
 
 -- left margin width (max 12)
 vim.opt.foldcolumn = "1"
@@ -136,7 +139,6 @@ vim.opt.tabstop = 4
 -- vim.opt.softtabstop = 2
 vim.opt.softtabstop = 4
 
-
 -- set the shift operators (`<<` and `>>`) to insert 2 spaces
 vim.opt.shiftwidth = 4
 
@@ -145,3 +147,11 @@ vim.opt.shiftwidth = 4
 
 -------------------------------------------------------------------------------
 
+local fixedgroup = vim.api.nvim_create_augroup("FixedGroup", { clear = true })
+vim.api.nvim_create_autocmd("InsertEnter", { pattern = "*", command = "set cul", group = fixedgroup })
+vim.api.nvim_create_autocmd("InsertLeave", { pattern = "*", command = "set nocul", group = fixedgroup })
+vim.api.nvim_create_autocmd(
+	"FileType",
+	{ pattern = "*", command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o", group = fixedgroup }
+)
+-- vim.api.nvim_create_autocmd("SyntaxSync", {command="autocmd BufEnter * syntax sync fromstart", group = fixedgroup}

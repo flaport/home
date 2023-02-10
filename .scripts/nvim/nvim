@@ -22,4 +22,4 @@ if [ ! "$2" ]; then
 fi
 
 # all other cases, just open neovim with all the arguments supplied.
-/usr/bin/nvim -u "$HOME/.config/nvim/init.vim" "$@"
+/usr/bin/nvim -u "$HOME/.config/nvim/init.lua" "$@"

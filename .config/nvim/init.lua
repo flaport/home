@@ -1,13 +1,11 @@
-require("globalsettings")
-require("plugins")
-require("pluginrc")
-require("lsp")
-require("playground")
+require("pluginmanager")
+require("telescope.builtin")
+require("fixed")
+require("commands")
+require("keybindings")
+require("colors")
 
-vim.cmd([[
-if filereadable(expand("~/.config/nvim/init_nvim.vim"))
-    source ~/.config/nvim/init_nvim.vim
-endif
-]])
-
-require("globalsettings_after")
+-- require("variables") -- we're using regular .vim file for this...
+vim.cmd([[source ~/.config/nvim/vim/variables.vim ]])
+vim.cmd([[source ~/.config/nvim/vim/plugin_settings.vim ]])
+vim.cmd([[source ~/.config/nvim/vim/other_settings.vim ]])

@@ -30,3 +30,4 @@ vim.api.nvim_create_autocmd(
 --     " autocmd BufNewFile,BufEnter,BufRead *.yml call DetectSls()
 -- "     autocmd BufNewFile,BufEnter,BufRead *.pic.yml call DetectSls()
 -- augroup end
+

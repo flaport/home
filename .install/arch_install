@@ -39,7 +39,6 @@ fi
 [ ! -z "$2" ] && >&2 echo usage: arch_install [--force] && exit 1
 [ ! -z "$1" ] && [  "$1" = "--force" ] && FORCE=1 || FORCE=0
 
-
 # Logging
 #-------------------------------------------------------------------------------
 
@@ -523,6 +522,14 @@ pacman_install python-pynvim
 ## neovim-remote: some of my nvim scripts depend on it
 yay_install neovim-remote
 pacman_install python-pynvim
+## packer: lua-based package manager for neovim
+yay_install nvim-packer-git
+## stylua: a lua formatter (like black for python)
+pacman_install stylua
+## ripgrep: better grep utility, also used by telescope-nvim plugin
+pacman_install ripgrep
+## fd: better find utility, also used by telescoe-nvim plugin
+pacman_install fd
 ## ruby-neovim: better integration of ruby with neovim:
 #yay_install ruby-neovim
 ## node-neovim: better integration of nodejs with neovim:
@@ -533,6 +540,8 @@ pacman_install python-pynvim
 #npm_install instant-markdown-d
 ## pyright: static typechecker and linter for python
 npm_install pyright
+## rust_analyzer: static typechecker and linter for rust
+pacman_install rust_analyzer
 ## ccls: C language server (required by CoC plugin for nvim)
 pacman_install ccls
 ## bash language server (required by CoC plugin for nvim)

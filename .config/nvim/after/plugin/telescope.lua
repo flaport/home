@@ -1,0 +1,1 @@
+-- telescope plugin config
