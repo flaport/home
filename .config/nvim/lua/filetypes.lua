@@ -29,14 +29,11 @@ vim.api.nvim_create_autocmd(
 	{ "BufNewFile", "BufEnter", "BufRead" },
 	{ pattern = { "*.txt", "/tmp/neomutt*" }, command = "setlocal filetype=text", group = ftgroup }
 )
-vim.api.nvim_create_autocmd(
-	{ "BufNewFile", "BufEnter", "BufRead" },
-	{
-		pattern = { "*.md", "/tmp/calcurse*", vim.fn.expand("~/.calcurse/notes/*") },
-		command = "setlocal filetype=vimwiki",
-		group = ftgroup,
-	}
-)
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufEnter", "BufRead" }, {
+	pattern = { "*.md", "/tmp/calcurse*", vim.fn.expand("~/.calcurse/notes/*") },
+	command = "setlocal filetype=vimwiki",
+	group = ftgroup,
+})
 vim.api.nvim_create_autocmd(
 	{ "BufNewFile", "BufEnter", "BufRead" },
 	{ pattern = { "*.py" }, command = "setlocal filetype=python", group = ftgroup }

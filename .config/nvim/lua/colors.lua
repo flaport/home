@@ -5,7 +5,7 @@ function SetColors()
 	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
-  -- TreeSitter
+	-- TreeSitter
 	-- hi Function cterm=bold ctermfg=13 " TSFunction TSMethod
 	vim.api.nvim_set_hl(0, "Special", { ctermfg = 5 })
 	vim.api.nvim_set_hl(0, "TSKeywordFunction", { cterm = bold, ctermfg = 14 })
@@ -17,10 +17,10 @@ function SetColors()
 	vim.api.nvim_set_hl(0, "Statement", { cterm = bold, ctermfg = 11 })
 	vim.api.nvim_set_hl(0, "Delimiter", { cterm = bold, ctermfg = 7 })
 
-  -- QuickScope
+	-- QuickScope
 	vim.api.nvim_set_hl(0, "QuickScopePrimary", { cterm = bold, ctermfg = 4 })
 
-  -- TUI
+	-- TUI
 	vim.api.nvim_set_hl(0, "Search", { cterm = none, ctermfg = 15, ctermbg = 6 })
 	vim.api.nvim_set_hl(0, "IncSearch", { cterm = bold, ctermfg = 15, ctermbg = 6 })
 	vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg = 4 })
