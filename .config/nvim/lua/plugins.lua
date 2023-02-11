@@ -37,6 +37,7 @@ return require("packer").startup(function(use)
 	use({ "lepture/vim-jinja" })
 	-- jinja2 support in vim
 	use({ "glench/vim-jinja2-syntax" })
+	use({ "lvimuser/lsp-inlayhints.nvim" })
 	use({
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v1.x",
@@ -60,14 +61,6 @@ return require("packer").startup(function(use)
 		},
 	})
 	use({
-		"rose-pine/neovim",
-		as = "rose-pine",
-		config = function()
-			require("rose-pine").setup()
-			vim.cmd("colorscheme rose-pine")
-		end,
-	})
-	use({
 		"folke/trouble.nvim",
 		requires = "nvim-tree/nvim-web-devicons",
 		config = function()
@@ -78,4 +71,42 @@ return require("packer").startup(function(use)
 			})
 		end,
 	})
+	-- use({
+	-- 	"rose-pine/neovim",
+	-- 	as = "rose-pine",
+	-- 	config = function()
+	-- 		require("rose-pine").setup()
+	-- 		vim.cmd("colorscheme rose-pine")
+	-- 	end,
+	-- })
+	-- Visualize lsp progress
+	use({
+		"j-hui/fidget.nvim",
+		config = function()
+			require("fidget").setup()
+		end,
+	})
+
+	-- Autocompletion framework
+	use("hrsh7th/nvim-cmp")
+	use({
+		-- cmp LSP completion
+		"hrsh7th/cmp-nvim-lsp",
+		-- cmp Snippet completion
+		"hrsh7th/cmp-vsnip",
+		-- cmp Path completion
+		"hrsh7th/cmp-path",
+		"hrsh7th/cmp-buffer",
+		after = { "hrsh7th/nvim-cmp" },
+		requires = { "hrsh7th/nvim-cmp" },
+	})
+	-- See hrsh7th other plugins for more great completion sources!
+	-- Snippet engine
+	use("hrsh7th/vim-vsnip")
+	-- Adds extra functionality over rust analyzer
+	use("simrat39/rust-tools.nvim")
+
+	-- Optional
+	use("nvim-lua/popup.nvim")
+	use("nvim-lua/plenary.nvim")
 end)

@@ -22,3 +22,5 @@ augroup rustsettings
     " set the shift operators (`<<` and `>>`) to insert 4 spaces
     autocmd FileType rust setlocal shiftwidth=4
 augroup end
+
+" lua require('rust-tools').inlay_hints.set()
