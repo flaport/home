@@ -1,19 +1,14 @@
 name: base
 channels:
   - conda-forge
+  - fastai
 dependencies:
   - altair
-  - black
   - bokeh
   - ca-certificates
   - certifi
-  - dask-labextension
-  - h5grove
-  - h5py
+  - ipykernel
   - ipympl
-  - ipywidgets<8
-  - isort
-  - jupyter-server-proxy
   - jupyter_bokeh
   - jupyterhub
   - jupyterlab
@@ -21,17 +16,14 @@ dependencies:
   - jupyterlab-lsp
   - jupyterlab_code_formatter
   - jupyterlab_vim
+  - jupytext
   - matplotlib
-  - numpy
+  - nbdime
   - openssl
-  - orjson
   - pandas
   - pip
   - plotly
   - pyright
-  - python=3.10
   - scipy
-  - tifffile
-  - tqdm
-  - pip:
-    - jupyterlab-hdf
+  - setuptools
+prefix: /home/flaport/.anaconda

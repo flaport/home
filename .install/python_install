@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last run: 2022.08.13 (in full)
+# last run: 2023.02.13 (in full)
 
 ## checks
 #-------------------------------------------------------------------------------
@@ -55,5 +55,4 @@ $CONDAROOT/bin/python -m ipykernel install --user --name base --display-name bas
 $CONDAROOT/bin/jupyter labextension install \
     @arbennett/base16-nord \
     @arbennett/base16-mexico-light \
-    jupyterlab-plotly \
-    @jupyterlab/hdf5 \
+    @jupyterlab/hdf5

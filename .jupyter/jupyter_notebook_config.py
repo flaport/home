@@ -229,7 +229,7 @@ c.NotebookApp.default_url = '/lab'
 #          These services can disable all authentication and security checks,
 #          with the full knowledge of what that implies.
 #  Default: False
-c.NotebookApp.disable_check_xsrf = True
+# c.NotebookApp.disable_check_xsrf = False
 
 ## Whether to enable MathJax for typesetting math/TeX
 #
