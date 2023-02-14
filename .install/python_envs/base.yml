@@ -9,6 +9,7 @@ dependencies:
   - certifi
   - ipykernel
   - ipympl
+  - isort
   - jupyter_bokeh
   - jupyterhub
   - jupyterlab
@@ -19,11 +20,13 @@ dependencies:
   - jupytext
   - matplotlib
   - nbdime
+  - openpyxl
   - openssl
   - pandas
   - pip
   - plotly
   - pyright
+  - pytables
   - scipy
   - setuptools
 prefix: /home/flaport/.anaconda
