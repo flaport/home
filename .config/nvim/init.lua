@@ -13,6 +13,7 @@ vim.cmd([[source ~/.config/nvim/vim/neovim.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/python.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/rust.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/yaml.vim ]])
+vim.cmd([[source ~/.config/nvim/vim/vimwiki.vim ]])
 
 vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
 vim.api.nvim_create_autocmd("LspAttach", {

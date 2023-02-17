@@ -37,7 +37,10 @@ return require("packer").startup(function(use)
 	use({ "lepture/vim-jinja" })
 	-- jinja2 support in vim
 	use({ "glench/vim-jinja2-syntax" })
+  -- inlayhints (very useful for Rust)
 	use({ "lvimuser/lsp-inlayhints.nvim" })
+  -- git support
+	use({ "tpope/vim-fugitive" })
 	use({
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v1.x",
