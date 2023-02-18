@@ -41,6 +41,9 @@ return require("packer").startup(function(use)
 	use({ "lvimuser/lsp-inlayhints.nvim" })
   -- git support
 	use({ "tpope/vim-fugitive" })
+  -- formatting
+  use({ "chiel92/vim-autoformat" })
+  -- language server protocol
 	use({
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v1.x",

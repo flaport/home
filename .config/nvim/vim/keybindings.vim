@@ -287,7 +287,7 @@ nnoremap <leader>fi :CocCommand python.sortImports<CR>
 
 " autoformat code (requires neoclide/coc.nvim)
 xmap <leader>F <Plug>(coc-format-selected)
-nmap <leader>F :Format<CR>
+nmap <leader>F :Autoformat<CR>
 
 " Toggle (git) diff bar (requires tpope/vim-fugitive and mhinz/vim-signify)
 " in 's' to stage, 'u' to unstage
