@@ -29,4 +29,5 @@ dependencies:
   - pytables
   - scipy
   - setuptools
+  - twine
 prefix: /home/flaport/.anaconda
