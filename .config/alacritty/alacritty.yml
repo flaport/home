@@ -3,7 +3,6 @@ env:
   WINIT_HIDPI_FACTOR: "1.0"
   WINIT_X11_SCALE_FACTOR: "1.0"
 
-alt_send_esc: true
 live_config_reload: true
 window.dynamic_title: true
 
