@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2021.10.21
+# last complete install: 2023.04.10
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -540,8 +540,10 @@ pacman_install fd
 #npm_install instant-markdown-d
 ## pyright: static typechecker and linter for python
 npm_install pyright
+## rust: best programming language out there
+pacman_install rustup
 ## rust_analyzer: static typechecker and linter for rust
-pacman_install rust_analyzer
+pacman_install rust-analyzer
 ## ccls: C language server (required by CoC plugin for nvim)
 pacman_install ccls
 ## bash language server (required by CoC plugin for nvim)
@@ -619,7 +621,7 @@ pacman_install testdisk
 ## data-at-rest tool: easy-to-use stacked filesystem encryption tool
 pacman_install gocryptfs
 ## webdav filesystem (mount Nextcloud as a folder)
-pacman_install davfs2
+yay_install davfs2
 ## recommended settings for davfs2 + Nextcloud
 echo $password | sudo -S sed -i 's/# use_locks.*/use_locks 0/g' /etc/davfs2/davfs2.conf
 
@@ -676,7 +678,7 @@ pacman_install xorg-xhost
 ## compositor (for transparent windows, blur, ...)
 #pacman_install xcompmgr
 ## better compositor:
-#pacman_install picom
+pacman_install picom
 ## bleeding edge version of picom:
 #yay_install picom-git
 
@@ -916,7 +918,7 @@ yay_install kvantum-theme-nordic-git
 ## neutral cursor theme
 #pacman_install xcursor-neutral
 ## simple and soft cursor theme
-pacman_install xcursor-simpleandsoft
+yay_install xcursor-simpleandsoft
 
 
 # Web and web interfaces
@@ -1033,7 +1035,8 @@ pacman_install awesome-terminal-fonts
 ## devicons: more symbols (used in lsd)
 #yay_install ttf-devicons
 ## hack nerd fonts: patched font with nice icons (recommended for lsd):
-yay_install nerd-fonts-hack
+#yay_install nerd-fonts-hack
+pacman_install ttf-hack-nerd
 ## Joypixels color emojis:
 pacman_install ttf-joypixels
 ## google color emojis (blocked by my fontconfig):
@@ -1139,7 +1142,7 @@ pacman_install flameshot
 ## youtube-dl: download YouTube videos
 pacman_install youtube-dl
 ## YouTube-viewer
-pacman_install youtube-viewer
+#yay_install youtube-viewer
 ## vlc media player
 #pacman_install vlc
 ## mpv media player
