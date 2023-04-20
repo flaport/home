@@ -14,7 +14,7 @@
 
 # source function (ignore file if file does not exist)
 function sourcefile {
-    [[ -f "$1" ]] && source "$1"
+  [[ -f "$1" ]] && source "$1"
 }
 
 # source settings not in source control
@@ -25,7 +25,7 @@ stty -ixon
 
 # colored bash prompt.
 prompt_command() {
-    PS1='\[\033[01;32m\]\w\[\033[00m\]\$  '
+  PS1='\[\033[01;32m\]\w\[\033[00m\]\$  '
 }
 PROMPT_COMMAND=prompt_command
 
@@ -41,16 +41,21 @@ alias la="ls -la"
 alias grep="grep --color=auto"
 alias base="conda activate base"
 alias system="conda deactivate && conda deactivate"
-alias pip="pip --no-cache-dir"
+alias pip="python -m pip --no-cache-dir --use-deprecated=legacy-resolver"
+alias pip3="python3 -m pip --no-cache-dir"
+alias pip2="python2 -m pip --no-cache-dir"
+alias spip="sudo /usr/bin/python -m pip --no-cache-dir"
+alias spip3="sudo /usr/bin/python3 -m pip --no-cache-dir"
+alias spip2="sudo /usr/bin/python2 -m pip --no-cache-dir"
 man() { # colored man pages:
-    LESS_TERMCAP_md=$'\e[01;31m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[01;44;33m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[01;32m' \
-        command man "$@"
-    }
+  LESS_TERMCAP_md=$'\e[01;31m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[01;44;33m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[01;32m' \
+    command man "$@"
+  }
 
 
 ## Extensions
