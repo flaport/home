@@ -27,6 +27,7 @@ dependencies:
   - plotly
   - pyright
   - pytables
+  - pytest
   - scipy
   - setuptools
   - twine
