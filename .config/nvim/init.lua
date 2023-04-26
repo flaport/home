@@ -1,19 +1,20 @@
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
+require("config.colors")
+require("config.options")
+require("config.autocmds")
 require("plugins")
-require("fixed")
-require("commands")
-require("variables")
-require("colors")
-require("filetypes")
-require("keybindings")
+require("config.keymaps")
 
 vim.cmd([[source ~/.config/nvim/vim/commands.vim ]])
-vim.cmd([[source ~/.config/nvim/vim/keybindings.vim ]])
-vim.cmd([[source ~/.config/nvim/vim/latex.vim ]])
+vim.cmd([[source ~/.config/nvim/vim/keymaps.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/neovim.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/python.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/rust.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/yaml.vim ]])
 vim.cmd([[source ~/.config/nvim/vim/vimwiki.vim ]])
+vim.cmd([[source ~/.config/nvim/vim/latex.vim ]])
 
 vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
 vim.api.nvim_create_autocmd("LspAttach", {

@@ -1,0 +1,3 @@
+return {
+    "stsewd/isort.nvim",
+}

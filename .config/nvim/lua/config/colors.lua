@@ -58,6 +58,4 @@ function SetColors()
 	vim.api.nvim_set_hl(0, "WildMenu", { ctermfg = 0, ctermbg = 3 })
 end
 
--- autocmd({ 'BufWritePost' }, {
---     command = 'lua SetColors()',
--- })
+SetColors()
