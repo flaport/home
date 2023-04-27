@@ -593,6 +593,12 @@ pacman_install playerctl
 ## service that checks number of packages that need updating:
 systemctl_create pacmanquery
 systemctl_enable pacmanquery
+## Docker
+pacman_install docker
+pacman_install docker-buildx
+curl -L https://raw.githubusercontent.com/docker/compose-cli/main/scripts/install/install_linux.sh | sh
+sudo ln -sf /usr/local/bin/docker /usr/bin/docker
+systemctl_enable docker
 
 
 # Drive and file system drivers
