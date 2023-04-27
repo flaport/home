@@ -12,6 +12,9 @@ vim.opt.formatoptions = "lqj"
 vim.opt.textwidth = 0
 vim.opt.colorcolumn = "0"
 
+-- use unnamed register for clipboard
+vim.o.clipboard = 'unnamed'
+
 -- disable automatic indent when moving to the next line while writing code
 vim.opt.autoindent = false
 

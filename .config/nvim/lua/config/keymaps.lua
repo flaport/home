@@ -209,10 +209,6 @@ map("n", "<leader><leader>", ":Telescope buffers<CR>", opts)
 
 -- VISUAL MODE
 
--- better indenting
-map("v", "<", "<gv", opts)
-map("v", ">", ">gv", opts)
-
 -- paste over currently selected text without yanking it
 map("v", "p", '"_dp', opts)
 map("v", "P", '"_dP', opts)
