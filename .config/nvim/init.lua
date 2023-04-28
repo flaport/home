@@ -2,9 +2,12 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 require("config.colors")
+require("config.icons")
 require("config.options")
+require("config.variables")
 require("config.autocmds")
 require("plugins")
+require("config.which_key_defaults")
 require("config.keymaps")
 
 vim.cmd([[source ~/.config/nvim/vim/commands.vim ]])

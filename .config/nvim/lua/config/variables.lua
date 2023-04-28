@@ -1,6 +1,3 @@
-require("fixed")
-require("commands")
-
 -- Default Variable Settings
 -- -------------------------------------------------------------------------------
 -- these settings may change depending on the filetype or active extension
@@ -13,7 +10,7 @@ vim.opt.textwidth = 0
 vim.opt.colorcolumn = "0"
 
 -- use unnamed register for clipboard
-vim.o.clipboard = 'unnamed'
+vim.opt.clipboard = 'unnamed'
 
 -- disable automatic indent when moving to the next line while writing code
 vim.opt.autoindent = false
