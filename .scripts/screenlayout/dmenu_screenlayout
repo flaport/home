@@ -27,6 +27,8 @@ def get_screenlayouts():
     layouts = os.listdir(os.path.expanduser("~/.local/bin"))
     layouts = [layout for layout in layouts if layout.startswith("[")]
     layouts = sorted(layouts, key=screenlayout_order_key, reverse=True)
+    layouts.insert(0, "laptop")
+    layouts.insert(0, "dual")
     layouts.insert(0, "max_screenlayout")
     layouts.insert(0, "same_screenlayout")
     layouts.insert(0, "default_screenlayout")

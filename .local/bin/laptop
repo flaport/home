@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+xrandr --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output eDP-1 --mode 1920x1200 --pos 0x0 --rotate normal --primary
+wallpaper current # reset wallpaper
+cat "/home/flaport/.local/bin/[eDP-1]" > "/home/flaport/.local/bin/last_screenlayout"
+chmod u+x "/home/flaport/.local/bin/last_screenlayout"
