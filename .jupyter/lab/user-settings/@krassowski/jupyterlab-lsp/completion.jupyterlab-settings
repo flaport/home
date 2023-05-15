@@ -1,8 +1,0 @@
-{
-    "disableCompletionsFrom": ["LSP"],
-    "kernelCompletionsFirst": true,
-    "kernelResponseTimeOut": 2000,
-    "continuousHinting": false,
-    "caseSensitive": false,
-    "waitForBusyKernel": false,
-}
