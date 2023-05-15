@@ -4,9 +4,13 @@ channels:
   - fastai
 dependencies:
   - altair
+  - black
   - bokeh
   - ca-certificates
   - certifi
+  - flake8
+  - fsspec
+  - h5py
   - ipykernel
   - ipympl
   - isort
@@ -20,15 +24,23 @@ dependencies:
   - jupytext
   - matplotlib
   - nbdime
+  - nbstripout
   - openpyxl
   - openssl
   - pandas
   - pip
   - plotly
+  - pyarrow
   - pyright
   - pytables
   - pytest
+  - python_language_server
+  - pywavelets
+  - requests
+  - s3fs
+  - scikit-learn
   - scipy
+  - seaborn
   - setuptools
   - twine
 prefix: /home/flaport/.anaconda
