@@ -62,7 +62,7 @@
   - `pacman -S networkmanager`
   - `systemctl enable NetworkManager`
 - **UEFI**: Install a bootloader
-  - `pacman -S grub efibootmgr`
+  - `pacman -S grub efibootmgr # always re-install, even when already installed.`
   - `grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi`
   - Generate config file for bootloader: `grub-mkconfig -o /boot/grub/grub.cfg`
   - Copy the generated config to a new folder:
@@ -72,12 +72,14 @@
     - `echo 'bcf boot add 1 fs0:\EFI\GRUB\grubx64.efi "GRUB"' > /boot/efi/startup.nsh`
 - **UEFI**: Extra: rEFInd Bootloader. When working with EFI file systems, one can choose to
   install the rEFInd bootloader, which is a bit more slick than GRUB:
-  _ `pacman -S intel-ucode linux linux-firmware` OR `pacman -S amd-ucode linux linux-firmware`
-  _ `pacman -S refind`
-  _ Install rEFInd: `refind-install`
-  _ Edit `/boot/refind_linux.conf` such that only the following line remains:
-  _ `"Boot with standard options" "rw root=UUID=<your-root-partition-uuid>"`
-  _ (optional) download and install a theme for your rEFInd splash screen. For example
+  - intel:
+    - `pacman -S intel-ucode linux linux-firmware refind # always re-install, even when already installed.`
+  - amd:
+    - `pacman -S amd-ucode linux linux-firmware refind # always re-install, even when already installed.`
+  - Install rEFInd: `refind-install`
+  - Edit `/boot/refind_linux.conf` such that only the following line remains:
+  - `"Boot with standard options" "rw root=UUID=<your-root-partition-uuid>"`
+  - (optional) download and install a theme for your rEFInd splash screen. For example
   this one: https://github.com/EvanPurkhiser/rEFInd-minimal.
 - **BIOS** Install a bootloader
   - `pacman -S grub`
