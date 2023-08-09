@@ -49,6 +49,10 @@ bindkey "^y" "" # noop
 bindkey -v
 bindkey '^R' history-incremental-search-backward
 
+# no more need to escape [ and ]
+setopt noautonamedirs
+alias rake='noglob rake'
+
 # complecation related settings
 # Define completers
 zstyle ':completion:*' completer _extensions _complete _approximate
