@@ -34,7 +34,6 @@ dependencies:
   - pyright
   - pytables
   - pytest
-  - python_language_server
   - pywavelets
   - requests
   - s3fs
@@ -43,4 +42,6 @@ dependencies:
   - seaborn
   - setuptools
   - twine
+  - pip:
+    - jupyterlab_hdf
 prefix: /home/flaport/.anaconda
