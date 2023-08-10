@@ -44,7 +44,7 @@ require("lualine").setup({
 		lualine_z = {},
 	},
 	tabline = {},
-	extensions = { "nvim-tree", "neo-tree", "lazy" },
+	extensions = { "nvim-tree", "neo-tree", "lazy", "toggleterm", "trouble", "fzf"},
 })
 -- custom theme
 -- local custom_gruvbox = require("lualine.themes.gruvbox")
