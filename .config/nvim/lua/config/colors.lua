@@ -2,6 +2,8 @@ function SetColors()
 	local color = color or "rose-pine"
 	-- vim.cmd.colorscheme(color)
 
+	
+
 	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
@@ -32,6 +34,7 @@ function SetColors()
 	vim.api.nvim_set_hl(0, "Error", { cterm = bold, ctermfg = 1, ctermbg = none })
 	vim.api.nvim_set_hl(0, "ErrorMsg", { cterm = bold, ctermfg = 15, ctermbg = 9 })
 	vim.api.nvim_set_hl(0, "FoldColumn", { ctermfg = 8, ctermbg = none })
+	vim.api.nvim_set_hl(0, "Folded", { ctermfg = none, ctermbg = 8 })
 	vim.api.nvim_set_hl(0, "Ignore", { ctermfg = 8 })
 	vim.api.nvim_set_hl(0, "LineNr", { ctermfg = 3 })
 	vim.api.nvim_set_hl(0, "MatchParen", { cterm = none, ctermfg = 3 })

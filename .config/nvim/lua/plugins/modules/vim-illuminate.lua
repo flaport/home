@@ -22,6 +22,10 @@ return {
                 map("[[", "prev", buffer)
             end,
         })
+
+        vim.api.nvim_set_hl(0, "IlluminatedWordText", { ctermbg = 8 })
+        vim.api.nvim_set_hl(0, "IlluminatedWordRead", { ctermbg = 8 })
+        vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { ctermbg = 8 })
     end,
     keys = {
         { "]]", desc = "Next Reference" },

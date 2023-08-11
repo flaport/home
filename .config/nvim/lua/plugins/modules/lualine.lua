@@ -2,5 +2,5 @@ return {
     "nvim-lualine/lualine.nvim",
     enabled = true,
     lazy = false,
-    event = { "BufReadPost", "BufNewFile" }
+    event = { "BufReadPost", "BufNewFile" },
 }

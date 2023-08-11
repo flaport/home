@@ -3,6 +3,7 @@ return {
         "simrat39/rust-tools.nvim",
         lazy = true,
         enabled = true,
+        ft = {"rust"},
         config = function()
             require("rust-tools").setup({
                 tools = {

@@ -1,6 +1,27 @@
 require("nvim-treesitter.configs").setup({
 	-- A list of parser names, or "all" (the four listed parsers should always be installed)
-	ensure_installed = { "rust", "javascript", "typescript", "python", "c", "lua", "vim" },
+	ensure_installed = {
+		"bash",
+		"c",
+		"html",
+		"javascript",
+		"json",
+		"lua",
+		"luadoc",
+		"luap",
+		"markdown",
+		"markdown_inline",
+		"python",
+		"query",
+		"regex",
+		"tsx",
+		"typescript",
+		"vim",
+		"vimdoc",
+		"yaml",
+		"rust",
+		"go"
+	},
 
 	-- Install parsers synchronously (only applied to `ensure_installed`)
 	sync_install = false,
@@ -10,11 +31,23 @@ require("nvim-treesitter.configs").setup({
 	auto_install = true,
 
 	-- List of parsers to ignore installing (for "all")
-	ignore_install = { "javascript" },
+	ignore_install = { "help" },
 
 	---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
 	-- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+	indent = { enable = true },
 
+	context_commentstring = { enable = true, enable_autocmd = false },
+
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+		init_selection = "<leader>v",
+		node_incremental = "+",
+		scope_incremental = false,
+		node_decremental = "_",
+		},
+	},
 	highlight = {
 		-- `false` will disable the whole extension
 		enable = true,
@@ -23,7 +56,6 @@ require("nvim-treesitter.configs").setup({
 		-- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
 		-- the name of the parser)
 		-- list of language that will be disabled
-		disable = { "c", "rust" },
 		-- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
 		disable = function(lang, buf)
 			local max_filesize = 100 * 1024 -- 100 KB
@@ -39,4 +71,58 @@ require("nvim-treesitter.configs").setup({
 		-- Instead of true it can also be a list of languages
 		additional_vim_regex_highlighting = false,
 	},
+	textobjects = {
+		select = {
+		enable = true,
+		lookahead = true,
+
+		keymaps = {
+			-- You can use the capture groups defined in textobjects.scm
+			["af"] = { query = "@function.outer", desc = "around a function" },
+			["if"] = { query = "@function.inner", desc = "inner part of a function" },
+			["ac"] = { query = "@class.outer", desc = "around a class" },
+			["ic"] = { query = "@class.inner", desc = "inner part of a class" },
+			["ai"] = { query = "@conditional.outer", desc = "around an if statement" },
+			["ii"] = { query = "@conditional.inner", desc = "inner part of an if statement" },
+			["al"] = { query = "@loop.outer", desc = "around a loop" },
+			["il"] = { query = "@loop.inner", desc = "inner part of a loop" },
+			["ap"] = { query = "@parameter.outer", desc = "around parameter" },
+			["ip"] = { query = "@parameter.inner", desc = "inside a parameter" },
+		},
+		selection_modes = {
+			["@parameter.outer"] = "v", -- charwise
+			["@parameter.inner"] = "v", -- charwise
+			["@function.outer"] = "v", -- charwise
+			["@conditional.outer"] = "V", -- linewise
+			["@loop.outer"] = "V", -- linewise
+			["@class.outer"] = "<c-v>", -- blockwise
+		},
+		include_surrounding_whitespace = false,
+		},
+		move = {
+		enable = true,
+		set_jumps = true, -- whether to set jumps in the jumplist
+		goto_previous_start = {
+			["[f"] = { query = "@function.outer", desc = "Previous function" },
+			["[c"] = { query = "@class.outer", desc = "Previous class" },
+			["[p"] = { query = "@parameter.inner", desc = "Previous parameter" },
+		},
+		goto_next_start = {
+			["]f"] = { query = "@function.outer", desc = "Next function" },
+			["]c"] = { query = "@class.outer", desc = "Next class" },
+			["]p"] = { query = "@parameter.inner", desc = "Next parameter" },
+		},
+		},
+	},
 })
+
+-- set treesitter folding
+vim.opt.foldmethod="expr"
+vim.opt.foldexpr="nvim_treesitter#foldexpr()"
+-- vim.opt.foldmethod="indent"
+vim.opt.foldlevel=99
+vim.opt.foldlevelstart=99
+vim.opt.foldenable = false
+
+-- fix the problem of telescope messing up with code folding
+vim.api.nvim_create_autocmd({ "BufEnter" }, { pattern = { "*" }, command = "normal zx", })

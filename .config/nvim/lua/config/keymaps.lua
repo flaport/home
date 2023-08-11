@@ -24,16 +24,16 @@ map("n", "<leader>.", ":MtaJumpToOtherTag<cr>", opts)
 map("n", "<leader>cd", ":lcd %:p:h<CR>", opts)
 
 -- jump to next error / warning in file
-map("n", "<leader>e", vim.diagnostic.goto_next, opts)
+-- map("n", "<leader>e", vim.lsp.diagnostic.goto_next(), opts)
 
 -- jump to previous error / warning in file
-map("n", "<leader>E", vim.diagnostic.goto_prev, opts)
+-- map("n", "<leader>E", vim.lsp.diagnostic.goto_prev(), opts)
 
 -- sort imports (python)
 map("n", "<leader>fi", ":IsortSync<CR>", opts)
 
 -- autoformat code (requires neoclide/coc.nvim)
-map("n", "<leader>F", ":NotImplemented", opts)
+-- map("n", "<leader>F", ":NotImplemented", opts)
 
 -- toggle git signify
 map("n", "<leader>gt", ":SignifyToggle<CR>", opts)
@@ -88,6 +88,17 @@ map("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", opts)
 map("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", opts)
 map("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", opts)
 
+
+-- null-ls formating
+vim.keymap.set('n', '<leader>F', function()
+    vim.lsp.buf.format({
+        timeout_ms = 2000
+    })
+end)
+
+-- toggleterm 
+vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _LAZZYGIT()<CR>", { noremap = true, silent = false })
+
 -- CONTROL BASED
 
 -- show available leader shortcuts
@@ -100,8 +111,8 @@ map("n", "<C-Space>", ":WhichKey \\<space><cr>", opts)
 -- <C-b> " standard vim keybinding
 
 -- close current buffer
-map("i", "<C-c>", "<Esc>:bd<CR>", opts)
-map("n", "<C-c>", "<Esc>:bd<CR>", opts)
+-- map("i", "<C-c>", "<Esc>:bd<CR>", opts)
+-- map("n", "<C-c>", "<Esc>:bd<CR>", opts)
 
 -- down half screen
 map("n", "<C-d>", "<C-d>zz", opts)
@@ -159,6 +170,23 @@ map("n", "<C-s>", "<Esc>:w<CR>", opts)
 
 -- up half screen
 map("n", "<C-u>", "<C-u>zz", opts)
+
+function CloseBuffer()
+    if vim.bo.filetype == "netrw" then
+        vim.cmd("bd!")
+    else
+        local buf_list = vim.fn.getbufinfo({buflisted = 1})
+        local numbuffers = #buf_list
+        if numbuffers > 1 then
+            vim.cmd("bd!")
+        else
+            vim.cmd("q!")
+        end
+    end
+end
+
+map("i", '<C-c>', '<Esc>:lua CloseBuffer()<CR>', opts)
+map("n", '<C-c>', '<Esc>:lua CloseBuffer()<CR>', opts)
 
 -- visual block
 -- <C-v> " standard vim keybinding
@@ -223,6 +251,9 @@ map("v", "K", ":m '<-2<CR>gv=gv", opts)
 map("t", "<Esc>", "<C-\\><C-n>", opts)
 -- keep original Escape available uner `<Esc>
 map("t", "`<Esc>", "<Esc>", opts)
+
+-- treesitter playground show highlight
+map("n", "T", ":TSHighlightCapturesUnderCursor<CR>", opts)
 
 -- DEFAULTS
 
