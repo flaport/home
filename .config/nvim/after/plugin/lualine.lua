@@ -1,4 +1,18 @@
-require("lualine").setup({
+local status_ok, lualine = pcall(require, "lualine")
+if not status_ok then
+	return
+end
+
+local set_theme = function()
+	if vim.g.neovide then
+		return "auto"
+	else
+		return "gruvbox"
+	end
+end
+
+lualine.setup({
+
 	options = {
 		icons_enabled = true,
 		theme = "nord",
@@ -9,6 +23,7 @@ require("lualine").setup({
 		disabled_filetypes = {},
 		always_divide_middle = true,
 	},
+	globalstatus = true, -- enable global statusline
 	sections = {
 		lualine_a = { "mode" },
 		lualine_b = {
@@ -19,19 +34,25 @@ require("lualine").setup({
 				colored = false,
 			},
 		},
-		lualine_c = {
-			{
-				"buffers",
-				show_modified_status = false,
-				max_length = vim.o.columns * 2 / 3,
-				buffers_color = {
-					-- Same values as the general color option can be used here.
-					active = "lualine_a_normal", -- Color for active buffer.
-					inactive = "lualine_c_normal", -- Color for inactive buffer.
-				},
-			},
+		lualine_c = { "filename" },
+		lualine_x = {
+			-- {
+			-- 	"buffers",
+			-- 	show_modified_status = true,
+			-- 	max_length = vim.o.columns * 2 / 3,
+			-- 	buffers_color = {
+			-- 		-- Same values as the general color option can be used here.
+			-- 		active = "lualine_a_normal", -- Color for active buffer.
+			-- 		inactive = "lualine_c_normal", -- Color for inactive buffer.
+			-- 	},
+			-- 	symbols = {
+			-- 		alternate_file = "",
+			-- 	},
+			-- },
+			"encoding",
+			"fileformat",
+			{ "filetype", icon_only = false },
 		},
-		lualine_x = { "encoding", "fileformat", "filetype" },
 		lualine_y = { "progress" },
 		lualine_z = { "location" },
 	},
@@ -46,7 +67,8 @@ require("lualine").setup({
 	tabline = {},
 	extensions = { "nvim-tree", "neo-tree", "lazy", "toggleterm", "trouble", "fzf"},
 })
--- custom theme
+
+-- -- custom theme
 -- local custom_gruvbox = require("lualine.themes.gruvbox")
 
 -- -- normal mode
@@ -56,6 +78,7 @@ require("lualine").setup({
 -- custom_gruvbox.normal.b.bg = 8
 -- custom_gruvbox.normal.c.fg = 15
 -- custom_gruvbox.normal.c.bg = 0
+
 -- -- insert mode
 -- custom_gruvbox.insert.a.fg = 0
 -- custom_gruvbox.insert.a.bg = 9
@@ -63,6 +86,7 @@ require("lualine").setup({
 -- custom_gruvbox.insert.b.bg = 8
 -- custom_gruvbox.insert.c.fg = 15
 -- custom_gruvbox.insert.c.bg = 0
+
 -- -- visual mode
 -- custom_gruvbox.visual.a.fg = 0
 -- custom_gruvbox.visual.a.bg = 11
@@ -70,6 +94,7 @@ require("lualine").setup({
 -- custom_gruvbox.visual.b.bg = 8
 -- custom_gruvbox.visual.c.fg = 15
 -- custom_gruvbox.visual.c.bg = 0
+
 -- -- replace mode
 -- custom_gruvbox.replace.a.fg = 0
 -- custom_gruvbox.replace.a.bg = 15
@@ -77,6 +102,7 @@ require("lualine").setup({
 -- custom_gruvbox.replace.b.bg = 8
 -- custom_gruvbox.replace.c.fg = 15
 -- custom_gruvbox.replace.c.bg = 0
+
 -- -- command mode
 -- custom_gruvbox.command.a.fg = 0
 -- custom_gruvbox.command.a.bg = 13
@@ -84,6 +110,7 @@ require("lualine").setup({
 -- custom_gruvbox.command.b.bg = 8
 -- custom_gruvbox.command.c.fg = 15
 -- custom_gruvbox.command.c.bg = 0
+
 -- -- inactive mode
 -- custom_gruvbox.inactive.a.fg = 0
 -- custom_gruvbox.inactive.a.bg = 2
