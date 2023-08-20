@@ -8,6 +8,7 @@ return {
     p = { ":Lazy<CR>", "Lazy" },
     f = { ':Telescope find_files<CR>', "Find Files" },
     r = { function() require("spectre").open() end, "Replace (Spectre)" },
+    o = {'<cmd>SymbolsOutline<CR>', "Outline"},
     b = {
         name = "Buffers",
         j = { "<cmd>BufferLinePick<cr>", "Jump" },

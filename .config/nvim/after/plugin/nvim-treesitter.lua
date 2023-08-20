@@ -120,9 +120,10 @@ require("nvim-treesitter.configs").setup({
 vim.opt.foldmethod="expr"
 vim.opt.foldexpr="nvim_treesitter#foldexpr()"
 -- vim.opt.foldmethod="indent"
-vim.opt.foldlevel=99
-vim.opt.foldlevelstart=99
-vim.opt.foldenable = false
+-- vim.opt.foldlevel=99
+vim.opt.foldnestmax=2
+vim.opt.foldlevelstart=1
+vim.opt.foldenable = true
 
 -- fix the problem of telescope messing up with code folding
-vim.api.nvim_create_autocmd({ "BufEnter" }, { pattern = { "*" }, command = "normal zx", })
+vim.api.nvim_create_autocmd({ "BufRead" }, { pattern = { "*" }, command = "normal zx", })
