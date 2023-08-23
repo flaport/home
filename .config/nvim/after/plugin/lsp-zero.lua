@@ -123,105 +123,103 @@ lspconfig.lua_ls.setup({
 	on_attach = custom_attach,
 })
 
--- read .vscode/settings if there is one. Mainly for ipkiss environment
-local get_vscode_python_path = function()
-	if vim.fn.filereadable(".vscode/settings.json") ~= 1 then
-		-- vim.schedule(function() print("there is no settings.json file") end)
-		return
-	end
-
-	local io = require("io")
-	local file = io.open(".vscode/settings.json")
-	if file == nil then
-		vim.schedule(function() print("settings.json file not readable") end)
-		return
-	end
-	if file ~= nil then
-		local content = file:read "*a"
-		file:close()
-		local content = content:gsub("%s*//.-\n", "\n") -- https://www.lua.org/pil/20.2.html for lua patterns
-		-- print(content)
-		local status_ok, table1 = pcall(vim.json.decode, content)
-		if not status_ok then
-			vim.schedule(function() print(".vscode/settings.json parse failed, check it.") end)
-			return
-		end
-		-- local table1 = vim.fn.json_decode(content)
-		local status_ok, vscode_pythonpath = pcall(function() return table1["terminal.integrated.env.linux"].PYTHONPATH end)
-		if status_ok then
-			vim.g.vscode_pythonpath = vscode_pythonpath
-		end
-		local status_ok, extraPath = pcall(function() return table1["python.analysis.extraPaths"].PYTHONPATH end)
-		if status_ok then
-			vim.g.Pyright_analysis_pathv = extraPath
-			vim.schedule(function() print("vscode settings for pyright loaded successfuly") end)
-			return vim.g.Pyright_analysis_path
-		end
-	end
-end
-
-
--- setup pyright
-lspconfig.pyright.setup({
-	on_attach = function(client, bufnr)
-
-		-- Read VScode launch.json and add PYTHONPATH
-		-- local f = vim.fn.filereadable("launch.json")
-		-- local file = io.open(".vscode/launch.json")
-		-- if (file ~= nil and vim.g.vscode_pythonpath == nil) then
-		-- 	-- local content = file:read "*a"
-		-- 	local lines = file:lines()
-		-- 	for line in lines do
-		-- 		line = line:gsub("%s+", "") -- https://www.lua.org/pil/20.2.html for lua patterns
-		-- 		-- print(line)
-		-- 		if line:find('^"PY') ~= nil then
-		-- 			line = line:gsub('"PYTHONPATH":', "")
-		-- 			local pythonpath = line:gsub('"', "")
-		-- 			if pythonpath ~= nil then
-		-- 				vim.env.PYTHONPATH = vim.env.PYTHONPATH .. ":" .. pythonpath
-		-- 				vim.g.vscode_pythonpath = 1
-		-- 			end
-		-- 		end
-		-- 	end
-		-- 	file:close()
-		-- end
-
-		if (vim.g.vscode_pythonpath ~= nil and vim.g.vscode_pythonpath_done == nil) then
-			vim.env.PYTHONPATH = vim.env.PYTHONPATH .. ":" .. vim.g.vscode_pythonpath
-			vim.g.vscode_pythonpath_done = 1
-		end
-
-		-- local handle = io.popen(command)
-		-- local result = handle:read("*a")
-		-- handle:close()
-		custom_attach(client, bufnr)
-	end,
-	flags = {
-		debounce_text_changes = nil,
-	},
-	settings = {
-		python = {
-			analysis = {
-				extraPaths = get_vscode_python_path(),
-				typeCheckingMode = "off"
-			}
-		}
-	}
-})
-
--- require("lspconfig")["pyright"].setup({
+-- -- read .vscode/settings if there is one. Mainly for ipkiss environment
+-- local get_vscode_python_path = function()
+-- 	if vim.fn.filereadable(".vscode/settings.json") ~= 1 then
+-- 		-- vim.schedule(function() print("there is no settings.json file") end)
+-- 		return
+-- 	end
+--
+-- 	local io = require("io")
+-- 	local file = io.open(".vscode/settings.json")
+-- 	if file == nil then
+-- 		vim.schedule(function() print("settings.json file not readable") end)
+-- 		return
+-- 	end
+-- 	if file ~= nil then
+-- 		local content = file:read "*a"
+-- 		file:close()
+-- 		local content = content:gsub("%s*//.-\n", "\n") -- https://www.lua.org/pil/20.2.html for lua patterns
+-- 		-- print(content)
+-- 		local status_ok, table1 = pcall(vim.json.decode, content)
+-- 		if not status_ok then
+-- 			vim.schedule(function() print(".vscode/settings.json parse failed, check it.") end)
+-- 			return
+-- 		end
+-- 		-- local table1 = vim.fn.json_decode(content)
+-- 		local status_ok, vscode_pythonpath = pcall(function() return table1["terminal.integrated.env.linux"].PYTHONPATH end)
+-- 		if status_ok then
+-- 			vim.g.vscode_pythonpath = vscode_pythonpath
+-- 		end
+-- 		local status_ok, extraPath = pcall(function() return table1["python.analysis.extraPaths"].PYTHONPATH end)
+-- 		if status_ok then
+-- 			vim.g.Pyright_analysis_pathv = extraPath
+-- 			vim.schedule(function() print("vscode settings for pyright loaded successfuly") end)
+-- 			return vim.g.Pyright_analysis_path
+-- 		end
+-- 	end
+-- end
+--
+--
+-- -- setup pyright
+-- lspconfig.pyright.setup({
 -- 	on_attach = function(client, bufnr)
+--
+-- 		-- Read VScode launch.json and add PYTHONPATH
+-- 		-- local f = vim.fn.filereadable("launch.json")
+-- 		-- local file = io.open(".vscode/launch.json")
+-- 		-- if (file ~= nil and vim.g.vscode_pythonpath == nil) then
+-- 		-- 	-- local content = file:read "*a"
+-- 		-- 	local lines = file:lines()
+-- 		-- 	for line in lines do
+-- 		-- 		line = line:gsub("%s+", "") -- https://www.lua.org/pil/20.2.html for lua patterns
+-- 		-- 		-- print(line)
+-- 		-- 		if line:find('^"PY') ~= nil then
+-- 		-- 			line = line:gsub('"PYTHONPATH":', "")
+-- 		-- 			local pythonpath = line:gsub('"', "")
+-- 		-- 			if pythonpath ~= nil then
+-- 		-- 				vim.env.PYTHONPATH = vim.env.PYTHONPATH .. ":" .. pythonpath
+-- 		-- 				vim.g.vscode_pythonpath = 1
+-- 		-- 			end
+-- 		-- 		end
+-- 		-- 	end
+-- 		-- 	file:close()
+-- 		-- end
+--
+-- 		if (vim.g.vscode_pythonpath ~= nil and vim.g.vscode_pythonpath_done == nil) then
+-- 			vim.env.PYTHONPATH = vim.env.PYTHONPATH .. ":" .. vim.g.vscode_pythonpath
+-- 			vim.g.vscode_pythonpath_done = 1
+-- 		end
+--
+-- 		-- local handle = io.popen(command)
+-- 		-- local result = handle:read("*a")
+-- 		-- handle:close()
 -- 		custom_attach(client, bufnr)
--- 	  end,
--- 	flags = lsp_flags,
+-- 	end,
+-- 	flags = {
+-- 		debounce_text_changes = nil,
+-- 	},
+-- 	settings = {
+-- 		python = {
+-- 			analysis = {
+-- 				extraPaths = get_vscode_python_path(),
+-- 				typeCheckingMode = "off"
+-- 			}
+-- 		}
+-- 	}
 -- })
+
+lspconfig.pyright.setup({
+	on_attach = custom_attach,
+	flags = lsp_flags,
+})
 
 lspconfig.tsserver.setup({
 	on_attach = custom_attach,
 	flags = lsp_flags,
 })
 lspconfig.rust_analyzer.setup({
-	on_attach = custom_attach, 
+	on_attach = custom_attach,
 	flags = lsp_flags,
 	-- Server-specific settings...
 	settings = {
@@ -278,7 +276,7 @@ local formatting = null_ls.builtins.formatting
 null_ls.setup({
     debug = true,
     sources = { -- stylua better than lua-format
-    formatting.stylua, 
+    formatting.stylua,
     formatting.black.with({
         extra_args = {"-t", "py38", "-l", "96"}
     }) -- formatting.gofmt,
