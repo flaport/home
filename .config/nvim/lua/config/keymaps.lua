@@ -24,10 +24,10 @@ map("n", "<leader>.", ":MtaJumpToOtherTag<cr>", opts)
 map("n", "<leader>cd", ":lcd %:p:h<CR>", opts)
 
 -- jump to next error / warning in file
--- map("n", "<leader>e", vim.lsp.diagnostic.goto_next(), opts)
+map("n", "<leader>e", vim.diagnostic.goto_next, opts)
 
 -- jump to previous error / warning in file
--- map("n", "<leader>E", vim.lsp.diagnostic.goto_prev(), opts)
+map("n", "<leader>E", vim.diagnostic.goto_prev, opts)
 
 -- sort imports (python)
 map("n", "<leader>fi", ":IsortSync<CR>", opts)
@@ -96,7 +96,7 @@ vim.keymap.set('n', '<leader>F', function()
     })
 end)
 
--- toggleterm 
+-- toggleterm
 vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _LAZZYGIT()<CR>", { noremap = true, silent = false })
 
 -- CONTROL BASED
