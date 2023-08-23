@@ -1,0 +1,32 @@
+{
+  "language_servers": {
+    "pylsp": {
+      "serverSettings": {
+        "pylsp": {
+          "plugins": {
+            "pydocstyle": {
+              "enabled": false
+            },
+            "pycodestyle": {
+              "enabled": false
+            },
+            "pyflakes": {
+              "enabled": false
+            },
+            "flake8": {
+              "enabled": false
+            },
+            "pyright": {
+              "enabled": true
+            }
+          }
+        }
+      }
+    },
+    "pyright": {
+        "serverSettings": {
+            "python.analysis.useLibraryCodeForTypes": true
+        }
+    }
+  }
+}
