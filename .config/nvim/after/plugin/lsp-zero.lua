@@ -278,7 +278,7 @@ null_ls.setup({
     sources = { -- stylua better than lua-format
     formatting.stylua,
     formatting.black.with({
-        extra_args = {"-t", "py38", "-l", "96"}
+        extra_args = {"-t", "py311"}
     }) -- formatting.gofmt,
     }
 })
