@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2023.04.10
+# last complete install: 2023.09.06
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -596,8 +596,8 @@ systemctl_enable pacmanquery
 ## Docker
 pacman_install docker
 pacman_install docker-buildx
-curl -L https://raw.githubusercontent.com/docker/compose-cli/main/scripts/install/install_linux.sh | sh
-sudo ln -sf /usr/local/bin/docker /usr/bin/docker
+# curl -L https://raw.githubusercontent.com/docker/compose-cli/main/scripts/install/install_linux.sh | sh
+# sudo ln -sf /usr/local/bin/docker /usr/bin/docker
 systemctl_enable docker
 
 
@@ -1145,8 +1145,6 @@ pacman_install imagemagick
 #pacman_install scrot
 ## flameshot: arguably the best screenshot program
 pacman_install flameshot
-## youtube-dl: download YouTube videos
-pacman_install youtube-dl
 ## YouTube-viewer
 #yay_install youtube-viewer
 ## vlc media player
@@ -1239,7 +1237,7 @@ pacman_install epiphany
 ## firefox developer edition
 pacman_install firefox-developer-edition
 ## patch firefox and waterfox to work with some legacy extensions (like vimfx)
-submodule_install legacyfox
+# submodule_install legacyfox
 ## enhanced security settings for firefox (you might have to copy this manually if your profile is called differently)
 #cp "$HOME/.mozilla/firefox/secure-prefs.js" "$(echo $HOME/.mozilla/firefox/*.default-release)/prefs.js"
 #cp "$HOME/.mozilla/firefox/secure-prefs.js" "$(echo $HOME/.mozilla/firefox/*.default)/prefs.js"
