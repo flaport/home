@@ -7,7 +7,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 	command = "call DetectSls()",
 	group = group,
 })
-vim.api.nvim_create_autocmd({ "BufNewFile,BufEnter,BufRead" }, {
+vim.api.nvim_create_autocmd({ "BufNewFile","BufEnter","BufRead" }, {
 	pattern = "*.yml",
 	-- command = "call DetectSls()",
 	callback = function()
