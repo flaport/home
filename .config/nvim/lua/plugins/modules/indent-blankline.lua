@@ -4,7 +4,7 @@ return {
     enabled = true,
     config = function ()
         require("ibl").setup {
-            debounce = 50,
+            debounce = 300,
             indent = { char = "╎" },
             exclude = { filetypes = {"help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "undotree"} },
             whitespace = {

@@ -1,6 +1,7 @@
 return {
     "echasnovski/mini.indentscope",
     version = false,
+    enabled = true,
     event = { "BufReadPre", "BufNewFile" },
     opts = {
         symbol = "┃",
