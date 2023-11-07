@@ -1,13 +1,16 @@
 return {
     "lukas-reineke/indent-blankline.nvim",
-    tag = "v2.20.8",
     event = { "BufReadPost", "BufNewFile" },
     enabled = true,
-    opts = {
-        -- char = "▏",
-        char = "│",
-        filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
-        show_trailing_blankline_indent = false,
-        show_current_context = false,
-    },
+    config = function ()
+        require("ibl").setup {
+            debounce = 50,
+            indent = { char = "╎" },
+            exclude = { filetypes = {"help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "undotree"} },
+            whitespace = {
+                remove_blankline_trail = true,
+            },
+            scope = { enabled = false },
+        }
+    end
 }
