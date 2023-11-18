@@ -16,7 +16,7 @@ dependencies:
   - isort
   - jupyter_bokeh
   - jupyterhub
-  - jupyterlab
+  - jupyterlab>4
   - jupyterlab-git
   - jupyterlab-lsp
   - jupyterlab_code_formatter
