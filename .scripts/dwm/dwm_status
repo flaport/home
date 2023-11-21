@@ -23,10 +23,11 @@ mkdir -p "$CACHEDIR"
 
 setstatus(){
     status \
-    network \
+    memory \
+    cpu \
+    disk \
     transmission \
     playercontrol \
-    appointments \
     syncthing \
     sshd \
     sshtunnel \
@@ -36,7 +37,6 @@ setstatus(){
     openconnect \
     cups \
     gpg \
-    email \
     pacmanstatus \
     volume \
     brightness \
@@ -45,14 +45,14 @@ setstatus(){
     weather \
     calendar \
     clock \
+    # email \
+    # network \
     # services \
     # bluetooth \
-    # memory \
-    # cpu \
-    # disk \
     # localip \
     # publicip \
     # wifi \
+    # appointments \
 }
 
 
@@ -400,11 +400,11 @@ memory(){ # memory
     used=$(free | awk '/Mem/ {print $3 }')
     total=$(free | awk '/Mem/ {print $2 }')
     percentage=$(python -c "print(f'{100*$used/$total:.0f}%')")
-    echo " $percentage"
+    echo " $percentage"
 }
 memory1() { # mouse-button 1 action for memory widget
     mem=$(free | awk '/Mem/ {printf "%d MiB/%d MiB\n", $3 / 1024.0, $2 / 1024.0 }')
-    notify-send "💾 free RAM $mem"
+    notify-send " free RAM $mem"
 }
 
 # -----------
@@ -534,10 +534,10 @@ sshtunnel2(){
 # -----------
 
 # show icon if syncthing service is active
-syncthing(){ # jupyterhub status
+syncthing(){ # syncthing status
     systemctl is-active syncthing > /dev/null 2>/dev/null && echo 
 }
-syncthing1(){ # mouse-button 1 action for jupyterhub widget
+syncthing1(){ # mouse-button 1 action for syncthing widget
     notifyservice syncthing 
 }
 syncthing2(){
