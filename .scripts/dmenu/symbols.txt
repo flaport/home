@@ -10,6 +10,9 @@
 − minus
 ± plus minus
 × multiplication (times)
+⁻ superscript minus (-)
+¹ superscript one (1)
+⁻¹ superscript minusone (-1)
 ² squared 2
 ³ cubed 3
 √ radical (square root)
