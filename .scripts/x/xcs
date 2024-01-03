@@ -335,66 +335,66 @@ def write_gtk3rc(xresources, filename="~/.config/gtk-3.0/settings.ini"):
             if localconfig:
                 file.write("\n")
 
-def write_alacritty_config(xresources, filename="~/.cache/alacritty/alacritty.yml"):
+def write_alacritty_config(xresources, filename="~/.cache/alacritty/alacritty.toml"):
     filename = os.path.abspath(os.path.expanduser(filename))
     dirname = os.path.dirname(filename)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
-    master_filename = os.path.abspath(os.path.expanduser("~/.config/alacritty/alacritty.yml"))
+    master_filename = os.path.abspath(os.path.expanduser("~/.config/alacritty/alacritty.toml"))
     print(f"writing new alacritty config to '{filename}'...")
     normal, bright, dim = False, False, False
     with open(master_filename, "r") as src:
         with open(filename, "w") as dst:
             for line in src:
-                if "  normal:" in line:
+                line = line.strip()
+                if line == '[colors.normal]':
                     normal, bright, dim = True, False, False
-                if "  bright:" in line:
+                if line == '[colors.bright]':
                     normal, bright, dim = False, True, False
-                if "  dim:" in line:
+                if line == '[colors.dim]':
                     normal, bright, dim = False, False, True
-                if "  opacity:" in line:
-                    line = f"  opacity: {xresources['alpha']:.2f}\n"
-                elif "    background:" in line:
-                    line = f"    background: '{xresources['color0']}'\n"
-                elif "    foreground:" in line:
-                    line = f"    foreground: '{xresources['color15']}'\n"
-                elif "    dim_foreground:" in line:
-                    line = f"    dim_foreground: '{xresources['color8']}'\n"
-                elif "    bright_foreground:" in line:
-                    line = f"    bright_foreground: '{xresources['color7']}'\n"
-                elif (normal or dim) and "    black:" in line:
+                if line.startswith("opacity ="):
+                    line = f"opacity = {xresources['alpha']:.2f}\n"
+                elif line.startswith("background ="):
+                    line = f"background = '{xresources['color0']}'\n"
+                elif line.startswith("foreground ="):
+                    line = f"foreground = '{xresources['color15']}'\n"
+                elif line.startswith("dim_foreground ="):
+                    line = f"dim_foreground = '{xresources['color8']}'\n"
+                elif line.startswith("bright_foreground ="):
+                    line = f"bright_foreground = '{xresources['color7']}'\n"
+                elif (normal or dim) and line.startswith("black = "):
                     line = f"    black: '{xresources['color0']}'\n"
-                elif bright and "    black:" in line:
-                    line = f"    black: '{xresources['color8']}'\n"
-                elif (normal or dim) and "    red:" in line:
-                    line = f"    red: '{xresources['color1']}'\n"
-                elif bright and "    red:" in line:
-                    line = f"    red: '{xresources['color9']}'\n"
-                elif (normal or dim) and "    green:" in line:
-                    line = f"    green: '{xresources['color2']}'\n"
-                elif bright and "    green:" in line:
-                    line = f"    green: '{xresources['color10']}'\n"
-                elif (normal or dim) and "    yellow:" in line:
-                    line = f"    yellow: '{xresources['color3']}'\n"
-                elif bright and "    yellow:" in line:
-                    line = f"    yellow: '{xresources['color11']}'\n"
-                elif (normal or dim) and "    blue:" in line:
-                    line = f"    blue: '{xresources['color4']}'\n"
-                elif bright and "    blue:" in line:
-                    line = f"    blue: '{xresources['color12']}'\n"
-                elif (normal or dim) and "    magenta:" in line:
-                    line = f"    magenta: '{xresources['color5']}'\n"
-                elif bright and "    magenta:" in line:
-                    line = f"    magenta: '{xresources['color13']}'\n"
-                elif (normal or dim) and "    cyan:" in line:
-                    line = f"    cyan: '{xresources['color6']}'\n"
-                elif bright and "    cyan:" in line:
-                    line = f"    cyan: '{xresources['color14']}'\n"
-                elif (normal or dim) and "    white:" in line:
-                    line = f"    white: '{xresources['color7']}'\n"
-                elif bright and "    white:" in line:
-                    line = f"    white: '{xresources['color15']}'\n"
-                line = line
+                elif bright and line.startswith("black = "):
+                    line = f"black = '{xresources['color8']}'\n"
+                elif (normal or dim) and line.startswith("red = "):
+                    line = f"red = '{xresources['color1']}'\n"
+                elif bright and line.startswith("red = "):
+                    line = f"red = '{xresources['color9']}'\n"
+                elif (normal or dim) and line.startswith("green = "):
+                    line = f"green = '{xresources['color2']}'\n"
+                elif bright and line.startswith("green = "):
+                    line = f"green = '{xresources['color10']}'\n"
+                elif (normal or dim) and line.startswith("yellow = "):
+                    line = f"yellow = '{xresources['color3']}'\n"
+                elif bright and line.startswith("yellow = "):
+                    line = f"yellow = '{xresources['color11']}'\n"
+                elif (normal or dim) and line.startswith("blue = "):
+                    line = f"blue = '{xresources['color4']}'\n"
+                elif bright and line.startswith("blue = "):
+                    line = f"blue = '{xresources['color12']}'\n"
+                elif (normal or dim) and line.startswith("magenta = "):
+                    line = f"magenta = '{xresources['color5']}'\n"
+                elif bright and line.startswith("magenta = "):
+                    line = f"magenta = '{xresources['color13']}'\n"
+                elif (normal or dim) and line.startswith("cyan = "):
+                    line = f"cyan = '{xresources['color6']}'\n"
+                elif bright and line.startswith("cyan = "):
+                    line = f"cyan = '{xresources['color14']}'\n"
+                elif (normal or dim) and line.startswith("white = "):
+                    line = f"white = '{xresources['color7']}'\n"
+                elif bright and line.startswith("white = "):
+                    line = f"white = '{xresources['color15']}'\n"
                 dst.write(line)
 
 def write_picom_config(xresources, filename="~/.cache/xcs/picom.conf"):

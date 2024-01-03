@@ -6,5 +6,5 @@ if echo "$@" | grep "\-\-config\-file" > /dev/null 2> /dev/null; then
 fi
 
 mkdir -p "$HOME/.cache/alacritty"
-[ ! -f "$HOME/.cache/alacritty/alacritty.yml" ] && cp "$HOME/.config/alacritty/alacritty.yml" "$HOME/.cache/alacritty/alacritty.yml"
-/usr/bin/alacritty --config-file "$HOME/.cache/alacritty/alacritty.yml" "$@"
+[ ! -f "$HOME/.cache/alacritty/alacritty.toml" ] && cp "$HOME/.config/alacritty/alacritty.toml" "$HOME/.cache/alacritty/alacritty.toml"
+/usr/bin/alacritty --config-file "$HOME/.cache/alacritty/alacritty.toml" "$@"
