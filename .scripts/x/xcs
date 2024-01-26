@@ -364,7 +364,7 @@ def write_alacritty_config(xresources, filename="~/.cache/alacritty/alacritty.to
                 elif line.startswith("bright_foreground ="):
                     line = f"bright_foreground = '{xresources['color7']}'\n"
                 elif (normal or dim) and line.startswith("black = "):
-                    line = f"    black: '{xresources['color0']}'\n"
+                    line = f"black = '{xresources['color0']}'\n"
                 elif bright and line.startswith("black = "):
                     line = f"black = '{xresources['color8']}'\n"
                 elif (normal or dim) and line.startswith("red = "):
@@ -395,7 +395,7 @@ def write_alacritty_config(xresources, filename="~/.cache/alacritty/alacritty.to
                     line = f"white = '{xresources['color7']}'\n"
                 elif bright and line.startswith("white = "):
                     line = f"white = '{xresources['color15']}'\n"
-                dst.write(line)
+                dst.write(f"{line}\n")
 
 def write_picom_config(xresources, filename="~/.cache/xcs/picom.conf"):
     filename = os.path.abspath(os.path.expanduser(filename))
