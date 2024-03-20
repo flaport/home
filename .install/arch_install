@@ -464,6 +464,8 @@ pacman_install xclip
 pacman_install poppler
 ## video to thumbnail conversion
 pacman_install ffmpegthumbnailer
+## change screen brightness
+yay_install light
 ## audio thumbnails with ffmpeg (heh?)
 #yay_install ffmpegthumbnailer-mp3
 ## epub thumbnailer
