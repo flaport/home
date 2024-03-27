@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last complete install: 2023.09.06
+# last complete install: 2024.03.27
 
 # Note: this script can be run as often as you like. It will not attempt to re-install
 #       any already installed program, making it a very fast way update some preferences
@@ -368,6 +368,7 @@ pacman_install cmake
 
 pacman_install git
 pacman_install git-lfs
+pacman_install github-cli
 git config pull.rebase false
 git config push.default simple
 git config advice.addIgnoredFile false
@@ -516,11 +517,17 @@ echo $password | sudo -S chmod -R g+rw /var/lib/transmission
 pacman_install lsd
 ## vim / neovim: terminal text editor
 pacman_install neovim
+## tree-sitter cli
+pacman_install tree-sitter-cli
 ## link neovim to standard vim binary:
 link /usr/bin/nvim /usr/bin/vim
 link /usr/bin/nvim /usr/bin/vi
-## pynvim: better integration of python with neovim:
+## python host for neovim
 pacman_install python-pynvim
+## ruby host for neovim
+yay_install ruby-neovim
+## node-neovim: better integration of nodejs with neovim:
+npm_install neovim
 ## neovim-remote: some of my nvim scripts depend on it
 yay_install neovim-remote
 pacman_install python-pynvim
@@ -528,14 +535,17 @@ pacman_install python-pynvim
 yay_install nvim-packer-git
 ## stylua: a lua formatter (like black for python)
 pacman_install stylua
+pacman_install luarocks
 ## ripgrep: better grep utility, also used by telescope-nvim plugin
 pacman_install ripgrep
 ## fd: better find utility, also used by telescoe-nvim plugin
 pacman_install fd
-## ruby-neovim: better integration of ruby with neovim:
-#yay_install ruby-neovim
-## node-neovim: better integration of nodejs with neovim:
-#npm_install neovim
+## ruby
+#pacman_install ruby
+## java
+#pacman_install jdk-openjdk
+## julia
+pacman_install julia
 ## vimwiki-markdown: better integration for mardown files in vimwiki:
 #pip3_install vimwiki-markdown
 ## instant-markdown-d used for instant markdown visualization in vim
@@ -558,6 +568,8 @@ pacman_install ctags
 pacman_install tidy
 ## prettier: universal formatter
 pacman_install prettier
+## composer/php
+pacman_install composer
 ## scim: terminal spreadsheet viewer/editor
 #yay_install sc-im
 ## wordgrinder: terminal word processor
