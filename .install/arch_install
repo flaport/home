@@ -926,7 +926,11 @@ yay_install kvantum-theme-nordic-git
 ## neutral cursor theme
 #pacman_install xcursor-neutral
 ## simple and soft cursor theme
-yay_install xcursor-simpleandsoft
+#yay_install xcursor-simpleandsoft
+#pacman_install xcursor-themes
+yay_install xcursor-breeze
+echo $password | sudo -S rm -rf /usr/share/icons/default
+echo $password | sudo -S ln -sf /usr/share/icons/Breeze /usr/share/icons/default
 
 
 # Web and web interfaces
