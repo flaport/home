@@ -52,3 +52,5 @@ vim.api.nvim_set_hl(0, 'VertSplit', { ctermbg = 'none' })
 vim.api.nvim_set_hl(0, 'Warning', { ctermfg = 7, ctermbg = 3 })
 vim.api.nvim_set_hl(0, 'WarningMsg', { ctermfg = 15, ctermbg = 3 })
 vim.api.nvim_set_hl(0, 'WildMenu', { ctermfg = 0, ctermbg = 3 })
+
+vim.api.nvim_set_hl(0, 'LspInlayHint', { italic = true, ctermfg = 8 })
