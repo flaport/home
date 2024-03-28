@@ -1,15 +1,6 @@
 -- LOCALS
 local opts = { noremap = true, silent = true }
 local map = vim.keymap.set
-local telescope = require('telescope.builtin')
-
--- LEADER BASED
-map("n", "<leader>pv", vim.cmd.Ex, opts)
-map('n', '<leader>ff', telescope.find_files, opts)
-map('n', '<leader>fg', telescope.live_grep, opts)
-map('n', '<leader>fb', telescope.buffers, opts)
-map('n', '<leader>fh', telescope.help_tags, opts)
-map('n', '<leader>g', telescope.live_grep, opts)
 
 -- open next buffer
 map("n", "<leader>]", ":bnext<CR>", opts)
@@ -150,9 +141,6 @@ map("t", "<C-l>", "<C-\\><C-N><C-w>l", opts)
 
 -- jump backward in cursor position stack (opposite of <C-i> or TAB)
 -- <C-o> " standard vim keybinding
-
--- browse git files
-map("n", "<C-p>", telescope.git_files, opts)
 
 -- save and exit
 map("i", "<C-q>", "<Esc>:wqa<CR>", opts)

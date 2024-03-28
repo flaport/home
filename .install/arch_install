@@ -516,7 +516,12 @@ echo $password | sudo -S chmod -R g+rw /var/lib/transmission
 ## a more beautiful ls command (I have ls remapped to lsd when no arguments given)
 pacman_install lsd
 ## vim / neovim: terminal text editor
-pacman_install neovim
+#pacman_install neovim
+## vim / neovim: terminal text editor (nightly edition. Takes a while to compile. Don't use the -bin version of this package as it's stuck at v0.9.x)
+pacman_install bob
+mkdir -p $HOME/.local/share/bob
+#bob install nightly
+#yay_install neovim-nightly # better to use bob instead
 ## tree-sitter cli
 pacman_install tree-sitter-cli
 ## link neovim to standard vim binary:

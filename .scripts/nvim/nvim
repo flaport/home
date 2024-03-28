@@ -8,18 +8,26 @@
 # NOTE: this script should be placed in your path such that it takes
 #       priority over the nvim binary /usr/bin/nvim.
 
+if [ -f "$HOME/.local/share/bob/nightly/nvim-linux64/bin/nvim" ]; then
+    vim="$HOME/.local/share/bob/nightly/nvim-linux64/bin/nvim";
+else
+    vim="/usr/bin/nvim";
+fi
+
 if [ ! "$2" ]; then
     # if the argument does not exist and if theres an executable in path
     # open the executable for editing.
     if [ ! -f "$1" ]; then
         if exe="$(which "$1" 2> /dev/null)"; then
-            echo "$exe"
-            /usr/bin/nvim "$exe"
-            exit 0
+            if [ -f "$exe" ]; then
+                echo "$exe"
+                $vim "$exe"
+                exit 0
+            fi
         fi
     fi
 
 fi
 
 # all other cases, just open neovim with all the arguments supplied.
-/usr/bin/nvim -u "$HOME/.config/nvim/init.lua" "$@"
+$vim "$@"
