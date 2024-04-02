@@ -1203,7 +1203,7 @@ pacman_install libreoffice-fresh
 ## sqlite database browser
 #pacman_install sqlitebrowser
 ## tex-live (disabled by default bc heavy package)
-#pacman_install texlive-most
+#pacman_install texlive-meta
 ## bibliographies
 pacman_install biber
 ## pandoc: convert document types into each other
