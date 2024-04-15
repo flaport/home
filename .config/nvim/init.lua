@@ -27,7 +27,7 @@ vim.opt.mouse = 'a'
 vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard = 'unnamed'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -436,6 +436,7 @@ require('lazy').setup({
         pyright = {
           hint = { enable = true },
         },
+        zls = {},
         rust_analyzer = {
           hint = { enable = true },
           diagnostics = { disable = { 'needless-return' } },
@@ -471,6 +472,8 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'black',
         'prettier',
+        'terraformls',
+        'json-lsp',
         -- 'rustfmt', -- needs to be installed with rustup instead.
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -640,9 +643,9 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      -- vim.cmd.colorscheme 'tokyonight-storm'
-      vim.cmd.colorscheme 'vim'
-      require 'config.colors'
+      vim.cmd.colorscheme 'tokyonight-storm'
+      -- vim.cmd.colorscheme 'vim'
+      -- require 'config.colors'
     end,
   },
   require 'plugins.todo-comments',
@@ -710,6 +713,7 @@ require('lazy').setup({
         'vim',
         'vimdoc',
         'yaml',
+        'zig',
       },
       -- Autoinstall languages that are not installed
       sync_install = false,
