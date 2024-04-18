@@ -521,6 +521,18 @@ require('lazy').setup({
           'prettierd',
           'prettier',
         },
+        css = {
+          'prettierd',
+          'prettier',
+        },
+        json = {
+          'prettierd',
+          'prettier',
+        },
+        html = {
+          'prettierd',
+          'prettier',
+        },
         rust = {
           'rustfmt',
         },
