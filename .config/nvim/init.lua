@@ -514,7 +514,7 @@ require('lazy').setup({
         },
         -- Conform can also run multiple formatters sequentially
         python = {
-          'isort',
+          'isort --profile black',
           'black',
         },
         javascript = {
