@@ -508,13 +508,18 @@ require('lazy').setup({
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
+      formatters = {
+        isort = {
+          prepend_args = { '--profile', 'black' },
+        },
+      },
       formatters_by_ft = {
         lua = {
           'stylua',
         },
         -- Conform can also run multiple formatters sequentially
         python = {
-          'isort --profile black',
+          'isort',
           'black',
         },
         javascript = {
