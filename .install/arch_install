@@ -1223,7 +1223,6 @@ if [ $? -eq 0 ]; then
     code --install-extension vscodevim.vim >> "$LOG" 2>> "$ERR"
     code --install-extension wholroyd.jinja >> "$LOG" 2>> "$ERR"
     code --install-extension ms-python.python >> "$LOG" 2>> "$ERR"
-    code --install-extension james-yu.latex-workshop >> "$LOG" 2>> "$ERR"
     code --install-extension formulahendry.code-runner >> "$LOG" 2>> "$ERR"
     code --install-extension shardulm94.trailing-spaces >> "$LOG" 2>> "$ERR"
     code --install-extension pkief.material-icon-theme >> "$LOG" 2>> "$ERR"
