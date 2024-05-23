@@ -80,7 +80,7 @@ end
 -- Run python in the neovim toggleterm terminal
 function PythonRun(type)
     if vim.g.last_terminal_job_id ~= nil then
-        vim.b.slime_config = { vim.g.last_terminal_job_id }
+        vim.b.slime_config = { jobid = vim.g.last_terminal_job_id }
         if type == "celljump" then
             vim.cmd('IPythonCellExecuteCellJump')
         end
