@@ -13,6 +13,7 @@
     "default": "right",
     "jupyter-notebook": "left"
   },
+  "python.defaultInterpreterPath": "/home/flaport/.anaconda/bin/python",
   "python.analysis.autoFormatStrings": "true",
   "python.analysis.autoImportCompletions": "true",
   "python.analysis.completeFunctionParens": "true",
@@ -46,5 +47,9 @@
     "editor.formatOnType": true
   },
   "security.workspace.trust.untrustedFiles": "open",
-  "workbench.iconTheme": "material-icon-theme"
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Default Light+",
+  "git.openRepositoryInParentFolders": "never",
+  "files.autoSaveWhenNoErrors": true,
+  "files.autoSaveDelay": 7000
 }

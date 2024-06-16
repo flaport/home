@@ -441,7 +441,13 @@ require('lazy').setup({
           hint = { enable = true },
           diagnostics = { disable = { 'needless-return' } },
         },
-        tsserver = {},
+        tsserver = {
+          init_options = {
+            preferences = {
+              disableSuggestions = false,
+            },
+          },
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},

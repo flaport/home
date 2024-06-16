@@ -9,7 +9,7 @@
 # !!! NOTE THAT THIS SCRIPT SHOULD NOT BE SOURCED. !!! #
 # ---------------------------------------------------- #
 
-# last run: 2023.11.17 (in full)
+# last run: 2024.06.16 (in full)
 
 ## checks
 #-------------------------------------------------------------------------------
@@ -51,4 +51,8 @@ source "$CONDAROOT/etc/profile.d/mamba.sh"
 
 CONDAROOT="$HOME/.anaconda"
 
-$CONDAROOT/bin/mamba env update -n base -f "$HOME/.install/python_envs/base.yml"
+# upgrade python
+$CONDAROOT/bin/mamba install -y python=3.11
+
+# install base packages
+#$CONDAROOT/bin/mamba env update -n base -f "$HOME/.install/python_envs/base.yml"
