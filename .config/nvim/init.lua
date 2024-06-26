@@ -405,9 +405,9 @@ require('lazy').setup({
           end
 
           if vim.lsp.inlay_hint then
-            vim.lsp.inlay_hint.enable(0, true)
+            vim.lsp.inlay_hint.enable(true)
             vim.keymap.set('n', '<leader>ih', function()
-              vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
             end, { desc = 'Toggle Inlay Hints' })
           end
         end,
