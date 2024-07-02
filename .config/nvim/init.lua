@@ -718,6 +718,7 @@ require('lazy').setup({
       ensure_installed = {
         'bash',
         'c',
+        'dockerfile',
         'go',
         'html',
         'javascript',
