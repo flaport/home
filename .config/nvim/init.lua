@@ -1,6 +1,7 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -165,6 +166,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'nvim-lualine/lualine.nvim', -- Better line at the bottom
   'vmware-archive/salt-vim',
@@ -884,3 +886,5 @@ vim.cmd [[source ~/.config/nvim/vim/rust.vim ]]
 vim.cmd [[source ~/.config/nvim/vim/yaml.vim ]]
 vim.cmd [[source ~/.config/nvim/vim/vimwiki.vim ]]
 vim.cmd [[source ~/.config/nvim/vim/latex.vim ]]
+
+vim.cmd.colorscheme 'catppuccin'
