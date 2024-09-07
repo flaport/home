@@ -179,6 +179,11 @@ man() { # colored man pages:
   }
 
 
+if which modular > /dev/null; then
+  export MAX_PATH="$(modular config max.path)"
+  export MODULAR_HOME="$HOME/.modular"
+fi
+
 ## Extensions
 #-------------------------------------------------------------------------------
 
@@ -227,3 +232,5 @@ apl(){LD_PRELOAD="" /usr/bin/apl "$@"}
 
 # Load zsh-syntax-highlighting; should be last.
 sourcefile $HOME/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export LD_LIBRARY_PATH=/home/flaport/.local/lib/arch-mojo:$LD_LIBRARY_PATH
+alias svim="sudo nvim"
