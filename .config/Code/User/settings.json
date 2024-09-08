@@ -48,8 +48,8 @@
   },
   "security.workspace.trust.untrustedFiles": "open",
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Default Light+",
   "git.openRepositoryInParentFolders": "never",
   "files.autoSaveWhenNoErrors": true,
-  "files.autoSaveDelay": 7000
+  "files.autoSaveDelay": 7000,
+  "workbench.colorTheme": "Default Light Modern"
 }
