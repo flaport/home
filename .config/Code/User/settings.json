@@ -51,5 +51,6 @@
   "git.openRepositoryInParentFolders": "never",
   "files.autoSaveWhenNoErrors": true,
   "files.autoSaveDelay": 7000,
-  "workbench.colorTheme": "Default Light Modern"
+  "workbench.colorTheme": "Default Light Modern",
+  "python.interpreter.infoVisibility": "always"
 }
