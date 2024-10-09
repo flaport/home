@@ -7,7 +7,7 @@
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "files.autoSaveWhenNoErrors": false,
-  "files.autoSaveDelay": 500,
+  "files.autoSaveDelay": 3000,
   "files.autoSave": "afterDelay",
   "git.autofetch": true,
   "git.confirmSync": false,
