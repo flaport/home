@@ -49,10 +49,6 @@ vim.opt.signcolumn = 'yes'
 -- Decrease update time
 vim.opt.updatetime = 250
 
--- Decrease mapped sequence wait time
--- Displays which-key popup sooner
-vim.opt.timeoutlen = 300
-
 -- Configure how new splits should be opened
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -197,22 +193,6 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
-  },
-  { -- Useful plugin to show you pending keybinds.
-    'folke/which-key.nvim',
-    event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-    config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup()
-
-      -- Document existing key chains
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-      }
-    end,
   },
 
   { -- Fuzzy Finder (files, lsp, etc)
@@ -438,6 +418,7 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         gopls = {},
+        ols = {},
         pyright = {
           hint = { enable = true },
         },
@@ -445,13 +426,6 @@ require('lazy').setup({
         rust_analyzer = {
           hint = { enable = true },
           diagnostics = { disable = { 'needless-return' } },
-        },
-        tsserver = {
-          init_options = {
-            preferences = {
-              disableSuggestions = false,
-            },
-          },
         },
         lua_ls = {
           -- cmd = {...},
@@ -485,6 +459,7 @@ require('lazy').setup({
         'prettier',
         'terraformls',
         'json-lsp',
+        'ols',
         -- 'rustfmt', -- needs to be installed with rustup instead.
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -743,6 +718,7 @@ require('lazy').setup({
         'vimdoc',
         'yaml',
         'zig',
+        'odin',
       },
       -- Autoinstall languages that are not installed
       sync_install = false,
