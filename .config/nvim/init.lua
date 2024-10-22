@@ -171,7 +171,13 @@ require('lazy').setup({
   'vmware-archive/salt-vim',
   'akinsho/toggleterm.nvim', -- Toggle terminal vim
   'jpalardy/vim-slime', -- a vim plugin to give you some slime
-  'Saecki/crates.nvim',
+  {
+    'saecki/crates.nvim',
+    tag = 'stable',
+    config = function()
+      require('crates').setup()
+    end,
+  },
   'vimwiki/vimwiki',
   'mbbill/undotree',
   'lepture/vim-jinja',
