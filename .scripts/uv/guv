@@ -1,20 +1,30 @@
 #!/bin/sh
 
-export GUV_DIR="$HOME/.local/share/guv"
-export CWD="$PWD"
+guv_dir="$HOME/.local/share/guv"
+cwd="$PWD"
 
-if [ ! -d "$GUV_DIR" ]; then
-  mkdir -p "$GUV_DIR"
+if [ ! -d "$guv_dir" ]; then
+  mkdir -p "$guv_dir"
 fi
 
-cd "$GUV_DIR" || exit
+cd "$guv_dir" || exit
 
 if [ "$1" = "activate" ]; then
-  . "$2/bin/activate"
+  cmd="$2/bin/activate"
+  if [ -x "$cmd" ]; then
+    . "$cmd"
+  fi
+  cmd=".venv/bin/activate"
+  if [ -x "$cmd" ]; then
+    . "$cmd"
+  else
+    cd "$cwd" || exit
+    . $cmd
+  fi
 elif [ "$1" = "deactivate" ]; then
   deactivate || true
 else
   uv "$@"
 fi
 
-cd "$CWD" || exit
+cd "$cwd" || exit
