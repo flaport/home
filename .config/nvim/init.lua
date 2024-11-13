@@ -424,6 +424,7 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         gopls = {},
+        shellcheck = {},
         ts_ls = {},
         ols = {},
         pyright = {

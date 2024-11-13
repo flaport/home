@@ -234,3 +234,7 @@ apl(){LD_PRELOAD="" /usr/bin/apl "$@"}
 sourcefile $HOME/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export LD_LIBRARY_PATH=/home/flaport/.local/lib/arch-mojo:$LD_LIBRARY_PATH
 alias svim="sudo nvim"
+
+guv() {
+  source "$HOME/.scripts/uv/guv" "$@"
+}

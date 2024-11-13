@@ -1,0 +1,20 @@
+#!/bin/sh
+
+export GUV_DIR="$HOME/.local/share/guv"
+export CWD="$PWD"
+
+if [ ! -d "$GUV_DIR" ]; then
+  mkdir -p "$GUV_DIR"
+fi
+
+cd "$GUV_DIR" || exit
+
+if [ "$1" = "activate" ]; then
+  . "$2/bin/activate"
+elif [ "$1" = "deactivate" ]; then
+  deactivate || true
+else
+  uv "$@"
+fi
+
+cd "$CWD" || exit
