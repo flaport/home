@@ -8,38 +8,50 @@
 
 import os
 import sys
+from subprocess import PIPE, CalledProcessError, Popen, call, check_output
 from time import sleep
-from subprocess import call, check_output, Popen, PIPE, CalledProcessError
+
+
+def notify(title, message=""):
+    if message:
+        check_output(["notify-send", title, message])
+    else:
+        check_output(["notify-send", title])
+    print(title + "\n" + message + "\n")
+
+
 try:
     import pyautogui
 except:
-    notify("pyautogui is not available", "some selected keyboard combinations might not work")
+    # notify("pyautogui is not available", "some selected keyboard combinations might not work")
     pyautogui = None
 
 
-DELIM="\u2000" # unicode space
+DELIM = "\u2000"  # unicode space
 
-SXHKD_DMENU = { # lowercase values for how to show these characters in the dmenu [sxhkd -> view]
-    "Return": "enter",
-    "Print": "prtscn",
-    "Up": "",
-    "Down": "",
-    "Left": "",
-    "Right": "",
-    "super": "",
-    "shift": "",
-    "control": "ctrl",
-    "equal": "=",
-    "minus": "-",
-    "period": ".",
-    "comma": ",",
-    "semicolon": ";",
-    "apostrophe": "'",
-    "slash": "/",
-    "grave": "`",
-}
+SXHKD_DMENU = (
+    {  # lowercase values for how to show these characters in the dmenu [sxhkd -> view]
+        "Return": "enter",
+        "Print": "prtscn",
+        "Up": "",
+        "Down": "",
+        "Left": "",
+        "Right": "",
+        "super": "",
+        "shift": "",
+        "control": "ctrl",
+        "equal": "=",
+        "minus": "-",
+        "period": ".",
+        "comma": ",",
+        "semicolon": ";",
+        "apostrophe": "'",
+        "slash": "/",
+        "grave": "`",
+    }
+)
 
-SXHKD_PYAUTOGUI = { # pyautogui codes for these characters [sxhkd -> pyautogui]
+SXHKD_PYAUTOGUI = {  # pyautogui codes for these characters [sxhkd -> pyautogui]
     "Return": "enter",
     "Print": "prtscr",
     "Up": "up",
@@ -58,14 +70,6 @@ SXHKD_PYAUTOGUI = { # pyautogui codes for these characters [sxhkd -> pyautogui]
     "slash": "/",
     "grave": "`",
 }
-
-
-def notify(title, message=""):
-    if message:
-        check_output(["notify-send", title, message])
-    else:
-        check_output(["notify-send", title])
-    print(title+"\n"+message+"\n")
 
 
 def dmenu(list_in, prompt=" "):
@@ -109,7 +113,7 @@ class Shortcut:
                 keys = keys.lower()
         for x, X in zip(abc, abc.upper()):
             keys = keys.replace(X, f"shift + {x}")
-        for (k, v) in SXHKD_DMENU.items():
+        for k, v in SXHKD_DMENU.items():
             if k == k.lower():
                 keys = keys.replace(k, v.lower())
         return keys
@@ -132,7 +136,7 @@ class Shortcut:
         for k, v in SXHKD_PYAUTOGUI.items():
             keys = keys.replace(SXHKD_DMENU[k].lower(), v)
         keys = [key.strip() for key in keys.split("+")]
-        pyautogui.press("apps") # needed to 'wake' pytautogui somehow
+        pyautogui.press("apps")  # needed to 'wake' pytautogui somehow
         pyautogui.hotkey(*keys)
 
     def __str__(self):

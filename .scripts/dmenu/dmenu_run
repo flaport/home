@@ -9,51 +9,61 @@
     Open executable; if executable is not found open it in default browser.
 """
 
+import os
+
 # imports
 import re
-import os
 import sys
-from subprocess import call, check_output, Popen, PIPE, CalledProcessError
-
+from subprocess import PIPE, CalledProcessError, Popen, call, check_output
 
 # constants
 TERMINAL = os.environ.get("TERMINAL")
 BROWSER = os.environ.get("BROWSER")
-OPEN_IN_TERMINAL=["vifm", "vim"]
+OPEN_IN_TERMINAL = ["vifm", "vim"]
 DMENU_PATH = check_output(["dmenu_path"]).decode().splitlines()
 DMENU_HISTORY_PATH = os.path.expanduser("~/.scripts/dmenu/dmenu_run.history")
 DESKTOP_FILE_PATHS = [
     "~/.local/share/applications/",
     "/usr/share/applications/",
 ]
-CURRENT_DIRECTORY=check_output(["find", ".", "-mount", "-maxdepth", "2"]).decode().splitlines()
-CLEAR_HISTORY=False
+CURRENT_DIRECTORY = (
+    check_output(["find", ".", "-mount", "-maxdepth", "2"]).decode().splitlines()
+)
+CLEAR_HISTORY = False
+
 
 # functions
 def get_selection():
     try:
-        return check_output(["xclip", "-o"]).decode().replace("\n"," ")
+        return check_output(["xclip", "-o"]).decode().replace("\n", " ")
     except CalledProcessError:
         return ""
 
+
 def get_clipboard():
     try:
-        return check_output(["xclip", "-selection", "clipboard", "-o"]).decode().replace("\n"," ")
+        return (
+            check_output(["xclip", "-selection", "clipboard", "-o"])
+            .decode()
+            .replace("\n", " ")
+        )
     except CalledProcessError:
         return ""
+
 
 def crop_line(line, length=35):
     if len(line) < length:
         return line
     return f"{line[:length-3].strip()}..."
 
+
 def dmenu(list_in, prompt=" "):
-    dict_in = {crop_line(line): line for line in list_in}
+    dict_in = {crop_line(line): line for line in list_in if "\0" not in line}
     dmenu_in = Popen(["echo", "\n".join(dict_in.keys())], stdout=PIPE).stdout
-    prompt = [] if not prompt else ["-p", prompt ]
+    prompt = [] if not prompt else ["-p", prompt]
     command = ["dmenu"] + prompt + sys.argv[1:]
     try:
-        choice = check_output(command , stdin=dmenu_in).decode().replace("\n", " ")
+        choice = check_output(command, stdin=dmenu_in).decode().replace("\n", " ")
     except CalledProcessError:
         choice = ""
     choice = dict_in.get(choice, choice)
@@ -63,49 +73,59 @@ def dmenu(list_in, prompt=" "):
         choice = choice.replace(" + ", f" {get_clipboard()} ")
     choice = choice.replace("\n", "").replace("\t", "")
     while "  " in choice:
-        choice = choice.replace("  "," ")
+        choice = choice.replace("  ", " ")
     while choice.endswith(" "):
         choice = choice[:-1]
     return choice
+
 
 def open_desktop_file(args):
     desktop_filename = args[0][:-1]
     for path in DESKTOP_FILE_PATHS:
         path = os.path.abspath(os.path.expanduser(path))
-        if not desktop_filename+".desktop" in os.listdir(path):
+        if not desktop_filename + ".desktop" in os.listdir(path):
             continue
-        with open(os.path.join(path,desktop_filename+".desktop"), "r") as file:
+        with open(os.path.join(path, desktop_filename + ".desktop"), "r") as file:
             for line in file:
                 if not line.startswith("Exec"):
                     continue
                 cmd = re.sub("%.*$", "", line[5:].strip())
                 return Popen(cmd, shell=True)
 
+
 def list_desktop_files():
     applications = []
     for path in DESKTOP_FILE_PATHS:
         path = os.path.abspath(os.path.expanduser(path))
-        applications += [f"{app[:-8]}*" for app in os.listdir(path) if app.endswith(".desktop")]
+        applications += [
+            f"{app[:-8]}*" for app in os.listdir(path) if app.endswith(".desktop")
+        ]
     return applications
+
 
 # main script
 if __name__ == "__main__":
     with open(DMENU_HISTORY_PATH, "a") as file:
-        pass # create file if it does not exist
+        pass  # create file if it does not exist
     with open(DMENU_HISTORY_PATH, "r") as file:
         dmenu_history = file.read().splitlines()
 
     DESKTOP_FILES = list_desktop_files()
 
-    dmenu_commands = list({k: None for k in (
-            list({k: None for k in dmenu_history[::-1]}) # history
-            + OPEN_IN_TERMINAL
-            + [BROWSER]
-            + DMENU_PATH
-            + DESKTOP_FILES
-            + CURRENT_DIRECTORY
-            + ["[clear history]"]
-    )})
+    dmenu_commands = list(
+        {
+            k: None
+            for k in (
+                list({k: None for k in dmenu_history[::-1]})  # history
+                + OPEN_IN_TERMINAL
+                + [BROWSER]
+                + DMENU_PATH
+                + DESKTOP_FILES
+                + CURRENT_DIRECTORY
+                + ["[clear history]"]
+            )
+        }
+    )
 
     choice = dmenu(dmenu_commands)
 
@@ -114,7 +134,7 @@ if __name__ == "__main__":
 
     choice = choice.split(" ")
     if " ".join(choice) == "[clear history]":
-        CLEAR_HISTORY=True
+        CLEAR_HISTORY = True
     elif choice[0] in OPEN_IN_TERMINAL:
         Popen([TERMINAL, "-e"] + choice)
     elif choice[0] in DESKTOP_FILES:
@@ -123,7 +143,10 @@ if __name__ == "__main__":
         try:
             Popen(choice)
         except (FileNotFoundError, PermissionError):
-            if any(choice[0].startswith(prefix) for prefix in ("http://", "https://", "file:///")):
+            if any(
+                choice[0].startswith(prefix)
+                for prefix in ("http://", "https://", "file:///")
+            ):
                 Popen([BROWSER, "%20".join(choice)])
             elif os.path.isdir(" ".join(choice)):
                 directory = " ".join(choice)
@@ -134,7 +157,7 @@ if __name__ == "__main__":
             else:
                 duckduckgo_query = f"https://duckduckgo.com/?q={'+'.join(choice)}"
                 Popen([BROWSER, duckduckgo_query])
-                exit(1) # command given does not exist, it's also not a valid url
+                exit(1)  # command given does not exist, it's also not a valid url
 
     with open(DMENU_HISTORY_PATH, "a") as file:
         file.write(f"{' '.join(choice)}\n")
