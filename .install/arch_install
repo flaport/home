@@ -1228,6 +1228,7 @@ if [ $? -eq 0 ]; then
     code --install-extension pkief.material-icon-theme >> "$LOG" 2>> "$ERR"
 fi
 ## Python programming language:
+pacman_install uv
 pacman_install python
 pacman_install ipython
 #pacman_install python2

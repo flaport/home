@@ -1,18 +1,26 @@
 #!/bin/sh
 
 guv_dir="$HOME/.local/share/guv"
+if [ ! -z "$VIRUTAL_ENV" ]; then
+  env_dir = $(dirname $VIRTUAL_ENV)
+fi
+env_dir="$VIRTUAL_ENV"
 cwd="$PWD"
 
 if [ ! -d "$guv_dir" ]; then
   mkdir -p "$guv_dir"
 fi
 
-cd "$guv_dir" || exit
+if [ ! -z "$env_dir" ]; then
+  cd "$env_dir" || exit
+else
+  cd "$guv_dir" || exit
+fi
 
 if [ "$1" = "activate" ]; then
-  cmd_global="$2/bin/activate"
+  cmd_global="$2/.venv/bin/activate"
   cmd_local="$cwd/.venv/bin/activate"
-  cmd_base="base/bin/activate"
+  cmd_base="base/.venv/bin/activate"
   if [ -f "$cmd_global" ]; then
     . "$cmd_global"
   elif [ -f "$cmd_local" ]; then

@@ -86,7 +86,7 @@ prompt(){
     else
       echo -ne "%F{yellow}%{%G%}%f"
     fi
-    echo -ne "%F{yellow}$(basename $VIRTUAL_ENV)%f "
+    echo -ne "%F{yellow}$(basename `dirname $VIRTUAL_ENV`)%f "
   fi
   # path
   [[ $PWD == "/" ]] && echo -ne "%F{cyan}/%f " || echo -ne "%F{cyan}%(4~|%-1~/…/%2~|%3~)/%f " # 
@@ -156,7 +156,7 @@ alias ss="sudo systemctl"
 alias ll="ls -l"
 alias la="ls -la"
 alias grep="grep --color=auto"
-alias base="conda activate base"
+alias base="guv activate base"
 alias system="conda deactivate && conda deactivate"
 alias history="history 1"
 alias D="dunk | less -R"
