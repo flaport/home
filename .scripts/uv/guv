@@ -12,9 +12,9 @@ if [ ! -d "$guv_dir" ]; then
 fi
 
 if [ ! -z "$env_dir" ]; then
-  cd "$env_dir" || exit
+  cd "$env_dir" || return 1
 else
-  cd "$guv_dir" || exit
+  cd "$guv_dir" || return 1
 fi
 
 if [ "$1" = "activate" ]; then
@@ -32,8 +32,15 @@ if [ "$1" = "activate" ]; then
   fi
 elif [ "$1" = "deactivate" ]; then
   deactivate || true
+elif [ "$1" = "install-kernel" ]; then
+  if [ -z "$VIRTUAL_ENV" ]; then
+    echo "No active environment." > /dev/stderr
+    return 1
+  fi
+  env_name="$(basename `dirname $VIRTUAL_ENV`)"
+  python -m ipykernel install --user --name "$env_name" --display-name "$env_name"
 else
   uv "$@"
 fi
 
-cd "$cwd" || exit
+cd "$cwd" || return 1
