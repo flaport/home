@@ -189,6 +189,7 @@ dependencies = [
     { name = "altair" },
     { name = "black" },
     { name = "bokeh" },
+    { name = "configurable-http-proxy" },
     { name = "h5py" },
     { name = "httpx" },
     { name = "ipykernel" },
@@ -233,6 +234,7 @@ requires-dist = [
     { name = "altair", specifier = ">=5.4.1" },
     { name = "black", specifier = ">=24.10.0" },
     { name = "bokeh", specifier = ">=3.6.1" },
+    { name = "configurable-http-proxy", specifier = ">=0.3.0" },
     { name = "h5py", specifier = ">=3.12.1" },
     { name = "httpx", specifier = ">=0.27.2" },
     { name = "ipykernel", specifier = ">=6.29.5" },
@@ -513,6 +515,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/e9/a8/fb783cb0abe2b5fded9f55e5703015cdf1c9c85b3669087c538dd15a6a86/comm-0.2.2.tar.gz", hash = "sha256:3fd7a84065306e07bea1773df6eb8282de51ba82f77c72f9c85716ab11fe980e", size = 6210 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e6/75/49e5bfe642f71f272236b5b2d2691cf915a7283cc0ceda56357b61daa538/comm-0.2.2-py3-none-any.whl", hash = "sha256:e6fb86cb70ff661ee8c9c14e7d36d6de3b4066f1441be4063df9c5009f0a64d3", size = 7180 },
+]
+
+[[package]]
+name = "configurable-http-proxy"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "python-dateutil" },
+    { name = "tornado" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7b/c1/812ca9b578a419729e2e5766ce18c28b4b1a5a55623c54db0e43b33f5d6b/configurable-http-proxy-0.3.0.tar.gz", hash = "sha256:8f5f82377ac699549ab618892addfbaa0052cb2dc7c0aed1034bc88e4953b555", size = 31193 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/06/91/2ae0fd55ee9c414f8aecd5ea1e8e01a5fac973a02259e60177c1179dbbaa/configurable_http_proxy-0.3.0-py2.py3-none-any.whl", hash = "sha256:f75ca53ed7ffe7592b212cbbea6f66a41e2f0d8bf89edabb9c47f5d25a5e064f", size = 23031 },
 ]
 
 [[package]]

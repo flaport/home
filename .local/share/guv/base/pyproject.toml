@@ -6,6 +6,7 @@ dependencies = [
   "altair>=5.4.1",
   "black>=24.10.0",
   "bokeh>=3.6.1",
+  "configurable-http-proxy>=0.3.0",
   "h5py>=3.12.1",
   "httpx>=0.27.2",
   "ipykernel>=6.29.5",
