@@ -10,16 +10,17 @@ fi
 cd "$guv_dir" || exit
 
 if [ "$1" = "activate" ]; then
-  cmd="$2/bin/activate"
-  if [ -x "$cmd" ]; then
-    . "$cmd"
-  fi
-  cmd=".venv/bin/activate"
-  if [ -x "$cmd" ]; then
-    . "$cmd"
+  cmd_global="$2/bin/activate"
+  cmd_local="$cwd/.venv/bin/activate"
+  cmd_base="base/bin/activate"
+  if [ -f "$cmd_global" ]; then
+    . "$cmd_global"
+  elif [ -f "$cmd_local" ]; then
+    . "$cmd_local"
+  elif [ -f "$cmd_base" ]; then
+    . "$cmd_base"
   else
-    cd "$cwd" || exit
-    . $cmd
+    . "$cmd_local" # this will fail but show an error message
   fi
 elif [ "$1" = "deactivate" ]; then
   deactivate || true
