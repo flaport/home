@@ -1,18 +1,14 @@
 #!/bin/sh
 
 guv_dir="$HOME/.local/share/guv"
-if [ ! -z "$VIRUTAL_ENV" ]; then
-  env_dir = $(dirname $VIRTUAL_ENV)
-fi
-env_dir="$VIRTUAL_ENV"
 cwd="$PWD"
 
 if [ ! -d "$guv_dir" ]; then
   mkdir -p "$guv_dir"
 fi
 
-if [ ! -z "$env_dir" ]; then
-  cd "$env_dir" || return 1
+if [ ! -z "$VIRTUAL_ENV" ]; then
+  cd "$(dirname $VIRTUAL_ENV)" || return 1
 else
   cd "$guv_dir" || return 1
 fi
@@ -40,6 +36,7 @@ elif [ "$1" = "install-kernel" ]; then
   env_name="$(basename `dirname $VIRTUAL_ENV`)"
   python -m ipykernel install --user --name "$env_name" --display-name "$env_name"
 else
+  echo $PWD
   uv "$@"
 fi
 
