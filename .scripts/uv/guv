@@ -7,6 +7,10 @@ if [ ! -d "$guv_dir" ]; then
   mkdir -p "$guv_dir"
 fi
 
+if [ "$1" = "activate" ] && [ ! -z "$VIRTUAL_ENV" ]; then
+  deactivate
+fi
+
 if [ ! -z "$VIRTUAL_ENV" ]; then
   cd "$(dirname $VIRTUAL_ENV)" || return 1
 else
