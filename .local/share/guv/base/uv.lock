@@ -244,6 +244,7 @@ dependencies = [
     { name = "tbump" },
     { name = "tqdm" },
     { name = "twine" },
+    { name = "typer" },
 ]
 
 [package.metadata]
@@ -297,6 +298,7 @@ requires-dist = [
     { name = "tbump", specifier = ">=6.11.0" },
     { name = "tqdm", specifier = ">=4.67.0" },
     { name = "twine", specifier = ">=5.1.1" },
+    { name = "typer", specifier = ">=0.13.0" },
 ]
 
 [[package]]
