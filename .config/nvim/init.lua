@@ -433,6 +433,7 @@ require('lazy').setup({
         zls = {},
         rust_analyzer = {
           hint = { enable = true },
+          check = { allTargets = true },
           diagnostics = { disable = { 'needless-return' } },
         },
         lua_ls = {

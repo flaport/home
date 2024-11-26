@@ -198,9 +198,11 @@ dependencies = [
     { name = "altair" },
     { name = "black" },
     { name = "bokeh" },
+    { name = "boto3" },
     { name = "bump2version" },
     { name = "configurable-http-proxy" },
     { name = "cython" },
+    { name = "fastapi" },
     { name = "gdsfactory" },
     { name = "gdsfactoryplus" },
     { name = "h5py" },
@@ -208,6 +210,7 @@ dependencies = [
     { name = "ipykernel" },
     { name = "ipympl" },
     { name = "jax" },
+    { name = "jinja2" },
     { name = "jupyter-bokeh" },
     { name = "jupyter-book" },
     { name = "jupyterhub" },
@@ -219,20 +222,27 @@ dependencies = [
     { name = "jupyterlab-myst" },
     { name = "jupyterlab-vim" },
     { name = "klujax" },
+    { name = "mangum" },
     { name = "matplotlib" },
     { name = "myst-nb" },
+    { name = "natsort" },
     { name = "nbstripout" },
     { name = "numpy" },
     { name = "openpyxl" },
+    { name = "orjson" },
     { name = "pandas" },
     { name = "pip" },
     { name = "plotly" },
     { name = "pre-commit" },
     { name = "pyarrow" },
+    { name = "pydantic" },
     { name = "pynvim" },
     { name = "pyright" },
     { name = "pytest" },
+    { name = "python-multipart" },
     { name = "pywavelets" },
+    { name = "pyyaml" },
+    { name = "requests" },
     { name = "ruff" },
     { name = "sax" },
     { name = "saxviz" },
@@ -242,9 +252,11 @@ dependencies = [
     { name = "seaborn" },
     { name = "tables" },
     { name = "tbump" },
+    { name = "toml" },
     { name = "tqdm" },
     { name = "twine" },
     { name = "typer" },
+    { name = "uvicorn" },
 ]
 
 [package.metadata]
@@ -252,16 +264,19 @@ requires-dist = [
     { name = "altair", specifier = ">=5.4.1" },
     { name = "black", specifier = ">=24.10.0" },
     { name = "bokeh", specifier = ">=3.6.1" },
+    { name = "boto3", specifier = ">=1.35.69" },
     { name = "bump2version", specifier = ">=1.0.1" },
     { name = "configurable-http-proxy", specifier = ">=0.3.0" },
     { name = "cython", specifier = ">=3.0.11" },
-    { name = "gdsfactory", specifier = ">=8.18.2" },
+    { name = "fastapi", specifier = ">=0.115.5" },
+    { name = "gdsfactory", specifier = "==8.18.2" },
     { name = "gdsfactoryplus", specifier = ">=0.9" },
     { name = "h5py", specifier = ">=3.12.1" },
     { name = "httpx", specifier = ">=0.27.2" },
     { name = "ipykernel", specifier = ">=6.29.5" },
     { name = "ipympl", specifier = ">=0.9.4" },
     { name = "jax", specifier = ">=0.4.35" },
+    { name = "jinja2", specifier = ">=3.1.4" },
     { name = "jupyter-bokeh", specifier = ">=4.0.5" },
     { name = "jupyter-book", specifier = ">=1.0.3" },
     { name = "jupyterhub", specifier = ">=5.2.1" },
@@ -273,20 +288,27 @@ requires-dist = [
     { name = "jupyterlab-myst", specifier = ">=2.4.2" },
     { name = "jupyterlab-vim", specifier = ">=4.1.4" },
     { name = "klujax", specifier = ">=0.3.1" },
+    { name = "mangum", specifier = ">=0.19.0" },
     { name = "matplotlib", specifier = ">=3.9.2" },
     { name = "myst-nb", specifier = ">=1.1.2" },
+    { name = "natsort", specifier = ">=8.4.0" },
     { name = "nbstripout", specifier = ">=0.8.0" },
     { name = "numpy", specifier = ">2" },
     { name = "openpyxl", specifier = ">=3.1.5" },
+    { name = "orjson", specifier = ">=3.10.11" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "pip", specifier = ">=24.3.1" },
     { name = "plotly", specifier = ">=5.24.1" },
     { name = "pre-commit", specifier = ">=4.0.1" },
     { name = "pyarrow", specifier = ">=18.0.0" },
+    { name = "pydantic", specifier = ">=2.9.2" },
     { name = "pynvim", specifier = ">=0.5.2" },
     { name = "pyright", specifier = ">=1.1.389" },
     { name = "pytest", specifier = ">=8.3.3" },
+    { name = "python-multipart", specifier = ">=0.0.17" },
     { name = "pywavelets", specifier = ">=1.7.0" },
+    { name = "pyyaml", specifier = ">=6.0.2" },
+    { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.7.3" },
     { name = "sax", specifier = ">=0.14.0" },
     { name = "saxviz", specifier = ">=0.0.0" },
@@ -296,9 +318,11 @@ requires-dist = [
     { name = "seaborn", specifier = ">=0.13.2" },
     { name = "tables", specifier = ">=3.10.1" },
     { name = "tbump", specifier = ">=6.11.0" },
+    { name = "toml", specifier = ">=0.10.2" },
     { name = "tqdm", specifier = ">=4.67.0" },
     { name = "twine", specifier = ">=5.1.1" },
     { name = "typer", specifier = ">=0.13.0" },
+    { name = "uvicorn", specifier = ">=0.32.0" },
 ]
 
 [[package]]
@@ -389,6 +413,34 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/54/1b/d62004ebe89b3abb1d329710daa92dd13980196b0f7f5ed82036445cc952/bokeh-3.6.1.tar.gz", hash = "sha256:04d3fb5fac871423f38e4535838164cd90c3d32e707bcb74c8bf991ed28878fc", size = 6246963 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/72/a2/7b5a1a5419e400f715387a48f65225ec7a3f2104465f346fc75e8793407b/bokeh-3.6.1-py3-none-any.whl", hash = "sha256:6a97271bd4cc5b32c5bc7aa9c1c0dbe0beb0a8da2a22193e57c73f0c88d2075a", size = 6865904 },
+]
+
+[[package]]
+name = "boto3"
+version = "1.35.69"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "botocore" },
+    { name = "jmespath" },
+    { name = "s3transfer" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b7/72/f80a131ac5e069b12975c1054243713c46617cc769dc78348e1d59a3f945/boto3-1.35.69.tar.gz", hash = "sha256:40db86c7732a310b282f595251995ecafcbd62009a57e47a22683862e570cc7a", size = 110976 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/46/31/e185d967e7a311d1ed4d4eb03c1606bcd2b9cfcdc85cfe9c8183c1beafbd/boto3-1.35.69-py3-none-any.whl", hash = "sha256:20945912130cca1505f45819cd9b7183a0e376e91a1221a0b1f50c80d35fd7e2", size = 139180 },
+]
+
+[[package]]
+name = "botocore"
+version = "1.35.69"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "jmespath" },
+    { name = "python-dateutil" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/55/75/aaaa22f737b7a5251f2ab24f5860b1bfc55050a77b91524474bcaadb3070/botocore-1.35.69.tar.gz", hash = "sha256:f9f23dd76fb247d9b0e8d411d2995e6f847fc451c026f1e58e300f815b0b36eb", size = 13218586 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d2/b6/5ce018ab9f8058aa821aeed8fb34557bd6454a62a974c26172d34c31edef/botocore-1.35.69-py3-none-any.whl", hash = "sha256:cad8d9305f873404eee4b197d84e60a40975d43cbe1ab63abe893420ddfe6e3c", size = 13016283 },
 ]
 
 [[package]]
@@ -1523,6 +1575,15 @@ wheels = [
 ]
 
 [[package]]
+name = "jmespath"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/00/2a/e867e8531cf3e36b41201936b7fa7ba7b5702dbef42922193f05c8976cd6/jmespath-1.0.1.tar.gz", hash = "sha256:90261b206d6defd58fdd5e85f478bf633a2901798906be2ad389150c5c60edbe", size = 25843 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/31/b4/b9b800c45527aadd64d5b442f9b932b00648617eb5d63d2c7a6587b7cafc/jmespath-1.0.1-py3-none-any.whl", hash = "sha256:02e2e4cc71b5bcab88332eebf907519190dd9e6e82107fa7f83b1003a6252980", size = 20256 },
+]
+
+[[package]]
 name = "joblib"
 version = "1.4.2"
 source = { registry = "https://pypi.org/simple" }
@@ -2179,6 +2240,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/fa/0b/29bc5a230948bf209d3ed3165006d257e547c02c3c2a96f6286320dfe8dc/mako-1.3.6.tar.gz", hash = "sha256:9ec3a1583713479fae654f83ed9fa8c9a4c16b7bb0daba0e6bbebff50c0d983d", size = 390206 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/48/22/bc14c6f02e6dccaafb3eba95764c8f096714260c2aa5f76f654fd16a23dd/Mako-1.3.6-py3-none-any.whl", hash = "sha256:a91198468092a2f1a0de86ca92690fb0cfc43ca90ee17e15d93662b4c04b241a", size = 78557 },
+]
+
+[[package]]
+name = "mangum"
+version = "0.19.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/97/e0/6ee9bfa27226252a449cba12fc57d3f1c3ce661813377ab33e29245389a4/mangum-0.19.0.tar.gz", hash = "sha256:e388e7c491b7b67970f8234e46fd4a7b21ff87785848f418de08148f71cf0bd6", size = 85792 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/77/ec/dd1cae5f6b1b4a08c01de587b45e889036b2f8c06408621e0cb273909965/mangum-0.19.0-py3-none-any.whl", hash = "sha256:e500b35f495d5e68ac98bc97334896d6101523f2ee2c57ba6a61893b65266e59", size = 17083 },
 ]
 
 [[package]]
@@ -3343,6 +3416,15 @@ wheels = [
 ]
 
 [[package]]
+name = "python-multipart"
+version = "0.0.17"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/40/22/edea41c2d4a22e666c0c7db7acdcbf7bc8c1c1f7d3b3ca246ec982fec612/python_multipart-0.0.17.tar.gz", hash = "sha256:41330d831cae6e2f22902704ead2826ea038d0419530eadff3ea80175aec5538", size = 36452 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b4/fb/275137a799169392f1fa88fff2be92f16eee38e982720a8aaadefc4a36b2/python_multipart-0.0.17-py3-none-any.whl", hash = "sha256:15dc4f487e0a9476cc1201261188ee0940165cffc94429b6fc565c4d3045cb5d", size = 24453 },
+]
+
+[[package]]
 name = "pytz"
 version = "2024.2"
 source = { registry = "https://pypi.org/simple" }
@@ -3747,6 +3829,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/b0/5c/efdb4777686683a8edce94ffd812783bddcd3d2454d38c5ac193fef7c500/ruff-0.7.3-py3-none-win32.whl", hash = "sha256:4ba81a5f0c5478aa61674c5a2194de8b02652f17addf8dfc40c8937e6e7d79fc", size = 8611095 },
     { url = "https://files.pythonhosted.org/packages/bb/b8/28fbc6a4efa50178f973972d1c84b2d0a33cdc731588522ab751ac3da2f5/ruff-0.7.3-py3-none-win_amd64.whl", hash = "sha256:588a9ff2fecf01025ed065fe28809cd5a53b43505f48b69a1ac7707b1b7e4088", size = 9418283 },
     { url = "https://files.pythonhosted.org/packages/3f/77/b587cba6febd5e2003374f37eb89633f79f161e71084f94057c8653b7fb3/ruff-0.7.3-py3-none-win_arm64.whl", hash = "sha256:1713e2c5545863cdbfe2cbce21f69ffaf37b813bfd1fb3b90dc9a6f1963f5a8c", size = 8725228 },
+]
+
+[[package]]
+name = "s3transfer"
+version = "0.10.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "botocore" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c0/0a/1cdbabf9edd0ea7747efdf6c9ab4e7061b085aa7f9bfc36bb1601563b069/s3transfer-0.10.4.tar.gz", hash = "sha256:29edc09801743c21eb5ecbc617a152df41d3c287f67b615f73e5f750583666a7", size = 145287 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/66/05/7957af15543b8c9799209506df4660cba7afc4cf94bfb60513827e96bed6/s3transfer-0.10.4-py3-none-any.whl", hash = "sha256:244a76a24355363a68164241438de1b72f8781664920260c48465896b712a41e", size = 83175 },
 ]
 
 [[package]]
