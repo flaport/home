@@ -270,7 +270,7 @@ requires-dist = [
     { name = "cython", specifier = ">=3.0.11" },
     { name = "fastapi", specifier = ">=0.115.5" },
     { name = "gdsfactory", specifier = "==8.18.2" },
-    { name = "gdsfactoryplus", specifier = ">=0.9" },
+    { name = "gdsfactoryplus", specifier = ">=0.14" },
     { name = "h5py", specifier = ">=3.12.1" },
     { name = "httpx", specifier = ">=0.27.2" },
     { name = "ipykernel", specifier = ">=6.29.5" },
@@ -827,6 +827,28 @@ wheels = [
 ]
 
 [[package]]
+name = "doweb"
+version = "0.1.9"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "fastapi" },
+    { name = "jinja2" },
+    { name = "klayout" },
+    { name = "pydantic-extra-types" },
+    { name = "uvicorn", extra = ["standard"] },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/92/d4/76d2317b5ad94c12b7cf4611f788e2bddf7c63da1ca8dd246fc3219f58f1/doweb-0.1.9-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:8c111d4493ef38b40dedd18d12aafe7c7c747b63e10e407f19edf1c9c0aa986d", size = 595826 },
+    { url = "https://files.pythonhosted.org/packages/8e/ba/c6c980078e45b7edcf6ec11ec59f7d2cf8bd39ea4f73261809f2cef3a4b5/doweb-0.1.9-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:21e786a11b22e0c874f08601aab466b891422942bc04f572e6cc2f30ab60d7b5", size = 579542 },
+    { url = "https://files.pythonhosted.org/packages/33/72/34e7d7418fa36b97239a36af244580e46699ef34068aff295702f1c50da0/doweb-0.1.9-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2403afd7680c75278c0f6f2f2adad64b0777331ee14c087a7df46d19078568d8", size = 1981978 },
+    { url = "https://files.pythonhosted.org/packages/be/eb/bb1993a453e16b0e4fb43c66a79d59b093336addf9948e9250b3a2a749ed/doweb-0.1.9-cp312-cp312-win_amd64.whl", hash = "sha256:884e75aec6d12329d62bbfe1c047ba88ae66cb34c6b4c82698ac8c0a4630d461", size = 558158 },
+    { url = "https://files.pythonhosted.org/packages/15/09/2f2b482a4c03005bd352af0cd916cd8f58279bebf735e9fe606b63804f19/doweb-0.1.9-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:91ecdb3c560aa4cb1bf0302e94f3864454525d2420d62de9ab76bf20c76785e6", size = 593876 },
+    { url = "https://files.pythonhosted.org/packages/b9/9f/a5fdd2f4e48bf2cbef951db56c1d2641f2e7efc00d1faa8e04f12ad3f8e7/doweb-0.1.9-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:ccdf7567dd32465b5af5207d0caecf67d488108ca5e4ce03ad522f6f30f7bc3c", size = 577435 },
+    { url = "https://files.pythonhosted.org/packages/b2/fb/dce4bc9febfc47e909aa79d0c854168813bac59e84b92dbbbde6ecc72f8f/doweb-0.1.9-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:953a518e0ad919149aaa36b3bb403d1d6da7e3b6fca46eb34c6555430efd7940", size = 1964790 },
+    { url = "https://files.pythonhosted.org/packages/c7/bf/1dfff47b927c7efd6c5ad3911e1d97bbd9661d7bae403f1f4dd6d12219e3/doweb-0.1.9-cp313-cp313-win_amd64.whl", hash = "sha256:4687e4fbab695ecff59e98452772902ab18ea99cc4f9fdc5be9d11ccc9c19792", size = 556871 },
+]
+
+[[package]]
 name = "embreex"
 version = "2.17.7.post5"
 source = { registry = "https://pypi.org/simple" }
@@ -1039,32 +1061,35 @@ wheels = [
 
 [[package]]
 name = "gdsfactoryplus"
-version = "0.9.0"
+version = "0.14.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "altair" },
     { name = "bokeh" },
+    { name = "doweb" },
     { name = "gdsfactory" },
     { name = "gdstk" },
+    { name = "httpx" },
     { name = "jax" },
     { name = "jaxlib" },
     { name = "klujax" },
-    { name = "kweb" },
+    { name = "numpy" },
+    { name = "requests" },
     { name = "sax" },
     { name = "toml" },
     { name = "trimesh", extra = ["easy"] },
-    { name = "uvicorn" },
+    { name = "uvicorn", extra = ["standard"] },
     { name = "websocket-client" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/99/4f/e8a3e2dde9d5e44de7a400a1dd4b40e3e8cfb548050beea06682d118480d/gdsfactoryplus-0.9.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:09dc152d30ca93605c97c9c91b145f495dbacef84dfdc81cd181861117cf0c57", size = 1549499 },
-    { url = "https://files.pythonhosted.org/packages/62/4f/d76550226b9452f3b88053f2762654d7c9ee548005641a7ce09ddb43e75f/gdsfactoryplus-0.9.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:c31ee1958c49dafc1ef2cb64bfa27ee4a9db88bd02b056f534ce03e43a15697f", size = 1498462 },
-    { url = "https://files.pythonhosted.org/packages/80/4f/138d864c29f936a79939c59a3d1e1aaa9070919ae1f7db482adda3981a72/gdsfactoryplus-0.9.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5e921fe3ab67ca484e947c2e7ff5b3469562b0c2720dddd95ea89c853417cc76", size = 8546891 },
-    { url = "https://files.pythonhosted.org/packages/1c/47/38b880c3d181cdb9a6465fadadd5fdaffbc731722c8909427a68ff02324b/gdsfactoryplus-0.9.0-cp312-cp312-win_amd64.whl", hash = "sha256:772b1e681d3041b3d8735ab6b9ec620fccc683369bc62b748222da0607fc5310", size = 1413990 },
-    { url = "https://files.pythonhosted.org/packages/e5/01/9743b8bd3588d38c7d0622bdb0183e931d4fe12cfe6e4496e45c9d0573b7/gdsfactoryplus-0.9.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:8a08ba88f5f98f49a7a23fc237e1904c70a00800657ce148f6d6e585cd2eed93", size = 1521672 },
-    { url = "https://files.pythonhosted.org/packages/c0/a8/5147958a791cc86695b2a894ec9dbe8a8957f8bed952150b0229e993ca93/gdsfactoryplus-0.9.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:4d03ffc0ed7df209fd499fef3fb8580c0ed82685f811519a88d7bbfe1f730e46", size = 1471748 },
-    { url = "https://files.pythonhosted.org/packages/1d/0e/265559a5b3b07cbd0b6d6e4912d74af13115bb7fcbc53dca52bfe4ad5789/gdsfactoryplus-0.9.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:92c23cb649c2269fb26f86ed8c7b52610790621cc70babeafef2714172d895c7", size = 8378516 },
-    { url = "https://files.pythonhosted.org/packages/96/60/163d230c22e83d97f7d2b278dfc5e300070c116c9755e0455b901470c3cb/gdsfactoryplus-0.9.0-cp313-cp313-win_amd64.whl", hash = "sha256:f8301bfc9c055496e3f7556da76bb82187557aa141494400e7cd43af39144891", size = 1399276 },
+    { url = "https://files.pythonhosted.org/packages/3c/50/d314baf4c4ae8fa8c2b5de86e2bddb69c4a9149c155d87ef723d062cd96d/gdsfactoryplus-0.14.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:aafbe8a1838f62ad6a35f1dcde6360ce00b5ebf133d41895ff2eddbcde8d47af", size = 1633321 },
+    { url = "https://files.pythonhosted.org/packages/48/2d/c5f0b816b8152812e58751d347db0a5c8e48d598b7167f0d3fbee987fe28/gdsfactoryplus-0.14.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:fbbfc98cab886e4a6b3af8e363cb7937851978e79f00382e2784479760433371", size = 1575738 },
+    { url = "https://files.pythonhosted.org/packages/3b/66/c6ef5529ab4a8d47d1c473abfbc45b3a044df263d740e46d426f0311918e/gdsfactoryplus-0.14.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:238938b8afc105d34a7da097507571b7b033c731bd22cde9022d3e329cb9860b", size = 9088562 },
+    { url = "https://files.pythonhosted.org/packages/66/fc/baa110390594443f31fc2cbb29d91aad60a60bdec51de509d75076388c6d/gdsfactoryplus-0.14.0-cp312-cp312-win_amd64.whl", hash = "sha256:f8acb5d3ee26bc7bd19b7d4015fb7e061267fd82eb7dda4871b09aedac4b76fa", size = 1491072 },
+    { url = "https://files.pythonhosted.org/packages/0e/fd/61870b307948799bdc5f4de052ab52b88c3423f54a98d31a8f4028b16f4f/gdsfactoryplus-0.14.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:877d13a21f4d3d7fb1132e982cd6ffd8d9ff40d30816f94ad0f5081ec8e7983b", size = 1602645 },
+    { url = "https://files.pythonhosted.org/packages/4f/c2/137cf955252313155954280b254eff99a048f833b6fbdc520bf84db7fee0/gdsfactoryplus-0.14.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:cef9303160132949123153cebc16749710d1a034aadcc667684bd1870a8eb2cd", size = 1547719 },
+    { url = "https://files.pythonhosted.org/packages/0f/85/55e753957e0097aab6cb7308d8a50a010a4af0c52e658c793dbf6c71ba53/gdsfactoryplus-0.14.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:244a9d72bdd0c69d9517d440d3216ef145a1f8a5e99c150d2094ce3492df8b3e", size = 8897662 },
+    { url = "https://files.pythonhosted.org/packages/3e/18/ec5eb7c5018869741fd452c395fff82034c9c109cf4800fdc48625df3c08/gdsfactoryplus-0.14.0-cp313-cp313-win_amd64.whl", hash = "sha256:1a481d545dbdf1cc069cca289a4bde477a89ccf7d9ab24146b26ffae3e57db5f", size = 1474754 },
 ]
 
 [[package]]
@@ -2124,22 +2149,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/21/10/931419abf96c4b4bc6d39e7fb9f3baa50116bfdb0bae743f2cfb4c0f59f1/klujax-0.3.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:66b00bce789c7ccbf26f9d40c0ca0c395af073dc204e84b76331cdcb120a6c5e", size = 198019 },
     { url = "https://files.pythonhosted.org/packages/c0/1a/25ecea5b2d906212ec9da5af793c767d11b41fb204d73dbd2ff150493246/klujax-0.3.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c3c47c7fd919e4b39f9dd4ef4e7ead9db0bcc0096174364869218004be2f1cba", size = 2072864 },
     { url = "https://files.pythonhosted.org/packages/a8/45/bc011099a47bc6b68869e13dec63173dd752fcdb4547d978f9528a066ab1/klujax-0.3.1-cp313-cp313-win_amd64.whl", hash = "sha256:600ff885a4518c34b6a180679a1713cfc3228c0c76b9f4be2b9317b7349c884d", size = 136731 },
-]
-
-[[package]]
-name = "kweb"
-version = "2.0.4"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "fastapi" },
-    { name = "jinja2" },
-    { name = "klayout" },
-    { name = "pydantic-extra-types" },
-    { name = "uvicorn", extra = ["standard"] },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/2c/c1/323720d064f7fdce9c5097aa351ec0144edf9680d65d719c63f6c3c37082/kweb-2.0.4.tar.gz", hash = "sha256:d7a0f128e39a14daffcec7729639a80b6b94f45c1f95306dca7a0120f4cc6095", size = 429982 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/7c/4a/c3357993793769904822d7b4f038fe92a4b5b30de213091ff4f201c7520c/kweb-2.0.4-py3-none-any.whl", hash = "sha256:80c6b6a3c98306cdb896e1fb6280319c57aa438052afc94dba0a04f4273bc3c6", size = 369278 },
 ]
 
 [[package]]
@@ -3845,7 +3854,7 @@ wheels = [
 
 [[package]]
 name = "sax"
-version = "0.14.0"
+version = "0.14.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "black" },
@@ -3865,9 +3874,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/50/cb/bddd8e10c69eca56cd1a746003b6da2c42e795659aa9979b7b48c3ff6c61/sax-0.14.0.tar.gz", hash = "sha256:08139e8a3654ccb7dbdefdac9c92dce9119cd7dd1d8f5b3aa6615e5def80d79d", size = 35818 }
+sdist = { url = "https://files.pythonhosted.org/packages/fd/5f/b7f583c359235a110495846ae8b1278906ebb26651f3c89761c4ef2c1995/sax-0.14.1.tar.gz", hash = "sha256:dfce72d399f5b81fa8d38c687e17c78910dd6f3cd296317c21e2135e94a3b672", size = 36456 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/56/c2/4767cc94268c61c8b187e538716caa0aa406023a4a3301ce817205dc21b3/sax-0.14.0-py3-none-any.whl", hash = "sha256:4ea53c788b6edf2d6db6eaab63dfc54713dcee716a3dbfb7a4f02806298d9bb5", size = 37112 },
+    { url = "https://files.pythonhosted.org/packages/f8/7b/e02b64d8c2768099a228e8d3af77f1d04a8e809120e60902737762d6888e/sax-0.14.1-py3-none-any.whl", hash = "sha256:a4ecb9806ef0fd42f89f506a574a2536a5c1327d095f752970f4675fe178a045", size = 37739 },
 ]
 
 [[package]]
