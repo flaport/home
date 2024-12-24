@@ -8,7 +8,6 @@
   "explorer.confirmDragAndDrop": false,
   "files.autoSaveWhenNoErrors": false,
   "files.autoSaveDelay": 3000,
-  "files.autoSave": "afterDelay",
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
