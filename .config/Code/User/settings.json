@@ -69,5 +69,6 @@
   },
   "workbench.iconTheme": "material-icon-theme",
   "workbench.settings.useSplitJSON": true,
-  "editor.dropIntoEditor.enabled": true
+  "editor.dropIntoEditor.enabled": true,
+  "git.openRepositoryInParentFolders": "never"
 }
