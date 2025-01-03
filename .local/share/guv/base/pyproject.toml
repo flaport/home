@@ -76,4 +76,5 @@ dependencies = [
   "pydot>=3.0.3",
   "meow-sim>=0.11.2",
   "numba>=0.60.0",
+  "logfire>=2.11.1",
 ]
