@@ -70,6 +70,5 @@
   "workbench.iconTheme": "material-icon-theme",
   "workbench.settings.useSplitJSON": true,
   "editor.dropIntoEditor.enabled": true,
-  "git.openRepositoryInParentFolders": "never",
-  "python.defaultInterpreterPath": "/home/flaport/.local/share/guv/base/.venv"
+  "git.openRepositoryInParentFolders": "never"
 }
