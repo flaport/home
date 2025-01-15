@@ -293,7 +293,7 @@ requires-dist = [
     { name = "cython", specifier = ">=3.0.11" },
     { name = "fastapi", specifier = ">=0.115.5" },
     { name = "gdsfactory", specifier = ">=8.25.0" },
-    { name = "gdsfactoryplus", specifier = ">=0.18.8" },
+    { name = "gdsfactoryplus", specifier = ">=0.27.0" },
     { name = "h5py", specifier = ">=3.12.1" },
     { name = "httpx", specifier = ">=0.27.2" },
     { name = "ipykernel", specifier = ">=6.29.5" },
@@ -643,7 +643,7 @@ name = "click"
 version = "8.1.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de", size = 336121 }
 wheels = [
@@ -1175,7 +1175,7 @@ wheels = [
 
 [[package]]
 name = "gdsfactoryplus"
-version = "0.18.8"
+version = "0.27.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "altair" },
@@ -1191,20 +1191,21 @@ dependencies = [
     { name = "klujax" },
     { name = "numpy" },
     { name = "requests" },
+    { name = "rich" },
     { name = "sax" },
     { name = "toml" },
     { name = "trimesh", extra = ["easy"] },
     { name = "websocket-client" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6d/94/fb7bbdcfcf207e9ae64431a881abc21b51718f671097c3b5497527ec24ed/gdsfactoryplus-0.18.8-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:17aedfcbc7cba6a5000b454f8f467105d1751d79f9168675b789394444f48499", size = 1735675 },
-    { url = "https://files.pythonhosted.org/packages/02/d8/3358218c06d151f9162b993a1904a64b24aaf0430d246f2ae956ddacf3d4/gdsfactoryplus-0.18.8-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:32c42c2e4a158977c540bebbe0a6ed556f82b5834e9468de3a28974f206d3f31", size = 1673930 },
-    { url = "https://files.pythonhosted.org/packages/f4/08/d6c477e41e3b1b92e9105c49ebbf175c8266a73837585e727f00ce0980b3/gdsfactoryplus-0.18.8-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a8e64ca7cc475f9973fcc05f2cfb10eb71d1a8898bbc7b6f5797aebf8abfd6f5", size = 9721223 },
-    { url = "https://files.pythonhosted.org/packages/9f/33/1067ea5711ff0321fb7473725579956b6726cea37d8ef5c996ec9bad7c38/gdsfactoryplus-0.18.8-cp312-cp312-win_amd64.whl", hash = "sha256:1ea9c3dd40ebbc2681991de4163763c619aa715e62cf1cdef1eaa0ae8298676a", size = 1591415 },
-    { url = "https://files.pythonhosted.org/packages/fd/8c/be47b5d7f3e04912b41aebf6fcb5c8fbf6ee5ee71244c1886930e57ec4bd/gdsfactoryplus-0.18.8-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:8f2ef152181ba49dbb52e2073cad83ad253fe090c1e84cc03becffd2993e9d68", size = 1701699 },
-    { url = "https://files.pythonhosted.org/packages/b9/36/9d0be9a01dc20706671dacc0f58baa205c17ae5c6156584efaa81b63c4c2/gdsfactoryplus-0.18.8-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:952140107c103a57426d0f1d4a176250b8433b4ffdf9d741ff90a0df2a85f708", size = 1642803 },
-    { url = "https://files.pythonhosted.org/packages/28/51/6d65246237eef25b8b10ff0e2b134a0ba1cff3b9db683b7c8d3d5516a848/gdsfactoryplus-0.18.8-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d1f7db166e86665ded0863a0605c92b50be290e3df5517a25891a56ccd627241", size = 9482046 },
-    { url = "https://files.pythonhosted.org/packages/23/be/fbf734c54c0174a50858434286e13287545e4430efd1789ccc89ff921b66/gdsfactoryplus-0.18.8-cp313-cp313-win_amd64.whl", hash = "sha256:877cabe89d22934c55430a015ec93322167cf97263f303334fad0c9a930206c4", size = 1572416 },
+    { url = "https://files.pythonhosted.org/packages/3c/f4/d73e6169e7156183b1d97bb97bc3a28cb0006eb004226dc8410844ea9475/gdsfactoryplus-0.27.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:dff90a98ae39b1bfe75f5f3bac8e47ee5af2c62c824b08999ad1cbeb913f2378", size = 1776042 },
+    { url = "https://files.pythonhosted.org/packages/d9/3c/ce6a8af94c0e7eb0482b11db6156c2d86d1dcd4783575b623014a205830c/gdsfactoryplus-0.27.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:5c95e74d3f48c8d9df2dddb9d97ca0c5fe69834fae988058441cd5cae29948dd", size = 1710828 },
+    { url = "https://files.pythonhosted.org/packages/d7/63/10cb23d6e77a1282c156f428f3465bc4748b22c1c6c45691aee90da6730d/gdsfactoryplus-0.27.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:72375a68ac164cd0f7886e1118bcba1ca5d38da7fbf17b1b121026e60a65718f", size = 10004600 },
+    { url = "https://files.pythonhosted.org/packages/8d/99/a01bf1cac52174784bcc9ebeb5b5a86a225c3f5958d7edbd347b74e1bed7/gdsfactoryplus-0.27.0-cp312-cp312-win_amd64.whl", hash = "sha256:00d9466fb6450098d97128929e30b863555e939b0ef327a0da388782ccc23851", size = 1620418 },
+    { url = "https://files.pythonhosted.org/packages/f5/f8/3f9efe594b8fe6a82ae99febc43c02c28be8e08e94e44d19a7e15314c5d6/gdsfactoryplus-0.27.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:6a02de73a9c4906c5334e646691342fc761e54b0e1e360a018f8cd7de180942c", size = 1741436 },
+    { url = "https://files.pythonhosted.org/packages/f9/2a/eb6acf3000c61b16cfc4f7e497a327b62573079d668d73479274c61cad29/gdsfactoryplus-0.27.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:c43296aa146f456acaf0e3b6f40451da89b063bb999ca8126e33eb8ff95de6e9", size = 1679175 },
+    { url = "https://files.pythonhosted.org/packages/72/bf/2e0c858df2c31841993c50b9634218ed6c92c280445ade4b41c3e320301e/gdsfactoryplus-0.27.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7bdd41b438c104a94b6b9ee3fdb03afe191039906b848151d32190f0378ee08c", size = 9776008 },
+    { url = "https://files.pythonhosted.org/packages/d9/4c/c5a2092ef688cdd2a7d0b2483cb81985d33d922113365cb03e2042241629/gdsfactoryplus-0.27.0-cp313-cp313-win_amd64.whl", hash = "sha256:3c11982a6ce8d70a9323f67ce711c42002b740f23a86f2a9576b35be34314f5a", size = 1601432 },
 ]
 
 [[package]]
@@ -1583,7 +1584,7 @@ name = "ipykernel"
 version = "6.29.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "appnope", marker = "platform_system == 'Darwin'" },
+    { name = "appnope", marker = "sys_platform == 'darwin'" },
     { name = "comm" },
     { name = "debugpy" },
     { name = "ipython" },
@@ -2191,7 +2192,7 @@ name = "jupyterlab-myst"
 version = "2.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "jupyter-server", marker = "platform_system != 'Emscripten'" },
+    { name = "jupyter-server", marker = "sys_platform != 'emscripten'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/5c/dc/4034f4f4e60e484094b96cde80bd3a387d5d1ad1d43e9918f6c5fde297b7/jupyterlab_myst-2.4.2.tar.gz", hash = "sha256:1b06de66d20dc3a865b07d37f54bff8b4ed01501999cc0683f336f0bcb8c6902", size = 12754014 }
 wheels = [
@@ -3625,8 +3626,6 @@ version = "6.1.0"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/26/10/2a30b13c61e7cf937f4adf90710776b7918ed0a9c434e2c38224732af310/psutil-6.1.0.tar.gz", hash = "sha256:353815f59a7f64cdaca1c0307ee13558a0512f6db064e92fe833784f08539c7a", size = 508565 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/da/2b/f4dea5d993d9cd22ad958eea828a41d5d225556123d372f02547c29c4f97/psutil-6.1.0-cp27-none-win32.whl", hash = "sha256:9118f27452b70bb1d9ab3198c1f626c2499384935aaf55388211ad982611407e", size = 246648 },
-    { url = "https://files.pythonhosted.org/packages/9f/14/4aa97a7f2e0ac33a050d990ab31686d651ae4ef8c86661fef067f00437b9/psutil-6.1.0-cp27-none-win_amd64.whl", hash = "sha256:a8506f6119cff7015678e2bce904a4da21025cc70ad283a53b099e7620061d85", size = 249905 },
     { url = "https://files.pythonhosted.org/packages/01/9e/8be43078a171381953cfee33c07c0d628594b5dbfc5157847b85022c2c1b/psutil-6.1.0-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:6e2dcd475ce8b80522e51d923d10c7871e45f20918e027ab682f94f1c6351688", size = 247762 },
     { url = "https://files.pythonhosted.org/packages/1d/cb/313e80644ea407f04f6602a9e23096540d9dc1878755f3952ea8d3d104be/psutil-6.1.0-cp36-abi3-macosx_11_0_arm64.whl", hash = "sha256:0895b8414afafc526712c498bd9de2b063deaac4021a3b3c34566283464aff8e", size = 248777 },
     { url = "https://files.pythonhosted.org/packages/65/8e/bcbe2025c587b5d703369b6a75b65d41d1367553da6e3f788aff91eaf5bd/psutil-6.1.0-cp36-abi3-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:9dcbfce5d89f1d1f2546a2090f4fcf87c7f669d1d90aacb7d7582addece9fb38", size = 284259 },
@@ -5303,7 +5302,7 @@ name = "tqdm"
 version = "4.67.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a8/4b/29b4ef32e036bb34e4ab51796dd745cdba7ed47ad142a9f4a1eb8e0c744d/tqdm-4.67.1.tar.gz", hash = "sha256:f8aef9c52c08c13a65f30ea34f4e5aac3fd1a34959879d7e59e63027286627f2", size = 169737 }
 wheels = [
