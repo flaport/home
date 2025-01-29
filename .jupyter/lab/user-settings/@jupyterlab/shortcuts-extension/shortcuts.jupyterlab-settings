@@ -44,19 +44,10 @@
             "args": {}
         },
         {
-            "command": "jupyterlab_code_formatter:black",
+            "command": "jupyterlab_code_formatter:format",
             "keys": [
                 "Ctrl K",
                 "Ctrl K"
-            ],
-            "selector": ".jp-Notebook.jp-mod-editMode",
-            "args": {}
-        },
-        {
-            "command": "jupyterlab_code_formatter:isort",
-            "keys": [
-                "Ctrl K",
-                "Ctrl I"
             ],
             "selector": ".jp-Notebook.jp-mod-editMode",
             "args": {}
