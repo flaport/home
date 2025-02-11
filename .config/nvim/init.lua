@@ -503,12 +503,17 @@ require('lazy').setup({
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
-      formatters = {},
+      formatters = {
+        ruff = {
+          prepend_args = { 'check', '--select=I001' },
+        },
+      },
       formatters_by_ft = {
         lua = {
           'stylua',
         },
         python = {
+          'ruff',
           'ruff_format',
         },
         javascript = {
