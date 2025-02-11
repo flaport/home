@@ -89,13 +89,12 @@ vim.opt.foldenable = true
 require 'config.keymaps'
 
 -- Diagnostic keymaps
-vim.keymap.set(
-  'n',
-  '[d',
-  vim.diagnostic.goto_prev,
-  { desc = 'Go to previous [D]iagnostic message' }
-)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.jump { count = -1, float = true }
+end, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.jump { count = 1, float = true }
+end, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set(
   'n',
   '<leader>e',
@@ -175,7 +174,7 @@ require('lazy').setup({
     'saecki/crates.nvim',
     tag = 'stable',
     config = function()
-      require('crates').setup()
+      require('crates').setup {}
     end,
   },
   'vimwiki/vimwiki',
@@ -188,17 +187,11 @@ require('lazy').setup({
   { 'cespare/vim-toml', ft = { 'toml' } },
   { 'numToStr/Comment.nvim', opts = {} }, -- "gc" to comment visual regions/lines
   { 'hanschen/vim-ipython-cell', ft = { 'python' } },
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
+  {
     'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
+    config = function()
+      require('gitsigns').setup()
+    end,
   },
 
   { -- Fuzzy Finder (files, lsp, etc)
@@ -427,6 +420,9 @@ require('lazy').setup({
         shellcheck = {},
         ts_ls = {},
         ols = {},
+        ruff = {
+          hint = { enable = true },
+        },
         pyright = {
           hint = { enable = true },
         },
@@ -463,7 +459,8 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'black',
+        'ruff',
+        'ruff-lsp',
         'clang-format',
         'json-lsp',
         'ols',
@@ -475,6 +472,8 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        ensure_installed = {},
+        automatic_installation = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -504,19 +503,13 @@ require('lazy').setup({
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
-      formatters = {
-        isort = {
-          prepend_args = { '--profile', 'black' },
-        },
-      },
+      formatters = {},
       formatters_by_ft = {
         lua = {
           'stylua',
         },
-        -- Conform can also run multiple formatters sequentially
         python = {
-          'isort',
-          'black',
+          'ruff_format',
         },
         javascript = {
           'prettierd',
