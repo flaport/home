@@ -1,0 +1,13 @@
+{
+    "preferences": {
+        "default_formatter": {
+            "python": [
+                "ruff",
+                "ruffformat"
+            ],
+            "R": "formatR",
+            "rust": "rustfmt",
+            "c++11": "astyle"
+        }
+    },
+}
