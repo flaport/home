@@ -412,14 +412,12 @@ require('lazy').setup({
           source = 'if_many',
           spacing = 2,
           format = function(diagnostic)
+            local code = diagnostic.code or ''
             local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = '['
-                .. diagnostic.code
-                .. '] '
-                .. diagnostic.message,
-              [vim.diagnostic.severity.WARN] = '[' .. diagnostic.code .. '] ' .. diagnostic.message,
-              [vim.diagnostic.severity.INFO] = '[' .. diagnostic.code .. '] ' .. diagnostic.message,
-              [vim.diagnostic.severity.HINT] = '[' .. diagnostic.code .. '] ' .. diagnostic.message,
+              [vim.diagnostic.severity.ERROR] = '[' .. code .. '] ' .. diagnostic.message,
+              [vim.diagnostic.severity.WARN] = '[' .. code .. '] ' .. diagnostic.message,
+              [vim.diagnostic.severity.INFO] = '[' .. code .. '] ' .. diagnostic.message,
+              [vim.diagnostic.severity.HINT] = '[' .. code .. '] ' .. diagnostic.message,
             }
             return diagnostic_message[diagnostic.severity]
           end,
