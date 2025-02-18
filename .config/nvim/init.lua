@@ -409,7 +409,7 @@ require('lazy').setup({
           },
         } or {},
         virtual_text = {
-          source = 'if_many',
+          source = true,
           spacing = 2,
           format = function(diagnostic)
             local code = diagnostic.code or ''
