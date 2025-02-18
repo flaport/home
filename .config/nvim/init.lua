@@ -2,9 +2,6 @@
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 
--- make sure mason bin is added to path (this makes rust-analyzer work)
-vim.env.PATH = vim.fn.stdpath 'data' .. '/mason/bin' .. ':' .. vim.env.PATH
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -173,25 +170,25 @@ require('lazy').setup({
   {
     'saecki/crates.nvim',
     tag = 'stable',
-    config = function()
-      require('crates').setup {}
-    end,
+    opts = {},
   },
   'vimwiki/vimwiki',
   'mbbill/undotree',
   'lepture/vim-jinja',
   'kshenoy/vim-signature',
-  require 'plugins.neo-tree',
-  require 'plugins.indentscope',
   { 'pedrohdz/vim-yaml-folds', ft = { 'yaml' } },
   { 'cespare/vim-toml', ft = { 'toml' } },
   { 'numToStr/Comment.nvim', opts = {} }, -- "gc" to comment visual regions/lines
   { 'hanschen/vim-ipython-cell', ft = { 'python' } },
   {
     'lewis6991/gitsigns.nvim',
-    config = function()
-      require('gitsigns').setup()
-    end,
+    opts = {},
+  },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
   },
 
   { -- Fuzzy Finder (files, lsp, etc)
@@ -396,6 +393,38 @@ require('lazy').setup({
           end
         end,
       })
+
+      -- Diagnostic Config
+      -- See :help vim.diagnostic.Opts
+      vim.diagnostic.config {
+        severity_sort = true,
+        float = { border = 'rounded', source = 'if_many' },
+        -- underline = { severity = vim.diagnostic.severity.WARN },
+        signs = vim.g.have_nerd_font and {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '󰅚 ',
+            [vim.diagnostic.severity.WARN] = '󰀪 ',
+            [vim.diagnostic.severity.INFO] = '󰋽 ',
+            [vim.diagnostic.severity.HINT] = '󰌶 ',
+          },
+        } or {},
+        virtual_text = {
+          source = 'if_many',
+          spacing = 2,
+          format = function(diagnostic)
+            local diagnostic_message = {
+              [vim.diagnostic.severity.ERROR] = '['
+                .. diagnostic.code
+                .. '] '
+                .. diagnostic.message,
+              [vim.diagnostic.severity.WARN] = '[' .. diagnostic.code .. '] ' .. diagnostic.message,
+              [vim.diagnostic.severity.INFO] = '[' .. diagnostic.code .. '] ' .. diagnostic.message,
+              [vim.diagnostic.severity.HINT] = '[' .. diagnostic.code .. '] ' .. diagnostic.message,
+            }
+            return diagnostic_message[diagnostic.severity]
+          end,
+        },
+      }
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -659,7 +688,6 @@ require('lazy').setup({
       -- require 'config.colors'
     end,
   },
-  require 'plugins.todo-comments',
 
   -- Highlight todo, notes, etc in comments
   { -- Collection of various small independent plugins/modules
