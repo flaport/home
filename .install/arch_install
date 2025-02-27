@@ -556,7 +556,9 @@ pacman_install julia
 ## instant-markdown-d used for instant markdown visualization in vim
 #npm_install instant-markdown-d
 ## pyright: static typechecker and linter for python
-npm_install pyright
+pacman_install pyright
+## pyright: static typechecker and linter for python
+# pacman_install python-lsp-server
 ## rust: best programming language out there
 pacman_install rustup
 ## rust_analyzer: static typechecker and linter for rust

@@ -413,6 +413,12 @@ require('lazy').setup({
           spacing = 2,
           format = function(diagnostic)
             local code = diagnostic.code or ''
+            if
+              diagnostic.source == 'Pyright'
+              and diagnostic.severity ~= vim.diagnostic.severity.ERROR
+            then
+              return
+            end
             local diagnostic_message = {
               [vim.diagnostic.severity.ERROR] = '[' .. code .. '] ' .. diagnostic.message,
               [vim.diagnostic.severity.WARN] = '[' .. code .. '] ' .. diagnostic.message,
@@ -442,15 +448,32 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        pyright = {
+          enabled = true,
+          hint = { enable = false },
+          capabilities = (function()
+            local caps = vim.lsp.protocol.make_client_capabilities()
+            caps.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+            return caps
+          end)(),
+          settings = {
+            python = {
+              analysis = {
+                useLibraryCodeForTypes = true,
+                diagnosticSeverityOverrides = {
+                  reportUnusedVariable = 'warning', -- or anything
+                },
+                typeCheckingMode = 'basic',
+              },
+            },
+          },
+        },
         clangd = {},
         gopls = {},
         shellcheck = {},
         ts_ls = {},
         ols = {},
         ruff = {
-          hint = { enable = true },
-        },
-        pyright = {
           hint = { enable = true },
         },
         zls = {},
