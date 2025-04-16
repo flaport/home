@@ -173,6 +173,7 @@ require('lazy').setup({
     opts = {},
   },
   'vimwiki/vimwiki',
+  'github/copilot.vim',
   'mbbill/undotree',
   'lepture/vim-jinja',
   'kshenoy/vim-signature',
