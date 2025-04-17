@@ -100,6 +100,11 @@ map('n', '<C-Space>', ':WhichKey \\<space><cr>', opts)
 -- increase number
 -- <C-a> " standard vim keybinding
 
+vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false,
+})
+
 -- scroll page backward
 -- <C-b> " standard vim keybinding
 
