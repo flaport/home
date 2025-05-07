@@ -174,6 +174,7 @@ require('lazy').setup({
   },
   'vimwiki/vimwiki',
   'github/copilot.vim',
+  'NLKNguyen/papercolor-theme',
   'mbbill/undotree',
   'lepture/vim-jinja',
   'kshenoy/vim-signature',

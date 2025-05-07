@@ -11,6 +11,17 @@ map('n', '<leader>[', ':bprevious<CR>', opts)
 -- jump to other/closing tag (requires valloric/MatchTagAlways)
 map('n', '<leader>.', ':MtaJumpToOtherTag<cr>', opts)
 
+-- toggle between dark and light colorscheme
+vim.keymap.set('n', '<leader>cc', function()
+  if vim.o.background == 'dark' then
+    vim.o.background = 'light'
+    vim.cmd.colorscheme 'PaperColor'
+  else
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'catppuccin'
+  end
+end, opts)
+
 -- cd into folder containing current file
 map('n', '<leader>cd', ':lcd %:p:h<CR>', opts)
 
