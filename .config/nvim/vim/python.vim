@@ -7,8 +7,8 @@ augroup pythonsettings
     " disable both hard wrapping and soft wrapping
     autocmd Filetype python NoWrap
 
-    " also show colorcolumn at 88 characters
-    autocmd Filetype python setlocal colorcolumn=88
+    " set colorcolumn based on pyproject.toml ruff setting or default to 88
+    autocmd Filetype python lua require('config.python_colorcolumn').set_python_colorcolumn()
 
     " enable autoindent on new line
     autocmd FileType python setlocal autoindent
