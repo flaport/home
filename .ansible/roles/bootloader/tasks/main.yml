@@ -1,0 +1,87 @@
+---
+# Bootloader configuration - rEFInd
+
+- name: Check if system is UEFI
+  ansible.builtin.stat:
+    path: /sys/firmware/efi/efivars
+  register: uefi_check
+
+- name: Install rEFInd bootloader (UEFI only)
+  block:
+    - name: Detect CPU vendor
+      ansible.builtin.shell: grep -m1 vendor_id /proc/cpuinfo | awk '{print $3}'
+      register: cpu_vendor
+      changed_when: false
+
+    - name: Install Intel microcode and rEFInd
+      community.general.pacman:
+        name:
+          - intel-ucode
+          - linux
+          - linux-firmware
+          - refind
+        state: present
+      when: cpu_vendor.stdout == "GenuineIntel"
+
+    - name: Install AMD microcode and rEFInd
+      community.general.pacman:
+        name:
+          - amd-ucode
+          - linux
+          - linux-firmware
+          - refind
+        state: present
+      when: cpu_vendor.stdout == "AuthenticAMD"
+
+    - name: Install rEFInd to EFI partition
+      ansible.builtin.command: refind-install
+      register: refind_install
+      changed_when: "'Installation has completed successfully' in refind_install.stdout"
+      failed_when: false
+
+    - name: Get root partition UUID
+      ansible.builtin.shell: findmnt -no UUID /
+      register: root_uuid
+      changed_when: false
+
+    - name: Configure rEFInd boot options
+      ansible.builtin.copy:
+        content: |
+          "Boot with standard options" "rw root=UUID={{ root_uuid.stdout }}"
+        dest: /boot/refind_linux.conf
+        mode: '0644'
+      when: root_uuid.stdout is defined and root_uuid.stdout != ""
+
+  when: uefi_check.stat.exists
+
+- name: Install GRUB for BIOS systems
+  block:
+    - name: Install GRUB
+      community.general.pacman:
+        name: grub
+        state: present
+
+    - name: Configure GRUB timeout
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_TIMEOUT='
+        line: 'GRUB_TIMEOUT=0'
+
+    - name: Regenerate GRUB config
+      ansible.builtin.command: grub-mkconfig -o /boot/grub/grub.cfg
+      register: grub_config
+      changed_when: "'Generating grub configuration file' in grub_config.stdout"
+
+  when: not uefi_check.stat.exists
+
+- name: Display bootloader installation note
+  ansible.builtin.debug:
+    msg: |
+      Bootloader configuration complete.
+      {% if uefi_check.stat.exists %}
+      UEFI detected - rEFInd installed.
+      {% else %}
+      BIOS detected - GRUB installed.
+      {% endif %}
+      Note: Bootloader installation requires boot partition to be mounted.
+      This role assumes the system is already installed.

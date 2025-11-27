@@ -1,0 +1,14 @@
+---
+# Global variables for all hosts
+
+# System initialization settings
+system_timezone: "Europe/Brussels"
+system_locale: "en_US.UTF-8"
+system_hostname: "archframe"
+
+# Git configuration (optional - uncomment and set if desired)
+# git_user_name: "Your Name"
+# git_user_email: "your.email@example.com"
+
+# Bootloader preference (auto-detected based on UEFI/BIOS)
+# bootloader_type: "auto"  # Options: auto, refind, grub

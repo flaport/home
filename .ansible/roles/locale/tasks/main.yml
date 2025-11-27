@@ -1,0 +1,32 @@
+---
+# Locale and timezone configuration
+
+- name: Set timezone
+  community.general.timezone:
+    name: "{{ system_timezone | default('Europe/Brussels') }}"
+
+- name: Set hardware clock to system time
+  ansible.builtin.command: hwclock --systohc
+  changed_when: false
+
+- name: Ensure locale is uncommented in locale.gen
+  ansible.builtin.lineinfile:
+    path: /etc/locale.gen
+    regexp: '^#{{ system_locale | default("en_US.UTF-8") | regex_escape }} '
+    line: '{{ system_locale | default("en_US.UTF-8") }} UTF-8'
+    state: present
+
+- name: Generate locales
+  ansible.builtin.command: locale-gen
+  register: locale_gen_result
+  changed_when: "'Generating locales' in locale_gen_result.stdout"
+
+- name: Set system locale
+  ansible.builtin.copy:
+    content: "LANG={{ system_locale | default('en_US.UTF-8') }}\n"
+    dest: /etc/locale.conf
+    mode: '0644'
+
+- name: Set NTP time synchronization
+  ansible.builtin.command: timedatectl set-ntp true
+  changed_when: false

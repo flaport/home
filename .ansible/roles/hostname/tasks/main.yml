@@ -1,0 +1,24 @@
+---
+# Hostname configuration
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ system_hostname | default('archframe') }}"
+    use: systemd
+
+- name: Update /etc/hostname
+  ansible.builtin.copy:
+    content: "{{ system_hostname | default('archframe') }}\n"
+    dest: /etc/hostname
+    mode: '0644'
+
+- name: Configure /etc/hosts with hostname entries
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    block: |
+      127.0.0.1 localhost
+      ::1 localhost
+      127.0.1.1 {{ system_hostname | default('archframe') }}.localdomain {{ system_hostname | default('archframe') }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - hostname"
+    create: yes
+    mode: '0644'

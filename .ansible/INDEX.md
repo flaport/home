@@ -35,6 +35,13 @@ Welcome to the Arch Linux Ansible setup! This index helps you navigate the docum
   - Advanced usage
   - *Reference guide*
 
+- **[INIT_ROLES.md](INIT_ROLES.md)**
+  - System initialization roles explained
+  - Post-installation automation
+  - Locale, hostname, bootloader, user setup
+  - Configuration and customization
+  - *NEW: Automates manual install steps*
+
 ### Understanding the Structure
 
 - **[STRUCTURE.md](STRUCTURE.md)**

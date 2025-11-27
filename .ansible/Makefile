@@ -1,4 +1,4 @@
-.PHONY: help install check requirements base terminal desktop all
+.PHONY: help install check requirements init base terminal desktop all
 
 help:
 	@echo "Arch Linux Ansible Setup - Available targets:"
@@ -6,6 +6,7 @@ help:
 	@echo "  make requirements  - Install required Ansible collections"
 	@echo "  make check        - Run playbook in check mode (dry-run)"
 	@echo "  make install      - Run full installation"
+	@echo "  make init         - System initialization (locale, hostname, bootloader)"
 	@echo "  make base         - Install base system only"
 	@echo "  make terminal     - Install terminal tools only"
 	@echo "  make desktop      - Install desktop environment only"
@@ -23,6 +24,9 @@ check:
 
 install all:
 	ansible-playbook site.yml --ask-become-pass $(if $(VERBOSE),-vv)
+
+init:
+	ansible-playbook site.yml --tags "init" --ask-become-pass $(if $(VERBOSE),-vv)
 
 base:
 	ansible-playbook site.yml --tags "base" --ask-become-pass $(if $(VERBOSE),-vv)

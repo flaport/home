@@ -1,0 +1,45 @@
+---
+# User configuration and sudo setup
+
+- name: Ensure user has sudo privileges
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/{{ user_name }}
+    line: "{{ user_name }} ALL=(ALL) ALL"
+    create: yes
+    mode: '0440'
+    validate: 'visudo -cf %s'
+
+- name: Configure git user name
+  community.general.git_config:
+    name: user.name
+    value: "{{ git_user_name | default(user_name) }}"
+    scope: global
+  become: no
+  when: git_user_name is defined or user_name is defined
+
+- name: Configure git user email
+  community.general.git_config:
+    name: user.email
+    value: "{{ git_user_email }}"
+    scope: global
+  become: no
+  when: git_user_email is defined
+
+- name: Ensure user directories exist
+  ansible.builtin.file:
+    path: "{{ home_dir }}/{{ item }}"
+    state: directory
+    owner: "{{ user_name }}"
+    mode: '0755'
+  loop:
+    - .local/bin
+    - .local/share
+    - .config
+    - .cache
+  become: no
+
+- name: Set user shell to zsh if installed
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    shell: /usr/bin/zsh
+  when: ansible_facts.packages['zsh'] is defined

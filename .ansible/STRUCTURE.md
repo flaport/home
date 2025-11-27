@@ -20,6 +20,18 @@ This document provides an overview of the Ansible setup structure.
 │
 └── roles/                  # All roles
     │
+    ├── locale/             # Timezone and locale configuration
+    │   └── tasks/main.yml
+    │
+    ├── hostname/           # Hostname configuration
+    │   └── tasks/main.yml
+    │
+    ├── bootloader/         # rEFInd/GRUB bootloader setup
+    │   └── tasks/main.yml
+    │
+    ├── user-config/        # User and sudo configuration
+    │   └── tasks/main.yml
+    │
     ├── base/               # Build tools, git, yay AUR helper
     │   └── tasks/main.yml
     │

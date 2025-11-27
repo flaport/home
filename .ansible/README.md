@@ -30,6 +30,14 @@ ansible-galaxy collection install community.general
 
 ## Quick Start
 
+**Note:** The playbook now includes system initialization roles (locale, hostname, bootloader, user-config) that configure fundamental system settings based on the manual installation guide. These are configured with sensible defaults:
+- **Timezone**: Europe/Brussels
+- **Locale**: en_US.UTF-8
+- **Hostname**: archframe
+- **Bootloader**: rEFInd (UEFI) or GRUB (BIOS)
+
+You can skip these with `--skip-tags init` if your system is already configured.
+
 ### Full Installation
 
 Run everything with interactive sudo password prompt:
@@ -66,6 +74,11 @@ ansible-playbook site.yml --tags "programming,python" --ask-become-pass
 
 | Tag | Description |
 |-----|-------------|
+| `init` | System initialization (all of: locale, hostname, bootloader, user-config) |
+| `locale` | Timezone (Europe/Brussels) and locale (en_US.UTF-8) configuration |
+| `hostname` | Hostname configuration (archframe) |
+| `bootloader` | Bootloader setup (rEFInd for UEFI, GRUB for BIOS) |
+| `user-config` | User configuration and sudo setup |
 | `base` | Core system packages (make, cmake, git, yay) |
 | `terminal` | Terminal emulator and CLI tools |
 | `filesystems` | Filesystem drivers (NTFS, ExFAT, CIFS, etc.) |
@@ -100,6 +113,10 @@ ansible-playbook site.yml --tags "programming,python" --ask-become-pass
 ├── group_vars/          # Group variables (if needed)
 ├── host_vars/           # Host-specific variables (if needed)
 └── roles/               # Role-based organization
+    ├── locale/          # Timezone and locale
+    ├── hostname/        # Hostname configuration
+    ├── bootloader/      # rEFInd/GRUB setup
+    ├── user-config/     # User and sudo setup
     ├── base/            # Base system setup
     ├── terminal/        # Terminal and CLI tools
     ├── xorg/            # X11 configuration
