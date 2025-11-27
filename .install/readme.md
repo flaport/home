@@ -102,14 +102,119 @@
 
 ## Post Installation
 
-- Reboot and login as the newly created user
-- Install git:
+After completing the manual installation steps above, you have two options for setting up your system:
 
-```
-    sudo pacman -S git
-    git config --global user.name <username>
-    git config --global user.email <email>
+### Option 1: Automated Setup with Ansible (Recommended)
+
+The repository now includes a comprehensive Ansible setup that automates all post-installation configuration.
+
+1. **Reboot and login** as the newly created user
+
+2. **Install git and Ansible:**
+   ```bash
+   sudo pacman -S git ansible
+   ```
+
+3. **Clone this repository:**
+   ```bash
+   cd ~
+   git clone <repository-url>
+   cd home
+   ```
+
+4. **Configure git (will also be done by Ansible):**
+   ```bash
+   git config --global user.name <username>
+   git config --global user.email <email>
+   ```
+
+5. **Update git submodules:**
+   ```bash
+   git submodule update --init --recursive
+   ```
+
+6. **Install Ansible collections:**
+   ```bash
+   cd .ansible
+   make requirements
+   ```
+
+7. **Review and customize settings** (optional):
+   ```bash
+   # Edit system settings if you want different defaults
+   vim .ansible/group_vars/all.yml
+   # Default values:
+   # - Timezone: Europe/Brussels
+   # - Locale: en_US.UTF-8
+   # - Hostname: archframe
+   ```
+
+8. **Preview what will be installed** (dry-run):
+   ```bash
+   make check
+   ```
+
+9. **Run the full installation:**
+   ```bash
+   make install
+   # This will:
+   # - Configure locale and timezone
+   # - Set hostname
+   # - Configure user and sudo
+   # - Install all packages (yay, terminal tools, desktop environment, etc.)
+   # - Build custom software (dwm, st, dmenu, scroll)
+   # - Configure all services
+   ```
+
+10. **Reboot the computer:**
+    ```bash
+    sudo reboot
+    ```
+
+**Documentation:**
+- Quick start guide: `.ansible/QUICKSTART.md`
+- Complete documentation: `.ansible/README.md`
+- System initialization: `.ansible/INIT_ROLES.md`
+- All documentation index: `.ansible/INDEX.md`
+
+**Selective Installation:**
+```bash
+# Install only specific components
+make base           # Base system only
+make terminal       # Terminal tools only
+make desktop        # Desktop environment
+make programming    # Development tools
+
+# Or use tags
+ansible-playbook site.yml --tags "base,terminal,desktop" --ask-become-pass
+
+# Skip system initialization if already configured
+ansible-playbook site.yml --skip-tags "init" --ask-become-pass
 ```
 
-- Follow the arch-home installation instructions laid out in [the main readme](../.github/readme.md#installation-instructions) of this repository.
-- Reboot the computer one last time.
+### Option 2: Manual Setup (Legacy)
+
+If you prefer manual installation or want to customize everything yourself:
+
+1. **Reboot and login** as the newly created user
+
+2. **Install git:**
+   ```bash
+   sudo pacman -S git
+   git config --global user.name <username>
+   git config --global user.email <email>
+   ```
+
+3. **Follow the arch-home installation instructions** laid out in [the main readme](../.github/readme.md#installation-instructions) of this repository.
+
+4. **Reboot the computer one last time.**
+
+---
+
+**Note:** The Ansible setup (Option 1) is recommended as it:
+- ✅ Automates 100% of the post-installation process
+- ✅ Is idempotent (safe to run multiple times)
+- ✅ Provides dry-run capability to preview changes
+- ✅ Allows selective installation with tags
+- ✅ Includes comprehensive documentation
+- ✅ Can be easily customized via variables
