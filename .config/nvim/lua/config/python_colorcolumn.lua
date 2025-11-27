@@ -52,17 +52,19 @@ end
 function M.set_python_colorcolumn()
     local default_length = 88
     local pyproject_path = find_pyproject_toml()
-    
+
     if pyproject_path then
         local ruff_length = get_ruff_line_length(pyproject_path)
         if ruff_length then
             vim.opt_local.colorcolumn = tostring(ruff_length)
+            vim.opt_local.textwidth = ruff_length
             return
         end
     end
-    
+
     -- Default to 88 if no pyproject.toml or no ruff line-length setting
     vim.opt_local.colorcolumn = tostring(default_length)
+    vim.opt_local.textwidth = default_length
 end
 
 return M 
