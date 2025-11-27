@@ -1,6 +1,193 @@
 # Clean Arch Linux Installation.
 
-**_Note:_** These installation instructions were last checked by me on 2021.10.21.
+**_Note:_** These installation instructions were last checked and updated on 2025-01-27.
+
+## Table of Contents
+
+1. [Dual Boot with Windows (Preparation)](#dual-boot-with-windows-preparation)
+2. [First Installation with bootable USB](#first-installation-with-bootable-usb)
+3. [Post Installation](#post-installation)
+
+---
+
+## Dual Boot with Windows (Preparation)
+
+If you plan to dual-boot Arch Linux with Windows, follow these preparation steps **before** installing Arch Linux.
+
+### ⚠️ Prerequisites and Warnings
+
+**IMPORTANT - Do this BEFORE starting Arch installation:**
+
+1. **Disable Secure Boot**
+   - Secure Boot must be disabled as Arch Linux installation media does not support it
+   - Boot into UEFI/BIOS settings (usually F2, F10, F12, or Del during boot)
+   - Navigate to Security or Boot settings
+   - Disable Secure Boot
+   - Save and exit
+   - **Note:** You can re-enable Secure Boot after installation if you configure it properly
+
+2. **Disable Windows BitLocker (Drive Encryption)**
+   - If Windows drive is encrypted with BitLocker, you MUST decrypt it first
+   - In Windows: Settings → System → Storage → Advanced storage settings → BitLocker
+   - Turn off BitLocker and wait for full decryption to complete (can take hours)
+   - **Warning:** Resizing an encrypted partition can cause data loss!
+
+3. **Disable Fast Startup in Windows**
+   - Fast Startup can cause filesystem corruption in dual-boot setups
+   - In Windows: Control Panel → Power Options → Choose what the power buttons do
+   - Click "Change settings that are currently unavailable"
+   - Uncheck "Turn on fast startup (recommended)"
+   - Save changes
+
+4. **Backup Important Data**
+   - Always backup your Windows data before partitioning
+   - Create a Windows recovery USB in case something goes wrong
+
+### Shrinking Windows Partition
+
+You need to make space for Linux by shrinking the Windows partition.
+
+**Method 1: From Windows (Recommended)**
+
+1. **Boot into Windows**
+
+2. **Open Disk Management**
+   - Press `Win + X` and select "Disk Management"
+   - Or search for "Create and format hard disk partitions"
+
+3. **Shrink the Windows partition**
+   - Right-click on the C: drive (usually the largest partition)
+   - Select "Shrink Volume"
+   - In "Enter the amount of space to shrink in MB", calculate:
+     - For a 1TB drive leaving 500GB for Windows: Enter `512000` MB (500GB)
+     - This will free up ~500GB for Linux
+   - Click "Shrink"
+   - You should now see unallocated space (don't format it!)
+
+4. **Reboot** and proceed with Arch installation
+
+**Method 2: From Arch Live USB (Advanced)**
+
+If you need to shrink from the Arch installation environment:
+
+1. **Boot from Arch USB**
+
+2. **Install ntfs-3g and parted**
+   ```bash
+   pacman -Sy ntfs-3g parted
+   ```
+
+3. **Check partition layout**
+   ```bash
+   lsblk
+   fdisk -l
+   ```
+
+4. **Shrink NTFS partition**
+   ```bash
+   # Find your Windows partition (usually /dev/nvme0n1p3 or /dev/sda3)
+   ntfsresize --info /dev/nvme0n1p3  # Check current size and min size
+
+   # Shrink to desired size (e.g., 500GB = 500G)
+   ntfsresize --size 500G /dev/nvme0n1p3
+
+   # Resize the partition table to match
+   parted /dev/nvme0n1
+   (parted) print  # Note partition number
+   (parted) resizepart 3 500GB  # Adjust partition 3 to 500GB
+   (parted) quit
+   ```
+
+### Understanding the Boot Partition (EFI System Partition)
+
+When dual-booting with Windows on a UEFI system:
+
+**What you need to know:**
+- Windows creates an EFI System Partition (ESP) during installation, typically 100-500MB
+- This ESP already contains Windows bootloader files in `/EFI/Microsoft/`
+- Linux will **share this same ESP** - you don't create a new one!
+- rEFInd (or GRUB) will be installed alongside Windows bootloader in `/EFI/refind/` or `/EFI/GRUB/`
+
+**Check if ESP is large enough:**
+```bash
+# From Arch USB, after mounting Windows ESP (usually /dev/nvme0n1p1 or /dev/sda1)
+df -h /boot/efi
+```
+
+**ESP Size Requirements:**
+- Windows typically creates 100MB (older) or 260MB+ (newer installations)
+- Minimum for dual boot: 200MB
+- Recommended: 512MB or more
+- rEFInd needs: ~20-30MB
+- GRUB needs: ~10-20MB
+
+**If ESP is too small (<200MB):**
+- You may need to expand it (complex, requires backup)
+- Or use GRUB instead of rEFInd (smaller footprint)
+- Consider consulting: https://wiki.archlinux.org/title/EFI_system_partition#Insufficient_space
+
+**What will be on the shared ESP:**
+```
+/boot/efi/
+├── EFI/
+│   ├── Boot/          # Fallback bootloader
+│   ├── Microsoft/     # Windows bootloader (DON'T TOUCH!)
+│   └── refind/        # rEFInd bootloader (or GRUB/)
+└── ...
+```
+
+### Partitioning for Dual Boot
+
+When you reach the partitioning step in the main installation:
+
+**For UEFI dual boot, you will have:**
+1. **ESP (EFI System Partition)** - Already exists from Windows (typically 100-500MB)
+   - **DO NOT format or delete this!**
+   - Typically `/dev/nvme0n1p1` or `/dev/sda1`
+   - Mount this at `/mnt/boot/efi`
+
+2. **Windows partition** - Your shrunk Windows C: drive
+   - Leave this alone!
+
+3. **Swap partition (optional)** - Create in free space (size of RAM)
+   - Example: `/dev/nvme0n1p5` or `/dev/sda5`
+
+4. **Linux root partition** - Create in free space (50GB minimum)
+   - Example: `/dev/nvme0n1p6` or `/dev/sda6`
+
+5. **Linux home partition** - Create in remaining free space
+   - Example: `/dev/nvme0n1p7` or `/dev/sda7`
+
+**Modified partitioning commands in the main guide:**
+- When you see "Create a first partition of 250M for boot" → **SKIP THIS** (use existing ESP)
+- When you see "Format the boot partition" → **SKIP THE FORMAT** (just mount it)
+- When you see "Mount boot partition" → Mount the **existing Windows ESP**
+
+### Boot Priority After Installation
+
+After installing Arch and rEFInd/GRUB:
+
+**rEFInd (Recommended for dual boot):**
+- rEFInd will automatically detect both Linux and Windows
+- Shows a graphical boot menu with both options
+- No manual configuration needed for Windows detection
+
+**GRUB:**
+- GRUB can detect Windows with `os-prober`
+- Install: `pacman -S os-prober`
+- Enable in `/etc/default/grub`: `GRUB_DISABLE_OS_PROBER=false`
+- Regenerate config: `grub-mkconfig -o /boot/grub/grub.cfg`
+
+**Setting default boot order in UEFI:**
+```bash
+# After installation, check boot order
+efibootmgr -v
+
+# Set default (e.g., rEFInd first, Windows second)
+efibootmgr -o 0003,0001  # Replace with your boot numbers
+```
+
+---
 
 ## First Installation with bootable USB
 
@@ -11,31 +198,79 @@
 - Set the clock right: `timedatectl set-ntp true`
 - Check the boot mode: `ls /sys/firmware/efi/efivars`. If the directory is empty or does not exist, you are in traditional **BIOS** boot-mode, else you are in **UEFI** boot-mode. In the following, sections that are prepended with “**BIOS**” or “**UEFI**” should only be performed if you are in that specific boot-mode.
 - Check which block device name belongs to your hard drive with `lsblk`. Here, we assume `/dev/sdx` is the disk to be partitioned.
+
+### Partitioning
+
+**⚠️ For dual-boot with Windows:** If you followed the [dual-boot preparation](#dual-boot-with-windows-preparation), you should already have free space and an existing Windows ESP. In this case:
+- **DO NOT delete the ESP (EFI System Partition)** - typically the first small partition (~100-500MB, type `EFI System`)
+- **DO NOT delete or modify Windows partitions**
+- Only create Linux partitions in the **free/unallocated space**
+- Skip to "Create partitions in free space" below
+
+**For fresh installation (no dual-boot):**
+
 - **[skip this step if you are reinstalling arch on an already correctly partitioned drive]** Check the block device name with `lsblk` (here we assume to work on `/dev/sdx`) and create hard disk partitions with `cfdisk`: `cfdisk /dev/sdx`. If asked, select `gpt` partition table. Then
-  - If the harddrive you want to install arch linux on is not emtpy, delete all partitions
+  - If the harddrive you want to install arch linux on is not empty, delete all partitions
   - Create a first partition of `250M`. This will be used for the boot partition
   - Create a second partition of `XG`. This will be the swap partition (make `X` as big as the total amount of ram in your system).
   - Create a third partition of at least `30G` (I recommend `50G` to be more comfortable). This will be the root partition.
   - Create a fourth partition containing the rest of the disk space. This will be the home partition.
   - Finally, write the partition table to the hard drive and quit.
   - Reboot to ensure the partition tables are updated correctly
+
+**For dual-boot (create partitions in free space):**
+
+- Use `cfdisk /dev/sdx` to create partitions **only in the free space** left by Windows
+- Existing partitions will show up - **leave them alone!**
+- Navigate to the `Free space` entry and create:
+  - **Swap partition**: Size of RAM (e.g., 16G)
+  - **Root partition**: At least 50G
+  - **Home partition**: Remaining free space
+- Write the partition table and quit
+- **Example layout after partitioning for dual-boot:**
+  ```
+  /dev/nvme0n1p1  500M   EFI System (Windows ESP - existing, don't touch)
+  /dev/nvme0n1p2  16M    Microsoft reserved (Windows - don't touch)
+  /dev/nvme0n1p3  450G   Microsoft basic data (Windows C: - don't touch)
+  /dev/nvme0n1p4  650M   Windows recovery (don't touch)
+  /dev/nvme0n1p5  16G    Linux swap (NEW - you created this)
+  /dev/nvme0n1p6  50G    Linux root (NEW - you created this)
+  /dev/nvme0n1p7  434G   Linux home (NEW - you created this)
+  ```
+### Formatting Partitions
+
+**⚠️ For dual-boot:** Adjust partition numbers based on your actual layout (see `lsblk`). Windows partitions will have lower numbers.
+
 - Format the partitions in the required format
   - Format the boot partition:
-    - **UEFI**: `mkfs.fat -F32 /dev/sdx1`
+    - **UEFI (fresh install)**: `mkfs.fat -F32 /dev/sdx1`
+    - **UEFI (dual-boot)**: **DO NOT FORMAT** - Windows ESP is already formatted!
     - **BIOS**: `mkfs.ext4 /dev/sdx1`
   - Format and enable the swap partition:
-    - `mkswap /dev/sdx2`
-    - `swapon /dev/sdx2`
-  - Format the root partition as `ext4`: `mkfs.ext4 /dev/sdx3`
-  - **[skip this step if you are reinstalling arch and want to keep your home folder]** Format the home partition as `ext4`: `mkfs.ext4 /dev/sdx4`.
+    - **Fresh install**: `mkswap /dev/sdx2` and `swapon /dev/sdx2`
+    - **Dual-boot example**: `mkswap /dev/nvme0n1p5` and `swapon /dev/nvme0n1p5`
+  - Format the root partition as `ext4`:
+    - **Fresh install**: `mkfs.ext4 /dev/sdx3`
+    - **Dual-boot example**: `mkfs.ext4 /dev/nvme0n1p6`
+  - **[skip this step if you are reinstalling arch and want to keep your home folder]** Format the home partition as `ext4`:
+    - **Fresh install**: `mkfs.ext4 /dev/sdx4`
+    - **Dual-boot example**: `mkfs.ext4 /dev/nvme0n1p7`
+### Mounting Partitions
+
+**⚠️ For dual-boot:** Use the correct partition numbers from your layout!
+
 - Mount the newly created partitions:
-  - Mount root partition: `mount /dev/sdx3 /mnt`
+  - Mount root partition:
+    - **Fresh install**: `mount /dev/sdx3 /mnt`
+    - **Dual-boot example**: `mount /dev/nvme0n1p6 /mnt`
   - Mount home partition:
     - `mkdir /mnt/home`
-    - `mount /dev/sdx4 /mnt/home`
-  - **UEFI**: Mount boot partition:
+    - **Fresh install**: `mount /dev/sdx4 /mnt/home`
+    - **Dual-boot example**: `mount /dev/nvme0n1p7 /mnt/home`
+  - **UEFI**: Mount boot partition (Windows ESP for dual-boot):
     - `mkdir -p /mnt/boot/efi`
-    - `mount /dev/sdx1 /mnt/boot/efi`
+    - **Fresh install**: `mount /dev/sdx1 /mnt/boot/efi`
+    - **Dual-boot example**: `mount /dev/nvme0n1p1 /mnt/boot/efi` (mount the existing Windows ESP!)
   - **BIOS**: Mount boot partition:
     - `mkdir /mnt/boot`
     - `mount /dev/sdx1 /mnt/boot`

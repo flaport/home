@@ -76,6 +76,22 @@ Welcome to the Arch Linux Ansible setup! This index helps you navigate the docum
   - Getting help
   - *When things go wrong*
 
+### Special Topics
+
+- **[DUAL_BOOT_GUIDE.md](DUAL_BOOT_GUIDE.md)**
+  - Dual-booting with Windows
+  - Secure Boot and BitLocker warnings
+  - Partition shrinking guide
+  - Shared ESP (boot partition) setup
+  - Boot manager configuration
+  - *Essential for dual-boot setups*
+
+- **[ARCH_WIKI_COMPLIANCE.md](ARCH_WIKI_COMPLIANCE.md)**
+  - Compliance check with Arch Wiki (2025)
+  - What was updated and why
+  - Ongoing maintenance recommendations
+  - *For maintainers*
+
 ## 📁 Key Files
 
 ### Configuration
