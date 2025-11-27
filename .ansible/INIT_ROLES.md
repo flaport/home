@@ -4,14 +4,15 @@ This document explains the new system initialization roles that automate post-in
 
 ## Overview
 
-Four new roles have been added to automate the system initialization steps from `.install/README.md`:
+Three new roles have been added to automate the system initialization steps from `.install/README.md`:
 
 1. **locale** - Timezone and locale configuration
 2. **hostname** - Hostname configuration
-3. **bootloader** - Bootloader setup (rEFInd/GRUB)
-4. **user-config** - User and sudo configuration
+3. **user-config** - User and sudo configuration
 
-All four roles are tagged with `init` for easy execution together.
+All three roles are tagged with `init` for easy execution together.
+
+**Note:** Bootloader configuration (rEFInd/GRUB) is intentionally NOT automated as it's too risky. Follow the manual installation guide for bootloader setup.
 
 ## Configuration
 
@@ -26,6 +27,7 @@ system_locale: "en_US.UTF-8"
 system_hostname: "archframe"
 git_user_name: "Your Name"        # Optional
 git_user_email: "your@email.com"  # Optional
+# Note: Bootloader is NOT configured by Ansible - too risky
 ```
 
 ### Customizing Settings
@@ -86,34 +88,7 @@ ansible-playbook site.yml --tags "hostname" \
   --ask-become-pass
 ```
 
-### 3. Bootloader Role
-
-**What it does:**
-- Detects UEFI vs BIOS boot mode
-- **For UEFI systems:**
-  - Detects CPU vendor (Intel/AMD)
-  - Installs appropriate microcode (intel-ucode or amd-ucode)
-  - Installs rEFInd bootloader
-  - Configures rEFInd with root partition UUID
-  - Creates `/boot/refind_linux.conf`
-- **For BIOS systems:**
-  - Installs GRUB
-  - Sets GRUB timeout to 0 (instant boot)
-  - Regenerates GRUB config
-
-**Run standalone:**
-```bash
-ansible-playbook site.yml --tags "bootloader" --ask-become-pass
-```
-
-**Important Notes:**
-- This role assumes the system is already installed with proper partitioning
-- Boot partition must be mounted correctly
-- rEFInd is preferred for UEFI systems (as per manual)
-- GRUB is used as fallback for BIOS systems
-- **⚠️ Use with caution** - bootloader changes can make system unbootable if misconfigured
-
-### 4. User Config Role
+### 3. User Config Role
 
 **What it does:**
 - Ensures current user has sudo privileges via `/etc/sudoers.d/`
@@ -142,7 +117,7 @@ ansible-playbook site.yml --tags "user-config" \
 ### Run All Initialization
 
 ```bash
-# Run all four initialization roles
+# Run all three initialization roles
 ansible-playbook site.yml --tags "init" --ask-become-pass
 
 # Or use the Makefile
@@ -158,7 +133,7 @@ If your system is already configured and you only want to install packages:
 ansible-playbook site.yml --skip-tags "init" --ask-become-pass
 
 # Or skip specific init roles
-ansible-playbook site.yml --skip-tags "bootloader,hostname" --ask-become-pass
+ansible-playbook site.yml --skip-tags "hostname,locale" --ask-become-pass
 ```
 
 ### Full Post-Installation Setup
@@ -208,11 +183,13 @@ These roles automate steps from `.install/README.md`:
 | Configure locale | locale role | Lines 52-55 |
 | Set hostname | hostname role | Line 56 |
 | Configure /etc/hosts | hostname role | Lines 57-60 |
-| Install rEFInd (UEFI) | bootloader role | Lines 73-83 |
-| Install GRUB (BIOS) | bootloader role | Lines 84-87 |
-| Hide GRUB menu | bootloader role | Lines 88-91 |
+| Install rEFInd (UEFI) | **Manual only** | Lines 73-83 |
+| Install GRUB (BIOS) | **Manual only** | Lines 84-87 |
+| Hide GRUB menu | **Manual only** | Lines 88-91 |
 | Configure sudo | user-config role | Lines 95-97 |
 | Configure git | user-config role | Lines 109-111 |
+
+**Note:** Bootloader configuration is too risky to automate and must be done manually following `.install/README.md`.
 
 ## Safety Considerations
 
@@ -232,13 +209,16 @@ Use initialization roles when:
 - ✅ Setting up new machine
 - ✅ Standardizing configuration across machines
 
-### Bootloader Warning
+### Bootloader Configuration
 
-The bootloader role modifies critical system files. **Always:**
-1. Run in check mode first: `ansible-playbook site.yml --tags "bootloader" --check`
-2. Ensure boot partition is mounted
-3. Have a recovery USB ready
-4. Understand what rEFInd/GRUB does
+**Bootloader setup is NOT automated** due to the high risk of making the system unbootable. You must configure the bootloader manually following `.install/README.md` (lines 64-91).
+
+The playbook will NOT:
+- Install rEFInd or GRUB
+- Modify boot configuration
+- Touch the boot partition
+
+This must be done manually during initial system installation.
 
 ## Troubleshooting
 
@@ -282,33 +262,6 @@ cat /etc/hostname
 cat /etc/hosts
 ```
 
-### Bootloader Issues
-
-**Problem:** rEFInd installation fails
-```bash
-# Check if UEFI
-ls /sys/firmware/efi/efivars
-
-# Check boot partition
-lsblk
-mount | grep boot
-
-# Manual install
-sudo refind-install
-```
-
-**Problem:** GRUB not booting
-```bash
-# Check GRUB config
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-
-# Reinstall GRUB (BIOS)
-sudo grub-install --target=i386-pc /dev/sdX
-
-# Reinstall GRUB (UEFI)
-sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi
-```
-
 ### User Config Issues
 
 **Problem:** User can't sudo
@@ -334,17 +287,6 @@ system_timezone: "US/Pacific"
 # host_vars/desktop.yml
 system_hostname: "mydesktop"
 system_timezone: "US/Eastern"
-```
-
-### Conditional Execution
-
-Skip bootloader on VMs:
-
-```yaml
-# In playbook
-- role: bootloader
-  tags: [bootloader, init]
-  when: ansible_virtualization_role != "guest"
 ```
 
 ### Test Mode

@@ -6,7 +6,7 @@ help:
 	@echo "  make requirements  - Install required Ansible collections"
 	@echo "  make check        - Run playbook in check mode (dry-run)"
 	@echo "  make install      - Run full installation"
-	@echo "  make init         - System initialization (locale, hostname, bootloader)"
+	@echo "  make init         - System initialization (locale, hostname, user-config)"
 	@echo "  make base         - Install base system only"
 	@echo "  make terminal     - Install terminal tools only"
 	@echo "  make desktop      - Install desktop environment only"

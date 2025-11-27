@@ -20,10 +20,6 @@
     - role: hostname
       tags: [hostname, init, system]
 
-    # Bootloader configuration (rEFInd/GRUB)
-    - role: bootloader
-      tags: [bootloader, init, system]
-
     # User configuration
     - role: user-config
       tags: [user-config, init, system]
