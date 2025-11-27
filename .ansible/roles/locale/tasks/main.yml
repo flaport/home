@@ -1,5 +1,7 @@
 ---
 # Locale and timezone configuration
+# Follows Arch Wiki Installation Guide
+# Reference: https://wiki.archlinux.org/title/Installation_guide#Localization
 
 - name: Set timezone
   community.general.timezone:

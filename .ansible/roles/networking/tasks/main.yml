@@ -1,5 +1,7 @@
 ---
 # Network and connectivity
+# Follows Arch Wiki NetworkManager recommendations
+# Reference: https://wiki.archlinux.org/title/NetworkManager
 
 - name: Install NetworkManager
   community.general.pacman:

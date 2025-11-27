@@ -41,7 +41,8 @@
     - `mount /dev/sdx1 /mnt/boot`
     - Set the bootable flag on `/dev/sdx1`: `cfdisk` -> `[ Type ]` -> `BIOS boot` -> `[ Write ]`
 - **[optional]** Edit the pacman mirrorlist at `/etc/pacman.d/mirrorlist` with `vim` or `nano`. Move a few geographically close mirrors higher on the list.
-- Now, install archlinux with the magical `pacstrap` command: `pacstrap -i /mnt base base-devel linux linux-firmware`. When prompted choose all the default answers.
+- Now, install archlinux with the magical `pacstrap` command: `pacstrap -K /mnt base base-devel linux linux-firmware`. The `-K` flag initializes a fresh pacman keyring for the new installation.
+- **Note:** The installation will later include CPU microcode updates (`intel-ucode` or `amd-ucode`) for optimal security and stability.
 - Create your filesystem tab `fstab`, which is needed to mount each of the partitions correctly when booting into your freshly installed archlinux machine: `genfstab -U /mnt > /mnt/etc/fstab`
 - Now another magical arch linux installation command: change root: `arch-chroot /mnt`. You're now logged in as root in the newly create arch-linux machine.
 - List all timezones: `ls /usr/share/zoneinfo/**/**` and link the one that corresponds best to your timezone to `/etc/localtime`. For example: `ln -sf /usr/share/zoneinfo/Europe/Brussels /etc/localtime`
@@ -77,8 +78,11 @@
   - amd:
     - `pacman -S amd-ucode linux linux-firmware refind # always re-install, even when already installed.`
   - Install rEFInd: `refind-install`
+  - ⚠️ **IMPORTANT:** `refind-install` in chroot populates `/boot/refind_linux.conf` with kernel options from the live system, NOT your installed system. You MUST edit this file to ensure the kernel parameters (especially `root=UUID=...`) match your actual system, or you will get a kernel panic on boot.
+  - To find your root partition UUID, run: `blkid /dev/sdx3` (replace sdx3 with your root partition)
   - Edit `/boot/refind_linux.conf` such that only the following line remains:
   - `"Boot with standard options" "rw root=UUID=<your-root-partition-uuid>"`
+  - Replace `<your-root-partition-uuid>` with the actual UUID from the `blkid` command
   - (optional) download and install a theme for your rEFInd splash screen. For example
   this one: https://github.com/EvanPurkhiser/rEFInd-minimal.
 - **BIOS** Install a bootloader
