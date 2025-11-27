@@ -1,0 +1,102 @@
+---
+# Main playbook for Arch Linux system setup
+# Usage: ansible-playbook site.yml
+# Dry-run: ansible-playbook site.yml --check
+# Specific tags: ansible-playbook site.yml --tags "base,terminal"
+
+- name: Arch Linux System Setup
+  hosts: local
+  become: yes
+
+  vars:
+    user_name: "{{ ansible_user_id }}"
+    home_dir: "{{ ansible_env.HOME }}"
+
+  roles:
+    # Core system
+    - role: base
+      tags: [base, core]
+
+    # Terminal and CLI tools
+    - role: terminal
+      tags: [terminal, cli]
+
+    # Filesystem drivers
+    - role: filesystems
+      tags: [filesystems, drivers]
+
+    # X11 and graphical server
+    - role: xorg
+      tags: [xorg, gui]
+
+    # Window manager and desktop
+    - role: desktop
+      tags: [desktop, gui]
+
+    # Themes and appearance
+    - role: themes
+      tags: [themes, appearance]
+
+    # Fonts
+    - role: fonts
+      tags: [fonts, appearance]
+
+    # Audio
+    - role: audio
+      tags: [audio]
+
+    # Networking
+    - role: networking
+      tags: [networking, network]
+
+    # Printers
+    - role: printing
+      tags: [printing, optional]
+
+    # GUI applications
+    - role: gui-apps
+      tags: [gui-apps, applications]
+
+    # Media applications
+    - role: media
+      tags: [media, applications]
+
+    # Office applications
+    - role: office
+      tags: [office, applications, optional]
+
+    # Web browsers
+    - role: browsers
+      tags: [browsers, applications]
+
+    # Email
+    - role: email
+      tags: [email, applications]
+
+    # Programming languages and tools
+    - role: programming
+      tags: [programming, development]
+
+    # Python packages
+    - role: python
+      tags: [python, development]
+
+    # Password manager
+    - role: password-manager
+      tags: [password-manager, security]
+
+    # Shell configuration
+    - role: shells
+      tags: [shells, terminal]
+
+    # Custom builds (dwm, st, dmenu, scroll)
+    - role: custom-builds
+      tags: [custom-builds, desktop]
+
+    # Web services
+    - role: web-services
+      tags: [web-services, services, optional]
+
+    # System configuration
+    - role: system-config
+      tags: [system-config, config]

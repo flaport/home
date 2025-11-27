@@ -1,0 +1,38 @@
+---
+# GUI applications
+
+- name: Install file manager
+  community.general.pacman:
+    name: nemo
+    state: present
+
+- name: Configure nemo default terminal
+  ansible.builtin.shell:
+    cmd: |
+      gsettings set org.cinnamon.desktop.default-applications.terminal exec alacritty
+      gsettings set org.cinnamon.desktop.default-applications.terminal exec-arg -e
+  become: no
+  changed_when: false
+
+- name: Install screen configuration tool
+  community.general.pacman:
+    name: arandr
+    state: present
+
+- name: Install PDF/document reader
+  community.general.pacman:
+    name:
+      - zathura
+      - zathura-pdf-mupdf
+      - zathura-djvu
+    state: present
+
+- name: Install audio control
+  community.general.pacman:
+    name: pavucontrol
+    state: present
+
+- name: Install Bluetooth manager
+  community.general.pacman:
+    name: blueman
+    state: present

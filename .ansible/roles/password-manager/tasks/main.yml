@@ -1,0 +1,19 @@
+---
+# Password manager (pass)
+
+- name: Install pass and related tools
+  community.general.pacman:
+    name:
+      - gnupg
+      - pass
+      - pass-otp
+      - browserpass
+      - browserpass-firefox
+      - browserpass-chromium
+    state: present
+
+- name: Install passmenu-otp
+  kewlfft.aur.aur:
+    name: passmenu-otp-git
+    state: present
+  become: no

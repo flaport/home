@@ -1,0 +1,15 @@
+---
+# Audio system
+
+- name: Install ALSA utilities
+  community.general.pacman:
+    name:
+      - alsa-utils
+      - alsa-plugins
+    state: present
+
+- name: Install PulseAudio
+  community.general.pacman:
+    name:
+      - pulseaudio
+    state: present

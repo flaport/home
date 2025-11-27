@@ -1,0 +1,30 @@
+---
+# Programming languages and development tools
+
+- name: Install VS Code
+  community.general.pacman:
+    name: code
+    state: present
+
+- name: Install VS Code extensions
+  ansible.builtin.shell:
+    cmd: |
+      code --install-extension vscodevim.vim
+      code --install-extension wholroyd.jinja
+      code --install-extension ms-python.python
+      code --install-extension formulahendry.code-runner
+      code --install-extension shardulm94.trailing-spaces
+      code --install-extension pkief.material-icon-theme
+  become: no
+  register: vscode_extensions
+  changed_when: "'already installed' not in vscode_extensions.stdout"
+  failed_when: false
+
+- name: Install Python tools
+  community.general.pacman:
+    name:
+      - ruff
+      - uv
+      - python
+      - ipython
+    state: present

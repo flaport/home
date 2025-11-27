@@ -1,0 +1,95 @@
+---
+# Desktop environment / Window manager
+
+- name: Install window manager tools
+  community.general.pacman:
+    name:
+      - i3lock
+      - xorg-xsetroot
+      - sxhkd
+      - light
+      - xautolock
+      - feh
+    state: present
+
+- name: Create video group
+  ansible.builtin.group:
+    name: video
+    state: present
+
+- name: Add user to video group
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    groups: video
+    append: yes
+
+- name: Configure backlight permissions
+  ansible.builtin.copy:
+    content: |
+      ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
+      ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+    dest: /etc/udev/rules.d/backlight.rules
+    mode: '0644'
+
+- name: Install display manager (lightdm)
+  community.general.pacman:
+    name: lightdm
+    state: present
+
+- name: Install lightdm-mini-greeter
+  kewlfft.aur.aur:
+    name: lightdm-mini-greeter
+    state: present
+  become: no
+
+- name: Create xsessions directory
+  ansible.builtin.file:
+    path: /usr/share/xsessions
+    state: directory
+    mode: '0755'
+
+- name: Copy dwm desktop file
+  ansible.builtin.copy:
+    src: "{{ home_dir }}/.local/share/applications/dwm.desktop"
+    dest: /usr/share/xsessions/dwm.desktop
+    mode: '0644'
+    remote_src: yes
+  when: lookup('fileglob', home_dir + '/.local/share/applications/dwm.desktop') | length > 0
+
+- name: Configure lightdm greeter
+  ansible.builtin.lineinfile:
+    path: /etc/lightdm/lightdm.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '(#)?.*greeter-session.*=.*', line: 'greeter-session=lightdm-mini-greeter' }
+    - { regexp: '(#)?.*user-session.*=.*', line: 'user-session=dwm' }
+
+- name: Configure lightdm-mini-greeter
+  ansible.builtin.lineinfile:
+    path: /etc/lightdm/lightdm-mini-greeter.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^user.*=.*', line: 'user = {{ user_name }}' }
+    - { regexp: '^show-password-label.*=.*', line: 'show-password-label = false' }
+    - { regexp: '^password-label-text.*=.*', line: 'password-label-text = {{ user_name }}:' }
+    - { regexp: '^background-image.*=.*', line: 'background-image="{{ home_dir }}/.cache/current-wallpaper"' }
+
+- name: Update color scheme in lightdm-mini-greeter
+  ansible.builtin.replace:
+    path: /etc/lightdm/lightdm-mini-greeter.conf
+    regexp: 'F92672'
+    replace: '2AA198'
+
+- name: Enable lightdm service
+  ansible.builtin.systemd:
+    name: lightdm
+    enabled: yes
+
+- name: Install desktop notifications
+  community.general.pacman:
+    name:
+      - libnotify
+      - dunst
+    state: present

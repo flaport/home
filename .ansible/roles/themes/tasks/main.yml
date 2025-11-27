@@ -1,0 +1,64 @@
+---
+# GTK themes and appearance
+
+- name: Install GTK3
+  community.general.pacman:
+    name:
+      - gtk3
+      - gnome-themes-standard
+      - gtk-engine-murrine
+    state: present
+
+- name: Install GTK themes
+  community.general.pacman:
+    name:
+      - adapta-gtk-theme
+      - arc-gtk-theme
+    state: present
+
+- name: Install Arc Gruvbox theme
+  kewlfft.aur.aur:
+    name: gtk-theme-arc-gruvbox-git
+    state: present
+  become: no
+
+- name: Install Nordic theme
+  kewlfft.aur.aur:
+    name: nordic-theme-git
+    state: present
+  become: no
+
+- name: Install lxappearance
+  community.general.pacman:
+    name: lxappearance
+    state: present
+
+- name: Install Qt theming tools
+  community.general.pacman:
+    name:
+      - kvantum-qt5
+      - qt5ct
+    state: present
+
+- name: Install Kvantum Nordic theme
+  kewlfft.aur.aur:
+    name: kvantum-theme-nordic-git
+    state: present
+  become: no
+
+- name: Install Breeze cursor theme
+  kewlfft.aur.aur:
+    name: xcursor-breeze
+    state: present
+  become: no
+
+- name: Remove old default cursor
+  ansible.builtin.file:
+    path: /usr/share/icons/default
+    state: absent
+
+- name: Set Breeze as default cursor
+  ansible.builtin.file:
+    src: /usr/share/icons/Breeze
+    dest: /usr/share/icons/default
+    state: link

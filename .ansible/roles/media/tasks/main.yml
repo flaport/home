@@ -1,0 +1,29 @@
+---
+# Media applications
+
+- name: Install image editor
+  community.general.pacman:
+    name: inkscape
+    state: present
+
+- name: Install image viewer
+  community.general.pacman:
+    name: sxiv
+    state: present
+
+- name: Install image manipulation tools
+  community.general.pacman:
+    name: imagemagick
+    state: present
+
+- name: Install screenshot tool
+  community.general.pacman:
+    name: flameshot
+    state: present
+
+- name: Install media player
+  community.general.pacman:
+    name:
+      - mpv
+      - ffmpeg
+    state: present

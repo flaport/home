@@ -1,0 +1,39 @@
+---
+# Font packages
+
+- name: Install fontconfig
+  community.general.pacman:
+    name: fontconfig
+    state: present
+
+- name: Install base fonts
+  community.general.pacman:
+    name:
+      - ttf-dejavu
+      - ttf-bitstream-vera
+      - cantarell-fonts
+      - adobe-source-code-pro-fonts
+      - ttf-liberation
+      - ttf-ubuntu-font-family
+      - ttf-carlito
+    state: present
+
+- name: Install Chinese fonts
+  community.general.pacman:
+    name:
+      - adobe-source-han-sans-cn-fonts
+      - adobe-source-han-serif-cn-fonts
+    state: present
+
+- name: Install icon fonts
+  community.general.pacman:
+    name:
+      - awesome-terminal-fonts
+      - ttf-hack-nerd
+    state: present
+
+- name: Install emoji fonts
+  community.general.pacman:
+    name:
+      - ttf-joypixels
+    state: present

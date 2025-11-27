@@ -1,0 +1,103 @@
+---
+# Network and connectivity
+
+- name: Install NetworkManager
+  community.general.pacman:
+    name:
+      - networkmanager
+      - network-manager-applet
+    state: present
+
+- name: Enable NetworkManager service
+  ansible.builtin.systemd:
+    name: NetworkManager
+    enabled: yes
+    state: started
+
+- name: Configure Cloudflare DNS servers
+  ansible.builtin.copy:
+    content: |
+      [global-dns-domain-*]
+      servers=1.1.1.1,1.0.0.1
+    dest: /etc/NetworkManager/conf.d/dns-servers.conf
+    mode: '0644'
+
+- name: Create network group
+  ansible.builtin.group:
+    name: network
+    state: present
+
+- name: Create PolicyKit rule for network group
+  ansible.builtin.copy:
+    content: |
+      polkit.addRule(function(action, subject) {
+        if (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 && subject.isInGroup("network")) {
+          return polkit.Result.YES;
+        }
+      });
+    dest: /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules
+    mode: '0644'
+
+- name: Add user to network group
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    groups: network
+    append: yes
+
+- name: Install VPN clients
+  community.general.pacman:
+    name:
+      - openconnect
+      - openvpn
+      - networkmanager-openvpn
+    state: present
+
+- name: Create openvpn systemd service
+  ansible.builtin.template:
+    src: openvpn.service.j2
+    dest: /etc/systemd/system/openvpn@.service
+    mode: '0644'
+  when: lookup('fileglob', home_dir + '/.install/services/openvpn.service') | length > 0
+
+- name: Install SSH
+  community.general.pacman:
+    name:
+      - openssh
+      - openssl
+      - openssl-1.1
+      - mosh
+      - autossh
+    state: present
+
+- name: Configure SSH X11 forwarding
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^.*X11Forwarding.*'
+    line: 'X11Forwarding yes'
+
+- name: Enable SSH service
+  ansible.builtin.systemd:
+    name: sshd
+    enabled: yes
+
+- name: Install Bluetooth
+  community.general.pacman:
+    name:
+      - bluez
+      - bluez-utils
+      - pulseaudio-bluetooth
+    state: present
+
+- name: Enable Bluetooth service
+  ansible.builtin.systemd:
+    name: bluetooth
+    enabled: yes
+
+- name: Install remote desktop tools
+  community.general.pacman:
+    name:
+      - remmina
+      - freerdp
+      - barrier
+      - barrier-headless
+    state: present

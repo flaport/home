@@ -1,0 +1,235 @@
+---
+# Terminal tools and TUI applications
+
+- name: Install terminal emulator
+  community.general.pacman:
+    name:
+      - alacritty
+    state: present
+
+- name: Install search and download tools
+  community.general.pacman:
+    name:
+      - grep
+      - curl
+      - wget
+      - fzf
+      - ripgrep
+      - fd
+    state: present
+
+- name: Install file management tools
+  community.general.pacman:
+    name:
+      - rsync
+      - zip
+      - unzip
+      - unrar
+      - unarchiver
+    state: present
+
+- name: Install system utilities
+  community.general.pacman:
+    name:
+      - glu
+      - socat
+      - htop
+      - neofetch
+      - lsd
+    state: present
+
+- name: Install tmux
+  community.general.pacman:
+    name: tmux
+    state: present
+
+- name: Create tmux systemd service
+  ansible.builtin.template:
+    src: tmux.service.j2
+    dest: /etc/systemd/system/tmux@.service
+    mode: '0644'
+  when: lookup('fileglob', home_dir + '/.install/services/tmux.service') | length > 0
+
+- name: Enable tmux service
+  ansible.builtin.systemd:
+    name: "tmux@{{ user_name }}"
+    enabled: yes
+    daemon_reload: yes
+  when: lookup('fileglob', home_dir + '/.install/services/tmux.service') | length > 0
+
+- name: Install man pages
+  community.general.pacman:
+    name:
+      - man
+      - man-db
+      - man-pages
+      - texinfo
+      - tldr
+    state: present
+
+- name: Install clipboard tools
+  community.general.pacman:
+    name:
+      - xclip
+    state: present
+
+- name: Install media conversion tools
+  community.general.pacman:
+    name:
+      - poppler
+      - ffmpegthumbnailer
+    state: present
+
+- name: Install light (backlight control)
+  kewlfft.aur.aur:
+    name: light
+    state: present
+  become: no
+
+- name: Install syntax highlighting tool
+  community.general.pacman:
+    name: highlight
+    state: present
+
+- name: Install Neovim dependencies
+  community.general.pacman:
+    name:
+      - tree-sitter-cli
+      - python-pynvim
+      - stylua
+      - luarocks
+      - pyright
+      - rust-analyzer
+      - ccls
+      - bash-language-server
+      - eslint
+      - ctags
+      - tidy
+      - prettier
+      - composer
+    state: present
+
+- name: Install bob (Neovim version manager)
+  community.general.pacman:
+    name: bob
+    state: present
+
+- name: Create bob directory
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.local/share/bob"
+    state: directory
+    owner: "{{ user_name }}"
+    mode: '0755'
+  become: no
+
+- name: Install neovim-remote
+  kewlfft.aur.aur:
+    name: neovim-remote
+    state: present
+  become: no
+
+- name: Install nvim-packer
+  kewlfft.aur.aur:
+    name: nvim-packer-git
+    state: present
+  become: no
+
+- name: Install ruby-neovim
+  kewlfft.aur.aur:
+    name: ruby-neovim
+    state: present
+  become: no
+
+- name: Install neovim npm package
+  community.general.npm:
+    name: neovim
+    global: yes
+    state: present
+
+- name: Create vim symlinks
+  ansible.builtin.file:
+    src: /usr/bin/nvim
+    dest: "{{ item }}"
+    state: link
+    force: yes
+  loop:
+    - /usr/bin/vim
+    - /usr/bin/vi
+
+- name: Install Julia
+  community.general.pacman:
+    name: julia
+    state: present
+
+- name: Install Rust toolchain
+  community.general.pacman:
+    name:
+      - rustup
+    state: present
+
+- name: Install playerctl
+  community.general.pacman:
+    name: playerctl
+    state: present
+
+- name: Install transmission
+  community.general.pacman:
+    name:
+      - transmission-cli
+    state: present
+
+- name: Install tremc (transmission TUI)
+  kewlfft.aur.aur:
+    name: tremc-git
+    state: present
+  become: no
+
+- name: Add user to transmission group
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    groups: transmission
+    append: yes
+
+- name: Make transmission config writable by transmission group
+  ansible.builtin.file:
+    path: /var/lib/transmission
+    mode: 'g+rw'
+    recurse: yes
+
+- name: Install ueberzug (terminal image overlay)
+  community.general.pacman:
+    name: ueberzug
+    state: present
+
+- name: Install viu (terminal image viewer)
+  kewlfft.aur.aur:
+    name: viu
+    state: present
+  become: no
+
+- name: Install Docker
+  community.general.pacman:
+    name:
+      - docker
+      - docker-buildx
+    state: present
+
+- name: Enable Docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Create pacmanquery systemd service
+  ansible.builtin.template:
+    src: pacmanquery.service.j2
+    dest: /etc/systemd/system/pacmanquery.service
+    mode: '0644'
+  when: lookup('fileglob', home_dir + '/.install/services/pacmanquery.service') | length > 0
+
+- name: Enable pacmanquery service
+  ansible.builtin.systemd:
+    name: pacmanquery
+    enabled: yes
+    daemon_reload: yes
+  when: lookup('fileglob', home_dir + '/.install/services/pacmanquery.service') | length > 0

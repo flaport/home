@@ -1,0 +1,88 @@
+---
+# Base system packages and tools
+
+- name: Update system
+  community.general.pacman:
+    update_cache: yes
+    upgrade: yes
+  tags: [update]
+
+- name: Install build tools
+  community.general.pacman:
+    name:
+      - make
+      - cmake
+    state: present
+
+- name: Install git and related tools
+  community.general.pacman:
+    name:
+      - git
+      - git-lfs
+      - github-cli
+    state: present
+
+- name: Configure git settings
+  community.general.git_config:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    scope: global
+  loop:
+    - { name: 'pull.rebase', value: 'false' }
+    - { name: 'push.default', value: 'simple' }
+    - { name: 'advice.addIgnoredFile', value: 'false' }
+  become: no
+
+- name: Update git submodules
+  ansible.builtin.shell:
+    cmd: git submodule update --init --recursive
+    chdir: "{{ home_dir }}"
+  become: no
+  changed_when: false
+
+- name: Install yay (AUR helper)
+  block:
+    - name: Check if yay is installed
+      ansible.builtin.command: pacman -Q yay
+      register: yay_check
+      failed_when: false
+      changed_when: false
+
+    - name: Clone yay repository
+      ansible.builtin.git:
+        repo: https://aur.archlinux.org/yay.git
+        dest: /tmp/yay
+      when: yay_check.rc != 0
+      become: no
+
+    - name: Build and install yay
+      ansible.builtin.shell:
+        cmd: makepkg -si --noconfirm --noprogress
+        chdir: /tmp/yay
+      when: yay_check.rc != 0
+      become: no
+
+    - name: Clean up yay build directory
+      ansible.builtin.file:
+        path: /tmp/yay
+        state: absent
+      when: yay_check.rc != 0
+
+- name: Install npm
+  community.general.pacman:
+    name: npm
+    state: present
+
+- name: Enable Color and ILoveCandy in pacman
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    regexp: '^#Color'
+    line: 'Color\nILoveCandy'
+    backrefs: yes
+
+- name: Disable tty tickets for sudo
+  ansible.builtin.copy:
+    content: "Defaults:{{ user_name }} !tty_tickets, timestamp_timeout=15\n"
+    dest: "/etc/sudoers.d/tty_tickets"
+    mode: '0440'
+    validate: 'visudo -cf %s'

@@ -1,0 +1,59 @@
+---
+# System configuration
+
+- name: Set correct date/time (local RTC)
+  ansible.builtin.command:
+    cmd: timedatectl set-local-rtc 1
+  changed_when: false
+
+- name: Make /mnt writable by all users
+  ansible.builtin.file:
+    path: /mnt
+    mode: 'a+rwx'
+
+- name: Set up default Xresources colorscheme
+  block:
+    - name: Check if .Xresources exists
+      ansible.builtin.stat:
+        path: "{{ home_dir }}/.Xresources"
+      register: xresources_stat
+      become: no
+
+    - name: Copy gruvbox-dark theme
+      ansible.builtin.copy:
+        src: "{{ home_dir }}/.config/Xresources/gruvbox-dark"
+        dest: "{{ home_dir }}/.Xresources"
+        remote_src: yes
+        owner: "{{ user_name }}"
+        mode: '0644'
+      when: not xresources_stat.stat.exists
+      become: no
+
+    - name: Load Xresources
+      ansible.builtin.shell:
+        cmd: xrdb {{ home_dir }}/.Xresources
+      when: not xresources_stat.stat.exists
+      become: no
+      failed_when: false
+      changed_when: false
+
+    - name: Apply colorscheme to open windows
+      ansible.builtin.shell:
+        cmd: xcs current
+      when: not xresources_stat.stat.exists
+      become: no
+      failed_when: false
+      changed_when: false
+
+- name: Make /opt writable by all users
+  ansible.builtin.file:
+    path: /opt
+    mode: 'a+rwx'
+
+- name: Clone wallpapers repository
+  ansible.builtin.git:
+    repo: https://gitlab.com/dwt1/wallpapers
+    dest: "{{ home_dir }}/.local/share/wallpapers"
+    force: no
+  become: no
+  when: not (home_dir + '/.local/share/wallpapers' is directory)

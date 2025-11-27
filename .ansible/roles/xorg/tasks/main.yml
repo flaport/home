@@ -1,0 +1,52 @@
+---
+# Xorg graphical server and tools
+
+- name: Install Xorg server and essential tools
+  community.general.pacman:
+    name:
+      - xorg-server
+      - xorg-xinit
+      - xorg-xprop
+      - xorg-xev
+      - xorg-server-xvfb
+      - xorg-xhost
+    state: present
+
+- name: Install X utilities
+  community.general.pacman:
+    name:
+      - unclutter
+      - xdotool
+      - xsettingsd
+    state: present
+
+- name: Install xurls (URL finder for st)
+  kewlfft.aur.aur:
+    name: xurls
+    state: present
+  become: no
+
+- name: Install python-pyautogui
+  kewlfft.aur.aur:
+    name: python-pyautogui
+    state: present
+  become: no
+
+- name: Install picom (compositor)
+  community.general.pacman:
+    name: picom
+    state: present
+
+- name: Install libxft-bgra (color emoji support)
+  block:
+    - name: Check if libxft-bgra is installed
+      ansible.builtin.command: pacman -Q libxft-bgra-git
+      register: libxft_check
+      failed_when: false
+      changed_when: false
+
+    - name: Install libxft-bgra-git
+      ansible.builtin.shell:
+        cmd: yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra-git
+      when: libxft_check.rc != 0
+      become: no

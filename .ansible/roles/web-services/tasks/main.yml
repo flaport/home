@@ -1,0 +1,61 @@
+---
+# Web services (nginx, syncthing, etc.)
+
+- name: Create syncthing systemd service
+  ansible.builtin.template:
+    src: syncthing.service.j2
+    dest: /etc/systemd/system/syncthing@.service
+    mode: '0644'
+  when: lookup('fileglob', home_dir + '/.install/services/syncthing.service') | length > 0
+
+- name: Install nginx
+  community.general.pacman:
+    name: nginx
+    state: present
+
+- name: Create web root directory
+  ansible.builtin.file:
+    path: /var/www/html
+    state: directory
+    mode: '0755'
+
+- name: Configure nginx types hash
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: 'http {'
+    line: 'http {types_hash_max_size 4096;'
+    backrefs: yes
+
+- name: Configure nginx web root
+  ansible.builtin.replace:
+    path: /etc/nginx/nginx.conf
+    regexp: 'root.*/usr/share/nginx/html;'
+    replace: 'root /var/www/html;'
+
+- name: Copy nginx error page
+  ansible.builtin.copy:
+    src: /usr/share/nginx/html/50x.html
+    dest: /var/www/html/50x.html
+    remote_src: yes
+    force: no
+
+- name: Copy custom index.html if exists
+  ansible.builtin.copy:
+    src: "{{ home_dir }}/.extra/index.html"
+    dest: /var/www/html/index.html
+    remote_src: yes
+    force: no
+  when: lookup('fileglob', home_dir + '/.extra/index.html') | length > 0
+
+- name: Copy default nginx index.html
+  ansible.builtin.copy:
+    src: /usr/share/nginx/html/index.html
+    dest: /var/www/html/index.html
+    remote_src: yes
+    force: no
+  when: lookup('fileglob', home_dir + '/.extra/index.html') | length == 0
+
+- name: Enable nginx service
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: yes

@@ -1,0 +1,27 @@
+---
+# Printer support
+
+- name: Install CUPS
+  community.general.pacman:
+    name:
+      - cups
+      - gutenprint
+      - cups-pdf
+    state: present
+
+- name: Install Avahi for network printing
+  community.general.pacman:
+    name:
+      - avahi
+      - nss-mdns
+    state: present
+
+- name: Enable Avahi daemon
+  ansible.builtin.systemd:
+    name: avahi-daemon
+    enabled: yes
+
+- name: Enable CUPS service
+  ansible.builtin.systemd:
+    name: cups
+    enabled: yes

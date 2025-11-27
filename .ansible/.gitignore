@@ -1,0 +1,23 @@
+# Ansible runtime files
+*.retry
+.ansible_galaxy/
+
+# Logs
+*.log
+
+# Vault password files
+.vault_pass
+vault_pass.txt
+
+# Environment-specific files
+host_vars/
+group_vars/secrets.yml
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db

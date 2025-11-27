@@ -1,0 +1,12 @@
+---
+# Web browsers
+
+- name: Install Epiphany
+  community.general.pacman:
+    name: epiphany
+    state: present
+
+- name: Install Firefox Developer Edition
+  community.general.pacman:
+    name: firefox-developer-edition
+    state: present

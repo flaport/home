@@ -1,0 +1,31 @@
+---
+# Filesystem drivers and tools
+
+- name: Install filesystem drivers
+  community.general.pacman:
+    name:
+      - cifs-utils
+      - dosfstools
+      - exfat-utils
+      - ntfs-3g
+      - samba
+      - libmtp
+      - fuse
+      - android-file-transfer
+      - sshfs
+      - testdisk
+      - gocryptfs
+    state: present
+
+- name: Install davfs2 (WebDAV filesystem)
+  kewlfft.aur.aur:
+    name: davfs2
+    state: present
+  become: no
+
+- name: Configure davfs2 for Nextcloud
+  ansible.builtin.lineinfile:
+    path: /etc/davfs2/davfs2.conf
+    regexp: '# use_locks.*'
+    line: 'use_locks 0'
+    backrefs: yes

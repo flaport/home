@@ -1,0 +1,76 @@
+---
+# Custom builds (dwm, st, dmenu, scroll)
+
+- name: Build and install custom software from submodules
+  block:
+    - name: Clean existing builds
+      ansible.builtin.shell:
+        cmd: |
+          sudo rm -f config.h
+          sudo make clean
+        chdir: "{{ home_dir }}/.build/{{ item }}"
+      loop:
+        - dwm
+        - dmenu
+        - st
+        - scroll
+      failed_when: false
+      changed_when: false
+
+    - name: Update submodules
+      ansible.builtin.shell:
+        cmd: |
+          git checkout master
+          git pull origin master
+        chdir: "{{ home_dir }}/.build/{{ item }}"
+      loop:
+        - dwm
+        - dmenu
+        - st
+        - scroll
+      become: no
+      changed_when: false
+
+    - name: Build and install dwm
+      ansible.builtin.shell:
+        cmd: |
+          sudo make all
+          sudo make install
+          sudo make clean
+          sudo rm -f config.h
+        chdir: "{{ home_dir }}/.build/dwm"
+      register: dwm_build
+      changed_when: dwm_build.rc == 0
+
+    - name: Build and install dmenu
+      ansible.builtin.shell:
+        cmd: |
+          sudo make all
+          sudo make install
+          sudo make clean
+          sudo rm -f config.h
+        chdir: "{{ home_dir }}/.build/dmenu"
+      register: dmenu_build
+      changed_when: dmenu_build.rc == 0
+
+    - name: Build and install st
+      ansible.builtin.shell:
+        cmd: |
+          sudo make all
+          sudo make install
+          sudo make clean
+          sudo rm -f config.h
+        chdir: "{{ home_dir }}/.build/st"
+      register: st_build
+      changed_when: st_build.rc == 0
+
+    - name: Build and install scroll
+      ansible.builtin.shell:
+        cmd: |
+          sudo make all
+          sudo make install
+          sudo make clean
+          sudo rm -f config.h
+        chdir: "{{ home_dir }}/.build/scroll"
+      register: scroll_build
+      changed_when: scroll_build.rc == 0

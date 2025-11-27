@@ -1,0 +1,18 @@
+---
+# Office applications
+
+- name: Install LibreOffice
+  community.general.pacman:
+    name: libreoffice-fresh
+    state: present
+
+- name: Install bibliography tools
+  community.general.pacman:
+    name: biber
+    state: present
+
+- name: Install Pandoc
+  kewlfft.aur.aur:
+    name: pandoc-bin
+    state: present
+  become: no

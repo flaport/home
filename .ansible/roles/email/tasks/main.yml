@@ -1,0 +1,36 @@
+---
+# Email clients and tools
+
+- name: Install Thunderbird
+  community.general.pacman:
+    name: thunderbird
+    state: present
+
+- name: Install email sync and send tools
+  community.general.pacman:
+    name:
+      - msmtp
+      - isync
+    state: present
+
+- name: Install neomutt
+  community.general.pacman:
+    name: neomutt
+    state: present
+
+- name: Create mutt symlink
+  ansible.builtin.file:
+    src: /usr/bin/neomutt
+    dest: /usr/bin/mutt
+    state: link
+    force: yes
+
+- name: Install email indexing
+  community.general.pacman:
+    name: notmuch
+    state: present
+
+- name: Install text browser for HTML emails
+  community.general.pacman:
+    name: lynx
+    state: present

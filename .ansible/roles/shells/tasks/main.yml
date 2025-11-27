@@ -1,0 +1,87 @@
+---
+# Shell configuration
+
+- name: Install dash
+  community.general.pacman:
+    name: dash
+    state: present
+
+- name: Make sh point to dash
+  ansible.builtin.file:
+    src: /usr/bin/dash
+    dest: /bin/sh
+    state: link
+    force: yes
+
+- name: Install zsh
+  community.general.pacman:
+    name: zsh
+    state: present
+
+- name: Set zsh as default shell
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    shell: /usr/bin/zsh
+
+- name: Create cache directory
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.cache"
+    state: directory
+    owner: "{{ user_name }}"
+    mode: '0755'
+  become: no
+
+- name: Clone autojump
+  ansible.builtin.git:
+    repo: https://github.com/wting/autojump
+    dest: "{{ home_dir }}/.cache/autojump"
+    force: yes
+  become: no
+
+- name: Install autojump
+  ansible.builtin.shell:
+    cmd: python install.py -d {{ home_dir }}/.config/autojump
+    chdir: "{{ home_dir }}/.cache/autojump"
+  become: no
+  changed_when: false
+
+- name: Fix autojump shebang
+  ansible.builtin.lineinfile:
+    path: "{{ home_dir }}/.config/autojump/bin/autojump"
+    regexp: '^#!/usr/bin/env python'
+    line: '#!/usr/bin/python'
+  become: no
+
+- name: Create autojump symlink
+  ansible.builtin.file:
+    src: "{{ home_dir }}/.config/autojump/bin/autojump"
+    dest: "{{ home_dir }}/.local/bin/autojump"
+    state: link
+    force: yes
+  become: no
+
+- name: Clone stderred
+  ansible.builtin.git:
+    repo: https://github.com/sickill/stderred
+    dest: "{{ home_dir }}/.config/stderred"
+    force: yes
+  become: no
+
+- name: Build stderred
+  ansible.builtin.make:
+    chdir: "{{ home_dir }}/.config/stderred"
+  become: no
+
+- name: Clone zsh-autosuggestions
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: "{{ home_dir }}/.config/zsh/zsh-autosuggestions"
+    force: yes
+  become: no
+
+- name: Clone zsh-syntax-highlighting
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting
+    dest: "{{ home_dir }}/.config/zsh/zsh-syntax-highlighting"
+    force: yes
+  become: no

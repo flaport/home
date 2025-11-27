@@ -1,0 +1,42 @@
+---
+# Python packages and tools
+
+- name: Install Python GUI toolkit
+  community.general.pacman:
+    name: tk
+    state: present
+
+- name: Install Python development tools
+  community.general.pacman:
+    name:
+      - yapf
+      - python-pytz
+      - python-tqdm
+      - python-numpy
+      - python-matplotlib
+      - python-pyudev
+      - python-pylint
+      - autopep8
+      - flake8
+      - python-pyflakes
+      - python-isort
+      - python-black
+      - python-pywal
+      - python-httplib2
+      - python-neovim
+      - python-pillow
+      - python-flask
+      - python-flask-login
+      - python-websockets
+      - python-jedi
+      - python-requests
+      - python-lxml
+      - python-pynvim
+    state: present
+
+- name: Create jupyterhub systemd service
+  ansible.builtin.template:
+    src: jupyterhub.service.j2
+    dest: /etc/systemd/system/jupyterhub.service
+    mode: '0644'
+  when: lookup('fileglob', home_dir + '/.install/services/jupyterhub.service') | length > 0
