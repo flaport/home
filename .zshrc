@@ -81,11 +81,7 @@ prompt(){
   fi
   # virtualenv info
   if [[ ! -z $VIRTUAL_ENV ]]; then
-    if [[ $VIRTUAL_ENV == "$HOME/.local/share/guv"* ]]; then
-      echo -ne "%F{yellow}%{%G%} %f"
-    else
-      echo -ne "%F{yellow}%{%G%}%f"
-    fi
+    echo -ne "%F{yellow}%{%G%}%f"
     echo -ne "%F{yellow}$(basename `dirname $VIRTUAL_ENV`)%f "
   fi
   # path
@@ -156,7 +152,6 @@ alias ss="sudo systemctl"
 alias ll="ls -l"
 alias la="ls -la"
 alias grep="grep --color=auto"
-alias base="guv activate base"
 alias system="conda deactivate && conda deactivate"
 alias history="history 1"
 alias D="dunk | less -R"
@@ -241,8 +236,4 @@ alias svim="sudo nvim"
 
 if which uv > /dev/null 2> /dev/null; then
   eval "$(uv generate-shell-completion zsh)"
-  eval "$(uv generate-shell-completion zsh | sed 's/uv/guv/g')"
-  guv() {
-    source "$HOME/.scripts/uv/guv" "$@"
-  }
 fi

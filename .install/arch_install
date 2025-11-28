@@ -561,6 +561,8 @@ pacman_install pyright
 # pacman_install python-lsp-server
 ## rust: best programming language out there
 pacman_install rustup
+rustup default stable
+rustup target add wasm32-unknown-unknown
 ## rust_analyzer: static typechecker and linter for rust
 pacman_install rust-analyzer
 ## ccls: C language server (required by CoC plugin for nvim)
