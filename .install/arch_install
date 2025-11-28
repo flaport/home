@@ -490,7 +490,7 @@ pacman_install htop
 ## aplay: simple sound player based on alsa
 #yay_install alsaplayer-git
 ## system information
-pacman_install neofetch
+pacman_install fastfetch
 ## lightweight system information
 #yay_install pfetch
 ## some more eye-candy (useless music visualizer):
@@ -710,9 +710,8 @@ pacman_install picom
 #yay_install picom-git
 
 ## libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
-## the reason it is installed this way is because this library replaces libxft
-## requiring you to answer yes on a [y/N] question...
-pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra-git >> "$LOG" 2>> "$ERR"
+## NOTE: no longer needed/available - modern libxft supports color emojis
+#pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra-git >> "$LOG" 2>> "$ERR"
 
 ## Dell displaylink drivers:
 #pacman_install linux-headers
@@ -744,8 +743,8 @@ groupadd video >> "$LOG" 2>> "$ERR"
 echo $password | sudo -S usermod -a -G video $USER
 echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chgrp video /sys/class/backlight/%k/brightness\"" | sudo tee /etc/udev/rules.d/backlight.rules > /dev/null 2>> "$ERR"
 echo "ACTION==\"add\", SUBSYSTEM==\"backlight\", KERNEL==\"intel_backlight\", RUN+=\"/bin/chmod g+w /sys/class/backlight/%k/brightness\"" | sudo tee -a /etc/udev/rules.d/backlight.rules > /dev/null 2>> "$ERR"
-## xautolock to automatically lock the screen
-pacman_install xautolock
+## xss-lock to automatically lock the screen
+pacman_install xss-lock
 ## wallpapers
 pacman_install feh
 ## moving wallpapers
@@ -901,9 +900,8 @@ systemctl_enable bluetooth
 pacman_install remmina
 ## add windows remote desktop protocol to remmina
 pacman_install freerdp
-## barrier: seemless mouse and keyboard sharing between computers (takes a while to build)
-pacman_install barrier
-pacman_install barrier-headless
+## input-leap: seemless mouse and keyboard sharing between computers (barrier fork)
+yay_install input-leap
 
 
 # Themes
@@ -912,13 +910,13 @@ pacman_install barrier-headless
 ## gtk3
 pacman_install gtk3
 ## adwaita [inkscape dependency]
-pacman_install gnome-themes-standard
-## murrine theme [inkscape dependency]
-pacman_install gtk-engine-murrine
+pacman_install gnome-themes-extra
+## murrine theme [inkscape dependency] - no longer in repos
+#pacman_install gtk-engine-murrine
 ## adapta theme
 pacman_install adapta-gtk-theme
-## arc theme
-pacman_install arc-gtk-theme
+## arc theme - moved to AUR
+yay_install arc-gtk-theme
 ## dark gruvbox-inspired arc theme (default theme for now)
 yay_install gtk-theme-arc-gruvbox-git
 ## dark nord-inspired color theme
@@ -1068,8 +1066,8 @@ pacman_install awesome-terminal-fonts
 ## hack nerd fonts: patched font with nice icons (recommended for lsd):
 #yay_install nerd-fonts-hack
 pacman_install ttf-hack-nerd
-## Joypixels color emojis:
-pacman_install ttf-joypixels
+## color emojis (joypixels removed from repos due to licensing)
+pacman_install noto-fonts-emoji
 ## google color emojis (blocked by my fontconfig):
 #pacman_install noto-fonts-emoji
 ## black and white emojis and symbols (blocked by my fontconfig):
