@@ -5,35 +5,36 @@
 #   | |   | |_/\| |-|||  __/| \_/||    /  | |
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
-""" git-reset | gitr:
+"""git-reset | gitr:
 
 small fzf-based CLI utility for easy 'git-reset'
 
 """
 
-import os
 import sys
-from subprocess import call, check_output, Popen, PIPE, CalledProcessError
+from subprocess import PIPE, CalledProcessError, Popen, call, check_output
+
 
 def fzf(list_in, prompt):
-    fzf_in = Popen(["echo", "\n".join(list_in)], stdout=PIPE).stdout
-    try:
-        choice = check_output(
-            [
-                "fzf",
-                "--no-multi",
-                "--layout=reverse",
-                "--height=60%",
-                f"--header={prompt}",
-                "--bind=j:down,k:up,l:toggle,h:toggle,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up",
-                "--preview-window=right:wrap",
-                '--preview=git show --color=always $(echo {} | sed "s/ .*//")',
-            ],
-            stdin=fzf_in,
-        ).decode()[:-1]
-    except CalledProcessError:
+    proc = Popen(
+        [
+            "fzf",
+            "--no-multi",
+            "--layout=reverse",
+            "--height=60%",
+            f"--header={prompt}",
+            "--bind=j:down,k:up,l:toggle,h:toggle,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up",
+            "--preview-window=right:wrap",
+            '--preview=git show --color=always $(echo {} | sed "s/ .*//")',
+        ],
+        stdin=PIPE,
+        stdout=PIPE,
+    )
+    stdout, _ = proc.communicate(input="\n".join(list_in).encode())
+    if proc.returncode != 0:
         return None
-    return choice
+    return stdout.decode().strip()
+
 
 def git_log(complete=True):
     flags = []
@@ -44,13 +45,14 @@ def git_log(complete=True):
     except CalledProcessError:
         return []
 
+
 if __name__ == "__main__":
     short_log = git_log(complete=False)
     value = fzf(short_log, "git reset")
     if value is None:
-        exit(1)
+        sys.exit(1)
     flags = []
     if len(sys.argv) > 1 and sys.argv[1] == "--hard":
         flags += ["--hard"]
-    status = call(["git", "reset", value.split(" ")[0]]+flags)
-    exit(status)
+    status = call(["git", "reset", value.split(" ")[0]] + flags)
+    sys.exit(status)
