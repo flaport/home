@@ -409,7 +409,7 @@ pacman_install grep
 ## download tool
 pacman_install curl
 ## alternative download tool (youtube-dl dependency)
-pacman_install wget
+#pacman_install wget
 ## alternative search tool
 #pacman_install ripgrep
 ## alternative search tool
@@ -421,7 +421,7 @@ pacman_install rsync
 ## atool gives information about archives
 #pacman_install atool
 ## glu: opengl binaries
-pacman_install glu
+#pacman_install glu
 ## zip
 pacman_install zip
 ## unzip
@@ -504,40 +504,39 @@ pacman_install fastfetch
 ## sockets (needed for custom mpvcontrol script)
 pacman_install socat
 ## torrents: transmission cli
-pacman_install transmission-cli
+#pacman_install transmission-cli
 ## transmission remote cli curses interface:
-yay_install tremc-git
+#yay_install tremc-git
 ## transmission remote cli gtk interface
 #pacman_install transmission-remote-gtk
 ## add current user to the transmission group:
-echo $password | sudo -S usermod -a -G transmission $USER
+#echo $password | sudo -S usermod -a -G transmission $USER
 ## make the system transmission config writable by current user:
-echo $password | sudo -S chmod -R g+rw /var/lib/transmission
+#echo $password | sudo -S chmod -R g+rw /var/lib/transmission
 ## a more beautiful ls command (I have ls remapped to lsd when no arguments given)
 pacman_install lsd
 ## vim / neovim: terminal text editor
-#pacman_install neovim
-## vim / neovim: terminal text editor (nightly edition. Takes a while to compile. Don't use the -bin version of this package as it's stuck at v0.9.x)
-pacman_install bob
-mkdir -p $HOME/.local/share/bob
-#bob install nightly
-#yay_install neovim-nightly # better to use bob instead
-## tree-sitter cli
-pacman_install tree-sitter-cli
+pacman_install neovim
 ## link neovim to standard vim binary:
 link /usr/bin/nvim /usr/bin/vim
 link /usr/bin/nvim /usr/bin/vi
 ## python host for neovim
 pacman_install python-pynvim
-## ruby host for neovim
-yay_install ruby-neovim
 ## node-neovim: better integration of nodejs with neovim:
 npm_install neovim
+## ruby host for neovim
+#yay_install ruby-neovim
+## vim / neovim: terminal text editor (nightly edition. Takes a while to compile. Don't use the -bin version of this package as it's stuck at v0.9.x)
+#pacman_install bob
+#mkdir -p $HOME/.local/share/bob
+#bob install nightly
+#yay_install neovim-nightly # better to use bob instead
+## tree-sitter cli
+pacman_install tree-sitter-cli
 ## neovim-remote: some of my nvim scripts depend on it
 yay_install neovim-remote
-pacman_install python-pynvim
 ## packer: lua-based package manager for neovim
-yay_install nvim-packer-git
+#yay_install nvim-packer-git
 ## stylua: a lua formatter (like black for python)
 pacman_install stylua
 pacman_install luarocks
@@ -550,7 +549,7 @@ pacman_install fd
 ## java
 #pacman_install jdk-openjdk
 ## julia
-pacman_install julia
+#pacman_install julia
 ## vimwiki-markdown: better integration for mardown files in vimwiki:
 #pip3_install vimwiki-markdown
 ## instant-markdown-d used for instant markdown visualization in vim
@@ -563,6 +562,8 @@ pacman_install pyright
 pacman_install rustup
 rustup default stable
 rustup target add wasm32-unknown-unknown
+cargo install wasm-bindgen-cli
+cargo install wasm-opt
 ## rust_analyzer: static typechecker and linter for rust
 pacman_install rust-analyzer
 ## ccls: C language server (required by CoC plugin for nvim)
@@ -573,8 +574,8 @@ pacman_install bash-language-server
 pacman_install eslint
 ## ctags: recommended vim dependency for jump-to-tag functionality
 pacman_install ctags
-## tidy: html formatter
-pacman_install tidy
+## tidy: html formatter (just use prettier)
+#pacman_install tidy
 ## prettier: universal formatter
 pacman_install prettier
 ## composer/php
@@ -621,6 +622,7 @@ pacman_install docker
 pacman_install docker-buildx
 # curl -L https://raw.githubusercontent.com/docker/compose-cli/main/scripts/install/install_linux.sh | sh
 # sudo ln -sf /usr/local/bin/docker /usr/bin/docker
+echo $password | sudo -S usermod -aG docker $USER
 systemctl_enable docker
 
 
@@ -683,7 +685,7 @@ pacman_install xorg-server-xvfb
 ## hide an inactive mouse
 pacman_install unclutter
 ## dependency for my st fork to find urls in terminal:
-yay_install xurls
+#yay_install xurls
 ## remap escape key:
 #yay_install xcape-git
 ## emulate mouse clicks and keyboard presses
@@ -710,10 +712,6 @@ pacman_install xorg-xhost
 pacman_install picom
 ## bleeding edge version of picom:
 #yay_install picom-git
-
-## libxft-bgra; alternative to libxft, helper library for color emojis in my st build:
-## NOTE: no longer needed/available - modern libxft supports color emojis
-#pacman -Q libxft-bgra-git &> /dev/null || yes | LC_ALL=en_US.UTF-8 yay -S -q libxft-bgra-git >> "$LOG" 2>> "$ERR"
 
 ## Dell displaylink drivers:
 #pacman_install linux-headers
@@ -956,7 +954,7 @@ echo $password | sudo -S ln -sf /usr/share/icons/Breeze /usr/share/icons/default
 #-------------------------------------------------------------------------------
 
 ## syncthing: synchronization between devices
-#pacman_install syncthing
+pacman_install syncthing
 ## run syncthing as a systemd service
 systemctl_create syncthing
 #systemctl_enable syncthing
@@ -1181,7 +1179,7 @@ pacman_install ffmpeg
 ## spotify (I prefer spotifyd + spotify-tui)
 #yay_install spotify
 ## GDS viewer and editor
-#pacman_install klayout
+pacman_install klayout
 ## lbry: youtube alternative
 #yay_install lbry-app-bin
 ## skype: video calls
@@ -1259,9 +1257,9 @@ pacman_install epiphany
 ## waterfox (like firefox, but better defaults)
 #yay_install waterfox-current-bin
 ## firefox (like waterfox, but the original ;-) )
-#pacman_install firefox
+pacman_install firefox
 ## firefox developer edition
-pacman_install firefox-developer-edition
+#pacman_install firefox-developer-edition
 ## patch firefox and waterfox to work with some legacy extensions (like vimfx)
 # submodule_install legacyfox
 ## enhanced security settings for firefox (you might have to copy this manually if your profile is called differently)
@@ -1291,19 +1289,19 @@ pacman_install firefox-developer-edition
 #-------------------------------------------------------------------------------
 
 ## awesome email client
-pacman_install thunderbird
+#pacman_install thunderbird
 ## send email
-pacman_install msmtp
+#pacman_install msmtp
 ## mbsync: sync email (isync is the distribution, mbsync is the executable)
-pacman_install isync
+#pacman_install isync
 ## mutt email client
-pacman_install neomutt
-link /usr/bin/neomutt /usr/bin/mutt
+#pacman_install neomutt
+#link /usr/bin/neomutt /usr/bin/mutt
 ## notmuch: email indexing
-pacman_install notmuch
+#pacman_install notmuch
 ## html email view (also browser!)
 #pacman_install w3m
-pacman_install lynx
+#pacman_install lynx
 ## mutt wizard (disabled; manual configuration preferred)
 #yay_install mutt-wizard
 ## Thunderbird: arguably the best email client for Linux (if a GUI is more your thing)
@@ -1384,7 +1382,7 @@ submodule_install dwm
 ## my dmenu fork [application launcher]
 submodule_install dmenu
 ## my st fork [terminal]
-submodule_install st
+#submodule_install st
 ## my scroll fork [scroll] (implements scrollback in st)
 submodule_install scroll
 
