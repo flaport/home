@@ -11,7 +11,6 @@
 if [ -f "$HOME/.local/share/bob/nightly/bin/nvim" ]; then
     vim="$HOME/.local/share/bob/nightly/bin/nvim";
 else
-    echo "using system nvim. Please consider using 'bob' to install nightly nvim!" >&2;
     vim="/usr/bin/nvim";
 fi
 

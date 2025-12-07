@@ -200,21 +200,7 @@ sourcefile "$HOME/.travis/travis.sh"
 sourcefile $HOME/.config/broot/launcher/bash/br
 
 # autojump
-my_autojump_chpwd() {
-  # only run autojump when not in python dir
-  # to prevent errors from path clashes
-  if [ ! -f ./__init__.py ]; then
-    autojump_chpwd
-  fi
-}
-if [ -f $HOME/.config/autojump/share/autojump/autojump.zsh ]; then
-  sourcefile $HOME/.config/autojump/share/autojump/autojump.zsh
-  chpwd_functions=my_autojump_chpwd
-fi
-
-
-# my custom autojump commands (slightly different from default behavior):
-sourcefile $HOME/.scripts/autojump/autojump-improved.zsh
+sourcefile $HOME/.scripts/autojump/autojump.zsh
 
 # zsh autosuggestions (like in the fish shell)
 sourcefile $HOME/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh

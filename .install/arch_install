@@ -434,6 +434,8 @@ pacman_install unarchiver
 #yay_install rpmextract
 ## pv: progress bars on stdout
 #pacman_install pv
+## autojump: easily jump to already visited folders
+yay_install autojump-rs-git
 ## battery information
 #pacman_install acpi
 ## battery daemon (sleep on low power):
@@ -1528,21 +1530,6 @@ link /usr/bin/dash /bin/sh
 pacman_install zsh
 ## make zsh the default shell:
 echo $password | chsh -s /usr/bin/zsh >> "$LOG" 2>> "$ERR"
-
-## autojump extension for bash/zsh/fish
-mkdir -p $HOME/.cache
-rm -rf $HOME/.cache/autojump
-git clone https://github.com/wting/autojump $HOME/.cache/autojump
-cd $HOME/.cache/autojump
-python install.py -d $HOME/.config/autojump
-sed -i 's|#!/usr/bin/env python|#!/usr/bin/python|' $HOME/.config/autojump/bin/autojump
-ln -sf $HOME/.config/autojump/bin/autojump $HOME/.local/bin
-
-## stderred extension for bash/zsh: show stderr messages in red:
-rm -rf $HOME/.config/stderred
-git clone https://github.com/sickill/stderred $HOME/.config/stderred
-cd $HOME/.config/stderred
-make
 
 ## fish-like autosuggestions for zsh:
 rm -rf $HOME/.config/zsh/zsh-autosuggestions
