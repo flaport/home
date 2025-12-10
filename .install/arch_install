@@ -1236,7 +1236,7 @@ fi
 pacman_install ruff
 pacman_install uv
 pacman_install python
-pacman_install ipython
+#pacman_install ipython
 #pacman_install python2
 #pacman_install ipython2
 
@@ -1409,13 +1409,14 @@ pacman_install python-numpy
 pacman_install python-matplotlib
 ## monitor DRM events from udev (used in my custom 'watch_screens' script)
 pacman_install python-pyudev
-## linters & formatters (recommended for vim)
-pacman_install python-pylint
-pacman_install autopep8
-pacman_install flake8
-pacman_install python-pyflakes
-pacman_install python-isort
-pacman_install python-black
+## linters & formatters (disabled - just use ruff)
+# pacman_install python-pylint
+# pacman_install autopep8
+# pacman_install flake8
+# pacman_install python-pyflakes
+# pacman_install python-isort
+# pacman_install python-black
+#pacman_install python-jedi
 ## automatic colorscheme generation based on image
 pacman_install python-pywal
 ## connectivity (requirement for calcurse-caldav synchronization)
@@ -1425,16 +1426,15 @@ pacman_install python-neovim
 ## image processing in python
 pacman_install python-pillow
 ## flask (dependency of my smdv script)
-pacman_install python-flask
+#pacman_install python-flask
 ## login utility for flask:
-pacman_install python-flask-login
+#pacman_install python-flask-login
 ## websockets (dependency of my smdv script)
 pacman_install python-websockets
 ## sockets
 #pacman_install python-websockets
-pacman_install flake8
 ## jedi: linting and more
-pacman_install python-jedi
+#pacman_install python-jedi
 ## requests (castero dependency)
 pacman_install python-requests
 ## lxml
@@ -1453,8 +1453,6 @@ pacman_install python-lxml
 #yay_install python-pylatexenc
 ## castero: tui podcast client
 #yay_install castero
-## jedi: linting and more (newer version than via pacman)
-pacman_install python-jedi
 ## markdown <-> ipynb conversion
 #pip3_install notedown
 ## google cloud apis
