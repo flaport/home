@@ -450,35 +450,6 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        mypy = { enabled = false },
-        pylsp = {
-          enabled = false,
-          settings = {
-            pylsp = {
-              configurationSources = { 'flake8' },
-              plugins = {
-                autopep8 = { enabled = false },
-                black = { enabled = true },
-                flake8 = { enabled = false },
-                jedi_completion = { enabled = true },
-                jedi_definition = { enabled = true },
-                jedi_hover = { enabled = true },
-                jedi_references = { enabled = true },
-                jedi_signature_help = { enabled = true },
-                jedi_symbols = { enabled = true },
-                mccabe = { enabled = false },
-                preload = { enabled = false },
-                pycodestyle = { enabled = false },
-                pydocstyle = { enabled = false },
-                pyflakes = { enabled = false },
-                pylint = { enabled = false },
-                rope_autoimport = { enabled = false },
-                rope_completion = { enabled = false },
-                yapf = { enabled = false },
-              },
-            },
-          },
-        },
         pyright = {
           enabled = true,
           hint = { enable = false },
@@ -541,7 +512,6 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'ruff',
-        'ruff-lsp',
         'clang-format',
         'json-lsp',
         'ols',
