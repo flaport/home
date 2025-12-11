@@ -14,9 +14,9 @@ User={USER}
 WorkingDirectory={HOME}/.jupyter
 
 
-Environment="PATH={HOME}/.local/share/guv/base/.venv/bin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+Environment="PATH={HOME}/.local/bin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 Environment='DISPLAY=":0"'
-ExecStart={HOME}/.local/share/guv/base/.venv/bin/jupyterhub -f {HOME}/.jupyter/jupyterhub_config.py
+ExecStart=/usr/bin/jupyterhub -f {HOME}/.jupyter/jupyterhub_config.py
 
 [Install]
 WantedBy=multi-user.target

@@ -191,8 +191,8 @@ submodule_install(){ # will only install the first argument!
 
     printf "git pull\n" >> "$LOG"
     printf "git pull\n" >> "$ERR"
-    git checkout master >> "$LOG" 2>> "$ERR"
-    git pull origin master >> "$LOG" 2>> "$ERR"
+    git checkout high-dpi >> "$LOG" 2>> "$ERR"
+    git pull origin high-dpi >> "$LOG" 2>> "$ERR"
 
     printf "sudo make install\n" >> "$LOG"
     printf "sudo make install\n" >> "$ERR"
@@ -435,7 +435,7 @@ pacman_install unarchiver
 ## pv: progress bars on stdout
 #pacman_install pv
 ## autojump: easily jump to already visited folders
-yay_install autojump-rs-git
+yay_install autojump-rs-bin
 ## battery information
 #pacman_install acpi
 ## battery daemon (sleep on low power):
@@ -1389,7 +1389,7 @@ submodule_install dmenu
 ## my st fork [terminal]
 #submodule_install st
 ## my scroll fork [scroll] (implements scrollback in st)
-submodule_install scroll
+#submodule_install scroll
 
 
 # Python
@@ -1399,6 +1399,8 @@ submodule_install scroll
 pacman_install tk
 ## python style guide checker
 pacman_install yapf
+## pre-commit
+pacman_install pre-commit
 ## python timezone info
 pacman_install python-pytz
 ## progress bars
@@ -1462,6 +1464,7 @@ pacman_install python-lxml
 ## smdv: simple markdown viewer
 #pip3_install smdv
 ## run jupyterlab as a systemd service:
+yay_install jupyterhub
 systemctl_create jupyterhub
 #systemctl_enable jupyterhub
 ## neovim compatibility
