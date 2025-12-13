@@ -11,12 +11,12 @@ After=syslog.target network.target
 
 [Service]
 User={USER}
-WorkingDirectory={HOME}/.jupyter
+WorkingDirectory={HOME}
 
 
 Environment="PATH={HOME}/.local/bin:/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 Environment='DISPLAY=":0"'
-ExecStart=/usr/bin/jupyterhub -f {HOME}/.jupyter/jupyterhub_config.py
+ExecStart=/usr/bin/jupyter lab --port 8000 --no-browser
 
 [Install]
 WantedBy=multi-user.target

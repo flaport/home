@@ -1,0 +1,14 @@
+{
+    "language_servers": {
+        "pyright": {
+            "priority": 100
+        },
+        "ruff": {
+            "priority": 100
+        }
+    },
+    "loggingConsole": "browser",
+    "loggingLevel": "warn",
+    "logAllCommunication": false,
+    "setTrace": null
+}

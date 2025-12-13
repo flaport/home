@@ -1466,6 +1466,8 @@ pacman_install python-lxml
 ## run jupyterlab as a systemd service:
 yay_install jupyterhub
 systemctl_create jupyterhub
+yay_install jupyterlab_code_formatter
+pacman_install jupyterlab-lsp
 #systemctl_enable jupyterhub
 ## neovim compatibility
 pacman_install python-pynvim
