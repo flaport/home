@@ -6,7 +6,7 @@
 #   \_/   \____/\_/ \|\_/   \____/\_/\_\  \_/
 #
 """
-    Open executable; if executable is not found open it in default browser.
+Open executable; if executable is not found open it in default browser.
 """
 
 import os
@@ -26,9 +26,6 @@ DESKTOP_FILE_PATHS = [
     "~/.local/share/applications/",
     "/usr/share/applications/",
 ]
-CURRENT_DIRECTORY = (
-    check_output(["find", ".", "-mount", "-maxdepth", "2"]).decode().splitlines()
-)
 CLEAR_HISTORY = False
 
 
@@ -54,7 +51,7 @@ def get_clipboard():
 def crop_line(line, length=35):
     if len(line) < length:
         return line
-    return f"{line[:length-3].strip()}..."
+    return f"{line[: length - 3].strip()}..."
 
 
 def dmenu(list_in, prompt=" "):
@@ -121,7 +118,6 @@ if __name__ == "__main__":
                 + [BROWSER]
                 + DMENU_PATH
                 + DESKTOP_FILES
-                + CURRENT_DIRECTORY
                 + ["[clear history]"]
             )
         }
