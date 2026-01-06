@@ -72,5 +72,6 @@
   "editor.dropIntoEditor.enabled": true,
   "git.openRepositoryInParentFolders": "never",
   "editor.foldedCodeExpand": false,
-  "chat.agent.enabled": false
+  "chat.agent.enabled": false,
+  "claudeCode.preferredLocation": "panel"
 }
