@@ -184,7 +184,15 @@ require('lazy').setup({
   { 'hanschen/vim-ipython-cell', ft = { 'python' } },
   {
     'lewis6991/gitsigns.nvim',
-    opts = {},
+    opts = {
+      current_line_blame = false,
+      current_line_blame_opts = {
+        delay = 10,
+      },
+    },
+    keys = {
+      { '<leader>gb', '<cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle [G]it [B]lame' },
+    },
   },
   {
     'folke/todo-comments.nvim',
