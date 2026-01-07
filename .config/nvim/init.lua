@@ -168,6 +168,13 @@ require('lazy').setup({
   'akinsho/toggleterm.nvim', -- Toggle terminal vim
   'jpalardy/vim-slime', -- a vim plugin to give you some slime
   {
+    'flaport/pip.nvim',
+    event = 'BufRead pyproject.toml',
+    config = function()
+      require('pip').setup()
+    end,
+  },
+  {
     'saecki/crates.nvim',
     tag = 'stable',
     opts = {},
@@ -191,7 +198,11 @@ require('lazy').setup({
       },
     },
     keys = {
-      { '<leader>gb', '<cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle [G]it [B]lame' },
+      {
+        '<leader>gb',
+        '<cmd>Gitsigns toggle_current_line_blame<CR>',
+        desc = 'Toggle [G]it [B]lame',
+      },
     },
   },
   {
