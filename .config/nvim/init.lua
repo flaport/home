@@ -605,6 +605,9 @@ require('lazy').setup({
         rust = {
           'rustfmt',
         },
+        odin = {
+          'odinfmt',
+        },
       },
     },
   },
