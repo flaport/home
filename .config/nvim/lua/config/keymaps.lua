@@ -260,6 +260,37 @@ map('t', '`<Esc>', '<Esc>', opts)
 -- treesitter playground show highlight
 map('n', 'T', ':TSHighlightCapturesUnderCursor<CR>', opts)
 
+-- Toggle between pyright and mypy for Python files
+vim.g.python_type_checker = 'pyright' -- default
+vim.keymap.set('n', '<leader>pt', function()
+  if vim.bo.filetype ~= 'python' then
+    vim.notify('Not a Python file', vim.log.levels.WARN)
+    return
+  end
+
+  local bufnr = vim.api.nvim_get_current_buf()
+  local current = vim.g.python_type_checker
+
+  if current == 'pyright' then
+    -- Switch to mypy: stop pyright, enable mypy linting
+    local clients = vim.lsp.get_clients { bufnr = bufnr, name = 'pyright' }
+    for _, client in ipairs(clients) do
+      vim.lsp.stop_client(client.id, true)
+    end
+    vim.g.python_type_checker = 'mypy'
+    require('lint').linters_by_ft.python = { 'mypy' }
+    require('lint').try_lint()
+    vim.notify('Switched to mypy', vim.log.levels.INFO)
+  else
+    -- Switch to pyright: clear mypy diagnostics, restart pyright
+    vim.g.python_type_checker = 'pyright'
+    require('lint').linters_by_ft.python = {}
+    vim.diagnostic.reset(nil, bufnr)
+    vim.cmd 'LspStart pyright'
+    vim.notify('Switched to pyright', vim.log.levels.INFO)
+  end
+end, { desc = '[P]ython [T]ype checker toggle (pyright/mypy)' })
+
 -- DEFAULTS
 
 -- go to next misspelled word (enable spell checker with F3)

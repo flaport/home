@@ -162,6 +162,19 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+  {
+    'rcarriga/nvim-notify',
+    opts = {
+      timeout = 2000,
+      render = 'compact',
+      stages = 'fade',
+    },
+    config = function(_, opts)
+      local notify = require 'notify'
+      notify.setup(opts)
+      vim.notify = notify
+    end,
+  },
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'nvim-lualine/lualine.nvim', -- Better line at the bottom
   'vmware-archive/salt-vim',
@@ -533,6 +546,7 @@ require('lazy').setup({
         'ruff',
         'clang-format',
         'json-lsp',
+        'mypy',
         'ols',
         'prettier',
         'stylua',
@@ -556,6 +570,16 @@ require('lazy').setup({
           end,
         },
       }
+    end,
+  },
+
+  { -- Linting (for mypy support)
+    'mfussenegger/nvim-lint',
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+      local lint = require 'lint'
+      -- Don't set python linters by default; controlled by toggle
+      lint.linters_by_ft = {}
     end,
   },
 
