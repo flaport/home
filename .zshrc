@@ -177,6 +177,22 @@ man() { # colored man pages:
     command man "$@"
   }
 
+activate() {
+  local dir="$PWD"
+  while [[ "$dir" != "/" ]]; do
+    if [[ -d "$dir/.venv" ]]; then
+      source "$dir/.venv/bin/activate"
+      return
+    fi
+    dir="$(dirname "$dir")"
+  done
+  echo "No .venv found" >&2
+  return 1
+}
+
+alias a=activate
+alias d=deactivate
+
 
 if which modular > /dev/null; then
   export MAX_PATH="$(modular config max.path)"
