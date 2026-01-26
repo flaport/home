@@ -260,8 +260,19 @@ map('t', '`<Esc>', '<Esc>', opts)
 -- treesitter playground show highlight
 map('n', 'T', ':TSHighlightCapturesUnderCursor<CR>', opts)
 
--- Toggle between pyright and mypy for Python files
+-- Toggle between pyright, mypy, and ty for Python files
 vim.g.python_type_checker = 'pyright' -- default
+local python_type_checkers = { 'pyright', 'mypy', 'ty' }
+
+local function stop_python_lsp(bufnr)
+  local clients = vim.lsp.get_clients { bufnr = bufnr, name = 'pyright' }
+  for _, client in ipairs(clients) do
+    vim.lsp.stop_client(client.id, true)
+  end
+  -- Clear document highlights to avoid errors when no LSP is attached
+  vim.lsp.buf.clear_references()
+end
+
 vim.keymap.set('n', '<leader>pt', function()
   if vim.bo.filetype ~= 'python' then
     vim.notify('Not a Python file', vim.log.levels.WARN)
@@ -271,25 +282,38 @@ vim.keymap.set('n', '<leader>pt', function()
   local bufnr = vim.api.nvim_get_current_buf()
   local current = vim.g.python_type_checker
 
-  if current == 'pyright' then
-    -- Switch to mypy: stop pyright, enable mypy linting
-    local clients = vim.lsp.get_clients { bufnr = bufnr, name = 'pyright' }
-    for _, client in ipairs(clients) do
-      vim.lsp.stop_client(client.id, true)
+  -- Find next type checker in rotation
+  local next_checker = python_type_checkers[1]
+  for i, checker in ipairs(python_type_checkers) do
+    if checker == current then
+      next_checker = python_type_checkers[(i % #python_type_checkers) + 1]
+      break
     end
-    vim.g.python_type_checker = 'mypy'
+  end
+
+  -- Stop pyright if switching away from it
+  if current == 'pyright' then
+    stop_python_lsp(bufnr)
+  end
+
+  -- Clear previous linter diagnostics
+  require('lint').linters_by_ft.python = {}
+  vim.diagnostic.reset(nil, bufnr)
+
+  vim.g.python_type_checker = next_checker
+
+  if next_checker == 'pyright' then
+    vim.cmd 'LspStart pyright'
+  elseif next_checker == 'mypy' then
     require('lint').linters_by_ft.python = { 'mypy' }
     require('lint').try_lint()
-    vim.notify('Switched to mypy', vim.log.levels.INFO)
-  else
-    -- Switch to pyright: clear mypy diagnostics, restart pyright
-    vim.g.python_type_checker = 'pyright'
-    require('lint').linters_by_ft.python = {}
-    vim.diagnostic.reset(nil, bufnr)
-    vim.cmd 'LspStart pyright'
-    vim.notify('Switched to pyright', vim.log.levels.INFO)
+  elseif next_checker == 'ty' then
+    require('lint').linters_by_ft.python = { 'ty' }
+    require('lint').try_lint()
   end
-end, { desc = '[P]ython [T]ype checker toggle (pyright/mypy)' })
+
+  vim.notify('Switched to ' .. next_checker, vim.log.levels.INFO)
+end, { desc = '[P]ython [T]ype checker toggle (pyright/mypy/ty)' })
 
 -- DEFAULTS
 

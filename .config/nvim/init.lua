@@ -204,18 +204,16 @@ require('lazy').setup({
   { 'hanschen/vim-ipython-cell', ft = { 'python' } },
   {
     'lewis6991/gitsigns.nvim',
+    event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       current_line_blame = false,
       current_line_blame_opts = {
         delay = 10,
       },
-    },
-    keys = {
-      {
-        '<leader>gb',
-        '<cmd>Gitsigns toggle_current_line_blame<CR>',
-        desc = 'Toggle [G]it [B]lame',
-      },
+      on_attach = function(bufnr)
+        vim.keymap.set('n', '<leader>gb', '<cmd>Gitsigns toggle_current_line_blame<CR>',
+          { buffer = bufnr, desc = 'Toggle [G]it [B]lame' })
+      end,
     },
   },
   {
@@ -410,7 +408,14 @@ require('lazy').setup({
           if client and client.server_capabilities.documentHighlightProvider then
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
-              callback = vim.lsp.buf.document_highlight,
+              callback = function()
+                for _, c in ipairs(vim.lsp.get_clients { bufnr = event.buf }) do
+                  if c.server_capabilities.documentHighlightProvider then
+                    vim.lsp.buf.document_highlight()
+                    return
+                  end
+                end
+              end,
             })
 
             vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
@@ -573,13 +578,41 @@ require('lazy').setup({
     end,
   },
 
-  { -- Linting (for mypy support)
+  { -- Linting (for mypy/ty support)
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
       -- Don't set python linters by default; controlled by toggle
       lint.linters_by_ft = {}
+
+      -- Custom linter for ty (red-knot/ty type checker)
+      lint.linters.ty = {
+        cmd = 'ty',
+        stdin = false,
+        args = { 'check', '--output-format', 'text' },
+        stream = 'stdout',
+        ignore_exitcode = true,
+        parser = function(output, bufnr)
+          local diagnostics = {}
+          local filename = vim.api.nvim_buf_get_name(bufnr)
+          for line in output:gmatch '[^\r\n]+' do
+            -- ty output format: "file.py:10:5: error: message"
+            local file, lnum, col, severity, msg = line:match '^(.+):(%d+):(%d+): (%w+): (.+)$'
+            if file and vim.fn.fnamemodify(file, ':p') == filename then
+              table.insert(diagnostics, {
+                lnum = tonumber(lnum) - 1,
+                col = tonumber(col) - 1,
+                severity = severity == 'error' and vim.diagnostic.severity.ERROR
+                  or vim.diagnostic.severity.WARN,
+                message = msg,
+                source = 'ty',
+              })
+            end
+          end
+          return diagnostics
+        end,
+      }
     end,
   },
 
