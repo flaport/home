@@ -81,7 +81,7 @@ prompt(){
   fi
   # virtualenv info
   if [[ ! -z $VIRTUAL_ENV ]]; then
-    echo -ne "%F{yellow}%{%G%}%f"
+    echo -ne "%F{yellow}%{%G%}%f "
     echo -ne "%F{yellow}$(basename `dirname $VIRTUAL_ENV`)%f "
   fi
   # path
@@ -188,6 +188,18 @@ activate() {
   done
   echo "No .venv found" >&2
   return 1
+}
+
+chpwd() {
+  deactivate > /dev/null 2> /dev/null
+  local dir="$PWD"
+  while [[ "$dir" != "/" ]]; do
+    if [[ -d "$dir/.venv" ]]; then
+      source "$dir/.venv/bin/activate"
+      return
+    fi
+    dir="$(dirname "$dir")"
+  done
 }
 
 alias a=activate

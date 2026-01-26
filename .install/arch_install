@@ -1030,6 +1030,7 @@ pacman_install adobe-source-code-pro-fonts
 pacman_install ttf-liberation
 ## ubuntu fonts: a beautiful mono and sans font
 pacman_install ttf-ubuntu-font-family
+pacman_install ttf-ubuntu-mono-nerd
 ## gnu free fonts: optional vlc dependency (partly blocked by my fontconfig):
 #pacman_install gnu-free-fonts
 ## gnome core fontset (partly blocked by my fontconfig):
