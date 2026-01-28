@@ -487,26 +487,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        pyright = {
-          enabled = true,
-          hint = { enable = false },
-          capabilities = (function()
-            local caps = vim.lsp.protocol.make_client_capabilities()
-            caps.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
-            return caps
-          end)(),
-          settings = {
-            python = {
-              analysis = {
-                useLibraryCodeForTypes = true,
-                diagnosticSeverityOverrides = {
-                  reportUnusedVariable = 'warning', -- or anything
-                },
-                typeCheckingMode = 'basic',
-              },
-            },
-          },
-        },
+        ty = {}, -- default Python type checker; use <leader>pt to toggle to pyright/mypy
         clangd = {},
         gopls = {},
         shellcheck = {},
@@ -573,46 +554,30 @@ require('lazy').setup({
               vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
+          -- Don't auto-start pyright; ty is default, use <leader>pt to toggle
+          ['pyright'] = function() end,
         },
       }
     end,
   },
 
-  { -- Linting (for mypy/ty support)
+  { -- Linting (for mypy support)
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
-      -- Don't set python linters by default; controlled by toggle
+      -- Empty by default; <leader>pt toggle enables mypy when needed
       lint.linters_by_ft = {}
 
-      -- Custom linter for ty (red-knot/ty type checker)
-      lint.linters.ty = {
-        cmd = 'ty',
-        stdin = false,
-        args = { 'check', '--output-format', 'text' },
-        stream = 'stdout',
-        ignore_exitcode = true,
-        parser = function(output, bufnr)
-          local diagnostics = {}
-          local filename = vim.api.nvim_buf_get_name(bufnr)
-          for line in output:gmatch '[^\r\n]+' do
-            -- ty output format: "file.py:10:5: error: message"
-            local file, lnum, col, severity, msg = line:match '^(.+):(%d+):(%d+): (%w+): (.+)$'
-            if file and vim.fn.fnamemodify(file, ':p') == filename then
-              table.insert(diagnostics, {
-                lnum = tonumber(lnum) - 1,
-                col = tonumber(col) - 1,
-                severity = severity == 'error' and vim.diagnostic.severity.ERROR
-                  or vim.diagnostic.severity.WARN,
-                message = msg,
-                source = 'ty',
-              })
-            end
+      -- Run linter on enter and save (for when mypy is enabled)
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost' }, {
+        pattern = { '*.py' },
+        callback = function()
+          if lint.linters_by_ft.python then
+            lint.try_lint()
           end
-          return diagnostics
         end,
-      }
+      })
     end,
   },
 
