@@ -531,6 +531,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'ruff',
         'clang-format',
+        'eslint_d',
         'json-lsp',
         'mypy',
         'ols',
@@ -561,19 +562,25 @@ require('lazy').setup({
     end,
   },
 
-  { -- Linting (for mypy support)
+  { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
-      -- Empty by default; <leader>pt toggle enables mypy when needed
-      lint.linters_by_ft = {}
+      -- ESLint for JS/TS; Python empty by default (<leader>pt toggle enables mypy)
+      lint.linters_by_ft = {
+        javascript = { 'eslint_d' },
+        typescript = { 'eslint_d' },
+        javascriptreact = { 'eslint_d' },
+        typescriptreact = { 'eslint_d' },
+      }
 
-      -- Run linter on enter and save (for when mypy is enabled)
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost' }, {
-        pattern = { '*.py' },
+      -- Run linter on enter and save
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+        pattern = { '*.py', '*.js', '*.ts', '*.jsx', '*.tsx' },
         callback = function()
-          if lint.linters_by_ft.python then
+          local ft = vim.bo.filetype
+          if lint.linters_by_ft[ft] then
             lint.try_lint()
           end
         end,
