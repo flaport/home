@@ -1465,9 +1465,10 @@ pacman_install python-lxml
 ## smdv: simple markdown viewer
 #pip3_install smdv
 ## run jupyterlab as a systemd service:
+pacman_install python-hatchling
 yay_install jupyterhub
 systemctl_create jupyterhub
-yay_install jupyterlab_code_formatter
+sudo uv pip install --system jupyterlab_code_formatter --break-system-packages
 pacman_install jupyterlab-lsp
 #systemctl_enable jupyterhub
 ## neovim compatibility
