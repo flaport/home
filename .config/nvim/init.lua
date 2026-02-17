@@ -338,6 +338,7 @@ require('lazy').setup({
           'gopls',
           'lua-language-server',
           'ols',
+          'pyright',
           'ruff',
           'rust-analyzer',
           'shellcheck',
@@ -471,7 +472,35 @@ require('lazy').setup({
         },
       })
 
-      -- Enable LSP servers (Neovim 0.11+ ships with built-in configurations)
+      -- Filter pyright diagnostics on lines where ty already reports an error
+      vim.lsp.config('pyright', {
+        handlers = {
+          ['textDocument/publishDiagnostics'] = function(err, result, ctx, config)
+            local dominated_by = 'ty'
+            local dominated = 'Pyright'
+            local uri = result.uri
+            local bufnr = vim.uri_to_bufnr(uri)
+            if vim.api.nvim_buf_is_loaded(bufnr) then
+              local ty_lines = {}
+              for _, d in ipairs(vim.diagnostic.get(bufnr)) do
+                if d.source == dominated_by then
+                  ty_lines[d.lnum] = true
+                end
+              end
+              local filtered = {}
+              for _, d in ipairs(result.diagnostics) do
+                if not ty_lines[d.range.start.line] then
+                  table.insert(filtered, d)
+                end
+              end
+              result.diagnostics = filtered
+            end
+            vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+          end,
+        },
+      })
+
+      -- Enable LSP servers
       vim.lsp.enable {
         'ty',
         'clangd',
@@ -479,6 +508,7 @@ require('lazy').setup({
         'gopls',
         'ts_ls',
         'ols',
+        'pyright',
         'ruff',
         'zls',
         'rust_analyzer',
