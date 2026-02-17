@@ -316,6 +316,10 @@ require('lazy').setup({
     dependencies = {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
+      -- Provides LSP server definitions (cmd, filetypes, root_markers) for vim.lsp.enable()
+      -- Neovim 0.11 has the API but doesn't ship built-in server configs yet
+      'neovim/nvim-lspconfig',
+
       -- Useful status updates for LSP.
       { 'j-hui/fidget.nvim', opts = {} },
 
@@ -341,7 +345,7 @@ require('lazy').setup({
           'zls',
           -- Formatters and linters
           'clang-format',
-          'eslint_d',
+          'eslint-lsp',
           'json-lsp',
           'prettier',
           'stylua',
@@ -471,6 +475,7 @@ require('lazy').setup({
       vim.lsp.enable {
         'ty',
         'clangd',
+        'eslint',
         'gopls',
         'ts_ls',
         'ols',
@@ -479,32 +484,6 @@ require('lazy').setup({
         'rust_analyzer',
         'lua_ls',
       }
-    end,
-  },
-
-  { -- Linting
-    'mfussenegger/nvim-lint',
-    event = { 'BufReadPre', 'BufNewFile' },
-    config = function()
-      local lint = require 'lint'
-      -- ESLint for JS/TS
-      lint.linters_by_ft = {
-        javascript = { 'eslint_d' },
-        typescript = { 'eslint_d' },
-        javascriptreact = { 'eslint_d' },
-        typescriptreact = { 'eslint_d' },
-      }
-
-      -- Run linter on enter and save
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
-        pattern = { '*.py', '*.js', '*.ts', '*.jsx', '*.tsx' },
-        callback = function()
-          local ft = vim.bo.filetype
-          if lint.linters_by_ft[ft] then
-            lint.try_lint()
-          end
-        end,
-      })
     end,
   },
 
