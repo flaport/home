@@ -211,8 +211,12 @@ require('lazy').setup({
         delay = 10,
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gb', '<cmd>Gitsigns toggle_current_line_blame<CR>',
-          { buffer = bufnr, desc = 'Toggle [G]it [B]lame' })
+        vim.keymap.set(
+          'n',
+          '<leader>gb',
+          '<cmd>Gitsigns toggle_current_line_blame<CR>',
+          { buffer = bufnr, desc = 'Toggle [G]it [B]lame' }
+        )
       end,
     },
   },
@@ -366,8 +370,16 @@ require('lazy').setup({
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
           map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
           map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map(
+            '<leader>ds',
+            require('telescope.builtin').lsp_document_symbols,
+            '[D]ocument [S]ymbols'
+          )
+          map(
+            '<leader>ws',
+            require('telescope.builtin').lsp_dynamic_workspace_symbols,
+            '[W]orkspace [S]ymbols'
+          )
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -473,32 +485,7 @@ require('lazy').setup({
       })
 
       -- Filter pyright diagnostics on lines where ty already reports an error
-      vim.lsp.config('pyright', {
-        handlers = {
-          ['textDocument/publishDiagnostics'] = function(err, result, ctx, config)
-            local dominated_by = 'ty'
-            local dominated = 'Pyright'
-            local uri = result.uri
-            local bufnr = vim.uri_to_bufnr(uri)
-            if vim.api.nvim_buf_is_loaded(bufnr) then
-              local ty_lines = {}
-              for _, d in ipairs(vim.diagnostic.get(bufnr)) do
-                if d.source == dominated_by then
-                  ty_lines[d.lnum] = true
-                end
-              end
-              local filtered = {}
-              for _, d in ipairs(result.diagnostics) do
-                if not ty_lines[d.range.start.line] then
-                  table.insert(filtered, d)
-                end
-              end
-              result.diagnostics = filtered
-            end
-            vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
-          end,
-        },
-      })
+      vim.lsp.config('pyright', {})
 
       -- Enable LSP servers
       vim.lsp.enable {
@@ -514,6 +501,37 @@ require('lazy').setup({
         'rust_analyzer',
         'lua_ls',
       }
+
+      local function enable_lsp(name)
+        vim.lsp.enable(name, true)
+        vim.cmd 'e'
+        vim.notify(name .. ' enabled', vim.log.levels.INFO)
+      end
+
+      local function disable_lsp(name)
+        vim.lsp.enable(name, false)
+        for _, client in ipairs(vim.lsp.get_clients { name = name }) do
+          client:stop()
+        end
+        vim.cmd 'e'
+        vim.notify(name .. ' disabled', vim.log.levels.INFO)
+      end
+
+      vim.keymap.set('n', '<leader>ty', function()
+        if #vim.lsp.get_clients { name = 'ty' } > 0 then
+          disable_lsp 'ty'
+        else
+          enable_lsp 'ty'
+        end
+      end, { desc = 'Toggle [ty] type checker' })
+
+      vim.keymap.set('n', '<leader>pr', function()
+        if #vim.lsp.get_clients { name = 'pyright' } > 0 then
+          disable_lsp 'pyright'
+        else
+          enable_lsp 'pyright'
+        end
+      end, { desc = 'Toggle [P]y[r]ight type checker' })
     end,
   },
 
