@@ -564,6 +564,7 @@ pacman_install pyright
 ## pyright: static typechecker and linter for python
 # pacman_install python-lsp-server
 ## rust: best programming language out there
+pacman_install sccache
 pacman_install rustup
 rustup default stable
 rustup target add wasm32-unknown-unknown
