@@ -73,5 +73,6 @@
   "git.openRepositoryInParentFolders": "never",
   "editor.foldedCodeExpand": false,
   "chat.agent.enabled": false,
-  "claudeCode.preferredLocation": "panel"
+  "claudeCode.preferredLocation": "panel",
+  "gdsfactoryplus.agent.provider": "anthropic"
 }
