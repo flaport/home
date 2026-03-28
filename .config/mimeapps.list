@@ -53,6 +53,7 @@ x-scheme-handler/rdp=org.remmina.Remmina.desktop
 x-scheme-handler/remmina=org.remmina.Remmina.desktop
 x-scheme-handler/spice=org.remmina.Remmina.desktop
 x-scheme-handler/vnc=org.remmina.Remmina.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 
 [Added Associations]
 application/octet-stream=fdtd-solutions.desktop;mode-solutions.desktop;klayout.desktop;interconnect.desktop;open-octet-stream.desktop
