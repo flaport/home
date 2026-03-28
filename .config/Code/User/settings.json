@@ -47,6 +47,7 @@
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.terminal.focusAfterLaunch": true,
   "terminal.integrated.inheritEnv": true,
+  "terminal.integrated.keyboard.protocol": "xterm",
   "trailing-spaces.trimOnSave": true,
   "trailing-spaces.syntaxIgnore": [
     "yaml"
@@ -63,7 +64,7 @@
   },
   "vim.useSystemClipboard": true,
   "workbench.startupEditor": "none",
-  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.colorTheme": "Dark Modern",
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook"
   },

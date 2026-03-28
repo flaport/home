@@ -51,6 +51,7 @@ export READER="zathura"
 export SAVEHIST=100000
 export SUDO_ASKPASS="$HOME/.local/bin/askpass"
 export SUDO_ASKUSERPASS="$HOME/.local/bin/askuserpass"
+export TERM="xterm"
 export TERMINAL="alacritty"
 
 
