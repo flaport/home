@@ -64,7 +64,6 @@
   },
   "vim.useSystemClipboard": true,
   "workbench.startupEditor": "none",
-  "workbench.colorTheme": "Dark Modern",
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook"
   },
@@ -75,5 +74,6 @@
   "editor.foldedCodeExpand": false,
   "chat.agent.enabled": false,
   "claudeCode.preferredLocation": "panel",
-  "gdsfactoryplus.agent.provider": "anthropic"
+  "gdsfactoryplus.agent.provider": "anthropic",
+  "workbench.colorTheme": "Dark Modern"
 }
