@@ -1174,7 +1174,9 @@ pacman_install imagemagick
 ## scrot: alternative screenshot program [requires imagemagick]
 #pacman_install scrot
 ## flameshot: arguably the best screenshot program
-pacman_install flameshot
+# pacman_install flameshot
+curl -L https://archive.archlinux.org/packages/f/flameshot/flameshot-13.3.0-2-x86_64.pkg.tar.zst -o /tmp/flameshot.tar.zst
+sudo pacman -U /tmp/flameshot.tar.zst
 ## YouTube-viewer
 #yay_install youtube-viewer
 ## vlc media player
