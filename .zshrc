@@ -17,6 +17,24 @@ function sourcefile {
   [[ -f "$1" ]] && source "$1"
 }
 
+# zed editor with jupyter notebook support
+function zed {
+  deactivate > /dev/null 2> /dev/null
+  LOCAL_NOTEBOOK_DEV=1 /usr/bin/zeditor "$@"
+}
+
+# vscode, but without active environment
+function code {
+  deactivate > /dev/null 2> /dev/null
+  /usr/bin/code "$@"
+}
+
+# vscode, but without active environment and in gfp dev mode
+function dcode {
+  deactivate > /dev/null 2> /dev/null
+  code --extensionDevelopmentPath="$HOME/Projects/gfp/vscode" "$@"
+}
+
 # source settings not in source control
 sourcefile $HOME/.zshrc2
 
@@ -252,3 +270,7 @@ alias svim="sudo nvim"
 if which uv > /dev/null 2> /dev/null; then
   eval "$(uv generate-shell-completion zsh)"
 fi
+
+# >>> Codex installer >>>
+export PATH="/home/flaport/.local/bin:$PATH"
+# <<< Codex installer <<<
