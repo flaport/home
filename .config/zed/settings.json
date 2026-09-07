@@ -7,6 +7,44 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "cli_default_open_behavior": "existing_window",
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "agent": {
+    "default_model": {
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "enable_thinking": true,
+      "effort": "medium"
+    },
+    "use_modifier_to_send": true,
+    "dock": "right",
+    "favorite_models": [
+      {
+        "provider": "openai",
+        "model": "gpt-5.6-sol",
+        "enable_thinking": true,
+        "effort": "medium"
+      },
+      {
+        "provider": "anthropic",
+        "model": "claude-opus-5",
+        "enable_thinking": true,
+        "effort": "high"
+      }
+    ],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "vim_mode": true,
   "icon_theme": {
     "mode": "dark",
