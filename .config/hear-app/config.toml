@@ -1,0 +1,18 @@
+hotkey = "alt+x"
+paste_automatically = true
+
+[paste_shortcuts]
+default = "ctrl+v"
+Alacritty = "alt+v"
+
+[hear]
+engine = "gpt-transcribe"
+model = ""
+language = ""
+polish_model = "gpt-5.6-luna"
+context = "auto"
+polish = true
+save_recording = ""
+output = ""
+raw_output = ""
+force = false

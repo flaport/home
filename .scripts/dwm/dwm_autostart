@@ -39,6 +39,9 @@ start nm-applet
 # bluetooth manager applet
 start blueman-applet
 
+# dictation app
+start hear-app
+
 # make the mouse invisible after a brief period of not using it.
 start unclutter
 

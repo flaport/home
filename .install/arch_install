@@ -175,6 +175,49 @@ git_install(){ # will only install the first argument!
     return $exit_code
 }
 
+hear_install(){
+    printf "[ hear ] install latest release... "
+    printf "\n\n\n[ hear ] install latest release...\n" >> "$LOG"
+    printf "\n\n\n[ hear ] install latest release...\n" >> "$ERR"
+
+    case "$(uname -m)" in
+        x86_64) target="x86_64-unknown-linux-gnu" ;;
+        aarch64) target="aarch64-unknown-linux-gnu" ;;
+        *)
+            printf "unsupported architecture: %s\n" "$(uname -m)" >> "$ERR"
+            echo_success 1
+            return 1
+            ;;
+    esac
+
+    download_dir=$(mktemp -d)
+    gh release download --repo flaport/hear \
+        --pattern "hear-[0-9]*-$target.tar.gz" \
+        --pattern "hear-app-[0-9]*-$target.tar.gz" \
+        --pattern SHA256SUMS \
+        --dir "$download_dir" >> "$LOG" 2>> "$ERR"
+    exit_code=$?
+
+    if [ $exit_code -eq 0 ]; then
+        (cd "$download_dir" && sha256sum --ignore-missing --check SHA256SUMS) >> "$LOG" 2>> "$ERR"
+        exit_code=$?
+    fi
+
+    if [ $exit_code -eq 0 ]; then
+        mkdir -p "$HOME/.local/bin"
+        tar -C "$HOME/.local/bin" -xzf "$download_dir"/hear-[0-9]*-"$target".tar.gz >> "$LOG" 2>> "$ERR"
+        exit_code=$?
+    fi
+    if [ $exit_code -eq 0 ]; then
+        tar -C "$HOME/.local/bin" -xzf "$download_dir"/hear-app-[0-9]*-"$target".tar.gz >> "$LOG" 2>> "$ERR"
+        exit_code=$?
+    fi
+
+    rm -r -- "$download_dir"
+    echo_success $exit_code
+    return $exit_code
+}
+
 submodule_install(){ # will only install the first argument!
     printf "[submod] install $1... "
     printf "\n\n\n[submod] install $1...\n" >> "$LOG"
@@ -369,6 +412,7 @@ pacman_install cmake
 pacman_install git
 pacman_install git-lfs
 pacman_install github-cli
+hear_install
 git config pull.rebase false
 git config push.default simple
 git config advice.addIgnoredFile false
@@ -1469,10 +1513,10 @@ pacman_install python-lxml
 #pip3_install smdv
 ## run jupyterlab as a systemd service:
 pacman_install python-hatchling
-yay_install jupyterhub
-systemctl_create jupyterhub
-sudo uv pip install --system jupyterlab_code_formatter --break-system-packages
-pacman_install jupyterlab-lsp
+#yay_install jupyterhub
+#systemctl_create jupyterhub
+#sudo uv pip install --system jupyterlab_code_formatter --break-system-packages
+#pacman_install jupyterlab-lsp
 #systemctl_enable jupyterhub
 ## neovim compatibility
 pacman_install python-pynvim
@@ -1558,4 +1602,3 @@ printf "\n\n\n\n\n"
 echo "###############"
 echo "## finished! ##"
 echo "###############"
-
