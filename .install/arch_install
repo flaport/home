@@ -442,6 +442,8 @@ echo Defaults:$USER '!tty_tickets', timestamp_timeout=15 | sudo tee /etc/sudoers
 #pacman_install arch-install-scripts
 ## alacritty: arguably the best terminal
 pacman_install alacritty
+## glow: a cli markdown viewer
+pacman_install glow
 ## calcurse: a terminal calendar client
 #pacman_install calcurse
 ## vdirsyncer: synchronize caldav and carddav
