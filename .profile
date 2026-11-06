@@ -44,7 +44,7 @@ export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export HISTFILE="$HOME/.bash_history"
 export HISTSIZE=100000
 export ICAROOT="$HOME/.ica"
-export PATH="$HOME/.bun/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.pi/agent/bin:$HOME/.bun/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 export PYTHONSTARTUP="$HOME/.pythonstartup"
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export READER="zathura"
@@ -52,7 +52,7 @@ export SAVEHIST=100000
 export SUDO_ASKPASS="$HOME/.local/bin/askpass"
 export SUDO_ASKUSERPASS="$HOME/.local/bin/askuserpass"
 export TERM="xterm"
-export TERMINAL="alacritty"
+export TERMINAL="ghostty"
 
 
 # Python

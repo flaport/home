@@ -270,7 +270,3 @@ alias svim="sudo nvim"
 if which uv > /dev/null 2> /dev/null; then
   eval "$(uv generate-shell-completion zsh)"
 fi
-
-# >>> Codex installer >>>
-export PATH="/home/flaport/.local/bin:$PATH"
-# <<< Codex installer <<<

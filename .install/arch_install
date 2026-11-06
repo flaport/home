@@ -319,6 +319,69 @@ npm_install(){
     return $exit_code
 }
 
+pi_bin(){ # resolve the pi coding agent binary (PATH first, then the managed install)
+    if command -v pi >/dev/null 2>&1; then
+        command -v pi
+    elif [ -x "$HOME/.pi/agent/bin/pi" ]; then
+        printf '%s\n' "$HOME/.pi/agent/bin/pi"
+    else
+        return 1
+    fi
+}
+
+pi_install(){ # install the pi coding agent (https://pi.dev)
+    printf "[  pi  ] install coding agent... "
+    printf "\n\n\n[  pi  ] install coding agent...\n" >> "$LOG"
+    printf "\n\n\n[  pi  ] install coding agent...\n" >> "$ERR"
+
+    # check if pi is already installed...
+    if pi_bin >/dev/null 2>&1 && [ "$FORCE" -eq 0 ]; then
+        printf "already installed.\n"
+        printf "already installed.\n" >> "$LOG"
+        printf "already installed.\n" >> "$ERR"
+        return 1
+    fi
+
+    printf "curl -fsSL https://pi.dev/install.sh | sh\n" >> "$LOG"
+    printf "curl -fsSL https://pi.dev/install.sh | sh\n" >> "$ERR"
+    ## run detached from the tty (setsid) so the installer never blocks on its interactive prompts
+    setsid sh -c 'curl -fsSL https://pi.dev/install.sh | sh' >> "$LOG" 2>> "$ERR"
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
+pi_extension_install(){ # will only install the first argument!
+    printf "[  pi  ] install extension $1... "
+    printf "\n\n\n[  pi  ] install extension $1...\n" >> "$LOG"
+    printf "\n\n\n[  pi  ] install extension $1...\n" >> "$ERR"
+
+    pi=$(pi_bin)
+    if [ -z "$pi" ]; then
+        printf "pi is not installed.\n"
+        printf "pi is not installed.\n" >> "$LOG"
+        printf "pi is not installed.\n" >> "$ERR"
+        echo_success 1
+        return 1
+    fi
+
+    # check if extension is already installed...
+    "$pi" list 2>/dev/null | grep -qF "$1"
+    if [ $? = 0 ] && [ "$FORCE" -eq 0 ]; then
+        printf "already installed.\n"
+        printf "already installed.\n" >> "$LOG"
+        printf "already installed.\n" >> "$ERR"
+        return 1
+    fi
+
+    printf "pi install $1\n" >> "$LOG"
+    printf "pi install $1\n" >> "$ERR"
+    "$pi" install "$1" >> "$LOG" 2>> "$ERR"
+    exit_code=$?
+    echo_success $exit_code
+    return $exit_code
+}
+
 systemctl_create() {
     printf "[system] create $1 service... "
     printf "\n\n\n[system] create $1 service...\n" >> "$LOG"
@@ -442,6 +505,8 @@ echo Defaults:$USER '!tty_tickets', timestamp_timeout=15 | sudo tee /etc/sudoers
 #pacman_install arch-install-scripts
 ## alacritty: arguably the best terminal
 pacman_install alacritty
+## ghostty: fast, native, feature-rich terminal emulator
+pacman_install ghostty
 ## glow: a cli markdown viewer
 pacman_install glow
 ## calcurse: a terminal calendar client
@@ -1302,6 +1367,19 @@ pacman_install python
 
 ## Scientific computing with octave (Matlab alternative)
 #pacman_install octave
+
+
+# Pi coding agent
+#-------------------------------------------------------------------------------
+
+## pi: the pi coding agent (https://pi.dev)
+pi_install
+## pi extensions (packages currently used by the pi coding agent)
+pi_extension_install npm:pi-goal
+pi_extension_install npm:pi-web-fetch
+pi_extension_install npm:pi-auto-compact
+pi_extension_install npm:@amaster.ai/pi-image-gen
+pi_extension_install npm:pi-subagents
 
 
 # Browsers
