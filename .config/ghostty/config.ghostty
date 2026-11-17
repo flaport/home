@@ -63,6 +63,9 @@ background = #373E4D
 # Slightly smaller font
 font-size = 11
 
+# Faster scrolling (defaults: precision 1, discrete 3)
+mouse-scroll-multiplier = precision:3,discrete:6
+
 # Clipboard keybinds matching the Alacritty config
 keybind = alt+c=copy_to_clipboard:mixed
 keybind = alt+v=paste_from_clipboard
