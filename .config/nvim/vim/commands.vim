@@ -17,6 +17,15 @@ command! SoftWrap setlocal wrap linebreak formatoptions=lqj textwidth=0 colorcol
 " enable hard wrapping (insert enter) at 88 characters
 command! HardWrap setlocal nowrap nolinebreak formatoptions=tqj textwidth=88 colorcolumn=88
 
+" enable hard wrapping and reflow the whole buffer at 88 characters
+function! HardWrapAndReformat()
+    setlocal nowrap nolinebreak formatoptions=tqj textwidth=88 colorcolumn=88
+    let l:view = winsaveview()
+    silent! keeppatterns normal! gggqG
+    call winrestview(l:view)
+endfunction
+command! HardWrapAndReformat call HardWrapAndReformat()
+
 " enable no wrapping (disable both hard wrapping and soft wrapping)
 command! NoWrap setlocal nowrap nolinebreak formatoptions=lqj textwidth=0 colorcolumn=0
 

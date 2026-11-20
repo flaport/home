@@ -79,6 +79,9 @@ vim.api.nvim_create_user_command(
   {}
 )
 
+-- enable hard wrapping and reflow the whole buffer
+map('n', '<leader>wH', ':HardWrapAndReformat<cr>', opts)
+
 map('n', '<leader>s', ':call SyncTex()<CR>', { noremap = true, buffer = true, silent = true })
 
 map('n', '<leader>xx', '<cmd>TroubleToggle<cr>', opts)
@@ -153,6 +156,28 @@ map('t', '<C-k>', '<C-\\><C-N><C-w>k', opts)
 -- move to split right of current split (also when in terminal mode)
 map('n', '<C-l>', '<C-w>l', opts)
 map('t', '<C-l>', '<C-\\><C-N><C-w>l', opts)
+
+-- adjust the markview splitview preview width (falls back to the current window)
+local function markview_resize(delta)
+  local win
+  local ok, state = pcall(require, 'markview.state')
+  if ok and state.get_splitview_window then
+    local w = state.get_splitview_window({}, false)
+    if w and vim.api.nvim_win_is_valid(w) then
+      win = w
+    end
+  end
+  win = win or vim.api.nvim_get_current_win()
+  vim.api.nvim_win_set_width(win, math.max(20, vim.api.nvim_win_get_width(win) + delta))
+end
+
+-- narrow / widen the markview splitview preview
+map('n', '<C-S-h>', function()
+  markview_resize(5)
+end, opts)
+map('n', '<C-S-l>', function()
+  markview_resize(-5)
+end, opts)
 
 -- move to first non-whitespace of next line
 -- <C-m> " standard vim keybinding
@@ -259,7 +284,6 @@ map('t', '`<Esc>', '<Esc>', opts)
 
 -- treesitter playground show highlight
 map('n', 'T', ':TSHighlightCapturesUnderCursor<CR>', opts)
-
 
 -- DEFAULTS
 

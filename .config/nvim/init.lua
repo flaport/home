@@ -12,6 +12,10 @@ require 'config.variables'
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
 
+-- vimwiki claims every .md file (filetype=vimwiki). Map that filetype to the
+-- `markdown` treesitter parser so treesitter/markview can render those buffers.
+vim.treesitter.language.register('markdown', 'vimwiki')
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 
@@ -376,7 +380,7 @@ require('lazy').setup({
             '[D]ocument [S]ymbols'
           )
           map(
-            '<leader>ws',
+            '<leader>sW',
             require('telescope.builtin').lsp_dynamic_workspace_symbols,
             '[W]orkspace [S]ymbols'
           )
@@ -799,7 +803,12 @@ require('lazy').setup({
         additional_vim_regex_highlighting = {
           'ruby',
         },
-        disable = function(_, buf)
+        disable = function(lang, buf)
+          -- tree-sitter-just can't parse x'...' strings and an error there
+          -- unhighlights the rest of the file; vim's regex syntax handles them.
+          if lang == 'just' then
+            return true
+          end
           local max_filesize = 100 * 1024 -- 100 KB
           local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
           if ok and stats and stats.size > max_filesize then
@@ -867,6 +876,23 @@ require('lazy').setup({
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
+  },
+
+  { -- In-buffer markdown / latex / typst previewer
+    'OXY2DEV/markview.nvim',
+    -- NOTE: must not be lazy-loaded; markview handles its own lazy loading.
+    lazy = false,
+    opts = {
+      preview = {
+        -- .md files open as `vimwiki` in this config, so include it with the defaults
+        filetypes = { 'markdown', 'vimwiki', 'quarto', 'rmd', 'typst', 'asciidoc' },
+      },
+    },
+    keys = {
+      { '<leader>mp', '<cmd>Markview splitToggle<cr>', desc = '[M]arkdown split [P]review' },
+      { '<leader>mt', '<cmd>Markview toggle<cr>', desc = '[M]arkdown render [T]oggle' },
+      { '<leader>mh', '<cmd>Markview hybridToggle<cr>', desc = '[M]arkdown [H]ybrid mode' },
+    },
   },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
