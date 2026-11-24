@@ -869,6 +869,10 @@ require('lazy').setup({
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
 
+      -- Keep the above directives working on Neovim 0.12+, whose directive
+      -- `match` table holds node lists instead of single nodes.
+      require('config.treesitter_compat').setup()
+
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
       --
@@ -878,22 +882,22 @@ require('lazy').setup({
     end,
   },
 
-  { -- In-buffer markdown / latex / typst previewer
-    'OXY2DEV/markview.nvim',
-    -- NOTE: must not be lazy-loaded; markview handles its own lazy loading.
-    lazy = false,
-    opts = {
-      preview = {
-        -- .md files open as `vimwiki` in this config, so include it with the defaults
-        filetypes = { 'markdown', 'vimwiki', 'quarto', 'rmd', 'typst', 'asciidoc' },
-      },
-    },
-    keys = {
-      { '<leader>mp', '<cmd>Markview splitToggle<cr>', desc = '[M]arkdown split [P]review' },
-      { '<leader>mt', '<cmd>Markview toggle<cr>', desc = '[M]arkdown render [T]oggle' },
-      { '<leader>mh', '<cmd>Markview hybridToggle<cr>', desc = '[M]arkdown [H]ybrid mode' },
-    },
-  },
+  --  { -- In-buffer markdown / latex / typst previewer
+  --    'OXY2DEV/markview.nvim',
+  --    -- NOTE: must not be lazy-loaded; markview handles its own lazy loading.
+  --    lazy = false,
+  --    opts = {
+  --      preview = {
+  --        -- .md files open as `vimwiki` in this config, so include it with the defaults
+  --        filetypes = { 'markdown', 'vimwiki', 'quarto', 'rmd', 'typst', 'asciidoc' },
+  --      },
+  --    },
+  --    keys = {
+  --      { '<leader>mp', '<cmd>Markview splitToggle<cr>', desc = '[M]arkdown split [P]review' },
+  --      { '<leader>mt', '<cmd>Markview toggle<cr>', desc = '[M]arkdown render [T]oggle' },
+  --      { '<leader>mh', '<cmd>Markview hybridToggle<cr>', desc = '[M]arkdown [H]ybrid mode' },
+  --    },
+  --  },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
